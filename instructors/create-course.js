@@ -13,6 +13,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 let instructor = null;
+let authReady = false;
+
 
 onAuthStateChanged(auth,(user)=>{
 
@@ -24,7 +26,10 @@ onAuthStateChanged(auth,(user)=>{
 
     }
 
+
     instructor = user;
+
+    authReady = true;
 
 });
 
@@ -57,13 +62,13 @@ courseForm.addEventListener("submit",async(e)=>{
 
     e.preventDefault();
 
-    if(!instructor){
+    if(!authReady || !instructor){
 
-        alert("Please login again.");
+    alert("Authentication still loading. Try again.");
 
-        return;
+    return;
 
-    }
+}
 const instructorRef =
 doc(db, "instructors", instructor.uid);
 
