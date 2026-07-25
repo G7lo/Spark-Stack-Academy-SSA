@@ -1,16 +1,20 @@
-import { db } from "../js/firebase.js";
+import { db, auth } from "../js/firebase.js";
 
 import {
     doc,
-    getDoc,
-    collection,
-    getDocs,
-    query,
-    where,
-    orderBy
+getDoc,
+collection,
+getDocs,
+query,
+where,
+orderBy,
+addDoc,
+serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const params =
 new URLSearchParams(window.location.search);
@@ -42,7 +46,12 @@ document.getElementById("lessonDescription");
 const resourceLink =
 document.getElementById("resourceLink");
 
+let currentUser = null;
 
+let currentLesson = null;
+
+const completeBtn =
+document.getElementById("completeBtn");
 
 async function loadCourse(){
 
@@ -131,7 +140,10 @@ console.log("TOTAL LESSONS:", snapshot.size);
 
         snapshot.forEach((lessonDoc)=>{
 
-    const lesson = lessonDoc.data();
+    const lesson = {
+    id: lessonDoc.id,
+    ...lessonDoc.data()
+};
 
 
     const card = document.createElement("div");
@@ -170,6 +182,7 @@ console.log("TOTAL LESSONS:", snapshot.size);
 
 
 function openLesson(lesson){
+  currentLesson = lesson;
 
 
     lessonTitle.textContent =
@@ -278,6 +291,54 @@ function openLesson(lesson){
 
 }
 
+
+onAuthStateChanged(auth,(user)=>{
+
+    if(user){
+
+        currentUser = user;
+
+    }
+
+});
+
+completeBtn.addEventListener("click",async()=>{
+
+
+    if(!currentUser || !currentLesson){
+
+        alert("Select a lesson first");
+
+        return;
+
+    }
+
+
+    await addDoc(
+        collection(db,"progress"),
+        {
+
+            studentId:
+            currentUser.uid,
+
+            courseId,
+
+            lessonId:
+            currentLesson.id,
+
+            completed:true,
+
+            completedAt:
+            serverTimestamp()
+
+        }
+    );
+
+
+    alert("Lesson completed ✓");
+
+
+});
 
 
 

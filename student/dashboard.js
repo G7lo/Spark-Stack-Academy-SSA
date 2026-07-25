@@ -49,21 +49,27 @@ onAuthStateChanged(auth, async(user)=>{
 
 
 const studentName =
-document.querySelector(".profile-info h2");
+document.getElementById("studentName");
 
 
 const courseCount =
-document.querySelector(".student-card:nth-child(1) p");
+document.getElementById("courseCount");
 
 
 const progressCount =
-document.querySelector(".student-card:nth-child(2) p");
+document.getElementById("progressCount");
 
 
 const certificateCount =
-document.querySelector(".student-card:nth-child(3) p");
+document.getElementById("certificateCount");
 
 
+const continueLearning =
+document.getElementById("continueLearning");
+
+
+const progressList =
+document.getElementById("progressList");
 
 onAuthStateChanged(auth, async(user)=>{
 
@@ -164,3 +170,65 @@ certificateCount.textContent =
 
 
 });
+const courses = [];
+
+enrollmentsSnapshot.forEach((item)=>{
+
+    courses.push(item.data());
+
+});
+
+
+if(courses.length === 0){
+
+    continueLearning.innerHTML =
+    "No courses started yet 🚀";
+
+}else{
+
+    continueLearning.innerHTML =
+    "";
+
+    for(const course of courses){
+
+        const courseRef =
+        doc(db,"courses",course.courseId);
+
+
+        const courseSnap =
+        await getDoc(courseRef);
+
+
+        if(courseSnap.exists()){
+
+            const data =
+            courseSnap.data();
+
+
+            continueLearning.innerHTML += `
+
+            <div class="course-mini-card">
+
+                <h3>
+                ${data.title}
+                </h3>
+
+                <button onclick="openCourse('${course.courseId}')">
+                Continue Learning
+                </button>
+
+            </div>
+
+            `;
+
+        }
+
+    }
+
+}
+window.openCourse = function(id){
+
+    window.location.href =
+    `course-player.html?id=${id}`;
+
+};

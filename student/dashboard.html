@@ -35,13 +35,16 @@ content="width=device-width, initial-scale=1.0">
 
     <div class="profile-info">
 
-        <h2>Student Name</h2>
+        <h2 id="studentName">
+Loading...</h2>
 
-        <p>SSA Learner • Beginner Level</p>
+<p id="studentLevel">
+SSA Learner
+</p>
 
-        <span class="badge">
-            Active Student
-        </span>
+<span class="badge">
+Active Student
+</span>
 
     </div>
 
@@ -51,19 +54,25 @@ content="width=device-width, initial-scale=1.0">
 
         <div class="student-card">
             <h3>Courses</h3>
-            <p>0 Enrolled</p>
+            <p id="courseCount">
+0 Enrolled
+</p>
         </div>
 
 
         <div class="student-card">
             <h3>Progress</h3>
-            <p>0% Complete</p>
+            <p id="progressCount">
+0% Complete
+</p>
         </div>
 
 
         <div class="student-card">
             <h3>Certificates</h3>
-            <p>0 Earned</p>
+            <p id="certificateCount">
+0 Earned
+</p>
         </div>
 
     </section>
@@ -73,9 +82,12 @@ content="width=device-width, initial-scale=1.0">
 
         <h2>Continue Learning</h2>
 
-        <div class="empty-state">
-            No courses started yet 🚀
-        </div>
+        <div 
+class="empty-state"
+id="continueLearning">
+
+Loading courses...
+</div>
 
     </section>
 
@@ -84,26 +96,11 @@ content="width=device-width, initial-scale=1.0">
     <h2>My Learning Progress</h2>
 
 
-    <div class="progress-card">
+    <div id="progressList">
 
-        <div>
-            <h3>Web Development Basics</h3>
-            <p>HTML • CSS • JavaScript</p>
-        </div>
+Loading progress...
 
-
-        <div class="progress-bar">
-
-            <div class="progress-fill"></div>
-
-        </div>
-
-
-        <span>
-            35% Complete
-        </span>
-
-    </div>
+</div>
 
 
 </section>
