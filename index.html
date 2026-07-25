@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Spark Stack Academy</title>
+
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+
+body{
+
+    min-height:100vh;
+
+    background:
+    radial-gradient(
+        circle at center,
+        #123b73,
+        #020617 60%
+    );
+
+    color:white;
+
+    overflow-x:hidden;
+
+}
+
+
+/* STAR BACKGROUND */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    background-image:
+    radial-gradient(
+        white 1px,
+        transparent 1px
+    );
+
+    background-size:50px 50px;
+
+    opacity:.15;
+
+    pointer-events:none;
+
+}
+
+
+/* GLOBAL BUTTONS */
+
+button{
+
+    padding:16px 35px;
+
+    margin:10px;
+
+    border-radius:30px;
+
+    border:1px solid #38bdf8;
+
+    background:
+
+    rgba(15,23,42,.7);
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:1rem;
+
+    box-shadow:
+
+    0 0 20px #2563eb;
+
+    transition:.3s;
+
+}
+
+
+button:hover{
+
+    background:#2563eb;
+
+    transform:translateY(-5px);
+
+}
+
+
+a{
+
+    text-decoration:none;
+
+}
+
+
+
+/* 3D CORE */
+
+
+.core{
+
+    width:280px;
+
+    height:280px;
+
+    border-radius:50%;
+
+    position:absolute;
+
+
+    background:
+
+    radial-gradient(
+        circle at 30% 30%,
+        #67e8f9,
+        #2563eb 40%,
+        #020617 70%
+    );
+
+
+    box-shadow:
+
+    0 0 80px #2563eb,
+
+    inset 0 0 50px #38bdf8;
+
+
+    animation:
+    rotate 8s linear infinite;
+
+}
+
+
+@keyframes rotate{
+
+from{
+
+transform:rotateY(0deg);
+
+}
+
+to{
+
+transform:rotateY(360deg);
+
+}
+
+}
+
+
+/* FLOATING TECH */
+
+.node{
+
+    position:absolute;
+
+    padding:15px 25px;
+
+    border-radius:20px;
+
+    background:
+
+    rgba(255,255,255,.08);
+
+
+    border:
+
+    1px solid rgba(255,255,255,.2);
+
+
+    backdrop-filter:blur(10px);
+
+
+    animation:
+    float 5s infinite;
+
+}
+
+
+@keyframes float{
+
+50%{
+
+transform:translateY(-20px);
+
+}
+
+}
+
+/* HERO SECTION */
+
+
+.hero{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    position:relative;
+
+    text-align:center;
+
+}
+
+
+
+.container{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+
+
+h1{
+
+    font-size:
+    clamp(3rem,6vw,5rem);
+
+    letter-spacing:3px;
+
+
+    text-shadow:
+
+    0 0 25px #38bdf8;
+
+}
+
+
+
+h1 span{
+
+    color:#38bdf8;
+
+}
+
+
+
+.hero p{
+
+    max-width:650px;
+
+    margin:25px auto;
+
+    color:#cbd5e1;
+
+    font-size:1.2rem;
+
+}
+
+
+
+.buttons{
+
+    margin-top:35px;
+
+}
+
+
+
+
+.ai{
+
+    top:20%;
+
+    left:15%;
+
+}
+
+
+
+.web{
+
+    top:25%;
+
+    right:15%;
+
+}
+
+
+
+.cloud{
+
+    bottom:20%;
+
+    left:20%;
+
+}
+
+
+
+.cyber{
+
+    bottom:20%;
+
+    right:20%;
+
+}
+
+/* ABOUT SECTION */
+
+
+.about{
+
+    position:relative;
+
+    padding:90px 30px;
+
+    text-align:center;
+
+}
+
+
+
+.about h2{
+
+    font-size:3rem;
+
+    margin-bottom:20px;
+
+    color:#38bdf8;
+
+    text-shadow:
+
+    0 0 20px #2563eb;
+
+}
+
+
+
+.about > p{
+
+    max-width:700px;
+
+    margin:auto;
+
+    color:#cbd5e1;
+
+}
+
+
+
+.cards{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:25px;
+
+    flex-wrap:wrap;
+
+    margin-top:50px;
+
+}
+
+
+
+.card{
+
+    width:280px;
+
+    padding:30px;
+
+    border-radius:25px;
+
+
+    background:
+
+    rgba(255,255,255,.06);
+
+
+    border:
+
+    1px solid rgba(255,255,255,.15);
+
+
+    backdrop-filter:blur(15px);
+
+
+    box-shadow:
+
+    0 0 30px rgba(37,99,235,.2);
+
+
+    transition:.4s;
+
+}
+
+
+
+.card:hover{
+
+    transform:
+
+    translateY(-15px);
+
+
+    box-shadow:
+
+    0 0 40px #2563eb;
+
+}
+
+
+
+.card h3{
+
+    margin-bottom:15px;
+
+    color:#67e8f9;
+
+}
+
+/* LEARNING PATHS */
+
+
+.paths{
+
+    padding:100px 30px;
+
+    text-align:center;
+
+}
+
+
+
+.paths h2{
+
+    font-size:3rem;
+
+    margin-bottom:50px;
+
+    color:#38bdf8;
+
+    text-shadow:
+
+    0 0 20px #2563eb;
+
+}
+
+
+
+.path-grid{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:25px;
+
+}
+
+
+
+.path-card{
+
+    width:260px;
+
+    padding:30px;
+
+
+    border-radius:25px;
+
+
+    background:
+
+    rgba(15,23,42,.75);
+
+
+
+    border:
+
+    1px solid rgba(56,189,248,.3);
+
+
+
+    box-shadow:
+
+    0 0 25px rgba(37,99,235,.25);
+
+
+
+    transition:.4s;
+
+}
+
+
+
+.path-card:hover{
+
+    transform:
+
+    translateY(-12px)
+    scale(1.03);
+
+
+
+    border-color:#38bdf8;
+
+
+
+    box-shadow:
+
+    0 0 40px #2563eb;
+
+}
+
+
+
+.path-card h3{
+
+    color:#67e8f9;
+
+    margin-bottom:15px;
+
+}
+
+/* STATS SECTION */
+
+
+.stats{
+
+    padding:100px 30px;
+
+    text-align:center;
+
+    background:
+
+    linear-gradient(
+        transparent,
+        #020617
+    );
+
+}
+
+
+
+.stats h2{
+
+    font-size:3rem;
+
+    margin-bottom:50px;
+
+    color:#38bdf8;
+
+    text-shadow:
+
+    0 0 20px #2563eb;
+
+}
+
+
+
+.stats-grid{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:25px;
+
+}
+
+
+
+.stat-card{
+
+    width:220px;
+
+    padding:35px;
+
+
+    border-radius:25px;
+
+
+    background:
+
+    rgba(255,255,255,.06);
+
+
+
+    border:
+
+    1px solid rgba(56,189,248,.25);
+
+
+
+    backdrop-filter:blur(15px);
+
+
+
+    box-shadow:
+
+    0 0 30px rgba(37,99,235,.2);
+
+
+
+    transition:.4s;
+
+}
+
+
+
+.stat-card:hover{
+
+    transform:
+
+    translateY(-10px);
+
+
+
+    box-shadow:
+
+    0 0 40px #2563eb;
+
+}
+
+
+
+.stat-card h3{
+
+    font-size:3rem;
+
+    color:#67e8f9;
+
+}
+
+
+
+.stat-card p{
+
+    margin-top:15px;
+
+    color:#cbd5e1;
+
+}
+
+/* CERTIFICATE SECTION */
+
+
+.certificates{
+
+    padding:100px 30px;
+
+    text-align:center;
+
+}
+
+
+
+.certificates h2{
+
+    font-size:3rem;
+
+    color:#38bdf8;
+
+    margin-bottom:20px;
+
+    text-shadow:
+
+    0 0 20px #2563eb;
+
+}
+
+
+
+.certificates > p{
+
+    max-width:700px;
+
+    margin:auto;
+
+    color:#cbd5e1;
+
+}
+
+
+
+.certificate-box{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:25px;
+
+    margin-top:50px;
+
+}
+
+
+
+.certificate-card{
+
+    width:280px;
+
+    padding:35px;
+
+    border-radius:25px;
+
+
+    background:
+
+    rgba(255,255,255,.06);
+
+
+    border:
+
+    1px solid rgba(56,189,248,.25);
+
+
+    box-shadow:
+
+    0 0 30px rgba(37,99,235,.2);
+
+
+    transition:.4s;
+
+}
+
+
+
+.certificate-card:hover{
+
+    transform:
+
+    translateY(-12px);
+
+
+    box-shadow:
+
+    0 0 40px #2563eb;
+
+}
+
+
+
+.certificate-card h3{
+
+    color:#67e8f9;
+
+    margin-bottom:15px;
+
+}
+
+/* FOOTER */
+
+
+.footer{
+
+    padding:70px 30px 30px;
+
+    text-align:center;
+
+    background:
+
+    #020617;
+
+    border-top:
+
+    1px solid rgba(56,189,248,.2);
+
+    box-shadow:
+
+    0 -10px 40px rgba(37,99,235,.2);
+
+}
+
+
+
+.footer-brand h2{
+
+    color:#38bdf8;
+
+    font-size:2rem;
+
+    text-shadow:
+
+    0 0 20px #2563eb;
+
+}
+
+
+
+.footer-brand p{
+
+    color:#cbd5e1;
+
+    margin-top:15px;
+
+}
+
+
+
+.footer-links{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:25px;
+
+    margin:40px 0;
+
+}
+
+
+
+.footer-links a{
+
+    color:white;
+
+    transition:.3s;
+
+}
+
+
+
+.footer-links a:hover{
+
+    color:#38bdf8;
+
+    text-shadow:
+
+    0 0 15px #2563eb;
+
+}
+
+
+
+.footer-bottom{
+
+    padding-top:20px;
+
+    border-top:
+
+    1px solid rgba(255,255,255,.1);
+
+    color:#94a3b8;
+
+}
+
+</style>
+
+</head>
+<body>
+
+
+<section class="hero">
+
+
+<div class="core"></div>
+
+
+<div class="node ai">
+🤖 Artificial Intelligence
+</div>
+
+
+<div class="node web">
+💻 Web Development
+</div>
+
+
+<div class="node cloud">
+☁ Cloud Technology
+</div>
+
+
+<div class="node cyber">
+🔐 Cyber Security
+</div>
+
+
+
+<div class="container">
+
+
+<h1>
+
+Welcome to
+
+<br>
+
+<span>
+The Spark Stack Academy
+</span>
+
+</h1>
+
+
+<p>
+
+A next-generation technology academy building
+developers, engineers and innovators for the digital future.
+
+</p>
+
+
+
+<div class="buttons">
+
+
+<a href="signup.html">
+
+<button>
+Join Academy
+</button>
+
+</a>
+
+
+<a href="login.html">
+
+<button>
+Enter Portal
+</button>
+
+</a>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+<section class="about">
+
+<h2>
+Why Spark Stack Academy?
+</h2>
+
+
+<p>
+A technology ecosystem designed to help students learn,
+build real projects, and prepare for the digital future.
+</p>
+
+
+
+<div class="cards">
+
+
+<div class="card">
+
+<h3>
+🚀 Learn
+</h3>
+
+<p>
+Master modern technology skills through structured learning paths.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+🛠 Build
+</h3>
+
+<p>
+Create real-world projects and develop practical experience.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+🌍 Launch
+</h3>
+
+<p>
+Transform your skills into opportunities and innovation.
+</p>
+
+</div>
+
+
+</div>
+
+
+</section>
+<section class="paths">
+
+
+<h2>
+Explore Learning Paths
+</h2>
+
+
+<div class="path-grid">
+
+
+
+<div class="path-card">
+
+<h3>
+💻 Software Development
+</h3>
+
+<p>
+Build websites, applications and digital products
+using modern technologies.
+</p>
+
+</div>
+
+
+
+<div class="path-card">
+
+<h3>
+🤖 Artificial Intelligence
+</h3>
+
+<p>
+Explore AI tools, automation and intelligent systems.
+</p>
+
+</div>
+
+
+
+<div class="path-card">
+
+<h3>
+🔐 Cyber Security
+</h3>
+
+<p>
+Learn how to protect systems, networks and data.
+</p>
+
+</div>
+
+
+
+<div class="path-card">
+
+<h3>
+☁ Cloud & DevOps
+</h3>
+
+<p>
+Understand modern cloud infrastructure and deployment.
+</p>
+
+</div>
+
+
+
+<div class="path-card">
+
+<h3>
+⚡ Electronics & IoT
+</h3>
+
+<p>
+Connect hardware, software and smart devices.
+</p>
+
+</div>
+
+
+
+</div>
+
+
+</section>
+<section class="stats">
+
+
+<h2>
+Spark Stack Academy Impact
+</h2>
+
+
+<div class="stats-grid">
+
+
+<div class="stat-card">
+
+<h3>
+500+
+</h3>
+
+<p>
+Students Learning
+</p>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<h3>
+50+
+</h3>
+
+<p>
+Technology Courses
+</p>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<h3>
+25+
+</h3>
+
+<p>
+Expert Instructors
+</p>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<h3>
+100%
+</h3>
+
+<p>
+Future Focused
+</p>
+
+</div>
+
+
+</div>
+
+
+</section>
+<section class="certificates">
+
+
+<h2>
+Earn Your Certificate
+</h2>
+
+
+<p>
+Complete courses, build projects, and receive certificates
+that showcase your skills and achievements.
+</p>
+
+
+
+<div class="certificate-box">
+
+
+<div class="certificate-card">
+
+<h3>
+🎓 Professional Certificates
+</h3>
+
+<p>
+Validate your skills with achievement-based certificates.
+</p>
+
+</div>
+
+
+
+<div class="certificate-card">
+
+<h3>
+🚀 Project Portfolio
+</h3>
+
+<p>
+Showcase real-world projects created during your journey.
+</p>
+
+</div>
+
+
+
+<div class="certificate-card">
+
+<h3>
+🌍 Career Ready Skills
+</h3>
+
+<p>
+Develop practical abilities for the global technology industry.
+</p>
+
+</div>
+
+
+
+</div>
+
+
+</section>
+<footer class="footer">
+
+
+<div class="footer-brand">
+
+<h2>
+⚡ Spark Stack Academy
+</h2>
+
+<p>
+Building the next generation of developers,
+engineers and innovators.
+</p>
+
+</div>
+
+
+
+<div class="footer-links">
+
+
+<a href="login.html">
+Student Portal
+</a>
+
+
+<a href="instructors/login.html">
+Instructor Portal
+</a>
+
+
+<a href="#">
+About SSA
+</a>
+
+
+<a href="#">
+Contact
+</a>
+
+
+</div>
+
+
+
+<div class="footer-bottom">
+
+<p>
+© 2026 Spark Stack Academy. All rights reserved.
+</p>
+
+</div>
+
+
+</footer>
