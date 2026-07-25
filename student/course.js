@@ -6,7 +6,10 @@ import {
     getDoc,
     addDoc,
     collection,
-    serverTimestamp
+    serverTimestamp,
+    getDocs,
+    query,
+    where
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -85,7 +88,18 @@ async function loadCourse(){
         const data =
         snapshot.data();
 
+const lessonsQuery = query(
+    collection(db,"lessons"),
+    where("courseId","==",courseId)
+);
 
+
+const lessonsSnapshot =
+await getDocs(lessonsQuery);
+
+
+courseLessons.textContent =
+lessonsSnapshot.size;
 
         courseTitle.textContent =
         data.title;
@@ -101,10 +115,6 @@ data.instructorName;
 
         courseDuration.textContent =
         data.duration;
-
-
-        courseLessons.textContent =
-        data.lessons;
 
 
         courseLevel.textContent =
