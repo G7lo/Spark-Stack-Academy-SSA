@@ -20,7 +20,7 @@ href="add-lesson.css">
 
 <div class="page">
 
-<h1>Add Lesson</h1>
+<h1>📖 Add Lesson</h1>
 
 <form id="lessonForm">
 
@@ -38,12 +38,24 @@ rows="5"></textarea>
 <input
 type="url"
 id="videoUrl"
-placeholder="YouTube Video URL">
+placeholder="Video URL (YouTube or Direct Link)">
 
 <input
 type="text"
 id="duration"
 placeholder="Duration (e.g. 12 min)">
+
+<input
+type="number"
+id="order"
+placeholder="Lesson Order (1, 2, 3...)"
+min="1"
+required>
+
+<input
+type="url"
+id="resourceUrl"
+placeholder="PDF or Resource Link (Optional)">
 
 <button
 type="submit">

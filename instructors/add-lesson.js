@@ -21,35 +21,30 @@ const lessonForm =
 document.getElementById("lessonForm");
 
 
-lessonForm.addEventListener("submit",async(e)=>{
+await addDoc(
+    collection(db,"lessons"),
+    {
 
-    e.preventDefault();
+        courseId,
 
-    await addDoc(
-        collection(db,"lessons"),
-        {
+        module: moduleName,
 
-            courseId,
+        title: title.value.trim(),
 
-            module:moduleName,
+        description: description.value.trim(),
 
-            title:
-            title.value.trim(),
+        videoUrl: videoUrl.value.trim(),
 
-            description:
-            description.value.trim(),
+        duration: duration.value.trim(),
 
-            videoUrl:
-            videoUrl.value.trim(),
+        order: Number(order.value),
 
-            duration:
-            duration.value.trim(),
+        resourceUrl: resourceUrl.value.trim(),
 
-            createdAt:
-            serverTimestamp()
+        createdAt: serverTimestamp()
 
-        }
-    );
+    }
+);
 
     alert("✅ Lesson added successfully!");
 

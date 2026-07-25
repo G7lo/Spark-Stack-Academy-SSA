@@ -171,22 +171,25 @@ document
 }
 
 
-addModuleBtn.addEventListener("click",async()=>{
+addModuleBtn.addEventListener("click", async () => {
 
-    const moduleName =
-    prompt("Enter module name");
+    const moduleName = prompt("Enter module name")?.trim();
 
-    if(!moduleName) return;
+    if (!moduleName) return;
 
-    await updateDoc(
-        doc(db,"courses",courseId),
-        {
+    const courseRef = doc(db, "courses", courseId);
+    const courseSnap = await getDoc(courseRef);
 
-            modules:
-            arrayUnion(moduleName)
+    const courseData = courseSnap.data();
 
-        }
-    );
+    if ((courseData.modules || []).includes(moduleName)) {
+        alert("Module already exists.");
+        return;
+    }
+
+    await updateDoc(courseRef, {
+        modules: arrayUnion(moduleName)
+    });
 
     loadModules();
 

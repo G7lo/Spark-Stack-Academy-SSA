@@ -4,14 +4,11 @@
 <head>
 
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Manage Course Content</title>
 
-<link rel="stylesheet"
-href="manage-content.css">
+<link rel="stylesheet" href="manage-content.css">
 
 </head>
 
@@ -19,9 +16,11 @@ href="manage-content.css">
 
 <div class="page">
 
-<h1>
-📚 Course Content
-</h1>
+<h1>📚 Course Content</h1>
+
+<p>
+Create modules and lessons for your course.
+</p>
 
 <button id="addModuleBtn">
 + Add Module
@@ -33,9 +32,28 @@ href="manage-content.css">
 
 </div>
 
-<script
-type="module"
-src="manage-content.js"></script>
+<!-- Add Module Modal -->
+
+<div class="modal hidden" id="moduleModal">
+
+<div class="modal-content">
+
+<h2>New Module</h2>
+
+<input
+type="text"
+id="moduleTitle"
+placeholder="Module Title">
+
+<button id="saveModuleBtn">
+Save Module
+</button>
+
+</div>
+
+</div>
+
+<script type="module" src="manage-content.js"></script>
 
 </body>
 
