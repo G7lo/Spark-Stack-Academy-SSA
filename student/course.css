@@ -1,0 +1,62 @@
+body{
+    margin:0;
+    font-family:Inter,Arial,sans-serif;
+    background:radial-gradient(circle at top,#162b55,#050b18);
+    color:#fff;
+}
+
+.course-page{
+    max-width:900px;
+    margin:40px auto;
+    padding:30px;
+}
+
+.course-page h1{
+    font-size:38px;
+    margin-bottom:15px;
+}
+
+#courseDescription{
+    color:#b8c7ff;
+    font-size:18px;
+    line-height:1.7;
+}
+
+.course-info{
+    margin-top:30px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(15px);
+    padding:25px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 0 25px rgba(0,150,255,.2);
+}
+
+.course-info p{
+    margin:15px 0;
+    font-size:17px;
+}
+
+.course-info span{
+    color:#7ed8ff;
+    font-weight:600;
+}
+
+#enrollBtn{
+    margin-top:30px;
+    padding:15px 35px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#009dff,#8b5cff);
+    color:#fff;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+    box-shadow:0 0 25px rgba(0,150,255,.45);
+}
+
+#enrollBtn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 0 35px rgba(139,92,255,.6);
+}
