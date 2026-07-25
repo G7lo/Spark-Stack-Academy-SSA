@@ -58,23 +58,47 @@ async function loadModules(){
 
     modules.forEach((module,index)=>{
 
-        modulesList.innerHTML += `
+    modulesList.innerHTML += `
 
-        <div class="module">
+    <div class="module">
 
-            <h2>
-                Module ${index+1}
-            </h2>
+        <h2>
+            Module ${index+1}
+        </h2>
 
-            <p>
-                ${module}
-            </p>
+        <p>
+            ${module}
+        </p>
 
-        </div>
+        <button
+        class="lesson-btn"
+        data-module="${module}">
 
-        `;
+        ➕ Add Lesson
+
+        </button>
+
+    </div>
+
+    `;
+
+});
+
+document
+.querySelectorAll(".lesson-btn")
+.forEach(btn=>{
+
+    btn.addEventListener("click",()=>{
+
+        const module =
+        btn.dataset.module;
+
+        window.location.href =
+        `add-lesson.html?id=${courseId}&module=${encodeURIComponent(module)}`;
 
     });
+
+});
 
 }
 
