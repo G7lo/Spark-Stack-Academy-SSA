@@ -327,3 +327,19 @@ body{
     font-weight:bold;
 
 }
+.browse-courses-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 24px;
+    background:#5b6cff;
+    color:#fff;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.browse-courses-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(91,108,255,.4);
+}
