@@ -58,11 +58,50 @@ document.getElementById("enrollBtn");
 let currentUser = null;
 
 
-onAuthStateChanged(auth,(user)=>{
+async function checkEnrollment(){
+
+    if(!currentUser){
+        return;
+    }
+
+
+    const enrollmentQuery = query(
+        collection(db,"enrollments"),
+        where("studentId","==",currentUser.uid),
+        where("courseId","==",courseId)
+    );
+
+
+    const enrollmentSnapshot =
+    await getDocs(enrollmentQuery);
+
+
+
+    if(!enrollmentSnapshot.empty){
+
+        enrollBtn.textContent =
+        "Continue Learning";
+
+
+        enrollBtn.onclick = ()=>{
+
+            window.location.href =
+            `course-player.html?id=${courseId}`;
+
+        };
+
+
+    }
+
+}
+
+onAuthStateChanged(auth,async(user)=>{
 
     if(user){
 
         currentUser = user;
+
+        await checkEnrollment();
 
     }
 
@@ -137,6 +176,29 @@ enrollBtn.addEventListener("click",async()=>{
         return;
 
     }
+
+
+    const enrollmentQuery = query(
+        collection(db,"enrollments"),
+        where("studentId","==",currentUser.uid),
+        where("courseId","==",courseId)
+    );
+
+
+    const existingEnrollment =
+    await getDocs(enrollmentQuery);
+
+
+
+    if(!existingEnrollment.empty){
+
+        window.location.href =
+        `course-player.html?id=${courseId}`;
+
+        return;
+
+    }
+
 
 
     await addDoc(
