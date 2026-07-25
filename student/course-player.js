@@ -50,13 +50,15 @@ async function loadLessons(){
 
     const q = query(
         collection(db,"lessons"),
-        where("courseId","==",courseId),
-        orderBy("order")
+        where("courseId","==",courseId)
     );
+
 
     const snapshot = await getDocs(q);
 
+
     lessonsList.innerHTML = "";
+
 
     if(snapshot.empty){
 
@@ -66,6 +68,7 @@ async function loadLessons(){
         return;
 
     }
+
 
     snapshot.forEach(doc=>{
 
@@ -80,7 +83,7 @@ async function loadLessons(){
         data-description="${lesson.description}"
         data-resource="${lesson.resourceUrl || ""}">
 
-            ${lesson.order}. ${lesson.title}
+        ${lesson.order}. ${lesson.title}
 
         </div>
 
