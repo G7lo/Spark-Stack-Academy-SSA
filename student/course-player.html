@@ -19,74 +19,103 @@
 <div class="player-page">
 
 
-<section class="lesson-area">
+<header class="player-header">
 
+<h1 id="courseTitle">
+Loading course...
+</h1>
 
-    <div class="video-box" id="videoContainer">
+<p id="courseSubtitle"></p>
 
-        Select a lesson to start learning.
-
-    </div>
-
-
-
-    <div class="lesson-info">
-
-        <h2 id="lessonTitle">
-            
-        </h2>
-
-
-        <p id="lessonDescription">
-
-        </p>
-
-
-        <a 
-        id="resourceLink"
-        target="_blank">
-
-        </a>
+</header>
 
 
 
-        <button id="completeBtn">
-
-            Mark Lesson Complete ✓
-
-        </button>
+<div class="player-layout">
 
 
-    </div>
+<!-- LESSONS SIDEBAR -->
+
+<aside class="lessons-panel">
+
+<h2>
+📚 Lessons
+</h2>
+
+
+<div id="lessonsList">
+
+<p>
+Loading lessons...
+</p>
+
+</div>
+
+
+</aside>
+
+
+
+
+<!-- MAIN PLAYER -->
+
+<main class="content-panel">
+
+
+<div id="videoContainer" class="video-box">
+
+<p>
+Select a lesson to start learning.
+</p>
+
+</div>
+
+
+
+
+<section class="lesson-info">
+
+
+<h2 id="lessonTitle">
+
+</h2>
+
+
+<p id="lessonDescription">
+
+</p>
+
+
+
+<a 
+id="resourceLink"
+target="_blank">
+
+</a>
+
+
+
+<button id="completeBtn">
+
+✓ Mark Lesson Complete
+
+</button>
 
 
 </section>
 
 
+</main>
 
 
-<section class="lessons-list">
-
-
-    <h2>
-        📚 Course Lessons
-    </h2>
-
-
-    <div id="lessonsList">
-
-    </div>
-
-
-</section>
-
+</div>
 
 
 </div>
 
 
 
-<script type="module" src="course-player.js"></script>
+<script type="module" src="js/course-player.js"></script>
 
 
 </body>
