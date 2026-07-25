@@ -154,22 +154,6 @@ await getDocs(certificatesQuery);
 certificateCount.textContent =
 `${certificatesSnapshot.size} Earned`;
 
-
-
-
-        }
-
-
-    }else{
-
-
-        window.location.href="../login.html";
-
-
-    }
-
-
-});
 const courses = [];
 
 enrollmentsSnapshot.forEach((item)=>{
@@ -226,6 +210,22 @@ if(courses.length === 0){
     }
 
 }
+
+
+        }
+
+
+    }else{
+
+
+        window.location.href="../login.html";
+
+
+    }
+
+
+});
+
 window.openCourse = function(id){
 
     window.location.href =
