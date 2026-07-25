@@ -97,81 +97,62 @@ async function loadCourse(){
 
 async function loadLessons(){
 
+    try{
 
-    const q =
-    query(
-        collection(db,"lessons"),
-        where("courseId","==",courseId),
-        orderBy("order")
-    );
-
+        const q = query(
+            collection(db,"lessons"),
+            where("courseId","==",courseId)
+        );
 
 
-    const snapshot =
-    await getDocs(q);
+        const snapshot = await getDocs(q);
 
 
-
-    lessonsList.innerHTML = "";
-
+        console.log("Lessons found:", snapshot.size);
 
 
-    if(snapshot.empty){
+        lessonsList.innerHTML = "";
 
 
-        lessonsList.innerHTML =
-        "<p>No lessons available.</p>";
+        if(snapshot.empty){
+
+            lessonsList.innerHTML =
+            "<p>No lessons available.</p>";
+
+            return;
+
+        }
 
 
-        return;
+        snapshot.forEach((lessonDoc)=>{
 
-    }
-
-
+            const lesson = lessonDoc.data();
 
 
-    snapshot.forEach((lessonDoc)=>{
+            lessonsList.innerHTML += `
 
+            <div class="lesson-card">
 
-        const lesson =
-        lessonDoc.data();
+                ${lesson.order || ""}. ${lesson.title}
 
+            </div>
 
-
-        const card =
-        document.createElement("div");
-
-
-
-        card.className =
-        "lesson-card";
-
-
-
-        card.textContent =
-        `${lesson.order}. ${lesson.title}`;
-
-
-
-        card.addEventListener("click",()=>{
-
-
-            openLesson(lesson);
+            `;
 
 
         });
 
 
+    }catch(error){
 
-        lessonsList.appendChild(card);
+        console.log("LESSON ERROR:", error);
 
+        lessonsList.innerHTML =
+        "<p>Error loading lessons.</p>";
 
-
-    });
-
+    }
 
 }
-
 
 
 
