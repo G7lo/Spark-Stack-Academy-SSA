@@ -123,3 +123,12 @@ async function loadCourse(){
 
 
 loadCourse();
+const contentBtn =
+document.getElementById("contentBtn");
+
+contentBtn.addEventListener("click",()=>{
+
+    window.location.href =
+    `manage-content.html?id=${courseId}`;
+
+});
