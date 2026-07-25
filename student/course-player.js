@@ -105,13 +105,18 @@ async function loadLessons(){
         );
 
 
-        const snapshot = await getDocs(q);
+      const snapshot = await getDocs(q);
+
+console.log("COURSE ID:", courseId);
+console.log("TOTAL LESSONS:", snapshot.size);
 
 
         console.log("Lessons found:", snapshot.size);
 
 
-        lessonsList.innerHTML = "";
+        lessonsList.innerHTML = `
+<p>Found ${snapshot.size} lessons</p>
+`;
 
 
         if(snapshot.empty){
