@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Create Account | Spark Stack Academy</title>
+
+<link rel="stylesheet" href="css/auth.css">
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+<div class="login-card">
+
+<h1>Join Spark Stack Academy</h1>
+
+<p>Join Spark Stack Academy as a student or instructor.</p>
+
+<form id="signupForm">
+
+<input
+type="text"
+id="name"
+placeholder="Full Name"
+required>
+
+<input
+type="email"
+id="email"
+placeholder="Email Address"
+required>
+
+<input
+type="password"
+id="password"
+placeholder="Password"
+required>
+
+<select id="role" required>
+
+    <option value="">
+        Select Account Type
+    </option>
+
+    <option value="student">
+        Student
+    </option>
+
+    <option value="instructor">
+        Instructor
+    </option>
+
+</select>
+
+<div id="instructorFields" style="display:none;">
+
+<textarea
+id="bio"
+placeholder="Professional Bio"
+rows="5"></textarea>
+
+
+<input
+type="text"
+id="expertise"
+placeholder="Area of Expertise">
+
+</div>
+
+<button
+type="submit"
+id="signupBtn">
+
+Create Account
+
+</button>
+
+</form>
+
+<div class="links">
+
+Already have an account?
+
+<a href="login.html">
+
+Login
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module"
+src="js/signup.js"></script>
+
+</body>
+
+</html>

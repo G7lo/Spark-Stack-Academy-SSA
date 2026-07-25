@@ -1,0 +1,219 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-family:Inter,Arial,sans-serif;
+
+    background:
+    radial-gradient(
+        circle at top,
+        #1e3a8a,
+        #061326 45%
+    );
+
+    color:white;
+
+    padding:20px;
+
+}
+
+
+
+.login-container{
+
+    width:100%;
+
+    max-width:450px;
+
+}
+
+
+
+.login-card{
+
+    background:
+    rgba(255,255,255,0.06);
+
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,0.12);
+
+    border-radius:24px;
+
+    padding:35px;
+
+    box-shadow:
+    0 0 40px rgba(59,130,246,0.25);
+
+}
+
+
+
+.login-card h1{
+
+    text-align:center;
+
+    margin-bottom:10px;
+
+    font-size:2rem;
+
+}
+
+
+
+.login-card p{
+
+    text-align:center;
+
+    color:#cbd5e1;
+
+    margin-bottom:25px;
+
+}
+
+
+
+form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+}
+
+
+
+input,
+textarea,
+select{
+
+    width:100%;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    background:#0b1d37;
+
+    color:white;
+
+    outline:none;
+
+    font-size:1rem;
+
+}
+
+
+
+input:focus,
+textarea:focus,
+select:focus{
+
+    border-color:#3b82f6;
+
+    box-shadow:
+    0 0 15px rgba(59,130,246,0.4);
+
+}
+
+
+
+textarea{
+
+    resize:none;
+
+}
+
+
+
+button{
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    color:white;
+
+    background:
+    linear-gradient(
+        90deg,
+        #2563eb,
+        #8b5cf6
+    );
+
+
+    transition:.3s;
+
+}
+
+
+
+button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 0 25px rgba(139,92,246,.5);
+
+}
+
+
+
+.links{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    color:#cbd5e1;
+
+}
+
+
+
+.links a{
+
+    color:#60a5fa;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+
+
+#instructorFields{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+}

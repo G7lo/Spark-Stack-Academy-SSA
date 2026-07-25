@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Create Course</title>
+
+<link rel="stylesheet"
+href="create-course.css">
+
+</head>
+
+<body>
+
+<div class="create-course-page">
+
+    <h1>Create New Course</h1>
+
+    <form id="courseForm">
+
+        <input
+        type="text"
+        id="title"
+        placeholder="Course Title"
+        required>
+
+        <textarea
+        id="description"
+        placeholder="Course Description"
+        rows="5"
+        required></textarea>
+
+        <input
+        type="text"
+        id="category"
+        placeholder="Category"
+        required>
+
+        <select id="level">
+
+            <option>
+                Beginner
+            </option>
+
+            <option>
+                Intermediate
+            </option>
+
+            <option>
+                Advanced
+            </option>
+
+        </select>
+
+        <input
+        type="text"
+        id="duration"
+        placeholder="Duration (e.g. 8 Weeks)"
+        required>
+
+        <input
+        type="number"
+        id="price"
+        placeholder="Course Price">
+
+        <label for="thumbnail">
+    Course Thumbnail URL
+</label>
+
+<input
+type="url"
+id="thumbnail"
+placeholder="https://...">
+
+<label for="introVideo">
+    Introduction Video (YouTube)
+</label>
+
+<input
+type="url"
+id="introVideo"
+placeholder="https://www.youtube.com/watch?v=...">
+
+
+        <input
+        type="text"
+        id="thumbnail"
+        placeholder="Thumbnail URL">
+
+        <div class="actions">
+
+            <button
+            type="submit"
+            id="draftBtn">
+                Save Draft
+            </button>
+
+            <button
+            type="button"
+            id="publishBtn">
+                Publish
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<script
+type="module"
+src="create-course.js"></script>
+
+</body>
+
+</html>

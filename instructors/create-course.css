@@ -1,0 +1,65 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Inter,sans-serif;
+    background:#061326;
+    color:#fff;
+    padding:40px;
+}
+
+.create-course-page{
+    max-width:800px;
+    margin:auto;
+}
+
+h1{
+    margin-bottom:30px;
+}
+
+form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+input,
+textarea,
+select{
+    background:#0B1D37;
+    color:#fff;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;
+    padding:15px;
+    font-size:1rem;
+}
+
+.actions{
+    display:flex;
+    gap:15px;
+}
+
+button{
+    flex:1;
+    border:none;
+    border-radius:12px;
+    padding:15px;
+    font-size:1rem;
+    cursor:pointer;
+    color:#fff;
+}
+
+#draftBtn{
+    background:#334155;
+}
+
+#publishBtn{
+    background:linear-gradient(
+        90deg,
+        #3B82F6,
+        #8B5CF6
+    );
+}
