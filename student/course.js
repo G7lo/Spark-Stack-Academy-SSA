@@ -1,10 +1,18 @@
-import { db } from "../js/firebase.js";
+import { db, auth } from "../js/firebase.js";
 
 
 import {
     doc,
-    getDoc
+    getDoc,
+    addDoc,
+    collection,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 
@@ -40,7 +48,22 @@ document.getElementById("courseLessons");
 const courseLevel =
 document.getElementById("courseLevel");
 
+const enrollBtn =
+document.getElementById("enrollBtn");
 
+
+let currentUser = null;
+
+
+onAuthStateChanged(auth,(user)=>{
+
+    if(user){
+
+        currentUser = user;
+
+    }
+
+});
 
 
 async function loadCourse(){
@@ -73,7 +96,7 @@ async function loadCourse(){
 
 
         courseInstructor.textContent =
-        data.instructor;
+data.instructorName;
 
 
         courseDuration.textContent =
@@ -94,5 +117,42 @@ async function loadCourse(){
 
 }
 
+enrollBtn.addEventListener("click",async()=>{
 
+
+    if(!currentUser){
+
+        alert("Please login first.");
+
+        return;
+
+    }
+
+
+    await addDoc(
+        collection(db,"enrollments"),
+        {
+
+            studentId:
+            currentUser.uid,
+
+            courseId,
+
+            enrolledAt:
+            serverTimestamp(),
+
+            progress:0
+
+        }
+    );
+
+
+    alert("🎉 Enrolled successfully!");
+
+
+    window.location.href =
+    `course-player.html?id=${courseId}`;
+
+
+});
 loadCourse();

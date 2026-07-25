@@ -4,19 +4,12 @@ import {
     collection,
     getDocs,
     query,
-    where,
-    addDoc,
-    serverTimestamp
+    where
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-import {
-    auth
-} from "../js/firebase.js";
-
-
-const coursesContainer =
-document.getElementById("coursesContainer");
+const coursesGrid =
+document.getElementById("coursesGrid");
 
 
 async function loadCourses(){
@@ -31,7 +24,22 @@ async function loadCourses(){
     await getDocs(q);
 
 
-    coursesContainer.innerHTML = "";
+    coursesGrid.innerHTML = "";
+
+
+    if(snapshot.empty){
+
+        coursesGrid.innerHTML = `
+
+        <p>
+        No courses available yet.
+        </p>
+
+        `;
+
+        return;
+
+    }
 
 
     snapshot.forEach((doc)=>{
@@ -40,94 +48,56 @@ async function loadCourses(){
         doc.data();
 
 
-        coursesContainer.innerHTML += `
+        coursesGrid.innerHTML += `
 
         <div class="course-card">
 
-            <h3>${course.title}</h3>
+            <h2>
+            ${course.title}
+            </h2>
 
-            <p>${course.description}</p>
 
-            <span>${course.level}</span>
+            <p>
+            ${course.description}
+            </p>
 
-            <p>${course.duration}</p>
 
-            <div class="course-actions">
+            <p>
+            👨‍🏫 ${course.instructorName || "Spark Stack Academy"}
+            </p>
 
-    <button onclick="viewCourse('${doc.id}')">
-        View Course
-    </button>
 
-    <button onclick="enrollCourse('${doc.id}','${course.title}')">
-        Enroll
-    </button>
+            <p>
+            📚 ${course.level}
+            </p>
 
-</div>
+
+            <button
+onclick="openCourse('${doc.id}')">
+
+View Course
+
+</button>
+
 
         </div>
 
         `;
 
-
     });
+
 
 }
 
 
-loadCourses();
 
-window.viewCourse = function(courseId){
+window.openCourse = function(courseId){
 
     window.location.href =
     `course.html?id=${courseId}`;
 
 };
-window.enrollCourse = async function(courseId, courseTitle){
-
-    const user = auth.currentUser;
 
 
-    if(!user){
 
-        alert("Please login first");
-        return;
-
-    }
-
-
-    try{
-
-        await addDoc(
-            collection(db,"enrollments"),
-            {
-
-                studentId:user.uid,
-
-                courseId:courseId,
-
-                courseTitle:courseTitle,
-
-                progress:0,
-
-                status:"active",
-
-                enrolledAt:
-                serverTimestamp()
-
-            }
-        );
-
-
-        alert("🎓 Enrolled successfully!");
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-        alert(error.message);
-
-    }
-
-};
+loadCourses();
