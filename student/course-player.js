@@ -131,21 +131,29 @@ console.log("TOTAL LESSONS:", snapshot.size);
 
         snapshot.forEach((lessonDoc)=>{
 
-            const lesson = lessonDoc.data();
+    const lesson = lessonDoc.data();
 
 
-            lessonsList.innerHTML += `
+    const card = document.createElement("div");
 
-            <div class="lesson-card">
-
-                ${lesson.order || ""}. ${lesson.title}
-
-            </div>
-
-            `;
+    card.className = "lesson-card";
 
 
-        });
+    card.textContent =
+    `${lesson.order || ""}. ${lesson.title}`;
+
+
+    card.addEventListener("click",()=>{
+
+        openLesson(lesson);
+
+    });
+
+
+    lessonsList.appendChild(card);
+
+
+});
 
 
     }catch(error){
