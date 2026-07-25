@@ -101,6 +101,11 @@ query(
 const enrollmentsSnapshot =
 await getDocs(enrollmentsQuery);
 
+console.log("Enrollments:", enrollmentsSnapshot.size);
+
+enrollmentsSnapshot.forEach((item)=>{
+    console.log(item.data());
+});
 
 const totalCourses =
 enrollmentsSnapshot.size;
@@ -185,27 +190,37 @@ if(courses.length === 0){
 
         if(courseSnap.exists()){
 
-            const data =
-            courseSnap.data();
+    const data =
+    courseSnap.data();
 
 
-            continueLearning.innerHTML += `
+    continueLearning.innerHTML += `
 
-            <div class="course-mini-card">
+    <div class="course-mini-card">
 
-                <h3>
-                ${data.title}
-                </h3>
+        <h3>
+        ${data.title}
+        </h3>
 
-                <button onclick="openCourse('${course.courseId}')">
-                Continue Learning
-                </button>
+        <button onclick="openCourse('${course.courseId}')">
+        Continue Learning
+        </button>
 
-            </div>
+    </div>
 
-            `;
+    `;
 
-        }
+}else{
+
+    continueLearning.innerHTML += `
+
+    <p>
+    Course not found: ${course.courseId}
+    </p>
+
+    `;
+
+}
 
     }
 
