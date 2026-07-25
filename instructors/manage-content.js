@@ -26,6 +26,10 @@ const addModuleBtn =
 document.getElementById("addModuleBtn");
 
 
+const moduleModal = document.getElementById("moduleModal");
+const moduleTitle = document.getElementById("moduleTitle");
+const saveModuleBtn = document.getElementById("saveModuleBtn");
+
 async function loadModules(){
 
     const courseRef =
@@ -171,9 +175,14 @@ document
 }
 
 
-addModuleBtn.addEventListener("click", async () => {
+addModuleBtn.addEventListener("click", () => {
+    moduleModal.classList.remove("hidden");
+    moduleTitle.focus();
+});
 
-    const moduleName = prompt("Enter module name")?.trim();
+saveModuleBtn.addEventListener("click", async () => {
+
+    const moduleName = moduleTitle.value.trim();
 
     if (!moduleName) return;
 
@@ -190,6 +199,9 @@ addModuleBtn.addEventListener("click", async () => {
     await updateDoc(courseRef, {
         modules: arrayUnion(moduleName)
     });
+
+    moduleTitle.value = "";
+    moduleModal.classList.add("hidden");
 
     loadModules();
 
