@@ -46,36 +46,52 @@ document.getElementById("resourceLink");
 
 async function loadCourse(){
 
+    try{
 
-    const courseRef =
-    doc(db,"courses",courseId);
-
-
-    const snapshot =
-    await getDoc(courseRef);
+        const courseRef =
+        doc(db,"courses",courseId);
 
 
-
-    if(snapshot.exists()){
-
-
-        const course =
-        snapshot.data();
+        const snapshot =
+        await getDoc(courseRef);
 
 
+        console.log("Course ID:", courseId);
+
+
+        if(snapshot.exists()){
+
+            const course = snapshot.data();
+
+            console.log(course);
+
+
+            courseTitle.textContent =
+            course.title;
+
+
+            courseSubtitle.textContent =
+            `${course.level} • ${course.duration}`;
+
+
+        }else{
+
+            courseTitle.textContent =
+            "Course not found";
+
+        }
+
+
+    }catch(error){
+
+        console.log(error);
 
         courseTitle.textContent =
-        course.title;
-
-
-        courseSubtitle.textContent =
-        `${course.level} • ${course.duration}`;
-
+        "Firebase error";
 
     }
 
 }
-
 
 
 
