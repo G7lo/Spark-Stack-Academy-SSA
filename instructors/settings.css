@@ -29,9 +29,8 @@ flex-direction:column;
 
 }
 
-.create-lesson-page{
+.settings-page{
 
-flex:1;
 padding:30px;
 margin-top:80px;
 max-width:1000px;
@@ -41,11 +40,13 @@ margin-right:auto;
 
 }
 
+
 .page-header{
 
 margin-bottom:30px;
 
 }
+
 
 .page-header h1{
 
@@ -55,37 +56,38 @@ margin-bottom:8px;
 
 }
 
+
 .page-header p{
 
 color:#6b7280;
 
 }
 
-#lessonForm{
 
-display:flex;
-flex-direction:column;
-gap:24px;
 
-}
-
-.lesson-card{
+.settings-card{
 
 background:#fff;
 padding:28px;
 border-radius:18px;
+margin-bottom:25px;
 border:1px solid #e5e7eb;
 box-shadow:0 10px 30px rgba(0,0,0,.08);
+
 animation:fadeIn .3s ease;
 
 }
 
-.lesson-card h2{
 
-margin-bottom:24px;
+
+.settings-card h2{
+
+margin-bottom:20px;
 color:#111827;
 
 }
+
+
 
 .form-group{
 
@@ -95,42 +97,41 @@ margin-bottom:20px;
 
 }
 
-.form-group:last-child{
 
-margin-bottom:0;
-
-}
 
 .form-group label{
 
-margin-bottom:8px;
 font-weight:600;
+margin-bottom:8px;
 font-size:14px;
-color:#374151;
 
 }
+
+
 
 .form-group input,
 
 .form-group textarea{
 
-width:100%;
 padding:14px 16px;
-border:1px solid #d1d5db;
 border-radius:12px;
-background:#fafafa;
+border:1px solid #d1d5db;
 font-size:15px;
+background:#fafafa;
 outline:none;
 transition:.25s;
 
 }
 
+
+
 .form-group textarea{
 
 resize:vertical;
-min-height:180px;
 
 }
+
+
 
 .form-group input:focus,
 
@@ -142,60 +143,41 @@ box-shadow:0 0 0 4px rgba(37,99,235,.15);
 
 }
 
-.form-grid{
 
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:20px;
 
-}
+.form-group input:disabled{
 
-.checkbox{
-
-display:flex;
-align-items:center;
-gap:10px;
-margin-top:10px;
+background:#e5e7eb;
+cursor:not-allowed;
 
 }
 
-.checkbox input{
 
-width:18px;
-height:18px;
-cursor:pointer;
 
-}
+.primary-btn,
 
-.checkbox label{
+.secondary-btn,
 
-font-weight:600;
-color:#374151;
-cursor:pointer;
+.danger-btn{
 
-}
-
-.actions{
-
-display:flex;
-justify-content:flex-end;
-margin-top:30px;
-
-}
-
-.primary-btn{
-
-background:#2563eb;
-color:#fff;
 border:none;
-padding:14px 28px;
+padding:14px 22px;
 border-radius:12px;
-font-size:15px;
 font-weight:600;
 cursor:pointer;
 transition:.25s;
 
 }
+
+
+
+.primary-btn{
+
+background:#2563eb;
+color:white;
+
+}
+
 
 .primary-btn:hover{
 
@@ -204,20 +186,77 @@ transform:translateY(-2px);
 
 }
 
-.primary-btn:disabled{
 
-opacity:.6;
-cursor:not-allowed;
-transform:none;
+
+.secondary-btn{
+
+background:#eef2ff;
+color:#3730a3;
 
 }
+
+
+
+.secondary-btn:hover{
+
+background:#dbeafe;
+
+}
+
+
+
+.switch{
+
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:15px;
+font-weight:600;
+
+}
+
+
+
+.switch input{
+
+width:18px;
+height:18px;
+
+}
+
+
+
+.danger{
+
+border:1px solid #fecaca;
+
+}
+
+
+
+.danger-btn{
+
+background:#dc2626;
+color:white;
+
+}
+
+
+
+.danger-btn:hover{
+
+background:#b91c1c;
+
+}
+
+
 
 @keyframes fadeIn{
 
 from{
 
 opacity:0;
-transform:translateY(18px);
+transform:translateY(15px);
 
 }
 
@@ -230,42 +269,24 @@ transform:translateY(0);
 
 }
 
+
+
 @media(max-width:768px){
 
-.create-lesson-page{
+.settings-page{
 
 padding:20px;
 margin-top:75px;
 
 }
 
-.form-grid{
 
-grid-template-columns:1fr;
-
-}
-
-.lesson-card{
+.settings-card{
 
 padding:20px;
 
 }
 
-.actions{
-
-justify-content:stretch;
-
-}
-
-.primary-btn{
-
-width:100%;
-
-}
-
-}
-
-@media(max-width:480px){
 
 .page-header h1{
 
@@ -273,12 +294,18 @@ font-size:1.6rem;
 
 }
 
-.form-group input,
+}
 
-.form-group textarea{
 
-font-size:14px;
-padding:12px;
+@media(max-width:480px){
+
+.primary-btn,
+
+.secondary-btn,
+
+.danger-btn{
+
+width:100%;
 
 }
 

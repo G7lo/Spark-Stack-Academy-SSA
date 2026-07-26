@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -9,69 +8,201 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Add Lesson</title>
+<title>Create Lesson | Spark Stack Academy</title>
 
 <link rel="stylesheet"
-href="add-lesson.css">
+href="create-lesson.css">
 
 </head>
 
 <body>
 
-<div class="page">
+<div class="dashboard-layout">
 
-<h1>📖 Add Lesson</h1>
+<aside id="sidebarContainer"></aside>
+
+<div id="sidebarOverlay"></div>
+
+<div class="main-content">
+
+<header id="topbarContainer"></header>
+
+<main class="create-lesson-page">
+
+<header class="page-header">
+
+<h1>
+
+🎓 Create Lesson
+
+</h1>
+
+<p>
+
+Add a new lesson to your module.
+
+</p>
+
+</header>
 
 <form id="lessonForm">
 
+<div class="lesson-card">
+
+<h2>
+
+Lesson Details
+
+</h2>
+
+<div class="form-group">
+
+<label>
+
+Lesson Title
+
+</label>
+
 <input
 type="text"
-id="title"
-placeholder="Lesson Title"
+id="lessonTitle"
+placeholder="HTML Introduction"
 required>
 
-<textarea
-id="description"
-placeholder="Lesson Description"
-rows="5"></textarea>
+</div>
+
+<div class="form-group">
+
+<label>
+
+Video URL (YouTube)
+
+</label>
 
 <input
 type="url"
 id="videoUrl"
-placeholder="Video URL (YouTube or Direct Link)">
+placeholder="https://youtube.com/...">
+
+</div>
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>
+
+Duration
+
+</label>
 
 <input
 type="text"
 id="duration"
-placeholder="Duration (e.g. 12 min)">
-
-<input
-type="number"
-id="order"
-placeholder="Lesson Order (1, 2, 3...)"
-min="1"
-required>
-
-<input
-type="url"
-id="resourceUrl"
-placeholder="PDF or Resource Link (Optional)">
-
-<button
-type="submit">
-
-Save Lesson
-
-</button>
-
-</form>
+placeholder="15 Minutes">
 
 </div>
 
+<div class="form-group">
+
+<label>
+
+Lesson Order
+
+</label>
+
+<input
+type="number"
+id="lessonOrder"
+value="1"
+min="1">
+
+</div>
+
+</div>
+
+<div class="form-group">
+
+<label>
+
+Lesson Notes
+
+</label>
+
+<textarea
+id="notes"
+rows="7"
+placeholder="Write lesson notes..."></textarea>
+
+</div>
+
+<div class="form-group">
+
+<label>
+
+Resource URL (Optional)
+
+</label>
+
+<input
+type="url"
+id="resource"
+placeholder="https://...">
+
+</div>
+
+<div class="checkbox">
+
+<input
+type="checkbox"
+id="freePreview">
+
+<label
+for="freePreview">
+
+Allow Free Preview
+
+</label>
+
+</div>
+
+<div class="actions">
+
+<button
+type="submit"
+class="primary-btn">
+
+💾 Save Lesson
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+</main>
+
+</div>
+
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
 <script
 type="module"
-src="add-lesson.js">
+src="components/sidebar.js">
+</script>
 
+<script
+type="module"
+src="components/topbar.js">
+</script>
+
+<script
+type="module"
+src="create-lesson.js">
 </script>
 
 </body>

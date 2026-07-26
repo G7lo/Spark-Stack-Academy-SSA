@@ -9,29 +9,10 @@ import {
     addDoc,
     serverTimestamp,
     doc,
-    getDoc
+    getDoc,
+    updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-let instructor = null;
-let authReady = false;
-
-
-onAuthStateChanged(auth,(user)=>{
-
-    if(!user){
-
-        window.location.href = "login.html";
-
-        return;
-
-    }
-
-
-    instructor = user;
-
-    authReady = true;
-
-});
 
 const courseForm =
 document.getElementById("courseForm");
@@ -42,13 +23,70 @@ document.getElementById("draftBtn");
 const publishBtn =
 document.getElementById("publishBtn");
 
+
+let instructor = null;
+let instructorData = null;
 let courseStatus = "Draft";
+let isSaving = false;
+
+
+
+onAuthStateChanged(auth, async(user)=>{
+
+    if(!user){
+
+        window.location.href =
+        "../login.html";
+
+        return;
+
+    }
+
+    instructor = user;
+
+    try{
+
+        const instructorRef =
+        doc(db,"instructors",user.uid);
+
+        const instructorSnap =
+        await getDoc(instructorRef);
+
+        if(!instructorSnap.exists()){
+
+            alert("Instructor profile not found.");
+
+            window.location.href =
+            "../login.html";
+
+            return;
+
+        }
+
+        instructorData =
+        instructorSnap.data();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert("Failed to load instructor profile.");
+
+    }
+
+});
+
+
 
 draftBtn.addEventListener("click",()=>{
 
     courseStatus = "Draft";
 
 });
+
+
 
 publishBtn.addEventListener("click",()=>{
 
@@ -58,72 +96,135 @@ publishBtn.addEventListener("click",()=>{
 
 });
 
+
+
 courseForm.addEventListener("submit",async(e)=>{
 
     e.preventDefault();
 
-    if(!authReady || !instructor){
+    if(isSaving){
 
-    alert("Authentication still loading. Try again.");
+        return;
 
-    return;
+    }
 
-}
-const instructorRef =
-doc(db, "instructors", instructor.uid);
+    if(!instructor || !instructorData){
 
-const instructorSnap =
-await getDoc(instructorRef);
+        alert("Please wait...");
 
-const instructorData =
-instructorSnap.data();
-    await addDoc(collection(db,"courses"),{
+        return;
 
-        title:
-        title.value.trim(),
+    }
 
-        description:
-        description.value.trim(),
+    isSaving = true;
 
-        category:
-        category.value.trim(),
+    draftBtn.disabled = true;
+    publishBtn.disabled = true;
 
-        level:
-        level.value,
+    try{
 
-        duration:
-        duration.value.trim(),
+        await addDoc(
 
-        price:
-        Number(price.value) || 0,
+            collection(db,"courses"),
 
-        thumbnail:
-        thumbnail.value.trim(),
+            {
 
-        introVideo:
-        introVideo.value.trim(),
+                title:
+                title.value.trim(),
 
-        instructorId:
-        instructor.uid,
+                description:
+                description.value.trim(),
 
-        instructorName:
-instructorData.name,
+                category:
+                category.value.trim(),
 
-        students:0,
+                level:
+                level.value,
 
-        lessons:0,
+                duration:
+                duration.value.trim(),
 
-        status:
-        courseStatus,
+                price:
+                Number(price.value) || 0,
 
-        createdAt:
-        serverTimestamp()
+                thumbnail:
+                thumbnail.value.trim(),
 
-    });
+                introVideo:
+                introVideo.value.trim(),
 
-    alert("🎉 Course saved successfully!");
+                instructorId:
+                instructor.uid,
 
-    window.location.href =
-    "courses.html";
+                instructorName:
+                instructorData.name,
+
+                students:0,
+
+                lessons:0,
+
+                status:
+                courseStatus,
+
+                createdAt:
+                serverTimestamp()
+
+            }
+
+        );
+
+
+        await updateDoc(
+
+            doc(db,"instructors",instructor.uid),
+
+            {
+
+                totalCourses:
+
+                (instructorData.totalCourses || 0) + 1
+
+            }
+
+        );
+
+
+        alert(
+
+            courseStatus === "Published"
+
+            ?
+
+            "🚀 Course published successfully!"
+
+            :
+
+            "💾 Draft saved successfully!"
+
+        );
+
+
+        window.location.href =
+        "courses.html";
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+    finally{
+
+        isSaving = false;
+
+        draftBtn.disabled = false;
+
+        publishBtn.disabled = false;
+
+    }
 
 });

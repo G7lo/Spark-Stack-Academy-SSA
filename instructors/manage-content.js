@@ -1,14 +1,13 @@
 import { db } from "../js/firebase.js";
 
 import {
-    doc,
-    getDoc,
-    updateDoc,
-    arrayUnion,
     collection,
+    addDoc,
     getDocs,
     query,
-    where
+    where,
+    orderBy,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -25,105 +24,255 @@ document.getElementById("modulesList");
 const addModuleBtn =
 document.getElementById("addModuleBtn");
 
+const moduleModal =
+document.getElementById("moduleModal");
 
-const moduleModal = document.getElementById("moduleModal");
-const moduleTitle = document.getElementById("moduleTitle");
-const saveModuleBtn = document.getElementById("saveModuleBtn");
+const moduleTitle =
+document.getElementById("moduleTitle");
 
-async function loadModules(){
+const moduleDescription =
+document.getElementById("moduleDescription");
 
-    const courseRef =
-    doc(db,"courses",courseId);
+const saveModuleBtn =
+document.getElementById("saveModuleBtn");
 
-    const courseSnap =
-    await getDoc(courseRef);
+const cancelModuleBtn =
+document.getElementById("cancelModuleBtn");
 
-    if(!courseSnap.exists()){
 
-        modulesList.innerHTML =
-        "<p>Course not found.</p>";
 
-        return;
+addModuleBtn.addEventListener("click",()=>{
 
-    }
+    moduleModal.classList.remove("hidden");
 
-    const course =
-    courseSnap.data();
-
-    modulesList.innerHTML = "";
-
-    const modules =
-    course.modules || [];
-
-    if(modules.length === 0){
-
-        modulesList.innerHTML =
-        "<p>No modules yet.</p>";
-
-        return;
-
-    }
-
-    modules.forEach((module,index)=>{
-
-    modulesList.innerHTML += `
-
-    <div class="module">
-
-        <h2>
-            Module ${index+1}
-        </h2>
-
-        <p>
-            ${module}
-        </p>
-
-<div
-class="lessons"
-id="lessons-${index}">
-
-Loading lessons...
-
-</div>
-
-        <button
-        class="lesson-btn"
-        data-module="${module}">
-
-        ➕ Add Lesson
-
-        </button>
-
-    </div>
-
-    `;
+    moduleTitle.focus();
 
 });
 
-for(let i=0;i<modules.length;i++){
 
-    const moduleName = modules[i];
 
-    const q = query(
-        collection(db,"lessons"),
+cancelModuleBtn.addEventListener("click",()=>{
+
+    closeModal();
+
+});
+
+
+
+moduleModal.addEventListener("click",(e)=>{
+
+    if(e.target===moduleModal){
+
+        closeModal();
+
+    }
+
+});
+
+
+
+function closeModal(){
+
+    moduleModal.classList.add("hidden");
+
+    moduleTitle.value="";
+
+    moduleDescription.value="";
+
+}
+
+
+
+saveModuleBtn.addEventListener("click",async()=>{
+
+    const title =
+    moduleTitle.value.trim();
+
+    const description =
+    moduleDescription.value.trim();
+
+    if(title===""){
+
+        alert("Enter a module title.");
+
+        return;
+
+    }
+
+    try{
+
+        await addDoc(
+
+            collection(db,"modules"),
+
+            {
+
+                courseId,
+
+                title,
+
+                description,
+
+                createdAt:
+                serverTimestamp()
+
+            }
+
+        );
+
+        closeModal();
+
+        loadModules();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert("Failed to create module.");
+
+    }
+
+});
+
+
+
+async function loadModules(){
+
+    modulesList.innerHTML="";
+
+    const q =
+    query(
+
+        collection(db,"modules"),
+
         where("courseId","==",courseId),
-        where("module","==",moduleName)
+
+        orderBy("createdAt")
+
     );
 
     const snapshot =
     await getDocs(q);
 
-    const lessonsDiv =
-    document.getElementById(`lessons-${i}`);
+    if(snapshot.empty){
 
-    lessonsDiv.innerHTML = "";
+        modulesList.innerHTML=`
+
+        <div class="empty-state">
+
+            <h3>
+
+            📂 No modules yet
+
+            </h3>
+
+            <p>
+
+            Click "Add Module" to begin building your course.
+
+            </p>
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    snapshot.forEach(moduleDoc=>{
+
+        const module =
+        moduleDoc.data();
+
+        modulesList.innerHTML += `
+
+        <div class="module-card">
+
+            <div class="module-header">
+
+                <div>
+
+                    <h2>
+
+                    📂 ${module.title}
+
+                    </h2>
+
+                    <p>
+
+                    ${module.description || ""}
+
+                    </p>
+
+                </div>
+
+                <button
+                class="lesson-btn"
+                onclick="addLesson('${moduleDoc.id}')">
+
+                ➕ Add Lesson
+
+                </button>
+
+            </div>
+
+            <div
+            id="lessons-${moduleDoc.id}"
+            class="lessons-list">
+
+            </div>
+
+        </div>
+
+        `;
+
+        loadLessons(moduleDoc.id);
+
+    });
+
+}
+
+
+
+async function loadLessons(moduleId){
+
+    const container =
+    document.getElementById(`lessons-${moduleId}`);
+
+    if(!container){
+
+        return;
+
+    }
+
+    const q =
+    query(
+
+        collection(db,"lessons"),
+
+        where("moduleId","==",moduleId)
+
+    );
+
+    const snapshot =
+    await getDocs(q);
 
     if(snapshot.empty){
 
-        lessonsDiv.innerHTML =
-        "<p>No lessons yet.</p>";
+        container.innerHTML=`
 
-        continue;
+        <p class="no-lessons">
+
+        No lessons yet.
+
+        </p>
+
+        `;
+
+        return;
 
     }
 
@@ -132,21 +281,11 @@ for(let i=0;i<modules.length;i++){
         const lesson =
         doc.data();
 
-        lessonsDiv.innerHTML += `
+        container.innerHTML += `
 
-        <div class="lesson">
+        <div class="lesson-item">
 
-            <strong>
-
-            ${lesson.title}
-
-            </strong>
-
-            <p>
-
-            🎥 ${lesson.duration}
-
-            </p>
+            ▶ ${lesson.title}
 
         </div>
 
@@ -156,56 +295,13 @@ for(let i=0;i<modules.length;i++){
 
 }
 
-document
-.querySelectorAll(".lesson-btn")
-.forEach(btn=>{
-
-    btn.addEventListener("click",()=>{
-
-        const module =
-        btn.dataset.module;
-
-        window.location.href =
-        `add-lesson.html?id=${courseId}&module=${encodeURIComponent(module)}`;
-
-    });
-
-});
-
-}
 
 
-addModuleBtn.addEventListener("click", () => {
-    moduleModal.classList.remove("hidden");
-    moduleTitle.focus();
-});
+window.location.href =
+`add-lesson.html?course=${courseId}&module=${moduleId}`;
 
-saveModuleBtn.addEventListener("click", async () => {
+};
 
-    const moduleName = moduleTitle.value.trim();
-
-    if (!moduleName) return;
-
-    const courseRef = doc(db, "courses", courseId);
-    const courseSnap = await getDoc(courseRef);
-
-    const courseData = courseSnap.data();
-
-    if ((courseData.modules || []).includes(moduleName)) {
-        alert("Module already exists.");
-        return;
-    }
-
-    await updateDoc(courseRef, {
-        modules: arrayUnion(moduleName)
-    });
-
-    moduleTitle.value = "";
-    moduleModal.classList.add("hidden");
-
-    loadModules();
-
-});
 
 
 loadModules();

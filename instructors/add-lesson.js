@@ -6,42 +6,110 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const params = new URLSearchParams(window.location.search);
 
-const courseId = params.get("id");
-const moduleName = params.get("module");
+const params =
+new URLSearchParams(window.location.search);
 
-const lessonForm = document.getElementById("lessonForm");
+const courseId =
+params.get("course");
 
-const title = document.getElementById("title");
-const description = document.getElementById("description");
-const videoUrl = document.getElementById("videoUrl");
-const duration = document.getElementById("duration");
-const order = document.getElementById("order");
-const resourceUrl = document.getElementById("resourceUrl");
+const moduleId =
+params.get("module");
 
-lessonForm.addEventListener("submit", async (e) => {
+
+const lessonForm =
+document.getElementById("lessonForm");
+
+let isSaving = false;
+
+
+
+lessonForm.addEventListener("submit",async(e)=>{
 
     e.preventDefault();
 
-    await addDoc(collection(db, "lessons"), {
+    if(isSaving){
 
-        courseId,
-        module: moduleName,
+        return;
 
-        title: title.value.trim(),
-        description: description.value.trim(),
-        videoUrl: videoUrl.value.trim(),
-        duration: duration.value.trim(),
-        order: Number(order.value),
-        resourceUrl: resourceUrl.value.trim(),
+    }
 
-        createdAt: serverTimestamp()
+    if(!courseId || !moduleId){
 
-    });
+        alert("Invalid lesson information.");
 
-    alert("✅ Lesson added successfully!");
+        return;
 
-    window.history.back();
+    }
+
+    isSaving = true;
+
+    const submitBtn =
+    lessonForm.querySelector("button[type='submit']");
+
+    submitBtn.disabled = true;
+
+    try{
+
+        await addDoc(
+
+            collection(db,"lessons"),
+
+            {
+
+                courseId,
+
+                moduleId,
+
+                title:
+                lessonTitle.value.trim(),
+
+                video:
+                videoUrl.value.trim(),
+
+                duration:
+                duration.value.trim(),
+
+                notes:
+                notes.value.trim(),
+
+                resource:
+                resource.value.trim(),
+
+                freePreview:
+                freePreview.checked,
+
+                order:
+                Number(lessonOrder.value) || 1,
+
+                createdAt:
+                serverTimestamp()
+
+            }
+
+        );
+
+        alert("🎉 Lesson added successfully!");
+
+        window.location.href =
+        `manage-content.html?id=${courseId}`;
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+    finally{
+
+        isSaving = false;
+
+        submitBtn.disabled = false;
+
+    }
 
 });

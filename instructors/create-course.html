@@ -8,7 +8,7 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Create Course</title>
+<title>Create Course | Spark Stack Academy</title>
 
 <link rel="stylesheet"
 href="create-course.css">
@@ -17,68 +17,194 @@ href="create-course.css">
 
 <body>
 
-<div class="create-course-page">
+<div class="dashboard-layout">
 
-    <h1>Create New Course</h1>
+<aside id="sidebarContainer"></aside>
 
-    <form id="courseForm">
+<div id="sidebarOverlay"></div>
 
-        <input
-        type="text"
-        id="title"
-        placeholder="Course Title"
-        required>
+<div class="main-content">
 
-        <textarea
-        id="description"
-        placeholder="Course Description"
-        rows="5"
-        required></textarea>
+<header id="topbarContainer"></header>
 
-        <input
-        type="text"
-        id="category"
-        placeholder="Category"
-        required>
+<main class="create-course-page">
 
-        <select id="level">
+<header class="page-header">
 
-            <option>
-                Beginner
-            </option>
+<h1>
 
-            <option>
-                Intermediate
-            </option>
+📘 Create New Course
 
-            <option>
-                Advanced
-            </option>
+</h1>
 
-        </select>
+<p>
 
-        <input
-        type="text"
-        id="duration"
-        placeholder="Duration (e.g. 8 Weeks)"
-        required>
+Build a new course for your students.
 
-        <input
-        type="number"
-        id="price"
-        placeholder="Course Price">
+</p>
 
-        <label for="thumbnail">
-    Course Thumbnail URL
+</header>
+
+<form id="courseForm">
+
+<div class="course-card">
+
+<h2>
+
+Course Information
+
+</h2>
+
+<div class="form-group">
+
+<label>
+
+Course Title
+
+</label>
+
+<input
+type="text"
+id="title"
+placeholder="e.g. Web Development Basics"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>
+
+Description
+
+</label>
+
+<textarea
+id="description"
+rows="6"
+placeholder="Describe your course..."
+required></textarea>
+
+</div>
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>
+
+Category
+
+</label>
+
+<input
+type="text"
+id="category"
+placeholder="Programming"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>
+
+Level
+
+</label>
+
+<select id="level">
+
+<option>
+
+Beginner
+
+</option>
+
+<option>
+
+Intermediate
+
+</option>
+
+<option>
+
+Advanced
+
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>
+
+Duration
+
+</label>
+
+<input
+type="text"
+id="duration"
+placeholder="8 Weeks"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>
+
+Price
+
+</label>
+
+<input
+type="number"
+id="price"
+placeholder="0">
+
+</div>
+
+</div>
+
+</div>
+
+<div class="course-card">
+
+<h2>
+
+Media
+
+</h2>
+
+<div class="form-group">
+
+<label>
+
+Course Thumbnail URL
+
 </label>
 
 <input
 type="url"
 id="thumbnail"
-placeholder="https://...">
+placeholder="https://example.com/image.jpg">
 
-<label for="introVideo">
-    Introduction Video (YouTube)
+</div>
+
+<div class="form-group">
+
+<label>
+
+Introduction Video (YouTube)
+
 </label>
 
 <input
@@ -86,31 +212,58 @@ type="url"
 id="introVideo"
 placeholder="https://www.youtube.com/watch?v=...">
 
+</div>
 
+</div>
 
-        <div class="actions">
+<div class="actions">
 
-            <button
-            type="submit"
-            id="draftBtn">
-                Save Draft
-            </button>
+<button
+type="submit"
+id="draftBtn"
+class="secondary-btn">
 
-            <button
-            type="button"
-            id="publishBtn">
-                Publish
-            </button>
+💾 Save Draft
 
-        </div>
+</button>
 
-    </form>
+<button
+type="button"
+id="publishBtn"
+class="primary-btn">
+
+🚀 Publish Course
+
+</button>
+
+</div>
+
+</form>
+
+</main>
+
+</div>
 
 </div>
 
 <script
+src="https://unpkg.com/lucide@latest">
+</script>
+
+<script
 type="module"
-src="create-course.js"></script>
+src="components/sidebar.js">
+</script>
+
+<script
+type="module"
+src="components/topbar.js">
+</script>
+
+<script
+type="module"
+src="create-course.js">
+</script>
 
 </body>
 

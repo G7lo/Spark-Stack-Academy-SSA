@@ -4,56 +4,162 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Manage Course Content</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="manage-content.css">
+<title>Manage Content | Spark Stack Academy</title>
+
+<link rel="stylesheet"
+href="manage-content.css">
 
 </head>
 
 <body>
 
-<div class="page">
+<div class="dashboard-layout">
 
-<h1>📚 Course Content</h1>
+<aside id="sidebarContainer"></aside>
+
+<div id="sidebarOverlay"></div>
+
+<div class="main-content">
+
+<header id="topbarContainer"></header>
+
+<main class="manage-content-page">
+
+<header class="page-header">
+
+<div>
+
+<h1>
+
+📚 Manage Course Content
+
+</h1>
 
 <p>
-Create modules and lessons for your course.
+
+Create modules and lessons for your students.
+
 </p>
 
-<button id="addModuleBtn">
-+ Add Module
+</div>
+
+<button
+id="addModuleBtn"
+class="primary-btn">
+
+➕ Add Module
+
 </button>
 
-<div id="modulesList">
+</header>
+
+
+
+<div
+id="modulesList"
+class="modules-list">
+
+</div>
+
+</main>
 
 </div>
 
 </div>
 
-<!-- Add Module Modal -->
 
-<div class="modal hidden" id="moduleModal">
+
+<div
+id="moduleModal"
+class="modal hidden">
 
 <div class="modal-content">
 
-<h2>New Module</h2>
+<h2>
+
+📂 Create Module
+
+</h2>
+
+<div class="form-group">
+
+<label>
+
+Module Title
+
+</label>
 
 <input
 type="text"
 id="moduleTitle"
-placeholder="Module Title">
+placeholder="Module 1 - Introduction">
 
-<button id="saveModuleBtn">
+</div>
+
+<div class="form-group">
+
+<label>
+
+Description (Optional)
+
+</label>
+
+<textarea
+id="moduleDescription"
+rows="4"
+placeholder="Short description...">
+</textarea>
+
+</div>
+
+<div class="modal-actions">
+
+<button
+id="cancelModuleBtn"
+class="secondary-btn">
+
+Cancel
+
+</button>
+
+<button
+id="saveModuleBtn"
+class="primary-btn">
+
 Save Module
+
 </button>
 
 </div>
 
 </div>
 
-<script type="module" src="manage-content.js"></script>
+</div>
+
+
+
+<script
+src="https://unpkg.com/lucide@latest">
+</script>
+
+<script
+type="module"
+src="components/sidebar.js">
+</script>
+
+<script
+type="module"
+src="components/topbar.js">
+</script>
+
+<script
+type="module"
+src="manage-content.js">
+</script>
 
 </body>
 
