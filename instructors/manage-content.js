@@ -147,9 +147,7 @@ async function loadModules(){
 
         collection(db,"modules"),
 
-        where("courseId","==",courseId),
-
-        orderBy("createdAt")
+        where("courseId","==",courseId)
 
     );
 
