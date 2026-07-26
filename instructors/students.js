@@ -1,144 +1,204 @@
-import { auth, db } from "../js/firebase.js";
-
-
-import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+import { db, auth } from "../firebase.js";
 
 import {
-    collection,
-    getDocs,
-    query,
-    where,
-    doc,
-    getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+collection,
+getDocs,
+query,
+where,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 
-const studentsList =
-document.getElementById("studentsList");
+const studentsTable =
+document.getElementById("studentsTable");
+
+
+const totalStudents =
+document.getElementById("totalStudents");
+
+const totalCourses =
+document.getElementById("totalCourses");
+
+const activeStudents =
+document.getElementById("activeStudents");
 
 
 
-onAuthStateChanged(auth, async(user)=>{
-
-
-    if(!user){
-
-        window.location.href="../login.html";
-
-        return;
-
-    }
+let studentsData = [];
 
 
 
-    const coursesQuery =
-    query(
-        collection(db,"courses"),
-        where("instructorId","==",user.uid)
-    );
+// ============================
+// LOAD INSTRUCTOR STUDENTS
+// ============================
+
+async function loadStudents(){
+
+
+const user =
+auth.currentUser;
+
+
+if(!user) return;
 
 
 
-    const coursesSnapshot =
-    await getDocs(coursesQuery);
+try{
+
+
+const studentsSnapshot =
+await getDocs(collection(db,"students"));
 
 
 
-    studentsList.innerHTML="";
+studentsData = [];
 
 
 
-    if(coursesSnapshot.empty){
+studentsSnapshot.forEach((student)=>{
 
-        studentsList.innerHTML=
-        "No courses found.";
 
-        return;
-
-    }
+const data = student.data();
 
 
 
-    let foundStudents = false;
-
-const uniqueStudents = new Map();
-
-    for(const courseDoc of coursesSnapshot.docs){
-
-
-        const course =
-        courseDoc.data();
-
-
-
-        const enrollmentsQuery =
-        query(
-            collection(db,"enrollments"),
-            where("courseId","==",courseDoc.id)
-        );
-
-
-
-        const enrollmentsSnapshot =
-        await getDocs(enrollmentsQuery);
-
-
-
-        for(const enrollmentDoc of enrollmentsSnapshot.docs){
-
-
-            foundStudents=true;
-
-
-            const enrollment =
-            enrollmentDoc.data();
-
-
-
-            uniqueStudents.set(
-    enrollment.studentId,
-    {
-        name: enrollment.studentName || "Student",
-        admissionNo: enrollment.admissionNo || "Not assigned",
-        courses: uniqueStudents.has(enrollment.studentId)
-        ?
-        uniqueStudents.get(enrollment.studentId).courses + ", " + course.title
-        :
-        course.title,
-        progress: enrollment.progress || 0,
-        enrolledAt: enrollment.enrolledAt
-    }
+const myCourses =
+data.courses?.filter(
+course =>
+course.instructorId === user.uid
 );
 
-uniqueStudents.forEach((student)=>{
 
 
-studentsList.innerHTML += `
+if(myCourses && myCourses.length > 0){
+
+
+studentsData.push({
+
+id:student.id,
+
+admissionNumber:
+data.admissionNumber,
+
+name:
+data.name,
+
+email:
+data.email,
+
+courses:
+myCourses,
+
+status:
+data.status || "Active"
+
+
+});
+
+
+}
+
+
+});
+
+
+
+renderStudents(studentsData);
+
+
+
+}
+
+catch(error){
+
+console.log(
+"Loading students error:",
+error
+);
+
+}
+
+
+}
+
+
+
+// ============================
+// DISPLAY TABLE
+// ============================
+
+
+function renderStudents(students){
+
+
+studentsTable.innerHTML="";
+
+
+let coursesCount=0;
+
+
+
+students.forEach((student,index)=>{
+
+
+coursesCount += student.courses.length;
+
+
+
+const coursesHTML =
+student.courses
+.map(course=>`
+
+<div class="course-item">
+
+${course.title}
+
+</div>
+
+`)
+.join("");
+
+
+
+studentsTable.innerHTML += `
 
 <tr>
 
 
 <td>
-
-<div class="student-cell">
-
-<div class="student-avatar-small">
-
-${student.name.charAt(0).toUpperCase()}
-
-</div>
+${index+1}
+</td>
 
 
-<span>
+<td>
+${student.admissionNumber}
+</td>
 
+
+<td>
+
+<strong>
 ${student.name}
+</strong>
 
-</span>
+<br>
 
+<small>
+${student.email}
+</small>
+
+</td>
+
+
+
+<td>
+
+<div class="course-list">
+
+${coursesHTML}
 
 </div>
 
@@ -148,25 +208,9 @@ ${student.name}
 
 <td>
 
-${student.admissionNo}
+<span class="status active">
 
-</td>
-
-
-
-<td>
-
-${student.courses}
-
-</td>
-
-
-
-<td>
-
-<span class="progress-pill">
-
-${student.progress}%
+${student.status}
 
 </span>
 
@@ -176,11 +220,13 @@ ${student.progress}%
 
 <td>
 
-${student.enrolledAt?.toDate
-?
-student.enrolledAt.toDate().toLocaleDateString()
-:
-"Recently"}
+<button 
+class="view-btn"
+onclick="viewStudent('${student.id}')">
+
+View
+
+</button>
 
 </td>
 
@@ -189,22 +235,97 @@ student.enrolledAt.toDate().toLocaleDateString()
 
 `;
 
+
+
 });
 
 
-        }
+
+totalStudents.textContent =
+students.length;
 
 
-    }
+totalCourses.textContent =
+coursesCount;
+
+
+activeStudents.textContent =
+students.filter(
+s=>s.status==="Active"
+).length;
 
 
 
-    if(!foundStudents){
+}
 
-        studentsList.innerHTML=
-        "No students enrolled yet 🚀";
 
-    }
 
+// ============================
+// SEARCH
+// ============================
+
+
+document
+.getElementById("searchStudent")
+.addEventListener(
+"input",
+(e)=>{
+
+
+const value =
+e.target.value.toLowerCase();
+
+
+
+const filtered =
+studentsData.filter(student=>
+
+student.name
+.toLowerCase()
+.includes(value)
+
+||
+
+student.admissionNumber
+.toLowerCase()
+.includes(value)
+
+);
+
+
+
+renderStudents(filtered);
+
+
+});
+
+
+
+
+// ============================
+// VIEW STUDENT
+// ============================
+
+
+window.viewStudent =
+function(id){
+
+window.location.href =
+`student-profile.html?id=${id}`;
+
+};
+
+
+
+// WAIT FOR AUTH
+
+auth.onAuthStateChanged(
+(user)=>{
+
+if(user){
+
+loadStudents();
+
+}
 
 });

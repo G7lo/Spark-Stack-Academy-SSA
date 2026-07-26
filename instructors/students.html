@@ -1,64 +1,148 @@
-<section class="students-section">
+<!DOCTYPE html>
+<html lang="en">
 
-    <div class="section-header">
+<head>
 
-        <h1>
-            Enrolled Students
-        </h1>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <p>
-            Manage students learning your courses.
-        </p>
+<title>Instructor Students | SSA</title>
 
-    </div>
+<link rel="stylesheet" href="students.css">
 
-
-
-    <div class="table-container">
-
-        <table class="students-table">
+</head>
 
 
-            <thead>
+<body>
 
-                <tr>
 
-                    <th>
-                        Student
-                    </th>
+<div class="dashboard-layout">
 
-                    <th>
-                        Admission No
-                    </th>
 
-                    <th>
-                        Course
-                    </th>
+<aside id="sidebarContainer"></aside>
 
-                    <th>
-                        Progress
-                    </th>
 
-                    <th>
-                        Enrolled
-                    </th>
+<div class="main-content">
 
-                </tr>
 
-            </thead>
+<div class="students-page">
+
+
+<div class="page-header">
+
+<h1>My Students</h1>
+
+<p>Manage students enrolled in your courses</p>
+
+</div>
 
 
 
-            <tbody id="studentsList">
+<div class="stats-grid">
 
 
-            </tbody>
+<div class="stat-card">
+
+<h3>Total Students</h3>
+<p id="totalStudents">0</p>
+
+</div>
 
 
-        </table>
+<div class="stat-card">
+
+<h3>Total Courses</h3>
+<p id="totalCourses">0</p>
+
+</div>
 
 
-    </div>
+<div class="stat-card">
+
+<h3>Active Students</h3>
+<p id="activeStudents">0</p>
+
+</div>
 
 
-</section>
+</div>
+
+
+
+
+<div class="table-card">
+
+
+<div class="table-header">
+
+<h2>Student Enrollment</h2>
+
+
+<input 
+type="text"
+id="searchStudent"
+placeholder="Search student..."
+>
+
+
+</div>
+
+
+
+<div class="table-wrapper">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>#</th>
+
+<th>Admission No</th>
+
+<th>Student</th>
+
+<th>Courses</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="studentsTable">
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<script type="module" src="students.js"></script>
+
+</body>
+
+</html>
