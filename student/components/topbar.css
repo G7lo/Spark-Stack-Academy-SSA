@@ -1,5 +1,5 @@
 /* ===========================
-   SSA TOPBAR
+   SSA TOPBAR - CREAM GLASS
 =========================== */
 
 
@@ -19,21 +19,25 @@
 
     background:
 
-    rgba(255,255,255,.05);
+    rgba(255,250,240,.75);
 
     border:
 
-    1px solid rgba(255,255,255,.08);
+    1px solid rgba(255,255,255,.9);
 
     backdrop-filter:blur(20px);
+
+    box-shadow:
+
+    0 15px 40px rgba(120,90,40,.12);
 
 }
 
 
 
-/* ===========================
-   MENU BUTTON
-=========================== */
+
+
+/* MENU BUTTON */
 
 
 .menu-btn{
@@ -54,7 +58,11 @@
 
     background:
 
-    rgba(255,255,255,.08);
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #9333ea
+    );
 
     color:white;
 
@@ -64,9 +72,9 @@
 
 
 
-/* ===========================
-   SEARCH
-=========================== */
+
+
+/* SEARCH */
 
 
 .topbar-left{
@@ -87,19 +95,15 @@
 
     border-radius:15px;
 
-    border:none;
-
     outline:none;
 
-    color:white;
+    color:#1e293b;
 
-    background:
-
-    rgba(255,255,255,.06);
+    background:#fffaf0;
 
     border:
 
-    1px solid rgba(255,255,255,.08);
+    1px solid #e2e8f0;
 
 }
 
@@ -107,7 +111,7 @@
 
 #courseSearch::placeholder{
 
-    color:#94A3B8;
+    color:#64748b;
 
 }
 
@@ -115,7 +119,11 @@
 
 #courseSearch:focus{
 
-    border-color:#38BDF8;
+    border-color:#2563eb;
+
+    box-shadow:
+
+    0 0 20px rgba(37,99,235,.15);
 
 }
 
@@ -123,9 +131,7 @@
 
 
 
-/* ===========================
-   SEARCH RESULTS
-=========================== */
+/* SEARCH RESULTS */
 
 
 .search-results{
@@ -140,13 +146,17 @@
 
     display:none;
 
-    background:#0E1A2C;
+    background:white;
 
     border-radius:15px;
 
     overflow:hidden;
 
     z-index:100;
+
+    box-shadow:
+
+    0 20px 50px rgba(15,23,42,.15);
 
 }
 
@@ -162,9 +172,7 @@
 
 
 
-/* ===========================
-   RIGHT SIDE
-=========================== */
+/* RIGHT SIDE */
 
 
 .topbar-right{
@@ -199,7 +207,11 @@
 
     background:
 
-    rgba(255,255,255,.06);
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #9333ea
+    );
 
     position:relative;
 
@@ -233,7 +245,7 @@
 
     font-size:11px;
 
-    background:#EF4444;
+    background:#ef4444;
 
     color:white;
 
@@ -259,11 +271,15 @@
 
     display:none;
 
-    background:#0E1A2C;
+    background:white;
 
     border:
 
-    1px solid rgba(255,255,255,.08);
+    1px solid #e2e8f0;
+
+    box-shadow:
+
+    0 20px 50px rgba(15,23,42,.15);
 
     z-index:200;
 
@@ -281,9 +297,7 @@
 
 
 
-/* ===========================
-   AVATAR
-=========================== */
+/* AVATAR */
 
 
 .student-avatar{
@@ -308,8 +322,8 @@
 
     linear-gradient(
         135deg,
-        #0A84FF,
-        #38BDF8
+        #2563eb,
+        #9333ea
     );
 
 }
@@ -318,9 +332,7 @@
 
 
 
-/* ===========================
-   MOBILE
-=========================== */
+/* MOBILE */
 
 
 @media(max-width:768px){

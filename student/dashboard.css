@@ -2,25 +2,24 @@
    SSA STUDENT DASHBOARD
 =========================== */
 
-
 *{
+    margin:0;
+    padding:0;
     box-sizing:border-box;
 }
 
-
 body{
-
-    margin:0;
 
     font-family:Inter,Arial,sans-serif;
 
-    color:#F8FAFC;
+    color:#1e293b;
 
     background:
-    radial-gradient(
-        circle at top,
-        #0d2c54,
-        #040b17 70%
+    linear-gradient(
+        180deg,
+        #fffdf8 0%,
+        #fdf6ec 45%,
+        #f8f1e7 100%
     );
 
 }
@@ -30,16 +29,18 @@ body{
    LAYOUT
 =========================== */
 
-
 .dashboard-layout{
+
+    display:flex;
 
     min-height:100vh;
 
 }
 
 
-
 .student-dashboard{
+
+    flex:1;
 
     margin-left:280px;
 
@@ -47,60 +48,11 @@ body{
 
     padding:30px;
 
-    position:relative;
-
 }
 
 
 
-.student-dashboard::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:400px;
-
-    height:400px;
-
-    top:-150px;
-
-    right:-150px;
-
-    background:
-
-    radial-gradient(
-        circle,
-        rgba(56,189,248,.18),
-        transparent 70%
-    );
-
-    filter:blur(50px);
-
-    pointer-events:none;
-
-}
-
-
-
-.student-dashboard > *{
-
-    position:relative;
-
-    z-index:1;
-
-}
-
-
-
-/* ===========================
-   TOPBAR SPACE
-=========================== */
-
-
-#topbarContainer{
-
-    width:100%;
+.student-dashboard>*{
 
     margin-bottom:25px;
 
@@ -109,23 +61,42 @@ body{
 
 
 /* ===========================
-   HEADER
+   TOPBAR
 =========================== */
 
+#topbarContainer{
+
+    width:100%;
+
+}
+
+
+
+
+
+/* ===========================
+   WELCOME HEADER
+=========================== */
 
 .student-header{
 
     padding:35px;
 
-    border-radius:24px;
+    border-radius:26px;
 
     background:
-    rgba(255,255,255,.05);
 
-    border:
-    1px solid rgba(255,255,255,.08);
+    rgba(255,255,255,.72);
 
     backdrop-filter:blur(20px);
+
+    border:
+
+    1px solid rgba(255,255,255,.9);
+
+    box-shadow:
+
+    0 18px 45px rgba(120,90,40,.10);
 
 }
 
@@ -133,9 +104,11 @@ body{
 
 .student-header h1{
 
-    margin:0;
-
     font-size:34px;
+
+    font-weight:800;
+
+    color:#0f172a;
 
 }
 
@@ -143,11 +116,15 @@ body{
 
 .student-header p{
 
-    color:#94A3B8;
-
     margin-top:10px;
 
+    color:#64748b;
+
+    line-height:1.6;
+
 }
+
+
 
 
 
@@ -155,28 +132,31 @@ body{
    PROFILE
 =========================== */
 
-
 .student-profile{
-
-    margin-top:30px;
-
-    padding:25px;
 
     display:flex;
 
     align-items:center;
 
-    gap:20px;
+    gap:22px;
 
-    border-radius:22px;
+    padding:28px;
+
+    border-radius:24px;
 
     background:
-    rgba(255,255,255,.05);
+
+    rgba(255,255,255,.72);
+
+    backdrop-filter:blur(20px);
 
     border:
-    1px solid rgba(255,255,255,.08);
 
-    backdrop-filter:blur(15px);
+    1px solid rgba(255,255,255,.9);
+
+    box-shadow:
+
+    0 18px 45px rgba(120,90,40,.10);
 
 }
 
@@ -184,9 +164,9 @@ body{
 
 .profile-avatar{
 
-    width:85px;
+    width:90px;
 
-    height:85px;
+    height:90px;
 
     border-radius:50%;
 
@@ -196,17 +176,23 @@ body{
 
     justify-content:center;
 
-    font-size:35px;
+    font-size:34px;
 
-    font-weight:700;
+    font-weight:800;
+
+    color:white;
 
     background:
 
     linear-gradient(
         135deg,
-        #0A84FF,
-        #38BDF8
+        #2563eb,
+        #9333ea
     );
+
+    box-shadow:
+
+    0 12px 28px rgba(37,99,235,.25);
 
 }
 
@@ -214,7 +200,9 @@ body{
 
 .profile-info h2{
 
-    margin:0;
+    font-size:28px;
+
+    color:#0f172a;
 
 }
 
@@ -222,7 +210,9 @@ body{
 
 .profile-info p{
 
-    color:#94A3B8;
+    margin-top:6px;
+
+    color:#64748b;
 
 }
 
@@ -230,17 +220,27 @@ body{
 
 .badge{
 
-    display:inline-block;
+    display:inline-flex;
 
-    padding:7px 15px;
+    align-items:center;
 
-    border-radius:30px;
+    justify-content:center;
+
+    margin-top:12px;
+
+    padding:8px 18px;
+
+    border-radius:999px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    color:#2563eb;
 
     background:
 
-    rgba(56,189,248,.15);
-
-    color:#7DD3FC;
+    rgba(37,99,235,.10);
 
 }
 
@@ -249,17 +249,15 @@ body{
 
 
 /* ===========================
-   STAT CARDS
+   STATS
 =========================== */
 
-
 .student-cards{
-
-    margin-top:30px;
 
     display:grid;
 
     grid-template-columns:
+
     repeat(auto-fit,minmax(220px,1fr));
 
     gap:20px;
@@ -270,17 +268,37 @@ body{
 
 .student-card{
 
-    padding:25px;
+    padding:28px;
 
-    border-radius:22px;
+    border-radius:24px;
 
     background:
 
-    rgba(255,255,255,.05);
+    rgba(255,255,255,.72);
+
+    backdrop-filter:blur(20px);
 
     border:
 
-    1px solid rgba(255,255,255,.08);
+    1px solid rgba(255,255,255,.9);
+
+    box-shadow:
+
+    0 18px 45px rgba(120,90,40,.10);
+
+    transition:.3s;
+
+}
+
+
+
+.student-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:
+
+    0 24px 55px rgba(120,90,40,.15);
 
 }
 
@@ -288,9 +306,11 @@ body{
 
 .student-card h3{
 
-    color:#7DD3FC;
+    font-size:15px;
 
-    margin:0;
+    color:#64748b;
+
+    margin-bottom:16px;
 
 }
 
@@ -298,39 +318,37 @@ body{
 
 .student-card p{
 
-    margin-top:15px;
+    font-size:38px;
 
-    font-size:30px;
+    font-weight:800;
 
-    font-weight:bold;
+    color:#2563eb;
 
 }
-
-
-
-
-
 /* ===========================
-   SECTIONS
+   RECENT LEARNING
 =========================== */
-
 
 .recent-learning,
 .course-progress{
 
-    margin-top:30px;
+    padding:30px;
 
-    padding:25px;
-
-    border-radius:22px;
+    border-radius:24px;
 
     background:
 
-    rgba(255,255,255,.05);
+    rgba(255,255,255,.72);
+
+    backdrop-filter:blur(20px);
 
     border:
 
-    1px solid rgba(255,255,255,.08);
+    1px solid rgba(255,255,255,.9);
+
+    box-shadow:
+
+    0 18px 45px rgba(120,90,40,.10);
 
 }
 
@@ -339,43 +357,69 @@ body{
 .recent-learning h2,
 .course-progress h2{
 
-    margin-top:0;
+    font-size:24px;
+
+    font-weight:700;
+
+    color:#0f172a;
+
+    margin-bottom:20px;
 
 }
-
-
-
-.empty-state{
-
-    padding:40px;
-
-    text-align:center;
-
-    color:#94A3B8;
-
-}
-
 
 
 
 /* ===========================
-   PROGRESS BAR
+   EMPTY STATE
 =========================== */
+
+.empty-state{
+
+    padding:50px 25px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    color:#64748b;
+
+    background:
+
+    rgba(255,250,240,.8);
+
+    border:
+
+    2px dashed #d6c7b2;
+
+}
+
+
+
+/* ===========================
+   PROGRESS CARD
+=========================== */
+
+.progress-card{
+
+    margin-top:15px;
+
+}
+
 
 
 .progress-bar{
 
     width:100%;
 
-    height:12px;
+    height:14px;
+
+    border-radius:999px;
+
+    overflow:hidden;
 
     background:
 
-    rgba(255,255,255,.08);
-
-    border-radius:30px;
-
-    overflow:hidden;
+    #e2e8f0;
 
 }
 
@@ -383,23 +427,96 @@ body{
 
 .progress-fill{
 
-    width:0%;
+    width:0;
 
     height:100%;
 
-    border-radius:30px;
+    border-radius:999px;
+
+    transition:width .5s ease;
 
     background:
 
     linear-gradient(
         90deg,
-        #0A84FF,
-        #38BDF8
+        #2563eb,
+        #9333ea
     );
 
 }
 
 
+
+/* ===========================
+   GLASS HOVER
+=========================== */
+
+.student-header,
+.student-profile,
+.student-card,
+.recent-learning,
+.course-progress{
+
+    transition:
+
+    transform .3s ease,
+
+    box-shadow .3s ease;
+
+}
+
+
+
+.student-header:hover,
+.student-profile:hover,
+.recent-learning:hover,
+.course-progress:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+    0 25px 55px rgba(120,90,40,.14);
+
+}
+
+
+
+/* ===========================
+   SCROLLBAR
+=========================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+
+
+::-webkit-scrollbar-track{
+
+    background:#f8f1e7;
+
+}
+
+
+
+::-webkit-scrollbar-thumb{
+
+    background:#d6c7b2;
+
+    border-radius:30px;
+
+}
+
+
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#bfa98d;
+
+}
 
 
 
@@ -407,13 +524,23 @@ body{
    MOBILE
 =========================== */
 
-
-@media(max-width:768px){
-
+@media(max-width:992px){
 
     .student-dashboard{
 
         margin-left:0;
+
+        padding:20px;
+
+    }
+
+}
+
+
+
+@media(max-width:768px){
+
+    .student-dashboard{
 
         padding:15px;
 
@@ -431,7 +558,7 @@ body{
 
     .student-header h1{
 
-        font-size:26px;
+        font-size:28px;
 
     }
 
@@ -447,11 +574,92 @@ body{
 
 
 
+    .profile-avatar{
+
+        width:80px;
+
+        height:80px;
+
+        font-size:30px;
+
+    }
+
+
+
+    .profile-info h2{
+
+        font-size:24px;
+
+    }
+
+
+
     .student-cards{
 
         grid-template-columns:1fr;
 
     }
 
+
+
+    .student-card{
+
+        padding:22px;
+
+    }
+
+
+
+    .recent-learning,
+    .course-progress{
+
+        padding:22px;
+
+    }
+
+}
+
+
+
+@media(max-width:480px){
+
+    .student-header h1{
+
+        font-size:24px;
+
+    }
+
+
+
+    .student-header p{
+
+        font-size:14px;
+
+    }
+
+
+
+    .profile-info h2{
+
+        font-size:22px;
+
+    }
+
+
+
+    .student-card p{
+
+        font-size:32px;
+
+    }
+
+
+
+    .recent-learning h2,
+    .course-progress h2{
+
+        font-size:20px;
+
+    }
 
 }

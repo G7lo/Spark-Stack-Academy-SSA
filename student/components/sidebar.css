@@ -22,14 +22,12 @@
     flex-direction:column;
 
     background:
-
-    rgba(4,11,23,.92);
+rgba(255,250,240,.85);
 
     backdrop-filter:blur(25px);
 
     border-right:
-
-    1px solid rgba(255,255,255,.08);
+1px solid rgba(226,232,240,.8);
 
     z-index:1000;
 
@@ -80,7 +78,7 @@
 
 .sidebar-logo span{
 
-    color:#94A3B8;
+    color:#64748b;
 
     font-size:14px;
 
@@ -120,7 +118,7 @@
 
     border-radius:16px;
 
-    color:#CBD5E1;
+    color:#475569;
 
     text-decoration:none;
 
@@ -136,10 +134,9 @@
 .sidebar-footer a:hover{
 
     background:
+rgba(37,99,235,.08);
 
-    rgba(56,189,248,.12);
-
-    color:#38BDF8;
+color:#2563eb;
 
     transform:translateX(5px);
 
@@ -154,15 +151,15 @@
 
     linear-gradient(
         90deg,
-        rgba(10,132,255,.25),
-        rgba(56,189,248,.15)
+        rgba(37,99,235,.15),
+        rgba(147,51,234,.12)
     );
 
-    color:#38BDF8;
+    color:#2563eb;
 
     box-shadow:
 
-    0 0 20px rgba(56,189,248,.15);
+    0 10px 30px rgba(37,99,235,.15);
 
 }
 
@@ -198,8 +195,7 @@
         transform:translateX(-100%);
 
         box-shadow:
-
-        15px 0 40px rgba(0,0,0,.5);
+15px 0 40px rgba(120,90,40,.15);
 
     }
 
