@@ -2,14 +2,15 @@ import { db, auth } from "../js/firebase.js";
 
 import {
     doc,
-getDoc,
-collection,
-getDocs,
-query,
-where,
-orderBy,
-addDoc,
-serverTimestamp
+    getDoc,
+    collection,
+    getDocs,
+    query,
+    where,
+    orderBy,
+    addDoc,
+    serverTimestamp,
+    limit
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -302,8 +303,7 @@ onAuthStateChanged(auth,(user)=>{
 
 });
 
-completeBtn.addEventListener("click",async()=>{
-
+completeBtn.addEventListener("click", async () => {
 
     if(!currentUser || !currentLesson){
 
@@ -313,30 +313,42 @@ completeBtn.addEventListener("click",async()=>{
 
     }
 
+    const progressQuery = query(
+        collection(db,"progress"),
+        where("studentId","==",currentUser.uid),
+        where("courseId","==",courseId),
+        where("lessonId","==",currentLesson.id),
+        limit(1)
+    );
+
+    const progressSnapshot = await getDocs(progressQuery);
+
+    if(!progressSnapshot.empty){
+
+        alert("✅ You already completed this lesson.");
+
+        return;
+
+    }
 
     await addDoc(
         collection(db,"progress"),
         {
 
-            studentId:
-            currentUser.uid,
+            studentId: currentUser.uid,
 
             courseId,
 
-            lessonId:
-            currentLesson.id,
+            lessonId: currentLesson.id,
 
-            completed:true,
+            completed: true,
 
-            completedAt:
-            serverTimestamp()
+            completedAt: serverTimestamp()
 
         }
     );
 
-
-    alert("Lesson completed ✓");
-
+    alert("🎉 Lesson completed!");
 
 });
 
