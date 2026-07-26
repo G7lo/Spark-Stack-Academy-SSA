@@ -65,7 +65,7 @@ onAuthStateChanged(auth, async(user)=>{
 
     let foundStudents = false;
 
-
+const uniqueStudents = new Map();
 
     for(const courseDoc of coursesSnapshot.docs){
 
@@ -99,37 +99,97 @@ onAuthStateChanged(auth, async(user)=>{
 
 
 
-            studentsList.innerHTML += `
+            uniqueStudents.set(
+    enrollment.studentId,
+    {
+        name: enrollment.studentName || "Student",
+        admissionNo: enrollment.admissionNo || "Not assigned",
+        courses: uniqueStudents.has(enrollment.studentId)
+        ?
+        uniqueStudents.get(enrollment.studentId).courses + ", " + course.title
+        :
+        course.title,
+        progress: enrollment.progress || 0,
+        enrolledAt: enrollment.enrolledAt
+    }
+);
 
-            <div class="student-card">
-
-
-                <h3>
-                ${enrollment.studentName || "Student"}
-                </h3>
-
-
-                <p>
-                Admission:
-                ${enrollment.admissionNo || "Not assigned"}
-                </p>
-
-
-                <p>
-                Course:
-                ${course.title}
-                </p>
+uniqueStudents.forEach((student)=>{
 
 
-                <p>
-                Progress:
-                ${enrollment.progress || 0}%
-                </p>
+studentsList.innerHTML += `
+
+<tr>
 
 
-            </div>
+<td>
 
-            `;
+<div class="student-cell">
+
+<div class="student-avatar-small">
+
+${student.name.charAt(0).toUpperCase()}
+
+</div>
+
+
+<span>
+
+${student.name}
+
+</span>
+
+
+</div>
+
+</td>
+
+
+
+<td>
+
+${student.admissionNo}
+
+</td>
+
+
+
+<td>
+
+${student.courses}
+
+</td>
+
+
+
+<td>
+
+<span class="progress-pill">
+
+${student.progress}%
+
+</span>
+
+</td>
+
+
+
+<td>
+
+${student.enrolledAt?.toDate
+?
+student.enrolledAt.toDate().toLocaleDateString()
+:
+"Recently"}
+
+</td>
+
+
+</tr>
+
+`;
+
+});
 
 
         }

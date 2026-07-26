@@ -1,0 +1,171 @@
+/* ===========================
+   SSA INSTRUCTOR SIDEBAR
+=========================== */
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:260px;
+
+    height:100vh;
+
+    padding:30px 20px;
+
+    background:
+    rgba(255,255,255,.05);
+
+    backdrop-filter:blur(20px);
+
+    border-right:
+    1px solid rgba(255,255,255,.08);
+
+    display:flex;
+
+    flex-direction:column;
+
+    z-index:1000;
+
+}
+
+
+
+/* LOGO */
+
+.sidebar-logo{
+
+    margin-bottom:40px;
+
+}
+
+
+.sidebar-logo h2{
+
+    margin:0;
+
+    font-size:32px;
+
+    background:
+    linear-gradient(
+    90deg,
+    #0A84FF,
+    #38BDF8
+    );
+
+    -webkit-background-clip:text;
+
+    color:transparent;
+
+}
+
+
+.sidebar-logo span{
+
+    color:#94A3B8;
+
+    font-size:14px;
+
+}
+
+
+
+/* MENU */
+
+.sidebar-menu{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+
+.sidebar-menu a,
+.sidebar-footer a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:14px 16px;
+
+    color:#CBD5E1;
+
+    text-decoration:none;
+
+    border-radius:14px;
+
+    transition:.3s;
+
+}
+
+
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active,
+.sidebar-footer a:hover{
+
+
+    background:
+
+    rgba(56,189,248,.12);
+
+
+    color:#38BDF8;
+
+
+}
+
+
+
+/* FOOTER */
+
+.sidebar-footer{
+
+    margin-top:auto;
+
+}
+
+
+
+/* ICONS */
+
+.sidebar svg{
+
+    width:20px;
+
+    height:20px;
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+
+.sidebar{
+
+    transform:translateX(-100%);
+
+    transition:.3s;
+
+}
+
+
+.sidebar.active{
+
+    transform:translateX(0);
+
+}
+
+
+}

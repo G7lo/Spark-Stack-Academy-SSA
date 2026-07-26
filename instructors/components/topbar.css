@@ -1,0 +1,472 @@
+/* ===========================
+   SSA TOPBAR
+=========================== */
+
+
+.topbar{
+
+    width:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:15px 20px;
+
+    border-radius:20px;
+
+    background:
+
+    rgba(255,255,255,.05);
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(20px);
+
+}
+
+
+
+/* ===========================
+   MENU BUTTON
+=========================== */
+
+
+.menu-btn{
+
+    display:none;
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:14px;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+
+    rgba(255,255,255,.08);
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+
+
+/* ===========================
+   SEARCH
+=========================== */
+
+
+.topbar-left{
+
+    flex:1;
+
+    position:relative;
+
+}
+
+
+
+#courseSearch{
+
+    width:100%;
+
+    padding:13px 18px;
+
+    border-radius:15px;
+
+    border:none;
+
+    outline:none;
+
+    color:white;
+
+    background:
+
+    rgba(255,255,255,.06);
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
+
+}
+
+
+
+#courseSearch::placeholder{
+
+    color:#94A3B8;
+
+}
+
+
+
+#courseSearch:focus{
+
+    border-color:#38BDF8;
+
+}
+
+
+
+
+
+/* ===========================
+   SEARCH RESULTS
+=========================== */
+
+
+.search-results{
+
+    position:absolute;
+
+    top:60px;
+
+    left:0;
+
+    width:100%;
+
+    display:none;
+
+    background:#0E1A2C;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+    z-index:100;
+
+}
+
+
+
+.search-results.show{
+
+    display:block;
+
+}
+
+
+
+
+
+/* ===========================
+   RIGHT SIDE
+=========================== */
+
+
+.topbar-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+
+
+.icon-btn{
+
+    width:45px;
+
+    height:45px;
+
+    border:none;
+
+    border-radius:14px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:white;
+
+    background:
+
+    rgba(255,255,255,.06);
+
+    position:relative;
+
+    cursor:pointer;
+
+}
+
+
+
+
+
+.notification-count{
+
+    position:absolute;
+
+    top:4px;
+
+    right:4px;
+
+    width:18px;
+
+    height:18px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:11px;
+
+    background:#EF4444;
+
+    color:white;
+
+}
+
+
+
+
+
+.notification-dropdown{
+
+    position:absolute;
+
+    top:75px;
+
+    right:20px;
+
+    width:320px;
+
+    padding:20px;
+
+    border-radius:18px;
+
+    display:none;
+
+    background:#0E1A2C;
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
+
+    z-index:200;
+
+}
+
+
+
+.notification-dropdown.show{
+
+    display:block;
+
+}
+
+
+
+
+
+/* ===========================
+   AVATAR
+=========================== */
+
+
+.student-avatar{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+
+    color:white;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #0A84FF,
+        #38BDF8
+    );
+
+}
+
+
+
+
+
+/* ===========================
+   MOBILE
+=========================== */
+
+
+@media(max-width:768px){
+
+
+    .topbar{
+
+        padding:12px;
+
+        gap:10px;
+
+    }
+
+
+
+    .menu-btn{
+
+        display:flex;
+
+        flex-shrink:0;
+
+    }
+
+
+
+    .topbar-right{
+
+        gap:8px;
+
+    }
+
+
+
+    .icon-btn,
+    .student-avatar{
+
+        width:40px;
+
+        height:40px;
+
+    }
+
+
+
+    #courseSearch{
+
+        padding:11px 12px;
+
+    }
+
+
+}
+.menu-btn{
+
+    display:none;
+
+    width:45px;
+
+    height:45px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.06);
+
+    color:white;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+}
+
+
+
+@media(max-width:768px){
+
+    .menu-btn{
+
+        display:flex;
+
+    }
+
+}
+.search-box{
+
+    position:relative;
+
+    width:100%;
+
+}
+
+
+
+.search-box svg{
+
+    position:absolute;
+
+    left:16px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:20px;
+
+    height:20px;
+
+    color:#94A3B8;
+
+}
+
+
+
+#courseSearch{
+
+    width:100%;
+
+    padding:14px 18px 14px 48px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.06);
+
+    color:white;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    font-size:15px;
+
+}
+
+
+
+#courseSearch:focus{
+
+    border-color:#38BDF8;
+
+    box-shadow:
+    0 0 20px rgba(56,189,248,.25);
+
+}

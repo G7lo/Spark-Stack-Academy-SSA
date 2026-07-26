@@ -1,6 +1,19 @@
 window.addEventListener("DOMContentLoaded",()=>{
 
 
+    const css =
+    document.createElement("link");
+
+
+    css.rel="stylesheet";
+
+    css.href="components/sidebar.css";
+
+
+    document.head.appendChild(css);
+
+
+
     const container =
     document.getElementById("sidebarContainer");
 
@@ -19,7 +32,6 @@ window.addEventListener("DOMContentLoaded",()=>{
 
 
         container.innerHTML = html;
-
 
 
         if(typeof lucide !== "undefined"){
