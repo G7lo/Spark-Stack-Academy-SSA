@@ -343,3 +343,329 @@ body{
     transform:translateY(-2px);
     box-shadow:0 8px 20px rgba(91,108,255,.4);
 }
+/* ================================
+   SSA FUTURE ACADEMY EXPERIENCE
+================================ */
+
+
+/* Smooth page atmosphere */
+
+body{
+
+    background:
+    radial-gradient(circle at 20% 10%, rgba(0,157,255,.25), transparent 30%),
+    radial-gradient(circle at 80% 20%, rgba(139,92,255,.25), transparent 30%),
+    linear-gradient(
+        135deg,
+        #020617,
+        #071a38,
+        #030712
+    );
+
+}
+
+
+/* Main container glow */
+
+.student-dashboard{
+
+    position:relative;
+    overflow:hidden;
+
+}
+
+
+.student-dashboard::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:400px;
+    height:400px;
+
+    top:-150px;
+    right:-150px;
+
+    background:
+    radial-gradient(
+        circle,
+        rgba(0,200,255,.25),
+        transparent 70%
+    );
+
+    filter:blur(30px);
+
+}
+
+
+
+/* Header upgrade */
+
+.student-header{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+
+.student-header::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+    height:180px;
+
+    right:-50px;
+    bottom:-50px;
+
+    background:
+    radial-gradient(
+    circle,
+    #009dff,
+    transparent 70%
+    );
+
+    opacity:.35;
+
+    filter:blur(20px);
+
+}
+
+
+
+.student-header h1{
+
+    background:
+    linear-gradient(
+    90deg,
+    #ffffff,
+    #7ed8ff,
+    #8b5cff
+    );
+
+    -webkit-background-clip:text;
+
+    color:transparent;
+
+}
+
+
+
+/* Profile futuristic */
+
+.student-profile{
+
+    backdrop-filter:blur(25px);
+
+}
+
+
+.profile-avatar{
+
+    animation:
+    floating 4s infinite ease-in-out;
+
+}
+
+
+
+@keyframes floating{
+
+    50%{
+
+        transform:
+        translateY(-8px);
+
+    }
+
+}
+
+
+
+/* Cards upgrade */
+
+.student-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+
+
+.student-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+    linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,.15),
+    transparent
+    );
+
+    transform:
+    translateX(-100%);
+
+    transition:.6s;
+
+}
+
+
+
+.student-card:hover::before{
+
+    transform:
+    translateX(100%);
+
+}
+
+
+.student-card:hover{
+
+    transform:
+    translateY(-12px)
+    scale(1.03);
+
+}
+
+
+
+/* Course learning cards */
+
+.course-mini-card{
+
+    background:
+    linear-gradient(
+    145deg,
+    rgba(0,157,255,.18),
+    rgba(139,92,255,.18)
+    );
+
+    padding:22px;
+
+    margin-top:15px;
+
+    border-radius:18px;
+
+    border:
+    1px solid rgba(255,255,255,.15);
+
+    box-shadow:
+    0 0 30px rgba(0,157,255,.2);
+
+    transition:.3s;
+
+}
+
+
+.course-mini-card:hover{
+
+    transform:
+    translateX(10px);
+
+    box-shadow:
+    0 0 40px rgba(139,92,255,.5);
+
+}
+
+
+
+.course-mini-card button{
+
+    margin-top:15px;
+
+    padding:12px 22px;
+
+    border:none;
+
+    border-radius:25px;
+
+    color:white;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+    90deg,
+    #009dff,
+    #8b5cff
+    );
+
+}
+
+
+
+/* Progress section */
+
+.progress-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+
+.progress-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:250px;
+    height:250px;
+
+    right:-100px;
+
+    top:-100px;
+
+    background:
+    radial-gradient(
+    circle,
+    rgba(0,157,255,.3),
+    transparent
+    );
+
+}
+
+
+
+/* Mobile polish */
+
+@media(max-width:700px){
+
+    .student-dashboard{
+
+        padding:15px;
+
+    }
+
+
+    .student-header h1{
+
+        font-size:25px;
+
+    }
+
+
+    .student-profile{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+}
