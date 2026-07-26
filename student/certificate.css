@@ -1,0 +1,559 @@
+body{
+
+    margin:0;
+
+    padding:40px;
+
+    background:#0d1228;
+
+    font-family:"Times New Roman",serif;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:100vh;
+
+}
+
+
+/* A4 Certificate */
+
+.certificate{
+
+    width:210mm;
+
+    min-height:297mm;
+
+    background:#fcfaf3;
+
+    color:#1d1d1d;
+
+    padding:40mm 28mm;
+
+    box-sizing:border-box;
+
+    position:relative;
+
+    border:14px solid #b8860b;
+
+    box-shadow:
+    0 0 60px rgba(0,0,0,.35);
+
+}
+
+
+/* Double Border */
+
+.certificate::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:14px;
+    left:14px;
+    right:14px;
+    bottom:14px;
+
+    border:3px solid #1d3557;
+
+    pointer-events:none;
+
+}
+
+
+/* Academy */
+
+.certificate h3{
+
+    margin:0;
+
+    text-align:center;
+
+    font-size:22px;
+
+    letter-spacing:5px;
+
+    color:#1d3557;
+
+    text-transform:uppercase;
+
+}
+
+
+/* Title */
+
+.certificate h1{
+
+    margin-top:35px;
+
+    text-align:center;
+
+    font-size:54px;
+
+    color:#b8860b;
+
+    font-weight:bold;
+
+}
+
+
+.certificate p{
+
+    text-align:center;
+
+    font-size:22px;
+
+    line-height:1.8;
+
+    color:#444;
+
+}
+
+
+/* Student Name */
+
+#studentName{
+
+    text-align:center;
+
+    font-size:42px;
+
+    color:#0b4f8c;
+
+    margin:35px 0;
+
+    border-bottom:2px solid #b8860b;
+
+    display:inline-block;
+
+    padding-bottom:8px;
+
+}
+
+
+/* Course */
+
+#courseTitle{
+
+    text-align:center;
+
+    font-size:34px;
+
+    color:#7b2cbf;
+
+    margin:30px 0;
+
+}
+
+
+/* Footer */
+
+#issuedDate,
+#certificateId{
+
+    margin-top:25px;
+
+    font-size:18px;
+
+    color:#555;
+
+}
+
+
+/* Signature */
+
+.signature{
+
+    margin-top:80px;
+
+    width:300px;
+
+    margin-left:auto;
+
+    text-align:center;
+
+    border-top:2px solid #333;
+
+    padding-top:12px;
+
+}
+
+
+.signature strong{
+
+    font-size:24px;
+
+    color:#1d3557;
+
+}
+
+
+.signature p{
+
+    margin:5px 0;
+
+    font-size:17px;
+
+}
+
+
+/* Print */
+
+@media print{
+
+    body{
+
+        background:white;
+
+        padding:0;
+
+    }
+
+    .certificate{
+
+        box-shadow:none;
+
+        margin:0;
+
+    }
+
+}
+
+
+/* Mobile */
+
+@media(max-width:900px){
+
+    body{
+
+        padding:15px;
+
+    }
+
+    .certificate{
+
+        width:100%;
+
+        min-height:auto;
+
+        padding:30px;
+
+    }
+
+    .certificate h1{
+
+        font-size:38px;
+
+    }
+
+    #studentName{
+
+        font-size:30px;
+
+    }
+
+    #courseTitle{
+
+        font-size:26px;
+
+    }
+
+}body{
+
+margin:0;
+padding:40px;
+
+background:#ececec;
+
+display:flex;
+justify-content:center;
+
+font-family:"Times New Roman",serif;
+
+}
+
+.certificate{
+
+position:relative;
+
+width:210mm;
+min-height:297mm;
+
+background:#faf8f3;
+
+padding:40px 55px;
+
+box-sizing:border-box;
+
+border:2px solid #0a2a66;
+
+box-shadow:0 10px 40px rgba(0,0,0,.2);
+
+overflow:hidden;
+
+}
+
+.certificate::before{
+
+content:"";
+
+position:absolute;
+
+top:10px;
+left:10px;
+right:10px;
+bottom:10px;
+
+border:1px solid #caa13b;
+
+pointer-events:none;
+
+}
+
+.watermark{
+
+position:absolute;
+
+top:50%;
+left:50%;
+
+transform:translate(-50%,-50%) rotate(-18deg);
+
+font-size:95px;
+
+font-weight:bold;
+
+color:rgba(10,42,102,.05);
+
+white-space:nowrap;
+
+pointer-events:none;
+
+}
+
+.certificate-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+.academy{
+
+display:flex;
+
+align-items:center;
+
+gap:20px;
+
+}
+
+.logo{
+
+width:95px;
+
+}
+
+.academy h2{
+
+margin:0;
+
+font-size:42px;
+
+color:#0a2a66;
+
+}
+
+.academy h3{
+
+margin:0;
+
+letter-spacing:8px;
+
+font-weight:400;
+
+color:#caa13b;
+
+}
+
+.academy p{
+
+margin-top:5px;
+
+color:#555;
+
+}
+
+.top-line{
+
+height:5px;
+
+margin:30px 0;
+
+background:
+linear-gradient(
+90deg,
+#0a2a66,
+#0a2a66 70%,
+#caa13b 70%
+);
+
+}
+
+.certificate-body{
+
+text-align:center;
+
+}
+
+.certificate-body h1{
+
+font-size:54px;
+
+color:#0a2a66;
+
+margin-bottom:15px;
+
+}
+
+.divider{
+
+width:160px;
+
+height:2px;
+
+background:#caa13b;
+
+margin:auto;
+
+margin-bottom:30px;
+
+}
+
+#studentName{
+
+font-size:44px;
+
+color:#0a2a66;
+
+margin:30px 0;
+
+}
+
+#courseTitle{
+
+font-size:34px;
+
+color:#0a2a66;
+
+margin:25px 0;
+
+}
+
+.message{
+
+width:80%;
+
+margin:auto;
+
+line-height:1.9;
+
+font-size:21px;
+
+}
+
+.certificate-info{
+
+display:flex;
+
+justify-content:space-around;
+
+margin-top:60px;
+
+}
+
+.certificate-info strong{
+
+color:#0a2a66;
+
+}
+
+.certificate-footer{
+
+margin-top:90px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:flex-end;
+
+}
+
+.sign-line{
+
+width:220px;
+
+border-top:2px solid #222;
+
+margin-bottom:10px;
+
+}
+
+.signature h4{
+
+margin:0;
+
+color:#0a2a66;
+
+}
+
+.seal{
+
+width:140px;
+
+height:140px;
+
+border-radius:50%;
+
+border:5px solid #0a2a66;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+text-align:center;
+
+font-weight:bold;
+
+color:#0a2a66;
+
+background:rgba(10,42,102,.05);
+
+}
+
+@media print{
+
+body{
+
+background:white;
+padding:0;
+
+}
+
+.certificate{
+
+box-shadow:none;
+
+}
+
+}

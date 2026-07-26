@@ -16,27 +16,85 @@ content="width=device-width, initial-scale=1.0">
 
 <body>
 
-<div class="student-dashboard">
+<div class="dashboard-layout">
 
-    <header class="student-header">
-    <h1>Welcome to Spark Stack Academy 🎓</h1>
-    <p>Your learning journey starts here.</p>
+<aside class="sidebar" id="sidebar">
 
-    <a href="courses.html" class="browse-courses-btn">
-        📚 Browse Courses
-    </a>
+<div class="sidebar-logo">
+
+<h2>SSA</h2>
+
+<p>Student Portal</p>
+
+</div>
+
+<nav>
+
+<a href="dashboard.html" class="active">
+🏠 Dashboard
+</a>
+
+<a href="courses.html">
+🔍 Browse Courses
+</a>
+
+<a href="course.html">
+📚 My Courses
+</a>
+
+<a href="certificates.html">
+🏆 Certificates
+</a>
+
+<a href="#">
+🔔 Notifications
+</a>
+
+<a href="#">
+⚙️ Settings
+</a>
+
+<a href="../login.html">
+🚪 Logout
+</a>
+
+</nav>
+
+</aside>
+
+<div id="overlay" class="overlay"></div>
+
+<main class="student-dashboard">
+
+<button id="menuBtn" class="menu-btn">
+☰
+</button>
+
+<header class="student-header">
+
+<h1>
+Welcome to Spark Stack Academy 🎓
+</h1>
+
+<p>
+Your learning journey starts here.
+</p>
+
 </header>
+
+
 
 <section class="student-profile">
 
-    <div class="profile-avatar">
-        👨‍💻
-    </div>
+<div class="profile-avatar">
+👨‍💻
+</div>
 
-    <div class="profile-info">
+<div class="profile-info">
 
-        <h2 id="studentName">
-Loading...</h2>
+<h2 id="studentName">
+Loading...
+</h2>
 
 <p id="studentLevel">
 SSA Learner
@@ -46,68 +104,85 @@ SSA Learner
 Active Student
 </span>
 
-    </div>
+</div>
 
 </section>
 
-    <section class="student-cards">
 
-        <div class="student-card">
-            <h3>Courses</h3>
-            <p id="courseCount">
+
+<section class="student-cards">
+
+<div class="student-card">
+
+<h3>Courses</h3>
+
+<p id="courseCount">
 0 Enrolled
 </p>
-        </div>
 
-
-        <div class="student-card">
-            <h3>Progress</h3>
-            <p id="progressCount">
-0% Complete
-</p>
-        </div>
-
-
-        <div class="student-card">
-            <h3>Certificates</h3>
-            <p id="certificateCount">
-0 Earned
-</p>
-        </div>
-
-    </section>
-
-
-    <section class="recent-learning">
-
-        <h2>Continue Learning</h2>
-
-        <div 
-class="empty-state"
-id="continueLearning">
-
-Loading courses...
 </div>
 
-    </section>
+<div class="student-card">
+
+<h3>Progress</h3>
+
+<p id="progressCount">
+0% Complete
+</p>
+
+</div>
+
+<div class="student-card">
+
+<h3>Certificates</h3>
+
+<p id="certificateCount">
+0 Earned
+</p>
+
+</div>
+
+</section>
+
+
+
+<section class="recent-learning">
+
+<h2>
+Continue Learning
+</h2>
+
+<div
+id="continueLearning"
+class="empty-state">
+
+Loading courses...
+
+</div>
+
+</section>
+
+
 
 <section class="course-progress">
 
-    <h2>My Learning Progress</h2>
+<h2>
+My Learning Progress
+</h2>
 
-
-    <div id="progressList">
+<div id="progressList">
 
 Loading progress...
 
 </div>
 
-
 </section>
 
+</main>
 
 </div>
 
+<script src="sidebar.js"></script>
 
 <script type="module" src="dashboard.js"></script>
 

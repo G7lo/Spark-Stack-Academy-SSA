@@ -104,6 +104,7 @@ onAuthStateChanged(auth, async(user)=>{
 
 window.viewCertificate = function(id){
 
-    alert("🚀 Certificate Viewer coming next!");
+    window.location.href =
+    `certificate.html?id=${id}`;
 
 };
