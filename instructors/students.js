@@ -1,20 +1,16 @@
 import { auth, db } from "../js/firebase.js";
 
 import {
-collection,
-getDocs,
-query,
-where,
-doc,
-getDoc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
+    collection,
+    getDocs,
+    query,
+    where,
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const studentsTable =
 document.getElementById("studentsTable");
-
 
 const totalStudents =
 document.getElementById("totalStudents");
@@ -25,311 +21,279 @@ document.getElementById("totalCourses");
 const activeStudents =
 document.getElementById("activeStudents");
 
-
-
 let studentsData = [];
 
+auth.onAuthStateChanged(async(user)=>{
 
+    if(!user){
 
-// ============================
-// LOAD INSTRUCTOR STUDENTS
-// ============================
+        window.location.href="../login.html";
+        return;
 
-async function loadStudents(){
+    }
 
-const user = auth.currentUser;
-
-if(!user) return;
-
-
-try{
-
-
-studentsData = [];
-
-
-const coursesQuery = query(
-
-collection(db,"courses"),
-
-where(
-"instructorId",
-"==",
-user.uid
-)
-
-);
-
-
-const coursesSnapshot =
-await getDocs(coursesQuery);
-
-
-
-for(const courseDoc of coursesSnapshot.docs){
-
-
-const courseData =
-courseDoc.data();
-
-
-
-const enrollmentQuery = query(
-
-collection(db,"enrollments"),
-
-where(
-"courseId",
-"==",
-courseDoc.id
-)
-
-);
-
-
-
-const enrollmentSnapshot =
-await getDocs(enrollmentQuery);
-
-
-
-for(const enrollmentDoc of enrollmentSnapshot.docs){
-
-
-const enrollment =
-enrollmentDoc.data();
-
-
-
-const studentRef =
-doc(
-    db,
-    "students",
-    enrollment.studentId
-);
-
-console.log("Student found:", studentSnap.exists());
-
-console.log(
-"Student data:",
-studentSnap.data()
-);
-
-
-const studentSnap =
-await getDoc(studentRef);
-
-
-
-if(studentSnap.exists()){
-
-
-const student =
-studentSnap.data();
-
-
-
-studentsData.push({
-
-id:studentSnap.id,
-
-admissionNumber:
-student.admissionNumber || "Pending",
-
-name:
-student.name,
-
-email:
-student.email,
-
-courses:[
-
-{
-
-title:
-courseData.title,
-
-progress:
-enrollment.progress || 0
-
-}
-
-],
-
-status:
-student.status || "Active"
-
+    await loadStudents(user);
 
 });
 
 
+
+async function loadStudents(user){
+
+    studentsTable.innerHTML=`
+    <tr>
+        <td colspan="6">
+            Loading students...
+        </td>
+    </tr>
+    `;
+
+    try{
+
+        studentsData=[];
+
+        const coursesSnapshot=
+        await getDocs(
+            query(
+                collection(db,"courses"),
+                where(
+                    "instructorId",
+                    "==",
+                    user.uid
+                )
+            )
+        );
+
+        const studentMap=new Map();
+
+        for(const courseDoc of coursesSnapshot.docs){
+
+            const course=courseDoc.data();
+
+            const enrollmentsSnapshot=
+            await getDocs(
+                query(
+                    collection(db,"enrollments"),
+                    where(
+                        "courseId",
+                        "==",
+                        courseDoc.id
+                    )
+                )
+            );
+
+            for(const enrollmentDoc of enrollmentsSnapshot.docs){
+
+                const enrollment=
+                enrollmentDoc.data();
+
+                const studentSnap=
+                await getDoc(
+                    doc(
+                        db,
+                        "students",
+                        enrollment.studentId
+                    )
+                );
+
+                if(!studentSnap.exists()) continue;
+
+                const student=
+                studentSnap.data();
+
+                if(studentMap.has(studentSnap.id)){
+
+                    studentMap
+                    .get(studentSnap.id)
+                    .courses
+                    .push({
+
+                        title:
+                        course.title,
+
+                        progress:
+                        enrollment.progress||0
+
+                    });
+
+                }
+
+                else{
+
+                    studentMap.set(
+                        studentSnap.id,
+                        {
+
+                            id:
+                            studentSnap.id,
+
+                            admissionNumber:
+                            student.admissionNumber||
+                            enrollment.admissionNo||
+                            "Pending",
+
+                            name:
+                            student.name,
+
+                            email:
+                            student.email,
+
+                            status:
+                            student.status||
+                            "Active",
+
+                            courses:[
+
+                                {
+
+                                    title:
+                                    course.title,
+
+                                    progress:
+                                    enrollment.progress||0
+
+                                }
+
+                            ]
+
+                        }
+                    );
+
+                }
+
+            }
+
+        }
+
+        studentsData=
+        Array.from(studentMap.values());
+
+        renderStudents(studentsData);
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        studentsTable.innerHTML=`
+        <tr>
+            <td colspan="6">
+                Failed to load students.
+            </td>
+        </tr>
+        `;
+
+    }
+
 }
 
-
-}
-
-
-}
-
-
-
-renderStudents(studentsData);
-
-
-
-}
-
-catch(error){
-
-console.error(
-"Loading students error:",
-error
-);
-
-}
-
-
-}
-
-
-
-// ============================
-// DISPLAY TABLE
-// ============================
 
 
 function renderStudents(students){
 
+    studentsTable.innerHTML="";
 
-studentsTable.innerHTML="";
+    let coursesCount=0;
 
+    if(students.length===0){
 
-let coursesCount=0;
+        studentsTable.innerHTML=`
+        <tr>
+            <td colspan="6">
+                No students enrolled yet.
+            </td>
+        </tr>
+        `;
 
+        totalStudents.textContent=0;
+        totalCourses.textContent=0;
+        activeStudents.textContent=0;
 
+        return;
 
-students.forEach((student,index)=>{
+    }
 
+    students.forEach((student,index)=>{
 
-coursesCount += student.courses.length;
+        coursesCount+=student.courses.length;
 
+        const courseHTML=
+        student.courses.map(course=>`
 
+        <div class="course-item">
 
-const coursesHTML =
-student.courses
-.map(course=>`
+            ${course.title}
 
-<div class="course-item">
+        </div>
 
-${course.title}
+        `).join("");
 
-</div>
+        studentsTable.innerHTML+=`
 
-`)
-.join("");
+        <tr>
 
+            <td>${index+1}</td>
 
+            <td>${student.admissionNumber}</td>
 
-studentsTable.innerHTML += `
+            <td>
 
-<tr>
+                <strong>${student.name}</strong>
 
+                <br>
 
-<td>
-${index+1}
-</td>
+                <small>${student.email}</small>
 
+            </td>
 
-<td>
-${student.admissionNumber}
-</td>
+            <td>
 
+                ${courseHTML}
 
-<td>
+            </td>
 
-<strong>
-${student.name}
-</strong>
+            <td>
 
-<br>
+                <span class="status active">
 
-<small>
-${student.email}
-</small>
+                    ${student.status}
 
-</td>
+                </span>
 
+            </td>
 
+            <td>
 
-<td>
+                <button
+                class="view-btn"
+                onclick="viewStudent('${student.id}')">
 
-<div class="course-list">
+                    View
 
-${coursesHTML}
+                </button>
 
-</div>
+            </td>
 
-</td>
+        </tr>
 
+        `;
 
+    });
 
-<td>
+    totalStudents.textContent=
+    students.length;
 
-<span class="status active">
+    totalCourses.textContent=
+    coursesCount;
 
-${student.status}
-
-</span>
-
-</td>
-
-
-
-<td>
-
-<button 
-class="view-btn"
-onclick="viewStudent('${student.id}')">
-
-View
-
-</button>
-
-</td>
-
-
-</tr>
-
-`;
-
-
-
-});
-
-
-
-totalStudents.textContent =
-students.length;
-
-
-totalCourses.textContent =
-coursesCount;
-
-
-activeStudents.textContent =
-students.filter(
-s=>s.status==="Active"
-).length;
-
-
+    activeStudents.textContent=
+    students.filter(
+        s=>s.status==="Active"
+    ).length;
 
 }
 
-
-
-// ============================
-// SEARCH
-// ============================
 
 
 document
@@ -338,61 +302,39 @@ document
 "input",
 (e)=>{
 
+    const value=
+    e.target.value.toLowerCase();
 
-const value =
-e.target.value.toLowerCase();
+    const filtered=
+    studentsData.filter(student=>
 
+        student.name
+        .toLowerCase()
+        .includes(value)
 
+        ||
 
-const filtered =
-studentsData.filter(student=>
+        student.email
+        .toLowerCase()
+        .includes(value)
 
-student.name
-.toLowerCase()
-.includes(value)
+        ||
 
-||
+        student.admissionNumber
+        .toLowerCase()
+        .includes(value)
 
-student.admissionNumber
-.toLowerCase()
-.includes(value)
+    );
 
-);
-
-
-
-renderStudents(filtered);
-
+    renderStudents(filtered);
 
 });
 
 
 
+window.viewStudent=function(id){
 
-// ============================
-// VIEW STUDENT
-// ============================
-
-
-window.viewStudent =
-function(id){
-
-window.location.href =
-`student-profile.html?id=${id}`;
+    window.location.href=
+    `student-profile.html?id=${id}`;
 
 };
-
-
-
-// WAIT FOR AUTH
-
-auth.onAuthStateChanged(
-(user)=>{
-
-if(user){
-
-loadStudents();
-
-}
-
-});
