@@ -1,128 +1,502 @@
-body{
+/* ===========================
+   SSA INSTRUCTOR CONTENT V2
+=========================== */
 
-margin:0;
-
-font-family:Arial,sans-serif;
-
-background:#020617;
-
-color:white;
-
-}
-
-.page{
-
-max-width:1000px;
-
-margin:auto;
-
-padding:40px;
-
-}
-
-h1{
-
-color:#38bdf8;
-
-margin-bottom:30px;
-
-text-shadow:
-
-0 0 20px #2563eb;
-
-}
-
-#addModuleBtn{
-
-padding:15px 25px;
-
-border:none;
-
-border-radius:30px;
-
-background:#2563eb;
-
-color:white;
-
-cursor:pointer;
-
-box-shadow:
-
-0 0 20px #2563eb;
-
-margin-bottom:30px;
-
-}
-
-.module{
-
-padding:25px;
-
-margin-bottom:20px;
-
-border-radius:20px;
-
-background:rgba(255,255,255,.06);
-
-border:1px solid rgba(56,189,248,.25);
-
-}
-
-.module h2{
-
-margin:0;
-
-color:#67e8f9;
-
-}
-
-.lesson{
-
-margin-top:15px;
-
-padding:15px;
-
-border-radius:15px;
-
-background:rgba(255,255,255,.05);
-
-}
-.hidden{
-    display:none;
-}
-
-.modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.6);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:1000;
-}
-
-.modal.hidden{
-    display:none;
-}
-
-.modal-content{
-    width:90%;
-    max-width:420px;
-    background:#161b2e;
-    padding:25px;
-    border-radius:16px;
-    border:1px solid rgba(255,255,255,.12);
-}
-
-.modal-content input{
-    width:100%;
-    padding:12px;
-    margin:15px 0;
-    border-radius:10px;
-    border:none;
+*{
+    margin:0;
+    padding:0;
     box-sizing:border-box;
 }
 
-.modal-content button{
+body{
+
+    font-family:Inter,Arial,sans-serif;
+
+    background:
+    radial-gradient(circle at top,#102a52,#020817 70%);
+
+    color:#fff;
+
+    min-height:100vh;
+
+}
+
+
+/* ===========================
+   LAYOUT
+=========================== */
+
+.dashboard-layout{
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+.main-content{
+
+    flex:1;
+
+    margin-left:280px;
+
+    padding:30px;
+
+}
+
+
+/* ===========================
+   PAGE
+=========================== */
+
+.manage-content-page{
+
+    margin-top:25px;
+
+}
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:30px;
+
+    border-radius:24px;
+
+    background:
+
+    rgba(255,255,255,.06);
+
+    backdrop-filter:blur(18px);
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+
+    0 0 40px rgba(59,130,246,.18);
+
+}
+
+.page-header h1{
+
+    font-size:34px;
+
+    color:#fff;
+
+}
+
+.page-header p{
+
+    margin-top:8px;
+
+    color:#CBD5E1;
+
+}
+
+
+/* ===========================
+   BUTTONS
+=========================== */
+
+.primary-btn{
+
+    border:none;
+
+    padding:14px 24px;
+
+    border-radius:14px;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #2563EB,
+    #38BDF8
+    );
+
+    transition:.3s;
+
+    box-shadow:
+
+    0 0 25px rgba(37,99,235,.45);
+
+}
+
+.primary-btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.secondary-btn{
+
+    border:none;
+
+    padding:14px 24px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    color:#fff;
+
+    background:
+
+    rgba(255,255,255,.08);
+
+}
+
+
+/* ===========================
+   MODULES
+=========================== */
+
+.modules-list{
+
+    margin-top:30px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+}
+
+.module-card{
+
+    padding:25px;
+
+    border-radius:22px;
+
+    background:
+
+    rgba(255,255,255,.06);
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(18px);
+
+    transition:.3s;
+
+}
+
+.module-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+
+    0 0 30px rgba(56,189,248,.22);
+
+}
+
+.module-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+.module-header h2{
+
+    color:#7DD3FC;
+
+}
+
+.module-header p{
+
+    margin-top:8px;
+
+    color:#CBD5E1;
+
+}
+
+
+/* ===========================
+   LESSONS
+=========================== */
+
+.lessons-list{
+
+    margin-top:20px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.lesson-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px 18px;
+
+    border-radius:14px;
+
+    background:
+
+    rgba(255,255,255,.05);
+
+    transition:.3s;
+
+}
+
+.lesson-item:hover{
+
+    background:
+
+    rgba(56,189,248,.10);
+
+}
+
+.lesson-btn{
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    color:white;
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #3B82F6,
+    #38BDF8
+    );
+
+}
+
+
+/* ===========================
+   EMPTY
+=========================== */
+
+.empty-state{
+
+    padding:60px 20px;
+
+    text-align:center;
+
+    border-radius:22px;
+
+    background:
+
+    rgba(255,255,255,.05);
+
+    border:
+
+    1px dashed rgba(255,255,255,.12);
+
+}
+
+.empty-state h3{
+
+    color:#7DD3FC;
+
+}
+
+.empty-state p{
+
+    margin-top:10px;
+
+    color:#CBD5E1;
+
+}
+
+
+/* ===========================
+   MODAL
+=========================== */
+
+.hidden{
+
+    display:none;
+
+}
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(0,0,0,.65);
+
+    backdrop-filter:blur(8px);
+
+    z-index:1000;
+
+}
+
+.modal-content{
+
+    width:95%;
+
+    max-width:520px;
+
+    padding:30px;
+
+    border-radius:22px;
+
+    background:#0F172A;
+
+    border:1px solid rgba(255,255,255,.10);
+
+}
+
+.form-group{
+
+    margin-top:18px;
+
+}
+
+.form-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    color:#CBD5E1;
+
+}
+
+.form-group input,
+.form-group textarea{
+
     width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.06);
+
+    color:white;
+
+    resize:none;
+
+}
+
+.modal-actions{
+
+    margin-top:25px;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:15px;
+
+}
+
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media(max-width:900px){
+
+    .main-content{
+
+        margin-left:0;
+
+        padding:15px;
+
+    }
+
+    .page-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .module-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+}
+.toast{
+
+position:fixed;
+
+bottom:30px;
+
+right:30px;
+
+background:#2563EB;
+
+color:white;
+
+padding:15px 24px;
+
+border-radius:14px;
+
+box-shadow:0 15px 40px rgba(37,99,235,.35);
+
+opacity:0;
+
+pointer-events:none;
+
+transform:translateY(20px);
+
+transition:.3s;
+
+z-index:3000;
+
+}
+
+.toast.show{
+
+opacity:1;
+
+transform:translateY(0);
+
 }
