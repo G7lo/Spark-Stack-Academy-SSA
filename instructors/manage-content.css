@@ -500,3 +500,20 @@ opacity:1;
 transform:translateY(0);
 
 }
+.hidden{
+    display:none !important;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,.7);
+    z-index:9999;
+}
+
+.modal.hidden{
+    display:none !important;
+}

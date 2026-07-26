@@ -171,100 +171,79 @@ Load Modules
 
 async function loadModules(){
 
-modulesList.innerHTML="";
+    try{
 
-modules=[];
-lessons=[];
+        console.log("Course ID:", courseId);
 
-const modulesQuery=
-query(
-collection(db,"modules"),
-where("courseId","==",courseId)
-);
+        modulesList.innerHTML = "";
 
-const modulesSnapshot=
-await getDocs(modulesQuery);
+        modules = [];
+        lessons = [];
 
-if(modulesSnapshot.empty){
+        const modulesQuery = query(
+            collection(db,"modules"),
+            where("courseId","==",courseId)
+        );
 
-moduleCount.textContent="0";
-lessonCount.textContent="0";
+        const modulesSnapshot = await getDocs(modulesQuery);
 
-modulesList.innerHTML=`
+        console.log("Modules found:", modulesSnapshot.size);
 
-<div class="empty-state">
+        if(modulesSnapshot.empty){
 
-<h3>
+            moduleCount.textContent = "0";
+            lessonCount.textContent = "0";
 
-📂 No Modules Yet
+            modulesList.innerHTML = `
+            <div class="empty-state">
+                <h3>📂 No Modules Yet</h3>
+                <p>Create your first learning module.</p>
+            </div>
+            `;
 
-</h3>
+            return;
+        }
 
-<p>
+        for(const moduleDoc of modulesSnapshot.docs){
 
-Create your first learning module.
+            console.log("Module:", moduleDoc.id);
 
-</p>
+            const module = {
+                id: moduleDoc.id,
+                ...moduleDoc.data()
+            };
 
-</div>
+            modules.push(module);
 
-`;
+            const lessonsQuery = query(
+                collection(db,"lessons"),
+                where("moduleId","==",module.id)
+            );
 
-return;
+            const lessonsSnapshot = await getDocs(lessonsQuery);
 
-}
+            const moduleLessons = [];
 
-for(const moduleDoc of modulesSnapshot.docs){
+            lessonsSnapshot.forEach(doc=>{
+                moduleLessons.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
+            });
 
-const module={
+            renderModule(module,moduleLessons);
+        }
 
-id:moduleDoc.id,
+        moduleCount.textContent = modules.length;
+        lessonCount.textContent = lessons.length;
 
-...moduleDoc.data()
+    }catch(error){
 
-};
+        console.error("LOAD MODULES ERROR:", error);
 
-modules.push(module);
+        alert(error.message);
 
-const lessonsQuery=
-query(
-collection(db,"lessons"),
-where("moduleId","==",module.id)
-);
-
-const lessonsSnapshot=
-await getDocs(lessonsQuery);
-
-const moduleLessons=[];
-
-lessonsSnapshot.forEach(doc=>{
-
-const lesson={
-
-id:doc.id,
-
-...doc.data()
-
-};
-
-moduleLessons.push(lesson);
-
-lessons.push(lesson);
-
-});
-
-renderModule(
-module,
-moduleLessons
-);
-
-}
-
-moduleCount.textContent=
-modules.length;
-
-lessonCount.textContent=
-lessons.length;
+    }
 
 }
 
