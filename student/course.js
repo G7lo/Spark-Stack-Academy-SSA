@@ -208,7 +208,9 @@ await getDoc(
 
 
 const student =
-studentSnap.data();
+studentSnap.exists()
+? studentSnap.data()
+: {};
 
 
 
@@ -220,10 +222,10 @@ await addDoc(
         currentUser.uid,
 
         studentName:
-        student.name,
+        student?.name || "SSA Student",
 
         admissionNo:
-        student.admissionNo,
+        student?.admissionNo || "Pending",
 
         courseId,
 
