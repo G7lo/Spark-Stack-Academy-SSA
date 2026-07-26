@@ -5,71 +5,169 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<title>Manage Course | SSA</title>
+<title>Manage Course | Spark Stack Academy</title>
 
-<link rel="stylesheet" href="manage-course.css">
+<link rel="stylesheet"
+href="manage-course.css">
 
 </head>
 
-
 <body>
 
+<div class="dashboard-layout">
 
-<div class="manage-page">
+<aside id="sidebarContainer"></aside>
 
+<div id="sidebarOverlay"></div>
+
+<div class="main-content">
+
+<header id="topbarContainer"></header>
+
+<main class="manage-page">
+
+<header class="page-header">
 
 <h1 id="courseTitle">
+
 Manage Course
+
 </h1>
+
+<p>
+
+Edit your course information and manage lessons.
+
+</p>
+
+</header>
+
 
 
 <div class="course-card">
 
+<div class="section-title">
 
 <h2>
+
 Course Information
+
 </h2>
-
-
-<p id="courseDescription"></p>
-
-
-<div class="details">
-
-<p>
-Category:
-<span id="category"></span>
-</p>
-
-
-<p>
-Level:
-<span id="level"></span>
-</p>
-
-
-<p>
-Duration:
-<span id="duration"></span>
-</p>
-
-
-<p>
-Students:
-<span id="students"></span>
-</p>
-
-
-<p>
-Status:
-<span id="status"></span>
-</p>
-
 
 </div>
 
+
+
+<div class="form-group">
+
+<label>Course Title</label>
+
+<input
+type="text"
+id="editTitle"
+disabled>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>Description</label>
+
+<textarea
+id="editDescription"
+rows="5"
+disabled></textarea>
+
+</div>
+
+
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Category</label>
+
+<input
+type="text"
+id="editCategory"
+disabled>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>Level</label>
+
+<select
+id="editLevel"
+disabled>
+
+<option>Beginner</option>
+
+<option>Intermediate</option>
+
+<option>Advanced</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Duration</label>
+
+<input
+type="text"
+id="editDuration"
+disabled>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>Status</label>
+
+<select
+id="editStatus"
+disabled>
+
+<option>Draft</option>
+
+<option>Published</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+
+<div class="stats">
+
+<div class="stat-card">
+
+<h3>Students</h3>
+
+<span id="students">0</span>
+
+</div>
 
 </div>
 
@@ -77,26 +175,61 @@ Status:
 
 <div class="actions">
 
+<button
+id="editCourseBtn"
+class="primary-btn">
 
-<button>
 ✏️ Edit Course
+
 </button>
 
 
-<button id="contentBtn">
+
+<button
+id="saveCourseBtn"
+class="success-btn"
+style="display:none;">
+
+💾 Save Changes
+
+</button>
+
+
+
+<button
+id="contentBtn"
+class="secondary-btn">
+
 📚 Manage Content
+
 </button>
 
+</div>
 
 </div>
 
+</main>
 
 </div>
 
+</div>
 
+<script src="https://unpkg.com/lucide@latest"></script>
 
-<script type="module" src="manage-course.js"></script>
+<script
+type="module"
+src="components/sidebar.js">
+</script>
 
+<script
+type="module"
+src="components/topbar.js">
+</script>
+
+<script
+type="module"
+src="manage-course.js">
+</script>
 
 </body>
 

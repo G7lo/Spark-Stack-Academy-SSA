@@ -76,10 +76,23 @@ onAuthStateChanged(auth, async(user)=>{
 
             <p>👨‍🎓 ${course.students || 0} Students</p>
 
-            <button
-                onclick="manageCourse('${doc.id}')">
-                Manage
-            </button>
+<div class="course-actions">
+
+    <button
+    onclick="manageCourse('${doc.id}')">
+
+        Manage
+
+    </button>
+
+    <button
+    onclick="editCourse('${doc.id}')">
+
+        Edit
+
+    </button>
+
+</div>
 
         </div>
 
@@ -94,5 +107,11 @@ window.manageCourse = function(courseId){
 
     window.location.href =
     `manage-course.html?id=${courseId}`;
+
+};
+window.editCourse = function(courseId){
+
+    window.location.href =
+    `edit-course.html?id=${courseId}`;
 
 };

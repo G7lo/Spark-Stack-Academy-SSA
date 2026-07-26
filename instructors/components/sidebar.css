@@ -169,3 +169,34 @@
 
 
 }
+#sidebarOverlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:.3s;
+
+    z-index:999;
+
+}
+
+#sidebarOverlay.active{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+.sidebar{
+
+    z-index:1000;
+
+}
