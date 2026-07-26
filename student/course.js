@@ -238,6 +238,34 @@ await addDoc(
 );
 
 
+// Create notification
+
+await addDoc(
+    collection(db,"notifications"),
+    {
+
+        userId:
+        currentUser.uid,
+
+        title:
+        "🎉 Enrollment Successful",
+
+        message:
+        `You have joined ${courseTitle.textContent}. Start learning now!`,
+
+        type:
+        "enrollment",
+
+        read:
+        false,
+
+        createdAt:
+        serverTimestamp()
+
+    }
+);
+
+
     alert("🎉 Enrolled successfully!");
 
 
