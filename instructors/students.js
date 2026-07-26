@@ -37,63 +37,121 @@ let studentsData = [];
 
 async function loadStudents(){
 
-
-const user =
-auth.currentUser;
-
+const user = auth.currentUser;
 
 if(!user) return;
-
 
 
 try{
 
 
-const studentsSnapshot =
-await getDocs(collection(db,"students"));
-
-
-
 studentsData = [];
 
 
+const coursesQuery = query(
 
-studentsSnapshot.forEach((student)=>{
+collection(db,"courses"),
+
+where(
+"instructorId",
+"==",
+user.uid
+)
+
+);
 
 
-const data = student.data();
+const coursesSnapshot =
+await getDocs(coursesQuery);
 
 
 
-const myCourses =
-data.courses?.filter(
-course =>
-course.instructorId === user.uid
+for(const courseDoc of coursesSnapshot.docs){
+
+
+const courseData =
+courseDoc.data();
+
+
+
+const enrollmentQuery = query(
+
+collection(db,"enrollments"),
+
+where(
+"courseId",
+"==",
+courseDoc.id
+)
+
 );
 
 
 
-if(myCourses && myCourses.length > 0){
+const enrollmentSnapshot =
+await getDocs(enrollmentQuery);
+
+
+
+for(const enrollmentDoc of enrollmentSnapshot.docs){
+
+
+const enrollment =
+enrollmentDoc.data();
+
+
+
+const studentRef =
+doc(
+db,
+"students",
+enrollment.studentId
+);
+
+
+
+const studentSnap =
+await getDoc(studentRef);
+
+
+
+if(studentSnap.exists()){
+
+
+const student =
+studentSnap.data();
+
 
 
 studentsData.push({
 
-id:student.id,
+id:studentSnap.id,
 
 admissionNumber:
-data.admissionNumber,
+student.admissionNumber || "Pending",
 
 name:
-data.name,
+student.name,
 
 email:
-data.email,
+student.email,
 
-courses:
-myCourses,
+courses:[
+
+{
+
+title:
+courseData.title,
+
+progress:
+enrollment.progress || 0
+
+}
+
+],
 
 status:
-data.status || "Active"
+student.status || "Active"
 
 
 });
@@ -102,7 +160,10 @@ data.status || "Active"
 }
 
 
-});
+}
+
+
+}
 
 
 
@@ -114,7 +175,7 @@ renderStudents(studentsData);
 
 catch(error){
 
-console.log(
+console.error(
 "Loading students error:",
 error
 );
