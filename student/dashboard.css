@@ -1,33 +1,94 @@
+/* ===========================
+   SPARK STACK ACADEMY
+   STUDENT DASHBOARD
+=========================== */
+
 body{
 
     margin:0;
+
     font-family:Inter,Arial,sans-serif;
+
+    color:#F8FAFC;
+
     background:
-    radial-gradient(circle at top,#162b55,#050b18);
-    color:white;
+    radial-gradient(circle at top,#0d2c54,#040b17 70%);
+
+}
+
+
+/* ===========================
+   LAYOUT
+=========================== */
+
+.dashboard-layout{
+
+    min-height:100vh;
+
 }
 
 
 .student-dashboard{
 
+    margin-left:280px;
+
     min-height:100vh;
-    padding:30px;
+
+    padding:35px;
+
+    position:relative;
+
+    overflow:hidden;
 
 }
 
 
-/* HEADER */
+.student-dashboard::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:350px;
+
+    height:350px;
+
+    top:-120px;
+
+    right:-120px;
+
+    background:
+
+    radial-gradient(
+    circle,
+    rgba(56,189,248,.15),
+    transparent 70%
+    );
+
+    filter:blur(40px);
+
+}
+
+
+/* ===========================
+   HEADER
+=========================== */
 
 .student-header{
 
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(15px);
-    padding:30px;
-    border-radius:20px;
-    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,.05);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:24px;
+
+    padding:35px;
 
     box-shadow:
-    0 0 30px rgba(0,150,255,.25);
+
+    0 10px 35px rgba(10,132,255,.12);
 
 }
 
@@ -35,162 +96,119 @@ body{
 .student-header h1{
 
     margin:0;
-    font-size:32px;
+
+    font-size:34px;
+
+    font-weight:700;
 
 }
 
 
 .student-header p{
 
-    color:#b8c7ff;
+    margin-top:10px;
+
+    color:#94A3B8;
 
 }
 
 
+.browse-courses-btn{
 
-/* CARDS */
+    display:inline-flex;
 
-.student-cards{
+    align-items:center;
 
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    margin-top:30px;
+    gap:10px;
 
-}
+    margin-top:25px;
 
+    padding:14px 28px;
 
-.student-card{
+    border-radius:14px;
+
+    text-decoration:none;
+
+    color:white;
 
     background:
+
     linear-gradient(
-    145deg,
-    rgba(0,150,255,.18),
-    rgba(130,70,255,.15)
+    90deg,
+    #0A84FF,
+    #38BDF8
     );
-
-    padding:25px;
-    border-radius:20px;
-
-    border:1px solid rgba(255,255,255,.12);
-
-    box-shadow:
-    0 0 25px rgba(80,80,255,.2);
 
     transition:.3s;
 
 }
 
 
-.student-card:hover{
+.browse-courses-btn:hover{
 
-    transform:translateY(-8px);
+    transform:translateY(-4px);
 
     box-shadow:
-    0 0 35px rgba(0,180,255,.5);
+
+    0 10px 25px rgba(10,132,255,.25);
 
 }
 
 
-.student-card h3{
-
-    margin-top:0;
-    color:#7ed8ff;
-
-}
-
-
-.student-card p{
-
-    font-size:22px;
-
-}
-
-
-
-/* LEARNING */
-
-.recent-learning{
-
-    margin-top:35px;
-
-    background:rgba(255,255,255,.06);
-
-    padding:25px;
-
-    border-radius:20px;
-
-    border:1px solid rgba(255,255,255,.1);
-
-}
-
-
-.recent-learning h2{
-
-    margin-top:0;
-
-}
-
-
-.empty-state{
-
-    padding:40px;
-    text-align:center;
-
-    color:#b8c7ff;
-
-    border:1px dashed rgba(255,255,255,.2);
-
-    border-radius:15px;
-
-}
-/* STUDENT PROFILE */
+/* ===========================
+   PROFILE
+=========================== */
 
 .student-profile{
 
-    margin-top:25px;
+    margin-top:30px;
 
     display:flex;
-    align-items:center;
-    gap:20px;
 
-    background:
-    rgba(255,255,255,.07);
+    align-items:center;
+
+    gap:20px;
 
     padding:25px;
 
-    border-radius:20px;
+    border-radius:22px;
 
-    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.05);
 
-    box-shadow:
-    0 0 25px rgba(120,80,255,.25);
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(15px);
 
 }
 
 
 .profile-avatar{
 
-    width:80px;
-    height:80px;
+    width:85px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:40px;
+    height:85px;
 
     border-radius:50%;
 
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:38px;
+
     background:
+
     linear-gradient(
     135deg,
-    #009dff,
-    #8b5cff
+    #0A84FF,
+    #38BDF8
     );
 
     box-shadow:
-    0 0 25px rgba(0,150,255,.6);
+
+    0 0 30px rgba(56,189,248,.3);
 
 }
 
@@ -204,9 +222,9 @@ body{
 
 .profile-info p{
 
-    color:#b8c7ff;
-
     margin:8px 0;
+
+    color:#94A3B8;
 
 }
 
@@ -217,69 +235,192 @@ body{
 
     padding:8px 15px;
 
-    border-radius:20px;
+    border-radius:30px;
 
-    background:
-    rgba(0,200,255,.15);
+    background:rgba(56,189,248,.12);
 
-    color:#7ed8ff;
+    color:#7DD3FC;
 
-    border:
-    1px solid rgba(0,200,255,.3);
-
-    font-size:14px;
+    border:1px solid rgba(56,189,248,.25);
 
 }
-/* COURSE PROGRESS */
+
+
+/* ===========================
+   STATS
+=========================== */
+
+.student-cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+    margin-top:30px;
+
+}
+
+
+.student-card{
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:22px;
+
+    padding:24px;
+
+    transition:.3s;
+
+}
+
+
+.student-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:#38BDF8;
+
+    box-shadow:
+
+    0 12px 30px rgba(10,132,255,.18);
+
+}
+
+
+.student-card h3{
+
+    margin:0;
+
+    color:#7DD3FC;
+
+}
+
+
+.student-card p{
+
+    font-size:28px;
+
+    margin-top:18px;
+
+    font-weight:bold;
+
+}
+
+
+/* ===========================
+   CONTENT SECTIONS
+=========================== */
+
+.recent-learning,
 
 .course-progress{
 
     margin-top:35px;
 
+    padding:25px;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
 }
 
+
+.recent-learning h2,
 
 .course-progress h2{
 
-    margin-bottom:20px;
+    margin-top:0;
 
 }
 
+
+.empty-state{
+
+    text-align:center;
+
+    padding:40px;
+
+    color:#94A3B8;
+
+    border:2px dashed rgba(255,255,255,.08);
+
+    border-radius:18px;
+
+}
+
+
+/* ===========================
+   COURSE CARD
+=========================== */
+
+.course-mini-card{
+
+    margin-top:18px;
+
+    padding:22px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    transition:.3s;
+
+}
+
+
+.course-mini-card:hover{
+
+    transform:translateX(8px);
+
+    border-color:#38BDF8;
+
+}
+
+
+.course-mini-card button{
+
+    margin-top:15px;
+
+    border:none;
+
+    cursor:pointer;
+
+    color:white;
+
+    padding:12px 22px;
+
+    border-radius:12px;
+
+    background:
+
+    linear-gradient(
+    90deg,
+    #0A84FF,
+    #38BDF8
+    );
+
+}
+
+
+/* ===========================
+   PROGRESS
+=========================== */
 
 .progress-card{
 
-    background:
-    rgba(255,255,255,.07);
-
-    padding:25px;
-
-    border-radius:20px;
-
-    border:1px solid rgba(255,255,255,.12);
-
-    box-shadow:
-    0 0 25px rgba(0,150,255,.2);
+    margin-top:20px;
 
 }
 
-
-.progress-card h3{
-
-    margin:0;
-
-    color:#7ed8ff;
-
-}
-
-
-.progress-card p{
-
-    color:#b8c7ff;
-
-}
-
-
-/* PROGRESS BAR */
 
 .progress-bar{
 
@@ -287,14 +428,13 @@ body{
 
     height:12px;
 
-    background:
-    rgba(255,255,255,.12);
+    margin:18px 0;
 
-    border-radius:20px;
+    border-radius:30px;
 
     overflow:hidden;
 
-    margin:20px 0;
+    background:rgba(255,255,255,.08);
 
 }
 
@@ -305,360 +445,32 @@ body{
 
     height:100%;
 
+    border-radius:30px;
+
     background:
+
     linear-gradient(
     90deg,
-    #009dff,
-    #8b5cff
-    );
-
-    border-radius:20px;
-
-    box-shadow:
-    0 0 15px rgba(0,150,255,.8);
-
-}
-
-
-.progress-card span{
-
-    color:#7ed8ff;
-
-    font-weight:bold;
-
-}
-.browse-courses-btn{
-    display:inline-block;
-    margin-top:20px;
-    padding:12px 24px;
-    background:#5b6cff;
-    color:#fff;
-    text-decoration:none;
-    border-radius:10px;
-    font-weight:600;
-    transition:.3s;
-}
-
-.browse-courses-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 8px 20px rgba(91,108,255,.4);
-}
-/* ================================
-   SSA FUTURE ACADEMY EXPERIENCE
-================================ */
-
-
-/* Smooth page atmosphere */
-
-body{
-
-    background:
-    radial-gradient(circle at 20% 10%, rgba(0,157,255,.25), transparent 30%),
-    radial-gradient(circle at 80% 20%, rgba(139,92,255,.25), transparent 30%),
-    linear-gradient(
-        135deg,
-        #020617,
-        #071a38,
-        #030712
+    #0A84FF,
+    #06B6D4
     );
 
 }
 
 
-/* Main container glow */
-
-.student-dashboard{
-
-    position:relative;
-    overflow:hidden;
-
-}
-
-
-.student-dashboard::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:400px;
-    height:400px;
-
-    top:-150px;
-    right:-150px;
-
-    background:
-    radial-gradient(
-        circle,
-        rgba(0,200,255,.25),
-        transparent 70%
-    );
-
-    filter:blur(30px);
-
-}
-
-
-
-/* Header upgrade */
-
-.student-header{
-
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-
-.student-header::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:180px;
-    height:180px;
-
-    right:-50px;
-    bottom:-50px;
-
-    background:
-    radial-gradient(
-    circle,
-    #009dff,
-    transparent 70%
-    );
-
-    opacity:.35;
-
-    filter:blur(20px);
-
-}
-
-
-
-.student-header h1{
-
-    background:
-    linear-gradient(
-    90deg,
-    #ffffff,
-    #7ed8ff,
-    #8b5cff
-    );
-
-    -webkit-background-clip:text;
-
-    color:transparent;
-
-}
-
-
-
-/* Profile futuristic */
-
-.student-profile{
-
-    backdrop-filter:blur(25px);
-
-}
-
-
-.profile-avatar{
-
-    animation:
-    floating 4s infinite ease-in-out;
-
-}
-
-
-
-@keyframes floating{
-
-    50%{
-
-        transform:
-        translateY(-8px);
-
-    }
-
-}
-
-
-
-/* Cards upgrade */
-
-.student-card{
-
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-
-
-.student-card::before{
-
-    content:"";
-
-    position:absolute;
-
-    inset:0;
-
-    background:
-    linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,.15),
-    transparent
-    );
-
-    transform:
-    translateX(-100%);
-
-    transition:.6s;
-
-}
-
-
-
-.student-card:hover::before{
-
-    transform:
-    translateX(100%);
-
-}
-
-
-.student-card:hover{
-
-    transform:
-    translateY(-12px)
-    scale(1.03);
-
-}
-
-
-
-/* Course learning cards */
-
-.course-mini-card{
-
-    background:
-    linear-gradient(
-    145deg,
-    rgba(0,157,255,.18),
-    rgba(139,92,255,.18)
-    );
-
-    padding:22px;
-
-    margin-top:15px;
-
-    border-radius:18px;
-
-    border:
-    1px solid rgba(255,255,255,.15);
-
-    box-shadow:
-    0 0 30px rgba(0,157,255,.2);
-
-    transition:.3s;
-
-}
-
-
-.course-mini-card:hover{
-
-    transform:
-    translateX(10px);
-
-    box-shadow:
-    0 0 40px rgba(139,92,255,.5);
-
-}
-
-
-
-.course-mini-card button{
-
-    margin-top:15px;
-
-    padding:12px 22px;
-
-    border:none;
-
-    border-radius:25px;
-
-    color:white;
-
-    cursor:pointer;
-
-    background:
-    linear-gradient(
-    90deg,
-    #009dff,
-    #8b5cff
-    );
-
-}
-
-
-
-/* Progress section */
-
-.progress-card{
-
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-
-.progress-card::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:250px;
-    height:250px;
-
-    right:-100px;
-
-    top:-100px;
-
-    background:
-    radial-gradient(
-    circle,
-    rgba(0,157,255,.3),
-    transparent
-    );
-
-}
-
-
-
-/* Mobile polish */
-
-@media(max-width:700px){
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
 
     .student-dashboard{
 
-        padding:15px;
+        margin-left:0;
+
+        padding:90px 20px 20px;
 
     }
-
-
-    .student-header h1{
-
-        font-size:25px;
-
-    }
-
 
     .student-profile{
 
@@ -668,15 +480,10 @@ body{
 
     }
 
-}
-.dashboard-layout{
+    .student-header h1{
 
-    display:flex;
+        font-size:28px;
 
-    min-height:100vh;
-
-    background:#08111f;
+    }
 
 }
-
-

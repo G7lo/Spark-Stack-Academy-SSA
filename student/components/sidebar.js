@@ -106,3 +106,5 @@ document
 });
 
 }
+
+lucide.createIcons();

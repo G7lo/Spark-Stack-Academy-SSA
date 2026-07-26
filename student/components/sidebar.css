@@ -1,4 +1,6 @@
-/* SIDEBAR */
+/* ===========================
+   STUDENT SIDEBAR
+=========================== */
 
 .sidebar{
 
@@ -8,11 +10,11 @@
 
     left:0;
 
-    width:270px;
+    width:280px;
 
     height:100vh;
 
-    background:#091423;
+    background:#081423;
 
     border-right:1px solid rgba(255,255,255,.08);
 
@@ -20,49 +22,55 @@
 
     flex-direction:column;
 
-    padding:25px 18px;
+    padding:25px 20px;
 
     box-sizing:border-box;
 
-    z-index:1000;
+    transition:left .35s ease;
 
-    transition:.35s;
+    z-index:1000;
 
 }
 
+
+/* ===========================
+   LOGO
+=========================== */
 
 .sidebar-logo{
 
     text-align:center;
 
-    margin-bottom:35px;
+    margin-bottom:40px;
 
 }
-
 
 .sidebar-logo h2{
 
     margin:0;
 
-    font-size:34px;
-
     color:#4da6ff;
 
-    letter-spacing:2px;
+    font-size:34px;
+
+    font-weight:700;
 
 }
 
-
 .sidebar-logo p{
 
-    color:#9bb8e8;
-
     margin-top:6px;
+
+    color:#9bb8e8;
 
     font-size:14px;
 
 }
 
+
+/* ===========================
+   NAVIGATION
+=========================== */
 
 .sidebar nav{
 
@@ -70,27 +78,33 @@
 
     flex-direction:column;
 
-    gap:8px;
+    gap:14px;
+
+    flex:1;
 
 }
-
 
 .sidebar nav a{
 
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:15px 18px;
+
     text-decoration:none;
 
-    color:#dbe7ff;
+    color:#dfe9ff;
 
-    padding:14px 18px;
+    border-radius:16px;
 
-    border-radius:14px;
+    transition:.25s;
 
     font-weight:600;
 
-    transition:.3s;
-
 }
-
 
 .sidebar nav a:hover{
 
@@ -100,23 +114,75 @@
 
 }
 
-
 .sidebar nav a.active{
 
     background:linear-gradient(
-    90deg,
-    #2979ff,
-    #4f46e5
+        90deg,
+        #2979ff,
+        #4f46e5
     );
 
     box-shadow:
-    0 0 18px
-    rgba(41,121,255,.45);
+    0 0 20px rgba(41,121,255,.45);
 
 }
 
 
-/* MENU */
+/* ===========================
+   LOGOUT
+=========================== */
+
+.sidebar nav a:last-child{
+
+    margin-top:auto;
+
+    color:#ffb4b4;
+
+}
+
+.sidebar nav a:last-child:hover{
+
+    background:rgba(255,80,80,.15);
+
+}
+
+
+/* ===========================
+   OVERLAY
+=========================== */
+
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    backdrop-filter:blur(2px);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:.3s;
+
+    z-index:900;
+
+}
+
+.overlay.show{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+
+/* ===========================
+   MENU BUTTON
+=========================== */
 
 .menu-btn{
 
@@ -134,13 +200,13 @@
 
     border:none;
 
-    border-radius:12px;
+    border-radius:14px;
 
     background:#2979ff;
 
     color:white;
 
-    font-size:24px;
+    font-size:26px;
 
     cursor:pointer;
 
@@ -149,45 +215,15 @@
 }
 
 
-/* OVERLAY */
-
-.overlay{
-
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,.45);
-
-    backdrop-filter:blur(3px);
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transition:.3s;
-
-    z-index:999;
-
-}
-
-
-.overlay.show{
-
-    opacity:1;
-
-    visibility:visible;
-
-}
-
-
-/* MOBILE */
+/* ===========================
+   MOBILE
+=========================== */
 
 @media(max-width:768px){
 
     .sidebar{
 
-        left:-280px;
+        left:-300px;
 
     }
 
@@ -206,5 +242,24 @@
         align-items:center;
 
     }
+
+}
+.sidebar nav a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.sidebar nav i{
+
+    width:20px;
+
+    height:20px;
+
+    flex-shrink:0;
 
 }
