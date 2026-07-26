@@ -123,14 +123,9 @@ async function loadLessons(){
     try{
 
         const q = query(
-
-            collection(db,"lessons"),
-
-            where("courseId","==",courseId),
-
-            orderBy("order")
-
-        );
+    collection(db,"lessons"),
+    where("courseId","==",courseId)
+);
 
 
         const snapshot =
