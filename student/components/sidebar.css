@@ -1,0 +1,210 @@
+/* SIDEBAR */
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:270px;
+
+    height:100vh;
+
+    background:#091423;
+
+    border-right:1px solid rgba(255,255,255,.08);
+
+    display:flex;
+
+    flex-direction:column;
+
+    padding:25px 18px;
+
+    box-sizing:border-box;
+
+    z-index:1000;
+
+    transition:.35s;
+
+}
+
+
+.sidebar-logo{
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+}
+
+
+.sidebar-logo h2{
+
+    margin:0;
+
+    font-size:34px;
+
+    color:#4da6ff;
+
+    letter-spacing:2px;
+
+}
+
+
+.sidebar-logo p{
+
+    color:#9bb8e8;
+
+    margin-top:6px;
+
+    font-size:14px;
+
+}
+
+
+.sidebar nav{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+
+.sidebar nav a{
+
+    text-decoration:none;
+
+    color:#dbe7ff;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+
+.sidebar nav a:hover{
+
+    background:rgba(77,166,255,.12);
+
+    transform:translateX(6px);
+
+}
+
+
+.sidebar nav a.active{
+
+    background:linear-gradient(
+    90deg,
+    #2979ff,
+    #4f46e5
+    );
+
+    box-shadow:
+    0 0 18px
+    rgba(41,121,255,.45);
+
+}
+
+
+/* MENU */
+
+.menu-btn{
+
+    display:none;
+
+    position:fixed;
+
+    top:18px;
+
+    left:18px;
+
+    width:50px;
+
+    height:50px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#2979ff;
+
+    color:white;
+
+    font-size:24px;
+
+    cursor:pointer;
+
+    z-index:1100;
+
+}
+
+
+/* OVERLAY */
+
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    backdrop-filter:blur(3px);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:.3s;
+
+    z-index:999;
+
+}
+
+
+.overlay.show{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .sidebar{
+
+        left:-280px;
+
+    }
+
+    .sidebar.show{
+
+        left:0;
+
+    }
+
+    .menu-btn{
+
+        display:flex;
+
+        justify-content:center;
+
+        align-items:center;
+
+    }
+
+}
