@@ -105,8 +105,9 @@ const studentRef =
 doc(
 db,
 "students",
-enrollment.studentId
-);
+enrollment.userId
+)
+
 
 
 
