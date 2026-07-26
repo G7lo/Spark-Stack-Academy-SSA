@@ -10,7 +10,8 @@ import {
     orderBy,
     addDoc,
     serverTimestamp,
-    limit
+    limit,
+    updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -348,7 +349,53 @@ completeBtn.addEventListener("click", async () => {
         }
     );
 
-    alert("🎉 Lesson completed!");
+const totalLessonsQuery = query(
+    collection(db,"lessons"),
+    where("courseId","==",courseId)
+);
+
+const totalLessonsSnapshot =
+await getDocs(totalLessonsQuery);
+
+const completedLessonsQuery = query(
+    collection(db,"progress"),
+    where("studentId","==",currentUser.uid),
+    where("courseId","==",courseId)
+);
+
+const completedLessonsSnapshot =
+await getDocs(completedLessonsQuery);
+
+const progress = Math.round(
+    (completedLessonsSnapshot.size /
+    totalLessonsSnapshot.size) * 100
+);
+
+const enrollmentQuery = query(
+    collection(db,"enrollments"),
+    where("studentId","==",currentUser.uid),
+    where("courseId","==",courseId),
+    limit(1)
+);
+
+const enrollmentSnapshot =
+await getDocs(enrollmentQuery);
+
+if(!enrollmentSnapshot.empty){
+
+    const enrollmentDoc =
+    enrollmentSnapshot.docs[0];
+
+    await updateDoc(
+        enrollmentDoc.ref,
+        {
+            progress: progress
+        }
+    );
+
+}
+
+    alert(`🎉 Lesson completed!\nCourse Progress: ${progress}%`);
 
 });
 
