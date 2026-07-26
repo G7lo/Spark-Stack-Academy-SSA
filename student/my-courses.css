@@ -58,21 +58,8 @@ body{
 }
 
 
-
 /* ===========================
-   TOPBAR
-=========================== */
-
-#topbarContainer{
-
-    width:100%;
-
-}
-
-
-
-/* ===========================
-   PAGE HEADER
+   HEADER
 =========================== */
 
 .student-header{
@@ -97,11 +84,11 @@ body{
 
 .student-header h1{
 
+    color:#0f172a;
+
     font-size:34px;
 
     font-weight:800;
-
-    color:#0f172a;
 
 }
 
@@ -112,14 +99,12 @@ body{
 
     color:#64748b;
 
-    line-height:1.6;
-
 }
 
 
 
 /* ===========================
-   COURSES GRID
+   GRID
 =========================== */
 
 .courses-grid{
@@ -127,7 +112,7 @@ body{
     display:grid;
 
     grid-template-columns:
-    repeat(auto-fit,minmax(300px,1fr));
+    repeat(auto-fit,minmax(320px,1fr));
 
     gap:22px;
 
@@ -156,9 +141,7 @@ body{
     box-shadow:
     0 18px 45px rgba(120,90,40,.10);
 
-    transition:
-    transform .3s ease,
-    box-shadow .3s ease;
+    transition:.3s;
 
 }
 
@@ -166,9 +149,6 @@ body{
 .course-card:hover{
 
     transform:translateY(-6px);
-
-    box-shadow:
-    0 25px 55px rgba(120,90,40,.16);
 
 }
 
@@ -179,8 +159,6 @@ body{
 
     color:#0f172a;
 
-    font-size:22px;
-
 }
 
 
@@ -188,45 +166,54 @@ body{
 
     color:#64748b;
 
-    line-height:1.6;
+    margin:8px 0;
 
-    margin-bottom:10px;
+}
+
+
+.progress-label{
+
+    margin-top:18px;
+
+    font-weight:700;
+
+    color:#2563eb;
 
 }
 
 
 
 /* ===========================
-   COURSE INFO
+   PROGRESS BAR
 =========================== */
 
-.course-meta{
+.progress-bar{
 
-    display:flex;
+    margin-top:10px;
 
-    flex-wrap:wrap;
+    width:100%;
 
-    gap:10px;
+    height:10px;
 
-    margin-top:15px;
+    border-radius:999px;
+
+    overflow:hidden;
+
+    background:#e2e8f0;
 
 }
 
 
-.course-tag{
+.progress-fill{
 
-    padding:6px 14px;
-
-    border-radius:999px;
-
-    font-size:13px;
-
-    font-weight:600;
-
-    color:#2563eb;
+    height:100%;
 
     background:
-    rgba(37,99,235,.10);
+    linear-gradient(
+        90deg,
+        #2563eb,
+        #9333ea
+    );
 
 }
 
@@ -238,7 +225,7 @@ body{
 
 .course-card button{
 
-    margin-top:22px;
+    margin-top:20px;
 
     width:100%;
 
@@ -264,12 +251,7 @@ body{
         #9333ea
     );
 
-    transition:
-    transform .25s ease,
-    box-shadow .25s ease;
-
-    box-shadow:
-    0 12px 25px rgba(37,99,235,.25);
+    transition:.3s;
 
 }
 
@@ -278,28 +260,23 @@ body{
 
     transform:translateY(-2px);
 
-    box-shadow:
-    0 18px 35px rgba(37,99,235,.30);
-
 }
 
 
 
 /* ===========================
-   LOADING / EMPTY STATE
+   EMPTY
 =========================== */
 
 .loading-card{
 
     grid-column:1/-1;
 
-    padding:60px 25px;
+    padding:60px 20px;
 
     text-align:center;
 
     border-radius:24px;
-
-    color:#64748b;
 
     background:
     rgba(255,255,255,.72);
@@ -307,8 +284,7 @@ body{
     border:
     1px solid rgba(255,255,255,.9);
 
-    box-shadow:
-    0 18px 45px rgba(120,90,40,.10);
+    color:#64748b;
 
 }
 

@@ -12,80 +12,111 @@ const coursesGrid =
 document.getElementById("coursesGrid");
 
 
+
 async function loadCourses(){
 
-    const q = query(
-        collection(db,"courses"),
-        where("status","==","Published")
-    );
+    try{
+
+        const q = query(
+            collection(db,"courses"),
+            where("status","==","Published")
+        );
+
+        const snapshot =
+        await getDocs(q);
 
 
-    const snapshot =
-    await getDocs(q);
+        coursesGrid.innerHTML = "";
 
 
-    coursesGrid.innerHTML = "";
+        if(snapshot.empty){
+
+            coursesGrid.innerHTML = `
+
+            <div class="loading-card">
+
+                <h2>📚 No Courses Yet</h2>
+
+                <p>
+                New courses will appear here soon.
+                </p>
+
+            </div>
+
+            `;
+
+            return;
+
+        }
 
 
-    if(snapshot.empty){
+        snapshot.forEach((doc)=>{
 
-        coursesGrid.innerHTML = `
+            const course =
+            doc.data();
 
-        <p>
-        No courses available yet.
-        </p>
 
-        `;
+            coursesGrid.innerHTML += `
 
-        return;
+            <div class="course-card">
+
+                <h2>${course.title}</h2>
+
+                <p>
+                ${course.description || "No description available."}
+                </p>
+
+
+                <div class="course-meta">
+
+                    <span class="course-tag">
+                        👨‍🏫
+                        ${course.instructorName || "Spark Stack Academy"}
+                    </span>
+
+                    <span class="course-tag">
+                        📚
+                        ${course.level || "All Levels"}
+                    </span>
+
+                </div>
+
+
+                <button
+                onclick="openCourse('${doc.id}')">
+
+                    Continue Learning →
+
+                </button>
+
+            </div>
+
+            `;
+
+        });
 
     }
 
+    catch(error){
 
-    snapshot.forEach((doc)=>{
+        console.error(error);
 
-        const course =
-        doc.data();
+        coursesGrid.innerHTML = `
 
+        <div class="loading-card">
 
-        coursesGrid.innerHTML += `
-
-        <div class="course-card">
-
-            <h2>
-            ${course.title}
-            </h2>
-
+            <h2>⚠️ Something went wrong</h2>
 
             <p>
-            ${course.description}
+            Unable to load courses.
+            Please try again.
             </p>
-
-
-            <p>
-            👨‍🏫 ${course.instructorName || "Spark Stack Academy"}
-            </p>
-
-
-            <p>
-            📚 ${course.level}
-            </p>
-
-
-            <button
-onclick="openCourse('${doc.id}')">
-
-View Course
-
-</button>
-
 
         </div>
 
         `;
 
-    });
-
+    }
 
 }
 

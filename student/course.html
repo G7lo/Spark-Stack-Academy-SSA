@@ -4,68 +4,155 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<title>Course | Spark Stack Academy</title>
+<title>SSA | Course Details</title>
 
 <link rel="stylesheet" href="course.css">
+<link rel="stylesheet" href="components/sidebar.css">
 
 </head>
 
-
 <body>
 
+<div class="dashboard-layout">
 
-<div class="course-page">
+<aside id="sidebarContainer"></aside>
 
+<main class="student-dashboard">
 
-    <h1 id="courseTitle">
-        Loading...
-    </h1>
-
-
-    <p id="courseDescription"></p>
+<div id="topbarContainer"></div>
 
 
-    <div class="course-info">
 
-        <p>
-            Instructor:
-            <span id="courseInstructor"></span>
-        </p>
+<section class="student-header">
 
+<h1 id="courseTitle">
+Loading Course...
+</h1>
 
-        <p>
-            Duration:
-            <span id="courseDuration"></span>
-        </p>
+<p>
+Everything you need before you begin learning.
+</p>
 
-
-        <p>
-            Lessons:
-            <span id="courseLessons"></span>
-        </p>
+</section>
 
 
-        <p>
-            Level:
-            <span id="courseLevel"></span>
-        </p>
 
+<section class="course-hero">
 
-    </div>
+<div class="course-banner">
 
-
-    <button id="enrollBtn">
-        Enroll Now
-    </button>
-
+🎓
 
 </div>
 
 
-<script type="module" src="course.js"></script>
 
+<div class="course-details">
+
+<p id="courseDescription">
+
+Loading description...
+
+</p>
+
+
+<div class="course-meta">
+
+<div class="meta-card">
+
+<strong>👨‍🏫 Instructor</strong>
+
+<span id="courseInstructor">
+Loading...
+</span>
+
+</div>
+
+
+<div class="meta-card">
+
+<strong>📚 Level</strong>
+
+<span id="courseLevel">
+Loading...
+</span>
+
+</div>
+
+
+<div class="meta-card">
+
+<strong>⏱ Duration</strong>
+
+<span id="courseDuration">
+Loading...
+</span>
+
+</div>
+
+
+<div class="meta-card">
+
+<strong>🎬 Lessons</strong>
+
+<span id="courseLessons">
+Loading...
+</span>
+
+</div>
+
+</div>
+
+
+<button id="enrollBtn">
+
+Enroll Now 🚀
+
+</button>
+
+</div>
+
+</section>
+
+
+
+
+
+<section class="course-preview">
+
+<h2>
+
+What You'll Learn
+
+</h2>
+
+<div id="modulesPreview">
+
+<p>
+
+Modules will appear here...
+
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script src="components/sidebar.js"></script>
+
+<script src="components/topbar.js"></script>
+
+<script type="module" src="course.js"></script>
 
 </body>
 
