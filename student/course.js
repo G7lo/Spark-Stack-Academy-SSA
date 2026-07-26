@@ -355,9 +355,8 @@ enrollBtn.addEventListener("click", async()=>{
                 student.name ||
                 "SSA Student",
 
-                admissionNo:
-                student.admissionNo ||
-                "Pending",
+                admissionNumber:
+student.admissionNumber || "Pending",
 
                 courseId,
 

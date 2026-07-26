@@ -103,12 +103,17 @@ enrollmentDoc.data();
 
 const studentRef =
 doc(
-db,
-"students",
-enrollment.userId
-)
+    db,
+    "students",
+    enrollment.studentId
+);
 
+console.log("Student found:", studentSnap.exists());
 
+console.log(
+"Student data:",
+studentSnap.data()
+);
 
 
 const studentSnap =
