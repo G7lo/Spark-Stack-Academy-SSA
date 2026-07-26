@@ -5,8 +5,10 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
-    doc,
-    getDoc
+    collection,
+    getDocs,
+    query,
+    where
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -97,3 +99,41 @@ onAuthStateChanged(auth, async(user)=>{
     data.rating || 0;
 
 });
+
+const coursesQuery =
+query(
+    collection(db,"courses"),
+    where("instructorId","==",user.uid)
+);
+
+
+const coursesSnapshot =
+await getDocs(coursesQuery);
+
+
+
+let students = 0;
+
+
+for(const courseDoc of coursesSnapshot.docs){
+
+
+    const enrollmentsQuery =
+    query(
+        collection(db,"enrollments"),
+        where("courseId","==",courseDoc.id)
+    );
+
+
+    const enrollmentsSnapshot =
+    await getDocs(enrollmentsQuery);
+
+
+    students += enrollmentsSnapshot.size;
+
+
+}
+
+
+
+studentTotal.textContent = students;

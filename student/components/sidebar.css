@@ -1,6 +1,7 @@
 /* ===========================
-   STUDENT SIDEBAR
+   SSA SIDEBAR
 =========================== */
+
 
 .sidebar{
 
@@ -14,252 +15,233 @@
 
     height:100vh;
 
-    background:#081423;
-
-    border-right:1px solid rgba(255,255,255,.08);
+    padding:25px 20px;
 
     display:flex;
 
     flex-direction:column;
 
-    padding:25px 20px;
+    background:
 
-    box-sizing:border-box;
+    rgba(4,11,23,.92);
 
-    transition:left .35s ease;
+    backdrop-filter:blur(25px);
+
+    border-right:
+
+    1px solid rgba(255,255,255,.08);
 
     z-index:1000;
 
+    transition:.35s ease;
+
 }
+
+
+
 
 
 /* ===========================
    LOGO
 =========================== */
 
+
 .sidebar-logo{
 
-    text-align:center;
-
-    margin-bottom:40px;
+    margin-bottom:45px;
 
 }
+
+
 
 .sidebar-logo h2{
 
     margin:0;
 
-    color:#4da6ff;
+    font-size:30px;
 
-    font-size:34px;
+    font-weight:800;
 
-    font-weight:700;
+    background:
+
+    linear-gradient(
+        90deg,
+        #0A84FF,
+        #38BDF8
+    );
+
+    -webkit-background-clip:text;
+
+    color:transparent;
 
 }
 
-.sidebar-logo p{
 
-    margin-top:6px;
 
-    color:#9bb8e8;
+.sidebar-logo span{
+
+    color:#94A3B8;
 
     font-size:14px;
 
 }
 
 
+
+
+
 /* ===========================
-   NAVIGATION
+   LINKS
 =========================== */
 
-.sidebar nav{
+
+.sidebar-menu{
 
     display:flex;
 
     flex-direction:column;
 
-    gap:14px;
-
-    flex:1;
+    gap:8px;
 
 }
 
-.sidebar nav a{
+
+
+.sidebar-menu a,
+.sidebar-footer a{
 
     display:flex;
 
     align-items:center;
 
-    gap:12px;
+    gap:14px;
 
-    padding:15px 18px;
-
-    text-decoration:none;
-
-    color:#dfe9ff;
+    padding:14px 16px;
 
     border-radius:16px;
 
-    transition:.25s;
+    color:#CBD5E1;
 
-    font-weight:600;
+    text-decoration:none;
 
-}
+    font-size:15px;
 
-.sidebar nav a:hover{
-
-    background:rgba(77,166,255,.12);
-
-    transform:translateX(6px);
+    transition:.3s ease;
 
 }
 
-.sidebar nav a.active{
 
-    background:linear-gradient(
+
+.sidebar-menu a:hover,
+.sidebar-footer a:hover{
+
+    background:
+
+    rgba(56,189,248,.12);
+
+    color:#38BDF8;
+
+    transform:translateX(5px);
+
+}
+
+
+
+
+.sidebar-menu a.active{
+
+    background:
+
+    linear-gradient(
         90deg,
-        #2979ff,
-        #4f46e5
+        rgba(10,132,255,.25),
+        rgba(56,189,248,.15)
     );
 
+    color:#38BDF8;
+
     box-shadow:
-    0 0 20px rgba(41,121,255,.45);
+
+    0 0 20px rgba(56,189,248,.15);
 
 }
+
+
+
 
 
 /* ===========================
-   LOGOUT
+   FOOTER
 =========================== */
 
-.sidebar nav a:last-child{
+
+.sidebar-footer{
 
     margin-top:auto;
 
-    color:#ffb4b4;
-
-}
-
-.sidebar nav a:last-child:hover{
-
-    background:rgba(255,80,80,.15);
-
 }
 
 
-/* ===========================
-   OVERLAY
-=========================== */
 
-.overlay{
-
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,.45);
-
-    backdrop-filter:blur(2px);
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transition:.3s;
-
-    z-index:900;
-
-}
-
-.overlay.show{
-
-    opacity:1;
-
-    visibility:visible;
-
-}
-
-
-/* ===========================
-   MENU BUTTON
-=========================== */
-
-.menu-btn{
-
-    display:none;
-
-    position:fixed;
-
-    top:18px;
-
-    left:18px;
-
-    width:50px;
-
-    height:50px;
-
-    border:none;
-
-    border-radius:14px;
-
-    background:#2979ff;
-
-    color:white;
-
-    font-size:26px;
-
-    cursor:pointer;
-
-    z-index:1100;
-
-}
 
 
 /* ===========================
    MOBILE
 =========================== */
 
+
 @media(max-width:768px){
+
 
     .sidebar{
 
-        left:-300px;
+        transform:translateX(-100%);
+
+        box-shadow:
+
+        15px 0 40px rgba(0,0,0,.5);
 
     }
 
-    .sidebar.show{
 
-        left:0;
 
-    }
+    .sidebar.active{
 
-    .menu-btn{
-
-        display:flex;
-
-        justify-content:center;
-
-        align-items:center;
+        transform:translateX(0);
 
     }
+
 
 }
-.sidebar nav a{
+.sidebar-overlay{
 
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
+    display:none;
 
 }
 
-.sidebar nav i{
 
-    width:20px;
 
-    height:20px;
+@media(max-width:768px){
 
-    flex-shrink:0;
+
+    .sidebar-overlay{
+
+        position:fixed;
+
+        inset:0;
+
+        background:rgba(0,0,0,.55);
+
+        z-index:999;
+
+    }
+
+
+    .sidebar-overlay.active{
+
+        display:block;
+
+    }
+
 
 }

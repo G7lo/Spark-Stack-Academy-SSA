@@ -20,6 +20,9 @@ document.getElementById("studentName");
 const studentLevel =
 document.getElementById("studentLevel");
 
+const studentAdmission =
+document.getElementById("studentAdmission");
+
 const courseCount =
 document.getElementById("courseCount");
 
@@ -71,6 +74,9 @@ onAuthStateChanged(auth, async(user)=>{
         studentLevel.textContent =
         student.level || "SSA Learner";
 
+
+studentAdmission.textContent =
+`Admission No: ${student.admissionNo || "Not Assigned"}`;
 
         /* -----------------------------
            ENROLLMENTS

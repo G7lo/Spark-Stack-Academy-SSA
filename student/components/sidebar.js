@@ -1,110 +1,100 @@
-const css = document.createElement("link");
+// ===========================
+// SSA SIDEBAR COMPONENT
+// ===========================
 
-css.rel = "stylesheet";
 
-css.href = "components/sidebar.css";
-
-document.head.appendChild(css);
-
-const container =
+const sidebarContainer = 
 document.getElementById("sidebarContainer");
 
+
+
+// Load sidebar CSS
+
+const sidebarCSS = document.createElement("link");
+
+sidebarCSS.rel = "stylesheet";
+
+sidebarCSS.href = "components/sidebar.css";
+
+document.head.appendChild(sidebarCSS);
+
+
+
+
+
+// Load sidebar HTML
+
 fetch("components/sidebar.html")
-.then(response => response.text())
-.then(html=>{
 
-    container.innerHTML = html;
+.then(res => res.text())
 
-    initSidebar();
-
-});
+.then(html => {
 
 
-function initSidebar(){
-
-    const sidebar =
-    document.getElementById("sidebar");
-
-    const overlay =
-    document.getElementById("overlay");
+    sidebarContainer.innerHTML = html;
 
 
-    const menuBtn =
-    document.getElementById("menuBtn");
 
+    if(typeof lucide !== "undefined"){
 
-    if(menuBtn){
-
-        menuBtn.addEventListener("click",()=>{
-
-            sidebar.classList.toggle("show");
-
-            overlay.classList.toggle("show");
-
-        });
+        lucide.createIcons();
 
     }
 
 
-    overlay.addEventListener("click",()=>{
 
-        sidebar.classList.remove("show");
+    setupSidebarMenu();
 
-        overlay.classList.remove("show");
+
+});
+
+
+
+
+
+function setupSidebarMenu(){
+
+
+    const menuBtn = 
+    document.getElementById("menuBtn");
+
+
+    const sidebar =
+    document.querySelector(".sidebar");
+
+
+
+    if(!menuBtn || !sidebar) return;
+
+
+
+    menuBtn.addEventListener("click",()=>{
+
+
+        sidebar.classList.toggle("active");
+
 
     });
 
 
-    const currentPage =
-window.location.pathname.split("/").pop();
 
-document
-.querySelectorAll("[data-page]")
-.forEach(link=>{
 
-    const page =
-    link.dataset.page;
+    document.addEventListener("click",(e)=>{
 
-    let href = "";
 
-    switch(page){
+        if(
+            window.innerWidth <= 768 &&
+            !sidebar.contains(e.target) &&
+            !menuBtn.contains(e.target)
 
-        case "dashboard":
-            href = "dashboard.html";
-            break;
+        ){
 
-        case "courses":
-            href = "courses.html";
-            break;
+            sidebar.classList.remove("active");
 
-        case "my-courses":
-            href = "my-courses.html";
-            break;
+        }
 
-        case "certificates":
-            href = "certificates.html";
-            break;
 
-        case "settings":
-            href = "settings.html";
-            break;
+    });
 
-        case "logout":
-            href = "../login.html";
-            break;
-
-    }
-
-    link.href = href;
-
-    if(currentPage === href){
-
-        link.classList.add("active");
-
-    }
-
-});
 
 }
-
-lucide.createIcons();

@@ -201,22 +201,39 @@ enrollBtn.addEventListener("click",async()=>{
 
 
 
-    await addDoc(
-        collection(db,"enrollments"),
-        {
+    const studentSnap =
+await getDoc(
+    doc(db,"students",currentUser.uid)
+);
 
-            studentId:
-            currentUser.uid,
 
-            courseId,
+const student =
+studentSnap.data();
 
-            enrolledAt:
-            serverTimestamp(),
 
-            progress:0
 
-        }
-    );
+await addDoc(
+    collection(db,"enrollments"),
+    {
+
+        studentId:
+        currentUser.uid,
+
+        studentName:
+        student.name,
+
+        admissionNo:
+        student.admissionNo,
+
+        courseId,
+
+        enrolledAt:
+        serverTimestamp(),
+
+        progress:0
+
+    }
+);
 
 
     alert("🎉 Enrolled successfully!");

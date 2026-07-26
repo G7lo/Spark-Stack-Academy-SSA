@@ -4,146 +4,253 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<title>SSA | Student Dashboard</title>
 
-<title>Student Dashboard | Spark Stack Academy</title>
 
 <link rel="stylesheet" href="dashboard.css">
+<link rel="stylesheet" href="components/sidebar.css">
 
 </head>
 
+
 <body>
+
 
 <div class="dashboard-layout">
 
-<div id="sidebarContainer"></div>
+
+<aside id="sidebarContainer"></aside>
+
 
 <main class="student-dashboard">
 
-<button id="menuBtn" class="menu-btn">
-☰
-</button>
 
-<header class="student-header">
-
-<h1>
-Welcome to Spark Stack Academy 🎓
-</h1>
-
-<p>
-Your learning journey starts here.
-</p>
-
-</header>
+    <div id="topbarContainer"></div>
 
 
 
-<section class="student-profile">
 
-<div class="profile-avatar">
-<i data-lucide="user-round"></i>
-</div>
 
-<div class="profile-info">
+        <!-- WELCOME HEADER -->
 
-<h2 id="studentName">
-Loading...
-</h2>
+        <section class="student-header">
 
-<p id="studentLevel">
-SSA Learner
-</p>
+            <h1>
+                Welcome back 👋
+            </h1>
 
-<span class="badge">
-Active Student
-</span>
+            <p>
+                Continue your learning journey at Spark Stack Academy.
+            </p>
 
-</div>
-
-</section>
+        </section>
 
 
 
-<section class="student-cards">
 
-<div class="student-card">
 
-<h3>Courses</h3>
 
-<p id="courseCount">
-0 Enrolled
-</p>
+        <!-- STUDENT PROFILE -->
 
-</div>
+        <section class="student-profile">
 
-<div class="student-card">
 
-<h3>Progress</h3>
+            <div class="profile-avatar" id="studentAvatar">
 
-<p id="progressCount">
-0% Complete
-</p>
+                S
+
+            </div>
+
+
+
+            <div class="profile-info">
+
+    <h2 id="studentName">
+        Student Name
+    </h2>
+
+
+    <p id="studentEmail">
+        student@email.com
+    </p>
+
+
+    <p id="studentAdmission">
+        Admission No: Loading...
+    </p>
+
+
+    <span class="badge">
+        Student
+    </span>
 
 </div>
 
-<div class="student-card">
 
-<h3>Certificates</h3>
+        </section>
 
-<p id="certificateCount">
-0 Earned
-</p>
+
+
+
+
+
+
+        <!-- DASHBOARD STATS -->
+
+        <section class="student-cards">
+
+
+            <div class="student-card">
+
+
+                <h3>
+                    My Courses
+                </h3>
+
+
+                <p id="courseCount">
+                    0
+                </p>
+
+
+            </div>
+
+
+
+
+
+            <div class="student-card">
+
+
+                <h3>
+                    Completed Lessons
+                </h3>
+
+
+                <p id="lessonCount">
+                    0
+                </p>
+
+
+            </div>
+
+
+
+
+
+            <div class="student-card">
+
+
+                <h3>
+                    Progress
+                </h3>
+
+
+                <p id="progressPercent">
+                    0%
+                </p>
+
+
+            </div>
+
+
+
+        </section>
+
+
+
+
+
+
+
+        <!-- RECENT LEARNING -->
+
+
+        <section class="recent-learning">
+
+
+            <h2>
+                Recent Learning
+            </h2>
+
+
+            <div id="recentLessons" class="empty-state">
+
+
+                No lessons started yet.
+
+
+            </div>
+
+
+
+        </section>
+
+
+
+
+
+
+
+        <!-- COURSE PROGRESS -->
+
+
+        <section class="course-progress">
+
+
+            <h2>
+                Course Progress
+            </h2>
+
+
+
+            <div class="progress-card">
+
+
+                <div class="progress-bar">
+
+
+                    <div 
+                    class="progress-fill"
+                    id="progressBar">
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+
+
+    </main>
+
 
 </div>
 
-</section>
 
 
 
-<section class="recent-learning">
 
-<h2>
-Continue Learning
-</h2>
-
-<div
-id="continueLearning"
-class="empty-state">
-
-Loading courses...
-
-</div>
-
-</section>
-
-
-
-<section class="course-progress">
-
-<h2>
-My Learning Progress
-</h2>
-
-<div id="progressList">
-
-Loading progress...
-
-</div>
-
-</section>
-
-</main>
-
-</div>
 
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <script src="components/sidebar.js"></script>
 
+<script src="components/topbar.js"></script>
+
 <script type="module" src="dashboard.js"></script>
 
+
+
 </body>
+
 
 </html>

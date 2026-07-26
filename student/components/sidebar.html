@@ -1,52 +1,95 @@
-<aside class="sidebar" id="sidebar">
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="sidebar">
+
 
     <div class="sidebar-logo">
 
-        <h2>SSA</h2>
+        <h2>
+            SSA
+        </h2>
 
-        <p>Student Portal</p>
+        <span>
+            Student Portal
+        </span>
 
     </div>
 
-    <nav>
 
-        <a data-page="dashboard">
+
+
+
+    <nav class="sidebar-menu">
+
+
+        <a href="dashboard.html" class="active">
+
             <i data-lucide="layout-dashboard"></i>
-            <span>Dashboard</span>
+
+            Dashboard
+
         </a>
 
-        <a data-page="courses">
-            <i data-lucide="search"></i>
-            <span>Browse Courses</span>
-        </a>
 
-        <a data-page="my-courses">
+
+        <a href="courses.html">
+
             <i data-lucide="book-open"></i>
-            <span>My Courses</span>
+
+            Browse Courses
+
         </a>
 
-        <a data-page="certificates">
-            <i data-lucide="award"></i>
-            <span>Certificates</span>
+
+
+        <a href="my-courses.html">
+
+            <i data-lucide="graduation-cap"></i>
+
+            My Courses
+
         </a>
 
-        <a data-page="notifications">
-            <i data-lucide="bell"></i>
-            <span>Notifications</span>
+
+
+        <a href="progress.html">
+
+            <i data-lucide="chart-line"></i>
+
+            Progress
+
         </a>
 
-        <a data-page="settings">
+
+
+        <a href="settings.html">
+
             <i data-lucide="settings"></i>
-            <span>Settings</span>
+
+            Settings
+
         </a>
 
-        <a data-page="logout">
-            <i data-lucide="log-out"></i>
-            <span>Logout</span>
-        </a>
 
     </nav>
 
-</aside>
 
-<div id="overlay" class="overlay"></div>
+
+
+
+
+    <div class="sidebar-footer">
+
+
+        <a href="#">
+
+            <i data-lucide="log-out"></i>
+
+            Logout
+
+        </a>
+
+
+    </div>
+
+
+</div>
