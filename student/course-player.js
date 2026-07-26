@@ -11,7 +11,8 @@ import {
     addDoc,
     serverTimestamp,
     limit,
-    updateDoc
+    updateDoc,
+    setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -392,6 +393,28 @@ if(!enrollmentSnapshot.empty){
             progress: progress
         }
     );
+
+if(progress >= 100){
+
+    const certificateId =
+    `${currentUser.uid}_${courseId}`;
+
+    await setDoc(
+        doc(db,"certificates",certificateId),
+        {
+
+            studentId: currentUser.uid,
+
+            courseId: courseId,
+
+            issuedAt: serverTimestamp()
+
+        }
+    );
+
+    alert("🏆 Congratulations! You earned your certificate.");
+
+}
 
 }
 
