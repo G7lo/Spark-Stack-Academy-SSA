@@ -52,42 +52,30 @@ lessonForm.addEventListener("submit",async(e)=>{
     try{
 
         await addDoc(
+    collection(db, "lessons"),
+    {
 
-            collection(db,"lessons"),
+        courseId,
+        moduleId,
 
-            {
+        title: lessonTitle.value.trim(),
 
-                courseId,
+        description: notes.value.trim(),
 
-                moduleId,
+        videoUrl: videoUrl.value.trim(),
 
-                title:
-                lessonTitle.value.trim(),
+        duration: duration.value.trim(),
 
-                video:
-                videoUrl.value.trim(),
+        resourceUrl: resource.value.trim(),
 
-                duration:
-                duration.value.trim(),
+        freePreview: freePreview.checked,
 
-                notes:
-                notes.value.trim(),
+        order: Number(lessonOrder.value) || 1,
 
-                resource:
-                resource.value.trim(),
+        createdAt: serverTimestamp()
 
-                freePreview:
-                freePreview.checked,
-
-                order:
-                Number(lessonOrder.value) || 1,
-
-                createdAt:
-                serverTimestamp()
-
-            }
-
-        );
+    }
+);
 
         alert("🎉 Lesson added successfully!");
 

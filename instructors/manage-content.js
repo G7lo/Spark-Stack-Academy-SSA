@@ -297,8 +297,10 @@ async function loadLessons(moduleId){
 
 
 
-window.location.href =
-`add-lesson.html?course=${courseId}&module=${moduleId}`;
+window.addLesson = function(moduleId){
+
+    window.location.href =
+    `add-lesson.html?course=${courseId}&module=${moduleId}`;
 
 };
 
