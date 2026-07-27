@@ -26,6 +26,46 @@ import {
 
 
 /* ===========================
+   LOAD COMPONENT CSS
+=========================== */
+
+function loadComponentCSS(){
+
+    const styles = [
+
+        "../components/sidebar.css",
+
+        "../components/topbar.css"
+
+    ];
+
+
+    styles.forEach(file=>{
+
+
+        const link =
+        document.createElement("link");
+
+
+        link.rel =
+        "stylesheet";
+
+
+        link.href =
+        file;
+
+
+        document.head.appendChild(link);
+
+
+    });
+
+
+}
+
+
+
+/* ===========================
    LOAD SIDEBAR
 =========================== */
 
@@ -40,13 +80,15 @@ async function loadSidebar(){
     if(!container) return;
 
 
+
     try{
 
 
         const response =
         await fetch(
-            "components/sidebar.html"
+            "../components/sidebar.html"
         );
+
 
 
         container.innerHTML =
@@ -61,19 +103,24 @@ async function loadSidebar(){
         }
 
 
+
     }
 
 
     catch(error){
 
+
         console.error(
-            "Sidebar error:",
+            "Sidebar loading error:",
             error
         );
 
+
     }
 
+
 }
+
 
 
 
@@ -82,6 +129,7 @@ async function loadSidebar(){
 =========================== */
 
 async function loadTopbar(){
+
 
     const container =
     document.getElementById(
@@ -92,13 +140,15 @@ async function loadTopbar(){
     if(!container) return;
 
 
+
     try{
 
 
         const response =
         await fetch(
-            "components/topbar.html"
+            "../components/topbar.html"
         );
+
 
 
         container.innerHTML =
@@ -113,108 +163,126 @@ async function loadTopbar(){
         }
 
 
+
     }
 
 
     catch(error){
 
+
         console.error(
-            "Topbar error:",
+            "Topbar loading error:",
             error
         );
 
+
     }
 
+
 }
+
+
+
+
+
 /* ===========================
    ADMIN AUTH CHECK
 =========================== */
 
-
 function checkAdmin(){
 
 
-onAuthStateChanged(
-auth,
-async(user)=>{
+    onAuthStateChanged(
+        auth,
+        async(user)=>{
 
 
-    if(!user){
-
-        window.location.href =
-        "../login.html";
-
-        return;
-
-    }
+            if(!user){
 
 
+                window.location.href =
+                "../login.html";
 
-    try{
+
+                return;
 
 
-        const adminRef =
-        doc(
-            db,
-            "admins",
-            user.uid
-        );
+            }
 
 
 
-        const adminSnap =
-        await getDoc(adminRef);
+
+            try{
+
+
+                const adminRef =
+                doc(
+                    db,
+                    "admins",
+                    user.uid
+                );
 
 
 
-        if(!adminSnap.exists()){
+                const adminSnap =
+                await getDoc(adminRef);
 
 
-            alert(
-                "Access denied"
-            );
 
 
-            window.location.href =
-            "../index.html";
+                if(!adminSnap.exists()){
 
 
-            return;
+                    console.error(
+                        "Admin profile missing"
+                    );
+
+
+                    window.location.href =
+                    "../index.html";
+
+
+                    return;
+
+
+                }
+
+
+
+                console.log(
+                    "Admin verified:",
+                    user.email
+                );
+
+
+
+            }
+
+
+
+            catch(error){
+
+
+                console.error(
+                    "Admin verification error:",
+                    error
+                );
+
+
+                window.location.href =
+                "../index.html";
+
+
+            }
+
+
 
         }
-
-
-
-        console.log(
-            "Admin verified:",
-            user.email
-        );
-
-
-
-    }
-
-
-    catch(error){
-
-
-        console.error(
-            "Admin verification error:",
-            error
-        );
-
-
-        window.location.href =
-        "../index.html";
-
-
-    }
-
-
-});
+    );
 
 
 }
+
 
 
 
@@ -223,6 +291,8 @@ async(user)=>{
    START ADMIN APP
 =========================== */
 
+
+loadComponentCSS();
 
 loadSidebar();
 
