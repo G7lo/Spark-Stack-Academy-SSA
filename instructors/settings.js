@@ -11,6 +11,11 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+
+/* ===========================
+   DOM
+=========================== */
+
 const nameInput =
 document.getElementById("name");
 
@@ -30,11 +35,56 @@ const changePasswordBtn =
 document.getElementById("changePasswordBtn");
 
 
-let instructor = null;
+
+let currentUser = null;
 
 
+
+/* ===========================
+   TOAST
+=========================== */
+
+function showToast(message){
+
+    let toast =
+    document.getElementById("toast");
+
+
+    if(!toast){
+
+        toast =
+        document.createElement("div");
+
+        toast.id="toast";
+
+        toast.className="toast";
+
+        document.body.appendChild(toast);
+
+    }
+
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+    },3000);
+
+}
+
+
+
+/* ===========================
+   LOAD PROFILE
+=========================== */
 
 onAuthStateChanged(auth, async(user)=>{
+
 
     if(!user){
 
@@ -45,79 +95,126 @@ onAuthStateChanged(auth, async(user)=>{
 
     }
 
-    instructor = user;
+
+    currentUser = user;
+
 
     try{
 
-        const instructorRef =
-        doc(db,"instructors",user.uid);
 
-        const instructorSnap =
-        await getDoc(instructorRef);
+        const profileRef =
+        doc(
+            db,
+            "instructors",
+            user.uid
+        );
 
-        if(!instructorSnap.exists()){
 
-            alert("Instructor profile not found.");
+        const snapshot =
+        await getDoc(profileRef);
+
+
+
+        if(!snapshot.exists()){
+
+            showToast(
+                "Instructor profile not found."
+            );
 
             return;
 
         }
 
+
+
         const data =
-        instructorSnap.data();
+        snapshot.data();
+
+
 
         nameInput.value =
         data.name || "";
 
+
         emailInput.value =
-        data.email || "";
+        data.email || user.email;
+
 
         bioInput.value =
         data.bio || "";
 
+
         expertiseInput.value =
         data.expertise || "";
 
+
+
     }
+
 
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Profile loading error:",
+            error
+        );
 
-        alert("Failed to load profile.");
+
+        showToast(
+            "Failed to load profile."
+        );
 
     }
+
 
 });
 
 
 
-saveProfileBtn.addEventListener("click",async()=>{
+/* ===========================
+   SAVE PROFILE
+=========================== */
 
-    if(!instructor){
+saveProfileBtn.addEventListener(
+"click",
+async()=>{
+
+
+    if(!currentUser){
 
         return;
 
     }
+
+
 
     saveProfileBtn.disabled = true;
 
     saveProfileBtn.textContent =
     "Saving...";
 
+
+
     try{
+
 
         await updateDoc(
 
-            doc(db,"instructors",instructor.uid),
+            doc(
+                db,
+                "instructors",
+                currentUser.uid
+            ),
 
             {
 
                 name:
                 nameInput.value.trim(),
 
+
                 bio:
                 bioInput.value.trim(),
+
 
                 expertise:
                 expertiseInput.value.trim()
@@ -126,37 +223,61 @@ saveProfileBtn.addEventListener("click",async()=>{
 
         );
 
-        alert("✅ Profile updated successfully!");
+
+
+        showToast(
+            "✅ Profile updated successfully"
+        );
+
 
     }
+
 
     catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
-        alert(error.message);
+
+        showToast(
+            "Failed to update profile"
+        );
 
     }
 
+
+
     finally{
 
-        saveProfileBtn.disabled = false;
+
+        saveProfileBtn.disabled =
+        false;
+
 
         saveProfileBtn.textContent =
         "💾 Save Profile";
 
+
     }
+
 
 });
 
 
 
-changePasswordBtn.addEventListener("click",()=>{
+/* ===========================
+   PASSWORD
+=========================== */
 
-    alert(
+changePasswordBtn.addEventListener(
+"click",
+()=>{
 
-        "Password reset will be available in a future update."
 
+    showToast(
+        "🔒 Password reset coming soon"
     );
+
 
 });

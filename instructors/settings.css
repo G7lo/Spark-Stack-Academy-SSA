@@ -1,3 +1,8 @@
+/* ===========================
+   SSA INSTRUCTOR SETTINGS
+=========================== */
+
+
 *{
 
 margin:0;
@@ -6,13 +11,50 @@ box-sizing:border-box;
 
 }
 
-body{
 
-font-family:Arial,sans-serif;
-background:#f4f7fb;
-color:#1f2937;
+:root{
+
+--primary:#059669;
+--primary-light:#10b981;
+--primary-dark:#047857;
+
+--bg:#f7fefb;
+--card:rgba(255,255,255,.75);
+--border:rgba(255,255,255,.8);
+
+--text:#1f2937;
+--muted:#64748b;
 
 }
+
+
+
+
+body{
+
+font-family:Inter,Arial,sans-serif;
+
+background:
+
+radial-gradient(
+circle at top,
+#ecfdf5,
+#f7fefb 60%
+);
+
+color:var(--text);
+
+min-height:100vh;
+
+}
+
+
+
+
+/* ===========================
+LAYOUT
+=========================== */
+
 
 .dashboard-layout{
 
@@ -21,24 +63,35 @@ min-height:100vh;
 
 }
 
+
+
 .main-content{
 
 flex:1;
-display:flex;
-flex-direction:column;
+margin-left:280px;
 
 }
+
+
+
+
+/* ===========================
+PAGE
+=========================== */
+
 
 .settings-page{
 
-padding:30px;
-margin-top:80px;
 max-width:1000px;
+
 width:100%;
-margin-left:auto;
-margin-right:auto;
+
+margin:30px auto;
+
+padding:30px;
 
 }
+
 
 
 .page-header{
@@ -48,33 +101,71 @@ margin-bottom:30px;
 }
 
 
+
 .page-header h1{
 
-font-size:2rem;
-color:#2563eb;
-margin-bottom:8px;
+font-size:34px;
+
+font-weight:800;
+
+color:#047857;
 
 }
+
 
 
 .page-header p{
 
-color:#6b7280;
+margin-top:8px;
+
+color:var(--muted);
 
 }
 
 
 
+
+
+/* ===========================
+CARDS
+=========================== */
+
+
 .settings-card{
 
-background:#fff;
-padding:28px;
-border-radius:18px;
-margin-bottom:25px;
-border:1px solid #e5e7eb;
-box-shadow:0 10px 30px rgba(0,0,0,.08);
+background:var(--card);
 
-animation:fadeIn .3s ease;
+border:
+
+1px solid var(--border);
+
+border-radius:24px;
+
+padding:30px;
+
+margin-bottom:25px;
+
+backdrop-filter:blur(20px);
+
+box-shadow:
+
+0 20px 45px rgba(0,0,0,.08);
+
+transition:.3s;
+
+animation:fadeIn .35s ease;
+
+}
+
+
+
+.settings-card:hover{
+
+transform:translateY(-3px);
+
+box-shadow:
+
+0 25px 50px rgba(5,150,105,.12);
 
 }
 
@@ -82,17 +173,29 @@ animation:fadeIn .3s ease;
 
 .settings-card h2{
 
-margin-bottom:20px;
-color:#111827;
+margin-bottom:22px;
+
+color:#047857;
+
+font-size:22px;
 
 }
 
 
 
+
+
+/* ===========================
+FORM
+=========================== */
+
+
 .form-group{
 
 display:flex;
+
 flex-direction:column;
+
 margin-bottom:20px;
 
 }
@@ -101,9 +204,13 @@ margin-bottom:20px;
 
 .form-group label{
 
-font-weight:600;
-margin-bottom:8px;
 font-size:14px;
+
+font-weight:700;
+
+margin-bottom:8px;
+
+color:#334155;
 
 }
 
@@ -113,12 +220,20 @@ font-size:14px;
 
 .form-group textarea{
 
-padding:14px 16px;
-border-radius:12px;
-border:1px solid #d1d5db;
+padding:15px 18px;
+
+border-radius:14px;
+
+border:
+
+1px solid #d1fae5;
+
+background:#f0fdf4;
+
 font-size:15px;
-background:#fafafa;
+
 outline:none;
+
 transition:.25s;
 
 }
@@ -137,9 +252,13 @@ resize:vertical;
 
 .form-group textarea:focus{
 
-background:#fff;
-border-color:#2563eb;
-box-shadow:0 0 0 4px rgba(37,99,235,.15);
+background:white;
+
+border-color:var(--primary);
+
+box-shadow:
+
+0 0 0 4px rgba(16,185,129,.15);
 
 }
 
@@ -148,10 +267,16 @@ box-shadow:0 0 0 4px rgba(37,99,235,.15);
 .form-group input:disabled{
 
 background:#e5e7eb;
-cursor:not-allowed;
 
 }
 
+
+
+
+
+/* ===========================
+BUTTONS
+=========================== */
 
 
 .primary-btn,
@@ -161,37 +286,56 @@ cursor:not-allowed;
 .danger-btn{
 
 border:none;
-padding:14px 22px;
-border-radius:12px;
-font-weight:600;
+
+padding:14px 24px;
+
+border-radius:14px;
+
+font-weight:700;
+
 cursor:pointer;
-transition:.25s;
+
+transition:.3s;
 
 }
+
 
 
 
 .primary-btn{
 
-background:#2563eb;
+background:
+
+linear-gradient(
+135deg,
+#059669,
+#10b981
+);
+
 color:white;
 
+box-shadow:
+
+0 12px 30px rgba(5,150,105,.25);
+
 }
+
 
 
 .primary-btn:hover{
 
-background:#1d4ed8;
-transform:translateY(-2px);
+transform:translateY(-3px);
 
 }
+
 
 
 
 .secondary-btn{
 
-background:#eef2ff;
-color:#3730a3;
+background:#ecfdf5;
+
+color:#047857;
 
 }
 
@@ -199,18 +343,28 @@ color:#3730a3;
 
 .secondary-btn:hover{
 
-background:#dbeafe;
+background:#d1fae5;
 
 }
 
 
 
+
+/* ===========================
+SWITCHES
+=========================== */
+
+
 .switch{
 
 display:flex;
+
 align-items:center;
+
 gap:12px;
-margin-bottom:15px;
+
+margin-bottom:18px;
+
 font-weight:600;
 
 }
@@ -219,16 +373,40 @@ font-weight:600;
 
 .switch input{
 
-width:18px;
-height:18px;
+width:20px;
+
+height:20px;
+
+accent-color:#059669;
 
 }
 
 
 
+
+
+/* ===========================
+DANGER
+=========================== */
+
+
 .danger{
 
-border:1px solid #fecaca;
+border:
+
+1px solid #fecaca;
+
+background:
+
+rgba(254,226,226,.55);
+
+}
+
+
+
+.danger h2{
+
+color:#dc2626;
 
 }
 
@@ -237,6 +415,7 @@ border:1px solid #fecaca;
 .danger-btn{
 
 background:#dc2626;
+
 color:white;
 
 }
@@ -247,8 +426,17 @@ color:white;
 
 background:#b91c1c;
 
+transform:translateY(-2px);
+
 }
 
+
+
+
+
+/* ===========================
+ANIMATION
+=========================== */
 
 
 @keyframes fadeIn{
@@ -256,6 +444,7 @@ background:#b91c1c;
 from{
 
 opacity:0;
+
 transform:translateY(15px);
 
 }
@@ -263,6 +452,7 @@ transform:translateY(15px);
 to{
 
 opacity:1;
+
 transform:translateY(0);
 
 }
@@ -271,14 +461,36 @@ transform:translateY(0);
 
 
 
-@media(max-width:768px){
+
+
+/* ===========================
+MOBILE
+=========================== */
+
+
+@media(max-width:900px){
+
+
+.main-content{
+
+margin-left:0;
+
+}
+
 
 .settings-page{
 
 padding:20px;
-margin-top:75px;
 
 }
+
+
+
+}
+
+
+
+@media(max-width:480px){
 
 
 .settings-card{
@@ -288,16 +500,6 @@ padding:20px;
 }
 
 
-.page-header h1{
-
-font-size:1.6rem;
-
-}
-
-}
-
-
-@media(max-width:480px){
 
 .primary-btn,
 
@@ -308,5 +510,75 @@ font-size:1.6rem;
 width:100%;
 
 }
+
+
+.page-header h1{
+
+font-size:26px;
+
+}
+
+
+}
+/* ===========================
+   SSA TOAST
+=========================== */
+
+.toast{
+
+    position:fixed;
+
+    bottom:30px;
+
+    right:30px;
+
+    background:#2563eb;
+
+    color:white;
+
+    padding:15px 24px;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    box-shadow:
+    0 15px 40px rgba(37,99,235,.35);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transform:translateY(20px);
+
+    transition:.3s;
+
+    z-index:9999;
+
+}
+
+
+.toast.show{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+}
+
+
+@media(max-width:768px){
+
+    .toast{
+
+        left:20px;
+
+        right:20px;
+
+        bottom:20px;
+
+        text-align:center;
+
+    }
 
 }
