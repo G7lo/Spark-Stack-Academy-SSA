@@ -109,7 +109,7 @@ function loadStudentData(){
 
             updateStudentUI(student);
             loadContinueCourses(user.uid);
-            loadDashboardStats(user.uid);
+            loadStudentStats(student);
 
 
 
@@ -176,6 +176,10 @@ function updateStudentUI(student){
             "studentEmail"
         ),
 
+admission:
+document.getElementById(
+    "studentAdmission"
+),
 
         profileAvatar:
         document.getElementById(
@@ -219,7 +223,13 @@ function updateStudentUI(student){
 
     }
 
+if(elements.admission){
 
+    elements.admission.textContent =
+    "Admission: " +
+    (student.admissionNumber || "Pending");
+
+}
 
     if(elements.profileAvatar){
 
@@ -451,123 +461,30 @@ async function loadContinueCourses(uid){
     }
 
 }
-async function loadDashboardStats(uid){
+
+function loadStudentStats(student){
+
+    const stats =
+    student.stats || {};
 
 
-    try{
+    document.getElementById("courseCount")
+    .textContent =
+    stats.coursesEnrolled || 0;
 
 
-        const enrollmentQuery =
-        query(
-            collection(db,"enrollments"),
-            where("studentId","==",uid)
-        );
+    document.getElementById("lessonCount")
+    .textContent =
+    stats.lessonsCompleted || 0;
 
 
-        const enrollmentSnap =
-        await getDocs(enrollmentQuery);
+    document.getElementById("progressPercent")
+    .textContent =
+    (stats.progress || 0) + "%";
 
 
-
-        let courseCount = 0;
-        let totalProgress = 0;
-        let totalLessons = 0;
-
-
-
-        for(const enrollment of enrollmentSnap.docs){
-
-
-            const data =
-            enrollment.data();
-
-
-            courseCount++;
-
-
-            totalProgress +=
-            data.progress || 0;
-
-
-
-            const courseSnap =
-            await getDoc(
-                doc(
-                    db,
-                    "courses",
-                    data.courseId
-                )
-            );
-
-
-            if(courseSnap.exists()){
-
-                const course =
-                courseSnap.data();
-
-
-                totalLessons +=
-                course.lessons || 0;
-
-            }
-
-
-        }
-
-
-
-        const averageProgress =
-        courseCount > 0
-        ?
-        Math.round(totalProgress / courseCount)
-        :
-        0;
-
-
-
-        const studentSnap =
-        await getDoc(
-            doc(db,"students",uid)
-        );
-
-
-        let certificates = 0;
-
-
-        if(studentSnap.exists()){
-
-            certificates =
-            studentSnap.data().certificates || 0;
-
-        }
-
-
-
-        document.getElementById("courseCount").textContent =
-        courseCount;
-
-
-        document.getElementById("lessonCount").textContent =
-        totalLessons;
-
-
-        document.getElementById("progressPercent").textContent =
-        averageProgress + "%";
-
-
-        document.getElementById("certificateCount").textContent =
-        certificates;
-
-
-
-    }
-    catch(error){
-
-        console.error(
-            "Dashboard stats:",
-            error
-        );
-
-    }
+    document.getElementById("certificateCount")
+    .textContent =
+    stats.certificates || 0;
 
 }
