@@ -1,3 +1,33 @@
+/* ===========================
+   SSA CREATE COURSE
+   INSTRUCTOR THEME
+=========================== */
+
+
+:root{
+
+--primary:#059669;
+--primary-light:#10b981;
+--primary-dark:#047857;
+
+--bg:#f7fefb;
+
+--text:#1f2937;
+--muted:#64748b;
+
+--glass:rgba(255,255,255,.75);
+
+--border:rgba(255,255,255,.7);
+
+}
+
+
+
+/* ===========================
+   RESET
+=========================== */
+
+
 *{
 
 margin:0;
@@ -6,40 +36,40 @@ box-sizing:border-box;
 
 }
 
+
 body{
 
-font-family:Arial,sans-serif;
-background:#f4f7fb;
-color:#1f2937;
+font-family:Inter,Arial,sans-serif;
+
+background:var(--bg);
+
+color:var(--text);
 
 }
 
-.dashboard-layout{
 
-display:flex;
-min-height:100vh;
 
-}
+/* ===========================
+   PAGE
+=========================== */
 
-.main-content{
-
-flex:1;
-display:flex;
-flex-direction:column;
-
-}
 
 .create-course-page{
 
-flex:1;
 padding:30px;
-margin-top:80px;
+
 max-width:1000px;
-width:100%;
-margin-left:auto;
-margin-right:auto;
+
+margin:0 auto;
 
 }
+
+
+
+/* ===========================
+   HEADER
+=========================== */
+
 
 .page-header{
 
@@ -47,67 +77,118 @@ margin-bottom:30px;
 
 }
 
+
+
 .page-header h1{
 
-font-size:2rem;
-color:#1e3a8a;
-margin-bottom:8px;
+font-size:32px;
+
+font-weight:800;
+
+color:var(--text);
 
 }
+
+
 
 .page-header p{
 
-color:#6b7280;
+margin-top:8px;
+
+color:var(--muted);
 
 }
+
+
+
+/* ===========================
+   FORM
+=========================== */
+
 
 #courseForm{
 
 display:flex;
+
 flex-direction:column;
+
 gap:25px;
 
 }
 
+
+
+/* ===========================
+   GLASS CARDS
+=========================== */
+
+
 .course-card{
 
-background:#fff;
-border-radius:18px;
-padding:28px;
-box-shadow:0 10px 35px rgba(0,0,0,.08);
-border:1px solid #e5e7eb;
+background:var(--glass);
+
+backdrop-filter:blur(20px);
+
+border:
+
+1px solid var(--border);
+
+border-radius:24px;
+
+padding:30px;
+
+box-shadow:
+
+0 20px 45px rgba(0,0,0,.08);
+
+animation:fadeIn .35s ease;
 
 }
+
+
 
 .course-card h2{
 
-margin-bottom:22px;
-color:#111827;
+font-size:22px;
+
+margin-bottom:25px;
+
+color:var(--primary-dark);
 
 }
+
+
+
+/* ===========================
+   INPUTS
+=========================== */
+
 
 .form-group{
 
 display:flex;
+
 flex-direction:column;
+
+gap:8px;
+
 margin-bottom:20px;
 
 }
 
-.form-group:last-child{
 
-margin-bottom:0;
-
-}
 
 .form-group label{
 
-margin-bottom:8px;
 font-size:14px;
-font-weight:600;
-color:#374151;
+
+font-weight:700;
+
+color:var(--text);
 
 }
+
+
 
 .form-group input,
 
@@ -115,23 +196,38 @@ color:#374151;
 
 .form-group select{
 
+
 width:100%;
-padding:14px 16px;
-border:1px solid #d1d5db;
-border-radius:12px;
-background:#fafafa;
-font-size:15px;
+
+padding:15px 18px;
+
+border-radius:15px;
+
+border:
+
+1px solid #d1d5db;
+
+background:
+
+rgba(255,255,255,.7);
+
 outline:none;
+
+font-size:15px;
+
 transition:.25s;
 
 }
 
+
+
 .form-group textarea{
 
 resize:vertical;
-min-height:140px;
 
 }
+
+
 
 .form-group input:focus,
 
@@ -139,115 +235,169 @@ min-height:140px;
 
 .form-group select:focus{
 
-border-color:#2563eb;
-background:#fff;
-box-shadow:0 0 0 4px rgba(37,99,235,.15);
+
+border-color:var(--primary);
+
+box-shadow:
+
+0 0 0 4px rgba(16,185,129,.15);
 
 }
+
+
+
+/* ===========================
+   GRID
+=========================== */
+
 
 .form-grid{
 
 display:grid;
-grid-template-columns:repeat(2,1fr);
+
+grid-template-columns:
+
+repeat(2,1fr);
+
 gap:20px;
 
 }
 
+
+
+/* ===========================
+   BUTTONS
+=========================== */
+
+
 .actions{
 
 display:flex;
+
 justify-content:flex-end;
-gap:16px;
-margin-top:5px;
+
+gap:15px;
 
 }
 
+
+
 .actions button{
 
-border:none;
-border-radius:12px;
 padding:14px 24px;
-font-size:15px;
-font-weight:600;
+
+border-radius:16px;
+
+border:none;
+
+font-weight:700;
+
 cursor:pointer;
+
 transition:.25s;
 
 }
 
+
+
 .primary-btn{
 
-background:#2563eb;
-color:#fff;
+background:
+
+linear-gradient(
+135deg,
+var(--primary),
+var(--primary-light)
+);
+
+color:white;
+
+box-shadow:
+
+0 12px 25px rgba(5,150,105,.25);
 
 }
+
+
 
 .primary-btn:hover{
 
-background:#1d4ed8;
-transform:translateY(-2px);
+transform:translateY(-3px);
 
 }
+
+
 
 .secondary-btn{
 
-background:#eef2ff;
-color:#3730a3;
+background:#ecfdf5;
+
+color:var(--primary-dark);
 
 }
+
+
 
 .secondary-btn:hover{
 
-background:#dbeafe;
-transform:translateY(-2px);
+background:#d1fae5;
+
+transform:translateY(-3px);
 
 }
 
-.actions button:disabled{
 
-opacity:.6;
-cursor:not-allowed;
-transform:none;
 
-}
+/* ===========================
+   ANIMATION
+=========================== */
 
-.course-card{
-
-animation:fadeIn .35s ease;
-
-}
 
 @keyframes fadeIn{
 
 from{
 
 opacity:0;
-transform:translateY(18px);
+
+transform:translateY(15px);
 
 }
 
 to{
 
 opacity:1;
+
 transform:translateY(0);
 
 }
 
 }
 
+
+
+/* ===========================
+   MOBILE
+=========================== */
+
+
 @media(max-width:768px){
+
 
 .create-course-page{
 
 padding:20px;
-margin-top:75px;
 
 }
+
+
 
 .page-header h1{
 
-font-size:1.7rem;
+font-size:26px;
 
 }
+
+
 
 .form-grid{
 
@@ -255,11 +405,15 @@ grid-template-columns:1fr;
 
 }
 
+
+
 .actions{
 
 flex-direction:column;
 
 }
+
+
 
 .actions button{
 
@@ -267,37 +421,13 @@ width:100%;
 
 }
 
+
+
 .course-card{
 
-padding:20px;
+padding:22px;
 
 }
 
-}
-
-@media(max-width:480px){
-
-.page-header h1{
-
-font-size:1.5rem;
-
-}
-
-.form-group input,
-
-.form-group textarea,
-
-.form-group select{
-
-font-size:14px;
-padding:12px;
-
-}
-
-.actions button{
-
-padding:13px;
-
-}
 
 }
