@@ -12,7 +12,8 @@ import {
     serverTimestamp,
     limit,
     updateDoc,
-    setDoc
+    setDoc,
+    increment
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -552,6 +553,23 @@ async function completeLesson(){
         }
 
 
+await updateDoc(
+
+    doc(db,"students",currentUser.uid),
+
+    {
+
+        "stats.lessonsCompleted":
+        increment(1),
+
+        "stats.progress":
+        progress
+
+    }
+
+);
+
+
         lessonCards.forEach(item=>{
 
             if(item.lesson.id===currentLesson.id){
@@ -571,36 +589,48 @@ async function completeLesson(){
 
         if(progress>=100){
 
-            await setDoc(
+    await setDoc(
 
-                doc(
-                    db,
-                    "certificates",
-                    `${currentUser.uid}_${courseId}`
-                ),
+        doc(
+            db,
+            "certificates",
+            `${currentUser.uid}_${courseId}`
+        ),
 
-                {
+        {
 
-                    studentId:
-                    currentUser.uid,
+            studentId:
+            currentUser.uid,
 
-                    courseId,
+            courseId,
 
-                    issuedAt:
-                    serverTimestamp()
-
-                }
-
-            );
-
-            alert("🏆 Congratulations! Course completed!");
-
-            return;
+            issuedAt:
+            serverTimestamp()
 
         }
 
+    );
 
-        alert(`🎉 Progress Updated: ${progress}%`);
+
+    await updateDoc(
+
+        doc(db,"students",currentUser.uid),
+
+        {
+
+            "stats.certificates":
+            increment(1)
+
+        }
+
+    );
+
+
+    alert("🏆 Congratulations! Course completed!");
+
+    return;
+
+}
 
 
         // ---------- AUTO NEXT LESSON ----------

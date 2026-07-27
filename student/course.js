@@ -4,6 +4,8 @@ import {
     doc,
     getDoc,
     addDoc,
+    updateDoc,
+    increment,
     collection,
     serverTimestamp,
     getDocs,
@@ -369,7 +371,30 @@ student.admissionNumber || "Pending",
 
         );
 
+await updateDoc(
 
+    doc(db,"students",currentUser.uid),
+
+    {
+
+        "stats.coursesEnrolled":
+        increment(1)
+
+    }
+
+);
+await updateDoc(
+
+    doc(db,"courses",courseId),
+
+    {
+
+        students:
+        increment(1)
+
+    }
+
+);
 
         await addDoc(
 
