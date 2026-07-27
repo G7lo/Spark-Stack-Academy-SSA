@@ -8,9 +8,12 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Instructor Dashboard</title>
+<title>
+SSA | Instructor Dashboard
+</title>
 
-<link rel="stylesheet"
+<link
+rel="stylesheet"
 href="dashboard.css">
 
 </head>
@@ -19,84 +22,286 @@ href="dashboard.css">
 
 <div class="dashboard-layout">
 
-
     <aside id="sidebarContainer"></aside>
 
-<div id="sidebarOverlay"></div>
+    <div id="sidebarOverlay"></div>
 
-    <main class="instructor-dashboard">
+    <main class="main-content">
+
+        <header id="topbarContainer"></header>
 
 
-        <div id="topbarContainer"></div>
+        <!-- HERO -->
 
-        <h1 id="instructorName">
-            Welcome...
-        </h1>
+        <section class="hero-card">
 
-        <div class="stats">
+            <div class="hero-text">
 
-            <div class="card">
+                <h1 id="instructorName">
 
-                <h2 id="courseTotal">
-                    0
-                </h2>
+                    Welcome Back 👋
 
-                <p>Courses</p>
+                </h1>
 
-            </div>
+                <p>
 
-            <div class="card">
+                    Manage your courses, monitor your students and continue inspiring future innovators.
 
-                <h2 id="studentTotal">
-                    0
-                </h2>
-
-                <p>Students</p>
+                </p>
 
             </div>
 
-            <div class="card">
+            <div class="hero-icon">
 
-                <h2 id="rating">
-                    0.0
-                </h2>
-
-                <p>Rating</p>
+                👨‍🏫
 
             </div>
 
-        </div>
-<section class="recent-section">
+        </section>
 
-<h2>
-📚 Recent Courses
-</h2>
 
-<div id="recentCourses">
 
-<p>
-Loading courses...
-</p>
+        <!-- STATS -->
 
-</div>
+        <section class="stats-grid">
 
-</section>
+            <div class="stat-card">
 
-<section class="performance-section">
+                <div class="stat-icon">
 
-<h2>
-📈 Course Performance
-</h2>
+                    📚
 
-<div id="performanceList">
+                </div>
 
-<p>
-Loading performance...
-</p>
+                <div>
 
-</div>
+                    <h2 id="courseTotal">
 
-</section>
+                        0
+
+                    </h2>
+
+                    <p>
+
+                        Courses
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+
+                    📖
+
+                </div>
+
+                <div>
+
+                    <h2 id="lessonTotal">
+
+                        0
+
+                    </h2>
+
+                    <p>
+
+                        Lessons
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+
+                    👨‍🎓
+
+                </div>
+
+                <div>
+
+                    <h2 id="studentTotal">
+
+                        0
+
+                    </h2>
+
+                    <p>
+
+                        Students
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+
+                    ⭐
+
+                </div>
+
+                <div>
+
+                    <h2 id="rating">
+
+                        0.0
+
+                    </h2>
+
+                    <p>
+
+                        Rating
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- QUICK ACTIONS -->
+
+        <section class="quick-actions">
+
+            <a
+            href="create-course.html"
+            class="action-card">
+
+                ➕
+
+                <span>
+
+                    Create Course
+
+                </span>
+
+            </a>
+
+
+            <a
+            href="manage-content.html"
+            class="action-card">
+
+                📂
+
+                <span>
+
+                    Manage Content
+
+                </span>
+
+            </a>
+
+
+            <a
+            href="students.html"
+            class="action-card">
+
+                👨‍🎓
+
+                <span>
+
+                    View Students
+
+                </span>
+
+            </a>
+
+
+            <a
+            href="settings.html"
+            class="action-card">
+
+                ⚙️
+
+                <span>
+
+                    Settings
+
+                </span>
+
+            </a>
+
+        </section>
+
+
+
+        <!-- RECENT COURSES -->
+
+        <section class="dashboard-card">
+
+            <div class="section-header">
+
+                <h2>
+
+                    📚 Recent Courses
+
+                </h2>
+
+                <a href="courses.html">
+
+                    View All
+
+                </a>
+
+            </div>
+
+            <div id="recentCourses">
+
+                <p>
+
+                    Loading courses...
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- PERFORMANCE -->
+
+        <section class="dashboard-card">
+
+            <div class="section-header">
+
+                <h2>
+
+                    📈 Course Performance
+
+                </h2>
+
+            </div>
+
+            <div id="performanceList">
+
+                <p>
+
+                    Loading performance...
+
+                </p>
+
+            </div>
+
+        </section>
 
     </main>
 
@@ -104,11 +309,7 @@ Loading performance...
 
 <script src="https://unpkg.com/lucide@latest"></script>
 
-<script type="module" src="components/sidebar.js"></script>
-
-<script type="module" src="components/topbar.js"></script>
-
-<script type="module" src="components/notifications.js"></script>
+<script type="module" src="./js/instructor-app.js"></script>
 
 <script type="module" src="dashboard.js"></script>
 

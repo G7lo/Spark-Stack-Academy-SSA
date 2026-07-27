@@ -2,201 +2,310 @@
    SSA INSTRUCTOR SIDEBAR
 =========================== */
 
-.sidebar{
+:root{
 
-    position:fixed;
+--primary:#059669;
+--primary-light:#10b981;
+--primary-dark:#047857;
 
-    top:0;
-    left:0;
+--bg:#f7fefb;
+--glass:rgba(255,255,255,.75);
 
-    width:260px;
+--text:#1f2937;
+--muted:#64748b;
 
-    height:100vh;
-
-    padding:30px 20px;
-
-    background:
-    rgba(255,255,255,.05);
-
-    backdrop-filter:blur(20px);
-
-    border-right:
-    1px solid rgba(255,255,255,.08);
-
-    display:flex;
-
-    flex-direction:column;
-
-    z-index:1000;
+--border:rgba(255,255,255,.7);
 
 }
 
 
+/* ===========================
+LAYOUT
+=========================== */
 
-/* LOGO */
+.dashboard-layout{
+
+display:flex;
+min-height:100vh;
+background:var(--bg);
+
+}
+
+
+.main-content{
+
+flex:1;
+margin-left:280px;
+transition:.35s;
+
+}
+
+
+/* ===========================
+SIDEBAR
+=========================== */
+
+.sidebar{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:280px;
+height:100vh;
+
+display:flex;
+flex-direction:column;
+
+background:var(--glass);
+
+backdrop-filter:blur(20px);
+
+border-right:1px solid var(--border);
+
+box-shadow:
+0 20px 45px rgba(0,0,0,.08);
+
+z-index:1000;
+
+overflow:hidden;
+
+}
+
+
+/* ===========================
+LOGO
+=========================== */
 
 .sidebar-logo{
 
-    margin-bottom:40px;
+padding:30px 25px;
+
+text-align:center;
+
+border-bottom:
+1px solid rgba(0,0,0,.06);
 
 }
-
 
 .sidebar-logo h2{
 
-    margin:0;
+font-size:34px;
 
-    font-size:32px;
+color:var(--primary);
 
-    background:
-    linear-gradient(
-    90deg,
-    #0A84FF,
-    #38BDF8
-    );
+font-weight:900;
 
-    -webkit-background-clip:text;
-
-    color:transparent;
+letter-spacing:2px;
 
 }
-
 
 .sidebar-logo span{
 
-    color:#94A3B8;
+display:block;
 
-    font-size:14px;
+margin-top:8px;
+
+font-size:14px;
+
+color:var(--muted);
 
 }
 
 
-
-/* MENU */
+/* ===========================
+MENU
+=========================== */
 
 .sidebar-menu{
 
-    display:flex;
+flex:1;
 
-    flex-direction:column;
+overflow-y:auto;
 
-    gap:12px;
+padding:20px 15px;
+
+display:flex;
+flex-direction:column;
+
+gap:8px;
+
+}
+
+.sidebar-menu::-webkit-scrollbar{
+
+width:6px;
+
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb{
+
+background:#d1d5db;
+border-radius:20px;
+
+}
+
+.sidebar-menu a{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+padding:15px 18px;
+
+border-radius:14px;
+
+text-decoration:none;
+
+font-weight:600;
+
+color:var(--text);
+
+transition:.25s;
+
+}
+
+.sidebar-menu a:hover{
+
+background:#ecfdf5;
+
+color:var(--primary);
+
+transform:translateX(4px);
+
+}
+
+.sidebar-menu a.active{
+
+background:linear-gradient(
+135deg,
+var(--primary),
+var(--primary-light)
+);
+
+color:#fff;
+
+box-shadow:
+0 12px 25px rgba(5,150,105,.25);
+
+}
+
+.sidebar-menu svg{
+
+width:20px;
+height:20px;
 
 }
 
 
-.sidebar-menu a,
-.sidebar-footer a{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-    padding:14px 16px;
-
-    color:#CBD5E1;
-
-    text-decoration:none;
-
-    border-radius:14px;
-
-    transition:.3s;
-
-}
-
-
-
-.sidebar-menu a:hover,
-.sidebar-menu a.active,
-.sidebar-footer a:hover{
-
-
-    background:
-
-    rgba(56,189,248,.12);
-
-
-    color:#38BDF8;
-
-
-}
-
-
-
-/* FOOTER */
+/* ===========================
+FOOTER
+=========================== */
 
 .sidebar-footer{
 
-    margin-top:auto;
+padding:18px;
+
+border-top:
+1px solid rgba(0,0,0,.06);
+
+background:#fff;
+
+}
+
+.sidebar-footer a{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:12px;
+
+padding:15px;
+
+border-radius:14px;
+
+text-decoration:none;
+
+font-weight:700;
+
+background:#fee2e2;
+
+color:#dc2626;
+
+transition:.25s;
+
+}
+
+.sidebar-footer a:hover{
+
+background:#dc2626;
+
+color:#fff;
 
 }
 
 
+/* ===========================
+OVERLAY
+=========================== */
 
-/* ICONS */
-
-.sidebar svg{
-
-    width:20px;
-
-    height:20px;
-
-}
-
-
-
-/* MOBILE */
-
-@media(max-width:768px){
-
-
-.sidebar{
-
-    transform:translateX(-100%);
-
-    transition:.3s;
-
-}
-
-
-.sidebar.active{
-
-    transform:translateX(0);
-
-}
-
-
-}
 #sidebarOverlay{
 
-    position:fixed;
+position:fixed;
 
-    inset:0;
+inset:0;
 
-    background:rgba(0,0,0,.45);
+background:rgba(15,23,42,.45);
 
-    opacity:0;
+opacity:0;
 
-    visibility:hidden;
+visibility:hidden;
 
-    transition:.3s;
+transition:.3s;
 
-    z-index:999;
+z-index:999;
 
 }
 
 #sidebarOverlay.active{
 
-    opacity:1;
+opacity:1;
 
-    visibility:visible;
+visibility:visible;
 
 }
 
+
+/* ===========================
+MOBILE
+=========================== */
+
+@media(max-width:768px){
+
 .sidebar{
 
-    z-index:1000;
+left:-280px;
+
+transition:.35s;
+
+}
+
+.sidebar.active{
+
+left:0;
+
+}
+
+.main-content{
+
+margin-left:0;
+
+}
 
 }
