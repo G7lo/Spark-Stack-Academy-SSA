@@ -160,12 +160,11 @@ slideUp .6s ease;
 
 .brand-logo{
 
-width:100px;
+width:70px;
 
-height:100px;
+height:70px;
 
-margin:0 auto 20px;
-
+margin:0 auto 15px;
 
 display:flex;
 
@@ -185,13 +184,10 @@ height:100%;
 
 object-fit:contain;
 
-
 filter:
-
 drop-shadow(
-0 0 25px rgba(251,191,36,.5)
+0 0 15px rgba(251,191,36,.4)
 );
-
 
 }
 
