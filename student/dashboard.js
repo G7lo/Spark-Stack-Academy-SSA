@@ -14,248 +14,649 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+/* ===========================
+ELEMENTS
+=========================== */
+
 const studentName =
 document.getElementById("studentName");
 
-const studentLevel =
-document.getElementById("studentLevel");
+const studentFullName =
+document.getElementById("studentFullName");
+
+const studentEmail =
+document.getElementById("studentEmail");
 
 const studentAdmission =
 document.getElementById("studentAdmission");
 
+const studentAvatar =
+document.getElementById("studentAvatar");
+
+const todayDate =
+document.getElementById("todayDate");
+
+const learningStreak =
+document.getElementById("learningStreak");
+
 const courseCount =
 document.getElementById("courseCount");
 
-const progressCount =
-document.getElementById("progressCount");
+const lessonCount =
+document.getElementById("lessonCount");
+
+const progressPercent =
+document.getElementById("progressPercent");
 
 const certificateCount =
 document.getElementById("certificateCount");
 
-const continueLearning =
-document.getElementById("continueLearning");
+const continueCourse =
+document.getElementById("continueCourse");
 
-const progressList =
-document.getElementById("progressList");
+const recentLessons =
+document.getElementById("recentLessons");
 
+const progressContainer =
+document.getElementById("progressContainer");
+
+const recommendedCourses =
+document.getElementById("recommendedCourses");
+
+const dashboardNotifications =
+document.getElementById("dashboardNotifications");
+
+
+/* ===========================
+DATE
+=========================== */
+
+todayDate.textContent =
+new Date().toLocaleDateString(
+"en-US",
+{
+weekday:"long",
+month:"long",
+day:"numeric"
+}
+);
+
+
+/* ===========================
+AUTH & DASHBOARD
+=========================== */
 
 onAuthStateChanged(auth, async(user)=>{
 
-    if(!user){
+if(!user){
 
-        window.location.href="../login.html";
+window.location.href="../login.html";
 
-        return;
+return;
 
-    }
+}
 
-    try{
+try{
 
-        const studentRef =
-        doc(db,"students",user.uid);
+const studentSnap =
+await getDoc(
+doc(db,"students",user.uid)
+);
 
-        const studentSnap =
-        await getDoc(studentRef);
+if(!studentSnap.exists()){
 
-        if(!studentSnap.exists()){
+window.location.href="../login.html";
 
-            window.location.href="../login.html";
+return;
 
-            return;
+}
 
-        }
+const student =
+studentSnap.data();
 
-        const student =
-        studentSnap.data();
 
-        studentName.textContent =
-        student.name || "SSA Student";
+/* ===========================
+PROFILE
+=========================== */
 
-        studentLevel.textContent =
-        student.level || "SSA Learner";
+studentName.textContent =
+student.name || "Student";
 
+studentFullName.textContent =
+student.name || "Student";
+
+studentEmail.textContent =
+student.email || "";
 
 studentAdmission.textContent =
-`Admission No: ${student.admissionNo || "Not Assigned"}`;
+`Admission No: ${
+student.admissionNumber || "Pending"
+}`;
 
-        /* -----------------------------
-           ENROLLMENTS
-        ------------------------------ */
+studentAvatar.textContent =
+(student.name || "S")
+.charAt(0)
+.toUpperCase();
 
-        const enrollmentsQuery =
-        query(
-            collection(db,"enrollments"),
-            where("studentId","==",user.uid)
-        );
+learningStreak.textContent =
+`${student.streak || 0} Day Streak`;
 
-        const enrollmentsSnapshot =
-        await getDocs(enrollmentsQuery);
 
-        courseCount.textContent =
-        `${enrollmentsSnapshot.size} Enrolled`;
+/* ===========================
+QUICK STATS
+=========================== */
 
+const enrollmentQuery =
+query(
+collection(db,"enrollments"),
+where("studentId","==",user.uid)
+);
 
-        let totalProgress = 0;
+const enrollmentSnap =
+await getDocs(enrollmentQuery);
 
-        const courses = [];
+courseCount.textContent =
+enrollmentSnap.size;
 
-        enrollmentsSnapshot.forEach((doc)=>{
+let totalProgress = 0;
+let completedLessons = 0;
 
-            const data =
-            doc.data();
+enrollmentSnap.forEach(doc=>{
 
-            totalProgress +=
-            data.progress || 0;
+const enrollment =
+doc.data();
 
-            courses.push(data);
+const progress =
+enrollment.progress || 0;
 
-        });
+totalProgress += progress;
 
+if(progress > 0){
 
-        const averageProgress =
-        courses.length > 0
-        ?
+completedLessons++;
 
-        Math.round(
-        totalProgress /
-        courses.length
-        )
-
-        :
-
-        0;
-
-
-        progressCount.textContent =
-        `${averageProgress}% Complete`;
-
-
-        /* -----------------------------
-           CERTIFICATES
-        ------------------------------ */
-
-        const certificatesQuery =
-        query(
-            collection(db,"certificates"),
-            where("studentId","==",user.uid)
-        );
-
-        const certificatesSnapshot =
-        await getDocs(certificatesQuery);
-
-        certificateCount.textContent =
-        `${certificatesSnapshot.size} Earned`;
-
-
-        /* -----------------------------
-           CONTINUE LEARNING
-        ------------------------------ */
-
-        continueLearning.innerHTML="";
-
-        if(courses.length===0){
-
-            continueLearning.innerHTML=`
-
-            <div class="empty-state">
-
-            No courses started yet 🚀
-
-            </div>
-
-            `;
-
-        }else{
-
-            for(const course of courses){
-
-                const courseSnap =
-                await getDoc(
-                    doc(db,"courses",course.courseId)
-                );
-
-                if(courseSnap.exists()){
-
-                    const data =
-                    courseSnap.data();
-
-                    continueLearning.innerHTML+=`
-
-                    <div class="course-mini-card">
-
-                        <h3>
-
-                        ${data.title}
-
-                        </h3>
-
-                        <button
-                        onclick="openCourse('${course.courseId}')">
-
-                        Continue Learning
-
-                        </button>
-
-                    </div>
-
-                    `;
-
-                }
-
-            }
-
-        }
-
-
-        /* -----------------------------
-           PROGRESS SECTION
-        ------------------------------ */
-
-        progressList.innerHTML=`
-
-        <div class="progress-card">
-
-            <h3>
-
-            Overall Progress
-
-            </h3>
-
-            <div class="progress-bar">
-
-                <div
-                class="progress-fill"
-
-                style="width:${averageProgress}%">
-
-                </div>
-
-            </div>
-
-            <span>
-
-            ${averageProgress}% Complete
-
-            </span>
-
-        </div>
-
-        `;
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-    }
+}
 
 });
 
+const averageProgress =
 
-window.openCourse=function(id){
+enrollmentSnap.size
 
-    window.location.href=
-    `course-player.html?id=${id}`;
+?
 
-};
+Math.round(
+totalProgress /
+enrollmentSnap.size
+)
+
+:
+
+0;
+
+progressPercent.textContent =
+averageProgress + "%";
+
+lessonCount.textContent =
+completedLessons;
+
+
+/* ===========================
+CERTIFICATES
+=========================== */
+
+const certificateQuery =
+query(
+collection(db,"certificates"),
+where("studentId","==",user.uid)
+);
+
+const certificateSnap =
+await getDocs(certificateQuery);
+
+certificateCount.textContent =
+certificateSnap.size;
+
+
+/* ===========================
+LOAD DASHBOARD
+=========================== */
+
+await loadContinueLearning(user.uid);
+
+await loadProgress(user.uid);
+
+await loadRecentActivity(user.uid);
+
+await loadRecommendedCourses();
+
+await loadDashboardNotifications(user.uid);
+
+
+if(typeof lucide !== "undefined"){
+
+lucide.createIcons();
+
+}
+
+console.log("SSA Dashboard Ready 🚀");
+
+}
+
+catch(error){
+
+console.error(
+"Dashboard Error:",
+error
+);
+
+}
+
+});
+/* ===========================
+CONTINUE LEARNING
+=========================== */
+
+async function loadContinueLearning(userId){
+
+continueCourse.innerHTML = "";
+
+const enrollmentQuery =
+query(
+collection(db,"enrollments"),
+where("studentId","==",userId)
+);
+
+const enrollmentSnap =
+await getDocs(enrollmentQuery);
+
+if(enrollmentSnap.empty){
+
+continueCourse.innerHTML = `
+
+<div class="empty-card">
+
+No enrolled courses yet 🚀
+
+</div>
+
+`;
+
+return;
+
+}
+
+const enrollment =
+enrollmentSnap.docs[0].data();
+
+const courseSnap =
+await getDoc(
+doc(db,"courses",enrollment.courseId)
+);
+
+if(!courseSnap.exists()){
+
+continueCourse.innerHTML = `
+
+<div class="empty-card">
+
+Course unavailable.
+
+</div>
+
+`;
+
+return;
+
+}
+
+const course =
+courseSnap.data();
+
+continueCourse.innerHTML = `
+
+<div class="continue-left">
+
+<h3>
+
+${course.title}
+
+</h3>
+
+<p>
+
+${enrollment.progress || 0}% Complete
+
+</p>
+
+</div>
+
+<a
+class="continue-btn"
+href="course-player.html?id=${enrollment.courseId}">
+
+Continue Learning
+
+</a>
+
+`;
+
+}
+
+
+
+
+
+/* ===========================
+COURSE PROGRESS
+=========================== */
+
+async function loadProgress(userId){
+
+progressContainer.innerHTML = "";
+
+const enrollmentQuery =
+query(
+collection(db,"enrollments"),
+where("studentId","==",userId)
+);
+
+const enrollmentSnap =
+await getDocs(enrollmentQuery);
+
+if(enrollmentSnap.empty){
+
+progressContainer.innerHTML = `
+
+<div class="empty-card">
+
+No progress yet.
+
+</div>
+
+`;
+
+return;
+
+}
+
+for(const enrollmentDoc of enrollmentSnap.docs){
+
+const enrollment =
+enrollmentDoc.data();
+
+const courseSnap =
+await getDoc(
+doc(db,"courses",enrollment.courseId)
+);
+
+if(!courseSnap.exists()) continue;
+
+const course =
+courseSnap.data();
+
+progressContainer.innerHTML += `
+
+<div class="progress-card">
+
+<div class="progress-header">
+
+<h3>
+
+${course.title}
+
+</h3>
+
+<span>
+
+${enrollment.progress || 0}%
+
+</span>
+
+</div>
+
+<div class="progress-bar">
+
+<div
+class="progress-fill"
+style="width:${enrollment.progress || 0}%">
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+}
+
+
+
+
+
+/* ===========================
+RECENT ACTIVITY
+=========================== */
+
+async function loadRecentActivity(userId){
+
+recentLessons.innerHTML = "";
+
+const enrollmentQuery =
+query(
+collection(db,"enrollments"),
+where("studentId","==",userId)
+);
+
+const enrollmentSnap =
+await getDocs(enrollmentQuery);
+
+if(enrollmentSnap.empty){
+
+recentLessons.innerHTML = `
+
+<div class="empty-card">
+
+No activity yet.
+
+</div>
+
+`;
+
+return;
+
+}
+
+for(const enrollmentDoc of enrollmentSnap.docs){
+
+const enrollment =
+enrollmentDoc.data();
+
+const courseSnap =
+await getDoc(
+doc(db,"courses",enrollment.courseId)
+);
+
+if(!courseSnap.exists()) continue;
+
+const course =
+courseSnap.data();
+
+recentLessons.innerHTML += `
+
+<div class="activity-card">
+
+<div class="activity-icon">
+
+📚
+
+</div>
+
+<div class="activity-content">
+
+<h4>
+
+${course.title}
+
+</h4>
+
+<p>
+
+Current Progress:
+${enrollment.progress || 0}%
+
+</p>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+}
+/* ===========================
+RECOMMENDED COURSES
+=========================== */
+
+async function loadRecommendedCourses(){
+
+recommendedCourses.innerHTML = "";
+
+const coursesSnap =
+await getDocs(
+collection(db,"courses")
+);
+
+if(coursesSnap.empty){
+
+recommendedCourses.innerHTML = `
+
+<div class="empty-card">
+
+No courses available yet 🚀
+
+</div>
+
+`;
+
+return;
+
+}
+
+coursesSnap.forEach(courseDoc=>{
+
+const course =
+courseDoc.data();
+
+recommendedCourses.innerHTML += `
+
+<div class="course-card">
+
+<h3>
+
+${course.title}
+
+</h3>
+
+<p>
+
+${course.description || "Start learning today."}
+
+</p>
+
+<a
+class="course-btn"
+href="course-details.html?id=${courseDoc.id}">
+
+View Course
+
+</a>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+
+
+
+/* ===========================
+DASHBOARD NOTIFICATIONS
+=========================== */
+
+async function loadDashboardNotifications(userId){
+
+dashboardNotifications.innerHTML = "";
+
+const notificationQuery =
+query(
+collection(db,"notifications"),
+where("userId","==",userId)
+);
+
+const notificationSnap =
+await getDocs(notificationQuery);
+
+if(notificationSnap.empty){
+
+dashboardNotifications.innerHTML = `
+
+<div class="empty-card">
+
+No new notifications 🔔
+
+</div>
+
+`;
+
+return;
+
+}
+
+notificationSnap.forEach(notificationDoc=>{
+
+const notification =
+notificationDoc.data();
+
+dashboardNotifications.innerHTML += `
+
+<div class="notification-card">
+
+<div class="notification-icon">
+
+🔔
+
+</div>
+
+<div class="notification-content">
+
+<h4>
+
+${notification.title || "Notification"}
+
+</h4>
+
+<p>
+
+${notification.message || ""}
+
+</p>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}

@@ -4,237 +4,572 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>SSA | Student Dashboard</title>
 
+<link rel="stylesheet"
+href="dashboard.css">
 
-<link rel="stylesheet" href="dashboard.css">
-<link rel="stylesheet" href="components/sidebar.css">
+<link rel="stylesheet"
+href="components/sidebar.css">
 
 </head>
 
-
 <body>
-
 
 <div class="dashboard-layout">
 
-
 <aside id="sidebarContainer"></aside>
-
 
 <main class="student-dashboard">
 
-
-    <div id="topbarContainer"></div>
-
-
-
-
-
-        <!-- WELCOME HEADER -->
-
-        <section class="student-header">
-
-            <h1>
-                Welcome back 👋
-            </h1>
-
-            <p>
-                Continue your learning journey at Spark Stack Academy.
-            </p>
-
-        </section>
+<div id="topbarContainer"></div>
 
 
 
 
 
+<!-- ===========================
+WELCOME
+=========================== -->
 
-        <!-- STUDENT PROFILE -->
+<section class="hero-section">
 
-        <section class="student-profile">
+<div class="hero-text">
+
+<h1>
+
+Welcome back,
+
+<span id="studentName">
+
+Student
+
+</span>
+
+👋
+
+</h1>
+
+<p>
+
+Keep building your future one lesson at a time.
+
+</p>
+
+<div class="hero-meta">
+
+<span id="todayDate">
+
+Monday, July 27
+
+</span>
+
+<span>
+
+🔥
+
+<span id="learningStreak">
+
+0 Day Streak
+
+</span>
+
+</span>
+
+</div>
+
+</div>
+
+<div class="hero-illustration">
+
+🎓
+
+</div>
+
+</section>
 
 
-            <div class="profile-avatar" id="studentAvatar">
-
-                S
-
-            </div>
 
 
 
-            <div class="profile-info">
+<!-- ===========================
+PROFILE
+=========================== -->
 
-    <h2 id="studentName">
-        Student Name
-    </h2>
+<section class="profile-card">
+
+<div class="profile-avatar"
+
+id="studentAvatar">
+
+S
+
+</div>
+
+<div class="profile-details">
+
+<h2 id="studentFullName">
+
+Student Name
+
+</h2>
+
+<p id="studentEmail">
+
+student@email.com
+
+</p>
+
+<p id="studentAdmission">
+
+Admission No:
+Loading...
+
+</p>
+
+<span class="student-badge">
+
+Active Student
+
+</span>
+
+</div>
+
+</section>
 
 
-    <p id="studentEmail">
-        student@email.com
-    </p>
 
 
-    <p id="studentAdmission">
-        Admission No: Loading...
-    </p>
+
+<!-- ===========================
+QUICK STATS
+=========================== -->
+
+<section class="stats-grid">
 
 
-    <span class="badge">
-        Student
-    </span>
+
+<div class="stat-card">
+
+<div class="stat-icon">
+
+📚
+
+</div>
+
+<div>
+
+<h3>
+
+My Courses
+
+</h3>
+
+<p id="courseCount">
+
+0
+
+</p>
+
+</div>
 
 </div>
 
 
-        </section>
+
+
+
+<div class="stat-card">
+
+<div class="stat-icon">
+
+📖
+
+</div>
+
+<div>
+
+<h3>
+
+Lessons
+
+</h3>
+
+<p id="lessonCount">
+
+0
+
+</p>
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+<div class="stat-icon">
+
+📈
+
+</div>
+
+<div>
+
+<h3>
+
+Progress
+
+</h3>
+
+<p id="progressPercent">
+
+0%
+
+</p>
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+<div class="stat-icon">
+
+🏆
+
+</div>
+
+<div>
+
+<h3>
+
+Certificates
+
+</h3>
+
+<p id="certificateCount">
+
+0
+
+</p>
+
+</div>
+
+</div>
+
+</section>
 
 
 
 
 
 
+<!-- ===========================
+CONTINUE LEARNING
+=========================== -->
 
-        <!-- DASHBOARD STATS -->
+<section class="dashboard-section">
 
-        <section class="student-cards">
+<div class="section-title">
+
+<h2>
+
+Continue Learning
+
+</h2>
+
+<a href="my-courses.html">
+
+View All
+
+</a>
+
+</div>
+
+<div
+class="continue-card"
+
+id="continueCourse">
+
+<div class="continue-left">
+
+<h3>
+
+No Active Course
+
+</h3>
+
+<p>
+
+Enroll into a course to begin learning.
+
+</p>
+
+</div>
+
+<a
+href="courses.html"
+
+class="continue-btn">
+
+Browse Courses
+
+</a>
+
+</div>
+
+</section>
 
 
-            <div class="student-card">
 
+
+
+
+<!-- ===========================
+RECENT ACTIVITY
+=========================== -->
+
+<section class="dashboard-section">
+
+<div class="section-title">
+
+<h2>
+
+Recent Activity
+
+</h2>
+
+</div>
+
+<div
+id="recentLessons"
+
+class="activity-list">
+
+<div class="empty-card">
+
+No activity yet.
+
+</div>
+
+</div>
+
+</section>
+<!-- ===========================
+COURSE PROGRESS
+=========================== -->
+
+<section class="dashboard-section">
+
+    <div class="section-title">
+
+        <h2>
+
+            Course Progress
+
+        </h2>
+
+    </div>
+
+    <div id="progressContainer">
+
+        <div class="progress-card">
+
+            <div class="progress-header">
 
                 <h3>
-                    My Courses
+
+                    No Course Yet
+
                 </h3>
 
+                <span>
 
-                <p id="courseCount">
-                    0
-                </p>
-
-
-            </div>
-
-
-
-
-
-            <div class="student-card">
-
-
-                <h3>
-                    Completed Lessons
-                </h3>
-
-
-                <p id="lessonCount">
-                    0
-                </p>
-
-
-            </div>
-
-
-
-
-
-            <div class="student-card">
-
-
-                <h3>
-                    Progress
-                </h3>
-
-
-                <p id="progressPercent">
                     0%
-                </p>
 
-
-            </div>
-
-
-
-        </section>
-
-
-
-
-
-
-
-        <!-- RECENT LEARNING -->
-
-
-        <section class="recent-learning">
-
-
-            <h2>
-                Recent Learning
-            </h2>
-
-
-            <div id="recentLessons" class="empty-state">
-
-
-                No lessons started yet.
-
+                </span>
 
             </div>
 
+            <div class="progress-bar">
 
-
-        </section>
-
-
-
-
-
-
-
-        <!-- COURSE PROGRESS -->
-
-
-        <section class="course-progress">
-
-
-            <h2>
-                Course Progress
-            </h2>
-
-
-
-            <div class="progress-card">
-
-
-                <div class="progress-bar">
-
-
-                    <div 
-                    class="progress-fill"
-                    id="progressBar">
-                    </div>
-
+                <div
+                class="progress-fill"
+                id="progressBar">
 
                 </div>
 
-
             </div>
 
+        </div>
 
-        </section>
+    </div>
+
+</section>
 
 
 
 
 
-    </main>
+<!-- ===========================
+RECOMMENDED COURSES
+=========================== -->
 
+<section class="dashboard-section">
+
+    <div class="section-title">
+
+        <h2>
+
+            Recommended Courses
+
+        </h2>
+
+        <a href="courses.html">
+
+            Browse All
+
+        </a>
+
+    </div>
+
+    <div
+    class="recommended-grid"
+
+    id="recommendedCourses">
+
+        <div class="empty-card">
+
+            Recommendations will appear here.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+<!-- ===========================
+NOTIFICATIONS
+=========================== -->
+
+<section class="dashboard-section">
+
+    <div class="section-title">
+
+        <h2>
+
+            Latest Notifications
+
+        </h2>
+
+        <a href="notifications.html">
+
+            View All
+
+        </a>
+
+    </div>
+
+    <div
+    class="notification-list"
+
+    id="dashboardNotifications">
+
+        <div class="empty-card">
+
+            No notifications yet.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+<!-- ===========================
+LEARNING GOALS
+=========================== -->
+
+<section class="dashboard-section">
+
+    <div class="section-title">
+
+        <h2>
+
+            Today's Goal
+
+        </h2>
+
+    </div>
+
+    <div class="goal-card">
+
+        <div class="goal-icon">
+
+            🎯
+
+        </div>
+
+        <div>
+
+            <h3>
+
+                Complete One Lesson
+
+            </h3>
+
+            <p>
+
+                Stay consistent. Even one lesson every day builds momentum.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+<!-- ===========================
+FOOTER
+=========================== -->
+
+<footer class="dashboard-footer">
+
+    <p>
+
+        © 2026 Spark Stack Academy
+
+    </p>
+
+</footer>
+
+</main>
 
 </div>
-
 
 
 
@@ -246,11 +581,9 @@
 
 <script src="components/topbar.js"></script>
 
-<script type="module" src="dashboard.js"></script>
-
-
+<script type="module"
+src="dashboard.js"></script>
 
 </body>
-
 
 </html>

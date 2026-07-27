@@ -1,665 +1,1423 @@
+/* ===================================
+   SPARK STACK ACADEMY
+   STUDENT DASHBOARD CSS
+   PART 1
+   Global • Layout • Hero • Profile • Stats
+=================================== */
+
 /* ===========================
-   SSA STUDENT DASHBOARD
+RESET
 =========================== */
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
 }
 
 body{
+font-family:Inter,Segoe UI,Arial,sans-serif;
+background:#f5f7fb;
+color:#1e293b;
+overflow-x:hidden;
+}
 
-    font-family:Inter,Arial,sans-serif;
+/* ===========================
+COLORS
+=========================== */
 
-    color:#1e293b;
+:root{
 
-    background:
-    linear-gradient(
-        180deg,
-        #fffdf8 0%,
-        #fdf6ec 45%,
-        #f8f1e7 100%
-    );
+--primary:#2563eb;
+--primary-dark:#1d4ed8;
+--secondary:#0f172a;
+
+--bg:#f5f7fb;
+--white:#ffffff;
+
+--text:#1e293b;
+--muted:#64748b;
+
+--success:#22c55e;
+--warning:#f59e0b;
+
+--border:#e2e8f0;
+
+--radius:20px;
+
+--shadow:
+0 10px 30px rgba(15,23,42,.08);
 
 }
 
-
 /* ===========================
-   LAYOUT
+LAYOUT
 =========================== */
 
 .dashboard-layout{
-
-    display:flex;
-
-    min-height:100vh;
-
+display:flex;
+min-height:100vh;
 }
-
 
 .student-dashboard{
-
-    flex:1;
-
-    margin-left:280px;
-
-    min-height:100vh;
-
-    padding:30px;
-
+flex:1;
+padding:95px 30px 40px;
+display:flex;
+flex-direction:column;
+gap:28px;
 }
-
-
-
-.student-dashboard>*{
-
-    margin-bottom:25px;
-
-}
-
-
 
 /* ===========================
-   TOPBAR
+COMMON
 =========================== */
 
-#topbarContainer{
-
-    width:100%;
-
+.dashboard-section{
+display:flex;
+flex-direction:column;
+gap:18px;
 }
 
+.section-title{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
+}
 
+.section-title h2{
+font-size:1.2rem;
+font-weight:700;
+color:var(--secondary);
+}
 
+.section-title a{
+text-decoration:none;
+color:var(--primary);
+font-weight:600;
+transition:.25s;
+}
 
+.section-title a:hover{
+color:var(--primary-dark);
+}
+
+.empty-card{
+background:var(--white);
+padding:28px;
+border-radius:18px;
+border:1px solid var(--border);
+text-align:center;
+color:var(--muted);
+box-shadow:var(--shadow);
+}
 
 /* ===========================
-   WELCOME HEADER
+HERO
 =========================== */
 
-.student-header{
+.hero-section{
 
-    padding:35px;
+display:flex;
+justify-content:space-between;
+align-items:center;
 
-    border-radius:26px;
+gap:30px;
 
-    background:
+padding:35px;
 
-    rgba(255,255,255,.72);
+border-radius:26px;
 
-    backdrop-filter:blur(20px);
+background:
+linear-gradient(
+135deg,
+#2563eb,
+#3b82f6,
+#60a5fa
+);
 
-    border:
+color:#fff;
 
-    1px solid rgba(255,255,255,.9);
+box-shadow:
+0 18px 40px
+rgba(37,99,235,.28);
 
-    box-shadow:
+overflow:hidden;
 
-    0 18px 45px rgba(120,90,40,.10);
-
-}
-
-
-
-.student-header h1{
-
-    font-size:34px;
-
-    font-weight:800;
-
-    color:#0f172a;
+position:relative;
 
 }
 
+.hero-section::before{
 
+content:"";
 
-.student-header p{
+position:absolute;
 
-    margin-top:10px;
+width:260px;
+height:260px;
 
-    color:#64748b;
+background:
+rgba(255,255,255,.08);
 
-    line-height:1.6;
+border-radius:50%;
+
+top:-120px;
+right:-80px;
 
 }
 
+.hero-text{
+position:relative;
+z-index:2;
+}
 
+.hero-text h1{
 
+font-size:2rem;
 
+font-weight:800;
+
+line-height:1.3;
+
+margin-bottom:12px;
+
+}
+
+.hero-text p{
+
+font-size:1rem;
+
+opacity:.92;
+
+margin-bottom:20px;
+
+max-width:520px;
+
+}
+
+.hero-meta{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:12px;
+
+}
+
+.hero-meta span{
+
+background:
+rgba(255,255,255,.16);
+
+padding:10px 16px;
+
+border-radius:50px;
+
+font-size:.9rem;
+
+backdrop-filter:blur(12px);
+
+}
+
+.hero-illustration{
+
+font-size:90px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+min-width:120px;
+
+animation:float 4s ease-in-out infinite;
+
+position:relative;
+z-index:2;
+
+}
 
 /* ===========================
-   PROFILE
+PROFILE CARD
 =========================== */
 
-.student-profile{
+.profile-card{
 
-    display:flex;
+display:flex;
 
-    align-items:center;
+align-items:center;
 
-    gap:22px;
+gap:24px;
 
-    padding:28px;
+padding:28px;
 
-    border-radius:24px;
+background:var(--white);
 
-    background:
+border-radius:24px;
 
-    rgba(255,255,255,.72);
+border:1px solid var(--border);
 
-    backdrop-filter:blur(20px);
-
-    border:
-
-    1px solid rgba(255,255,255,.9);
-
-    box-shadow:
-
-    0 18px 45px rgba(120,90,40,.10);
+box-shadow:var(--shadow);
 
 }
-
-
 
 .profile-avatar{
 
-    width:90px;
+width:90px;
+height:90px;
 
-    height:90px;
+border-radius:50%;
 
-    border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
 
-    display:flex;
+background:
+linear-gradient(
+135deg,
+#2563eb,
+#60a5fa
+);
 
-    align-items:center;
+color:#fff;
 
-    justify-content:center;
+font-size:2rem;
 
-    font-size:34px;
+font-weight:700;
 
-    font-weight:800;
+box-shadow:
+0 10px 25px
+rgba(37,99,235,.28);
 
-    color:white;
-
-    background:
-
-    linear-gradient(
-        135deg,
-        #2563eb,
-        #9333ea
-    );
-
-    box-shadow:
-
-    0 12px 28px rgba(37,99,235,.25);
+flex-shrink:0;
 
 }
 
+.profile-details{
+display:flex;
+flex-direction:column;
+gap:8px;
+}
 
+.profile-details h2{
 
-.profile-info h2{
+font-size:1.5rem;
 
-    font-size:28px;
+font-weight:700;
 
-    color:#0f172a;
+color:var(--secondary);
 
 }
 
+.profile-details p{
 
+font-size:.96rem;
 
-.profile-info p{
-
-    margin-top:6px;
-
-    color:#64748b;
+color:var(--muted);
 
 }
 
+.student-badge{
 
+width:max-content;
 
-.badge{
+margin-top:6px;
 
-    display:inline-flex;
+padding:8px 16px;
 
-    align-items:center;
+border-radius:50px;
 
-    justify-content:center;
+background:#dcfce7;
 
-    margin-top:12px;
+color:#15803d;
 
-    padding:8px 18px;
+font-size:.85rem;
 
-    border-radius:999px;
-
-    font-size:14px;
-
-    font-weight:700;
-
-    color:#2563eb;
-
-    background:
-
-    rgba(37,99,235,.10);
+font-weight:700;
 
 }
-
-
-
-
 
 /* ===========================
-   STATS
+QUICK STATS
 =========================== */
 
-.student-cards{
+.stats-grid{
 
-    display:grid;
+display:grid;
 
-    grid-template-columns:
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(220px,1fr)
+);
 
-    repeat(auto-fit,minmax(220px,1fr));
-
-    gap:20px;
-
-}
-
-
-
-.student-card{
-
-    padding:28px;
-
-    border-radius:24px;
-
-    background:
-
-    rgba(255,255,255,.72);
-
-    backdrop-filter:blur(20px);
-
-    border:
-
-    1px solid rgba(255,255,255,.9);
-
-    box-shadow:
-
-    0 18px 45px rgba(120,90,40,.10);
-
-    transition:.3s;
+gap:22px;
 
 }
 
+.stat-card{
 
+background:var(--white);
 
-.student-card:hover{
+padding:24px;
 
-    transform:translateY(-5px);
+border-radius:22px;
 
-    box-shadow:
+border:1px solid var(--border);
 
-    0 24px 55px rgba(120,90,40,.15);
+display:flex;
 
-}
+align-items:center;
 
+gap:18px;
 
+transition:.3s;
 
-.student-card h3{
-
-    font-size:15px;
-
-    color:#64748b;
-
-    margin-bottom:16px;
+box-shadow:var(--shadow);
 
 }
 
+.stat-card:hover{
 
+transform:
+translateY(-8px);
 
-.student-card p{
-
-    font-size:38px;
-
-    font-weight:800;
-
-    color:#2563eb;
-
-}
-/* ===========================
-   RECENT LEARNING
-=========================== */
-
-.recent-learning,
-.course-progress{
-
-    padding:30px;
-
-    border-radius:24px;
-
-    background:
-
-    rgba(255,255,255,.72);
-
-    backdrop-filter:blur(20px);
-
-    border:
-
-    1px solid rgba(255,255,255,.9);
-
-    box-shadow:
-
-    0 18px 45px rgba(120,90,40,.10);
+border-color:#bfdbfe;
 
 }
 
+.stat-icon{
 
+width:65px;
+height:65px;
 
-.recent-learning h2,
-.course-progress h2{
+border-radius:18px;
 
-    font-size:24px;
+display:flex;
+align-items:center;
+justify-content:center;
 
-    font-weight:700;
+font-size:1.8rem;
 
-    color:#0f172a;
-
-    margin-bottom:20px;
+background:
+linear-gradient(
+135deg,
+#dbeafe,
+#eff6ff
+);
 
 }
 
+.stat-card h3{
 
+font-size:1rem;
+
+color:var(--muted);
+
+margin-bottom:8px;
+
+font-weight:600;
+
+}
+
+.stat-card p{
+
+font-size:1.8rem;
+
+font-weight:800;
+
+color:var(--secondary);
+
+}
 
 /* ===========================
-   EMPTY STATE
+ANIMATIONS
 =========================== */
 
-.empty-state{
+@keyframes float{
 
-    padding:50px 25px;
+0%{
+transform:
+translateY(0);
+}
 
-    border-radius:20px;
+50%{
+transform:
+translateY(-10px);
+}
 
-    text-align:center;
-
-    color:#64748b;
-
-    background:
-
-    rgba(255,250,240,.8);
-
-    border:
-
-    2px dashed #d6c7b2;
+100%{
+transform:
+translateY(0);
+}
 
 }
 
+/* ===========================
+TABLET
+=========================== */
 
+@media(max-width:900px){
+
+.student-dashboard{
+
+padding:
+90px 20px 30px;
+
+}
+
+.hero-section{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+.hero-meta{
+
+justify-content:center;
+
+}
+
+.profile-card{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+.profile-details{
+
+align-items:center;
+
+}
+
+}
 
 /* ===========================
-   PROGRESS CARD
+MOBILE
 =========================== */
+
+@media(max-width:600px){
+
+.student-dashboard{
+
+padding:
+85px 15px 25px;
+
+gap:22px;
+
+}
+
+.hero-section{
+
+padding:24px;
+
+}
+
+.hero-text h1{
+
+font-size:1.55rem;
+
+}
+
+.hero-text p{
+
+font-size:.95rem;
+
+}
+
+.hero-illustration{
+
+font-size:70px;
+
+}
+
+.profile-avatar{
+
+width:75px;
+height:75px;
+
+font-size:1.7rem;
+
+}
+
+.stat-card{
+
+padding:20px;
+
+}
+
+.stat-icon{
+
+width:55px;
+height:55px;
+
+font-size:1.4rem;
+
+}
+
+.stat-card p{
+
+font-size:1.5rem;
+
+}
+
+}
+/* ===================================
+   SPARK STACK ACADEMY
+   STUDENT DASHBOARD CSS
+   PART 2
+   Continue Learning • Activity
+   Progress • Course Cards
+=================================== */
+
+/* ===========================
+CONTINUE LEARNING
+=========================== */
+
+.continue-card{
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+
+padding:26px;
+
+background:var(--white);
+
+border-radius:22px;
+
+border:1px solid var(--border);
+
+box-shadow:var(--shadow);
+
+transition:.3s;
+
+}
+
+.continue-card:hover{
+
+transform:translateY(-6px);
+
+border-color:#bfdbfe;
+
+}
+
+.continue-left{
+
+display:flex;
+flex-direction:column;
+gap:8px;
+
+}
+
+.continue-left h3{
+
+font-size:1.35rem;
+
+font-weight:700;
+
+color:var(--secondary);
+
+}
+
+.continue-left p{
+
+font-size:.95rem;
+
+color:var(--muted);
+
+}
+
+.continue-btn{
+
+display:inline-flex;
+
+align-items:center;
+justify-content:center;
+
+padding:12px 24px;
+
+border-radius:12px;
+
+background:linear-gradient(
+135deg,
+var(--primary),
+var(--primary-dark)
+);
+
+color:#fff;
+
+font-weight:600;
+
+text-decoration:none;
+
+transition:.3s;
+
+white-space:nowrap;
+
+}
+
+.continue-btn:hover{
+
+transform:translateY(-2px);
+
+box-shadow:
+0 10px 20px
+rgba(37,99,235,.25);
+
+}
+
+/* ===========================
+RECENT ACTIVITY
+=========================== */
+
+.activity-list{
+
+display:flex;
+
+flex-direction:column;
+
+gap:18px;
+
+}
+
+.activity-card{
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+padding:22px;
+
+background:var(--white);
+
+border-radius:18px;
+
+border:1px solid var(--border);
+
+box-shadow:var(--shadow);
+
+transition:.3s;
+
+}
+
+.activity-card:hover{
+
+transform:translateX(6px);
+
+border-color:#dbeafe;
+
+}
+
+.activity-icon{
+
+width:60px;
+height:60px;
+
+display:flex;
+
+align-items:center;
+justify-content:center;
+
+border-radius:16px;
+
+font-size:1.5rem;
+
+background:#eff6ff;
+
+flex-shrink:0;
+
+}
+
+.activity-content{
+
+display:flex;
+
+flex-direction:column;
+
+gap:6px;
+
+}
+
+.activity-content h4{
+
+font-size:1.05rem;
+
+font-weight:700;
+
+color:var(--secondary);
+
+}
+
+.activity-content p{
+
+font-size:.92rem;
+
+color:var(--muted);
+
+}
+
+/* ===========================
+COURSE PROGRESS
+=========================== */
+
+#progressContainer{
+
+display:flex;
+
+flex-direction:column;
+
+gap:18px;
+
+}
 
 .progress-card{
 
-    margin-top:15px;
+background:var(--white);
+
+padding:22px;
+
+border-radius:20px;
+
+border:1px solid var(--border);
+
+box-shadow:var(--shadow);
+
+transition:.3s;
 
 }
 
+.progress-card:hover{
 
+transform:translateY(-5px);
+
+}
+
+.progress-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:16px;
+
+gap:15px;
+
+}
+
+.progress-header h3{
+
+font-size:1.05rem;
+
+font-weight:700;
+
+color:var(--secondary);
+
+}
+
+.progress-header span{
+
+font-size:.95rem;
+
+font-weight:700;
+
+color:var(--primary);
+
+}
 
 .progress-bar{
 
-    width:100%;
+width:100%;
 
-    height:14px;
+height:12px;
 
-    border-radius:999px;
+border-radius:100px;
 
-    overflow:hidden;
+background:#e5e7eb;
 
-    background:
-
-    #e2e8f0;
+overflow:hidden;
 
 }
-
-
 
 .progress-fill{
 
-    width:0;
+height:100%;
 
-    height:100%;
+width:0;
 
-    border-radius:999px;
+border-radius:100px;
 
-    transition:width .5s ease;
+background:linear-gradient(
+90deg,
+#2563eb,
+#60a5fa
+);
 
-    background:
-
-    linear-gradient(
-        90deg,
-        #2563eb,
-        #9333ea
-    );
+transition:width .8s ease;
 
 }
 
-
-
 /* ===========================
-   GLASS HOVER
+REUSABLE COURSE CARD
+(Used by dynamic sections)
 =========================== */
 
-.student-header,
-.student-profile,
-.student-card,
-.recent-learning,
-.course-progress{
+.course-card{
 
-    transition:
+background:var(--white);
 
-    transform .3s ease,
+padding:22px;
 
-    box-shadow .3s ease;
+border-radius:20px;
 
-}
+border:1px solid var(--border);
 
+box-shadow:var(--shadow);
 
+display:flex;
 
-.student-header:hover,
-.student-profile:hover,
-.recent-learning:hover,
-.course-progress:hover{
+flex-direction:column;
 
-    transform:translateY(-3px);
+gap:14px;
 
-    box-shadow:
-
-    0 25px 55px rgba(120,90,40,.14);
+transition:.3s;
 
 }
 
+.course-card:hover{
 
+transform:translateY(-8px);
+
+border-color:#bfdbfe;
+
+}
+
+.course-card h3{
+
+font-size:1.15rem;
+
+font-weight:700;
+
+color:var(--secondary);
+
+}
+
+.course-card p{
+
+font-size:.94rem;
+
+color:var(--muted);
+
+line-height:1.6;
+
+flex:1;
+
+}
+
+.course-btn{
+
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:12px 18px;
+
+border-radius:12px;
+
+background:var(--primary);
+
+color:#fff;
+
+text-decoration:none;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+.course-btn:hover{
+
+background:var(--primary-dark);
+
+}
 
 /* ===========================
-   SCROLLBAR
+TABLET
+=========================== */
+
+@media(max-width:900px){
+
+.continue-card{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.continue-btn{
+
+width:100%;
+
+}
+
+.progress-header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+}
+
+/* ===========================
+MOBILE
+=========================== */
+
+@media(max-width:600px){
+
+.activity-card{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.activity-icon{
+
+width:52px;
+height:52px;
+
+font-size:1.3rem;
+
+}
+
+.progress-card{
+
+padding:18px;
+
+}
+
+.course-card{
+
+padding:18px;
+
+}
+
+.course-btn{
+
+width:100%;
+
+}
+
+}
+/* ===================================
+   SPARK STACK ACADEMY
+   STUDENT DASHBOARD CSS
+   PART 3
+   Recommended • Notifications
+   Goal • Footer • Final Polish
+=================================== */
+
+/* ===========================
+RECOMMENDED COURSES
+=========================== */
+
+.recommended-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(280px,1fr)
+);
+
+gap:22px;
+
+}
+
+/* Course cards continue
+from Part 2 */
+
+.recommended-grid .course-card{
+
+height:100%;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:space-between;
+
+}
+
+.recommended-grid .course-card h3{
+
+margin-bottom:6px;
+
+}
+
+.recommended-grid .course-card p{
+
+margin-bottom:18px;
+
+min-height:70px;
+
+}
+
+/* ===========================
+NOTIFICATIONS
+=========================== */
+
+.notification-list{
+
+display:flex;
+
+flex-direction:column;
+
+gap:18px;
+
+}
+
+.notification-card{
+
+display:flex;
+
+align-items:flex-start;
+
+gap:18px;
+
+padding:22px;
+
+background:var(--white);
+
+border-radius:20px;
+
+border:1px solid var(--border);
+
+box-shadow:var(--shadow);
+
+transition:.3s;
+
+}
+
+.notification-card:hover{
+
+transform:translateY(-4px);
+
+border-color:#bfdbfe;
+
+}
+
+.notification-icon{
+
+width:56px;
+height:56px;
+
+border-radius:16px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:1.4rem;
+
+background:#eff6ff;
+
+flex-shrink:0;
+
+}
+
+.notification-content{
+
+flex:1;
+
+}
+
+.notification-content h4{
+
+font-size:1.05rem;
+
+font-weight:700;
+
+color:var(--secondary);
+
+margin-bottom:8px;
+
+}
+
+.notification-content p{
+
+font-size:.94rem;
+
+line-height:1.6;
+
+color:var(--muted);
+
+}
+
+/* ===========================
+TODAY'S GOAL
+=========================== */
+
+.goal-card{
+
+display:flex;
+
+align-items:center;
+
+gap:20px;
+
+padding:26px;
+
+background:
+linear-gradient(
+135deg,
+#eff6ff,
+#ffffff
+);
+
+border-radius:22px;
+
+border:1px solid #bfdbfe;
+
+box-shadow:var(--shadow);
+
+transition:.3s;
+
+}
+
+.goal-card:hover{
+
+transform:translateY(-6px);
+
+}
+
+.goal-icon{
+
+width:70px;
+height:70px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:18px;
+
+font-size:2rem;
+
+background:
+linear-gradient(
+135deg,
+#2563eb,
+#60a5fa
+);
+
+color:#fff;
+
+flex-shrink:0;
+
+}
+
+.goal-card h3{
+
+font-size:1.2rem;
+
+color:var(--secondary);
+
+margin-bottom:8px;
+
+}
+
+.goal-card p{
+
+color:var(--muted);
+
+line-height:1.6;
+
+}
+
+/* ===========================
+FOOTER
+=========================== */
+
+.dashboard-footer{
+
+margin-top:10px;
+
+padding:24px 10px;
+
+text-align:center;
+
+border-top:1px solid var(--border);
+
+}
+
+.dashboard-footer p{
+
+font-size:.9rem;
+
+color:var(--muted);
+
+}
+
+/* ===========================
+SCROLLBAR
 =========================== */
 
 ::-webkit-scrollbar{
 
-    width:10px;
+width:10px;
 
 }
-
-
 
 ::-webkit-scrollbar-track{
 
-    background:#f8f1e7;
+background:#edf2f7;
 
 }
-
-
 
 ::-webkit-scrollbar-thumb{
 
-    background:#d6c7b2;
+background:#cbd5e1;
 
-    border-radius:30px;
+border-radius:20px;
 
 }
-
-
 
 ::-webkit-scrollbar-thumb:hover{
 
-    background:#bfa98d;
+background:#94a3b8;
 
 }
-
-
 
 /* ===========================
-   MOBILE
+SMOOTH ENTRANCE
 =========================== */
 
-@media(max-width:992px){
+.hero-section,
+.profile-card,
+.stat-card,
+.continue-card,
+.activity-card,
+.progress-card,
+.course-card,
+.notification-card,
+.goal-card{
 
-    .student-dashboard{
-
-        margin-left:0;
-
-        padding:20px;
-
-    }
-
-}
-
-
-
-@media(max-width:768px){
-
-    .student-dashboard{
-
-        padding:15px;
-
-    }
-
-
-
-    .student-header{
-
-        padding:25px;
-
-    }
-
-
-
-    .student-header h1{
-
-        font-size:28px;
-
-    }
-
-
-
-    .student-profile{
-
-        flex-direction:column;
-
-        text-align:center;
-
-    }
-
-
-
-    .profile-avatar{
-
-        width:80px;
-
-        height:80px;
-
-        font-size:30px;
-
-    }
-
-
-
-    .profile-info h2{
-
-        font-size:24px;
-
-    }
-
-
-
-    .student-cards{
-
-        grid-template-columns:1fr;
-
-    }
-
-
-
-    .student-card{
-
-        padding:22px;
-
-    }
-
-
-
-    .recent-learning,
-    .course-progress{
-
-        padding:22px;
-
-    }
+animation:fadeUp .5s ease both;
 
 }
 
+@keyframes fadeUp{
 
+from{
 
-@media(max-width:480px){
+opacity:0;
 
-    .student-header h1{
+transform:
+translateY(18px);
 
-        font-size:24px;
+}
 
-    }
+to{
 
+opacity:1;
 
+transform:
+translateY(0);
 
-    .student-header p{
+}
 
-        font-size:14px;
+}
 
-    }
+/* ===========================
+TABLET
+=========================== */
 
+@media(max-width:900px){
 
+.recommended-grid{
 
-    .profile-info h2{
+grid-template-columns:1fr;
 
-        font-size:22px;
+}
 
-    }
+.goal-card{
 
+flex-direction:column;
 
+text-align:center;
 
-    .student-card p{
+}
 
-        font-size:32px;
+.notification-card{
 
-    }
+align-items:center;
 
+}
 
+}
 
-    .recent-learning h2,
-    .course-progress h2{
+/* ===========================
+MOBILE
+=========================== */
 
-        font-size:20px;
+@media(max-width:600px){
 
-    }
+.notification-card{
+
+flex-direction:column;
+
+}
+
+.notification-icon{
+
+width:50px;
+height:50px;
+
+font-size:1.25rem;
+
+}
+
+.goal-card{
+
+padding:20px;
+
+}
+
+.goal-icon{
+
+width:60px;
+height:60px;
+
+font-size:1.6rem;
+
+}
+
+.dashboard-footer{
+
+padding:20px 0;
+
+}
 
 }
