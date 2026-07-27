@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Admissions | Spark Stack Academy
+</title>
+
+<link rel="stylesheet"
+href="admissions.css">
+
+</head>
+
+<body>
+
+<div class="dashboard-layout">
+
+<aside id="sidebarContainer"></aside>
+
+<div id="sidebarOverlay"></div>
+
+<div class="main-content">
+
+<header id="topbarContainer"></header>
+
+<main class="admissions-page">
+
+
+
+
+<section class="page-header">
+
+<div>
+
+<h1>
+
+🎓 Admissions
+
+</h1>
+
+<p>
+
+Review and manage student applications.
+
+</p>
+
+</div>
+
+</section>
+
+
+
+
+
+
+<section class="stats-grid">
+
+
+<div class="stat-card">
+
+<h3>
+
+Pending
+
+</h3>
+
+<p id="pendingCount">
+
+0
+
+</p>
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+<h3>
+
+Approved
+
+</h3>
+
+<p id="approvedCount">
+
+0
+
+</p>
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+<h3>
+
+Rejected
+
+</h3>
+
+<p id="rejectedCount">
+
+0
+
+</p>
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+<h3>
+
+Total Applications
+
+</h3>
+
+<p id="totalCount">
+
+0
+
+</p>
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<section class="dashboard-card">
+
+
+
+
+<div class="toolbar">
+
+<input
+type="text"
+id="searchApplication"
+placeholder="Search applicant...">
+
+
+
+<select id="statusFilter">
+
+<option value="all">
+
+All Applications
+
+</option>
+
+<option value="Pending">
+
+Pending
+
+</option>
+
+<option value="Approved">
+
+Approved
+
+</option>
+
+<option value="Rejected">
+
+Rejected
+
+</option>
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+<div class="table-wrapper">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>#</th>
+
+<th>Name</th>
+
+<th>Email</th>
+
+<th>Program</th>
+
+<th>Status</th>
+
+<th>Applied</th>
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+
+
+
+<tbody id="applicationsTable">
+
+
+<tr>
+
+<td colspan="7">
+
+Loading applications...
+
+</td>
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+</section>
+
+
+
+
+
+</main>
+
+<div id="applicantModal" class="applicant-modal">
+
+    <div class="modal-content">
+
+        <button
+        id="closeApplicantModal"
+        class="close-modal">
+
+            &times;
+
+        </button>
+
+        <h2>
+
+            Applicant Details
+
+        </h2>
+
+        <div id="applicantDetails">
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script
+type="module"
+src="js/admin-app.js">
+</script>
+
+<script
+type="module"
+src="admissions.js">
+</script>
+
+</body>
+
+</html>
