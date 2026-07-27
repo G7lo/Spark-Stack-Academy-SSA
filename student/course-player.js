@@ -625,6 +625,36 @@ await updateDoc(
 
 );
 
+await addDoc(
+
+    collection(db,"notifications"),
+
+    {
+
+        userId:
+        currentUser.uid,
+
+        title:
+        "📚 Lesson Completed",
+
+        message:
+        `You completed "${currentLesson.title}". Progress: ${progress}%.`,
+
+        type:
+        "lesson",
+
+        link:
+        `course-player.html?id=${courseId}`,
+
+        read:
+        false,
+
+        createdAt:
+        serverTimestamp()
+
+    }
+
+);
 
         lessonCards.forEach(item=>{
 
@@ -727,6 +757,37 @@ await generateCertificateNumber();
         "https://sparkstackacademy.com",
 
         issuedAt:
+        serverTimestamp()
+
+    }
+
+);
+
+await addDoc(
+
+    collection(db,"notifications"),
+
+    {
+
+        userId:
+        currentUser.uid,
+
+        title:
+        "🏆 Certificate Earned",
+
+        message:
+        `Congratulations! You have successfully completed "${course.title}" and earned your certificate.`,
+
+        type:
+        "certificate",
+
+        link:
+        `certificate.html?id=${currentUser.uid}_${courseId}`,
+
+        read:
+        false,
+
+        createdAt:
         serverTimestamp()
 
     }

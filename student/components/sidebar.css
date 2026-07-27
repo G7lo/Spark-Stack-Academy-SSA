@@ -1,41 +1,49 @@
 /* ===========================
-   SSA SIDEBAR
+   SSA STUDENT SIDEBAR
 =========================== */
 
+*{
 
-.sidebar{
-
-    position:fixed;
-
-    top:0;
-
-    left:0;
-
-    width:280px;
-
-    height:100vh;
-
-    padding:25px 20px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    background:
-rgba(255,250,240,.85);
-
-    backdrop-filter:blur(25px);
-
-    border-right:
-1px solid rgba(226,232,240,.8);
-
-    z-index:1000;
-
-    transition:.35s ease;
+margin:0;
+padding:0;
+box-sizing:border-box;
 
 }
 
 
+.sidebar{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:270px;
+
+height:100vh;
+
+background:
+
+rgba(255,255,255,.85);
+
+backdrop-filter:blur(20px);
+
+border-right:
+
+1px solid rgba(255,255,255,.6);
+
+display:flex;
+
+flex-direction:column;
+
+z-index:1000;
+
+transition:.35s ease;
+
+overflow:hidden;
+
+}
 
 
 
@@ -46,139 +54,217 @@ rgba(255,250,240,.85);
 
 .sidebar-logo{
 
-    margin-bottom:45px;
+padding:25px;
+
+text-align:center;
+
+flex-shrink:0;
 
 }
-
 
 
 .sidebar-logo h2{
 
-    margin:0;
+font-size:38px;
 
-    font-size:30px;
+font-weight:900;
 
-    font-weight:800;
+color:#2563eb;
 
-    background:
-
-    linear-gradient(
-        90deg,
-        #0A84FF,
-        #38BDF8
-    );
-
-    -webkit-background-clip:text;
-
-    color:transparent;
+letter-spacing:2px;
 
 }
-
 
 
 .sidebar-logo span{
 
-    color:#64748b;
+display:block;
 
-    font-size:14px;
+margin-top:5px;
+
+font-size:14px;
+
+color:#64748b;
 
 }
 
 
 
-
-
 /* ===========================
-   LINKS
+   MENU
 =========================== */
 
 
 .sidebar-menu{
 
-    display:flex;
+flex:1;
 
-    flex-direction:column;
+overflow-y:auto;
 
-    gap:8px;
+padding:20px;
 
-}
+display:flex;
 
+flex-direction:column;
 
-
-.sidebar-menu a,
-.sidebar-footer a{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-    padding:14px 16px;
-
-    border-radius:16px;
-
-    color:#475569;
-
-    text-decoration:none;
-
-    font-size:15px;
-
-    transition:.3s ease;
+gap:10px;
 
 }
 
 
 
-.sidebar-menu a:hover,
-.sidebar-footer a:hover{
+.sidebar-menu::-webkit-scrollbar{
 
-    background:
-rgba(37,99,235,.08);
+width:5px;
+
+}
+
+
+.sidebar-menu::-webkit-scrollbar-thumb{
+
+background:#cbd5e1;
+
+border-radius:20px;
+
+}
+
+
+
+
+.sidebar-menu a{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+padding:14px 16px;
+
+border-radius:15px;
+
+text-decoration:none;
+
+color:#334155;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+
+.sidebar-menu a i{
+
+width:20px;
+
+height:20px;
+
+}
+
+
+
+.sidebar-menu a:hover{
+
+background:
+
+rgba(37,99,235,.1);
 
 color:#2563eb;
 
-    transform:translateX(5px);
-
 }
-
 
 
 
 .sidebar-menu a.active{
 
-    background:
+background:#2563eb;
 
-    linear-gradient(
-        90deg,
-        rgba(37,99,235,.15),
-        rgba(147,51,234,.12)
-    );
+color:white;
 
-    color:#2563eb;
+box-shadow:
 
-    box-shadow:
+0 10px 25px
 
-    0 10px 30px rgba(37,99,235,.15);
+rgba(37,99,235,.25);
 
 }
 
 
 
-
-
 /* ===========================
-   FOOTER
+   FOOTER / LOGOUT
 =========================== */
 
 
 .sidebar-footer{
 
-    margin-top:auto;
+padding:20px;
+
+flex-shrink:0;
+
+border-top:
+
+1px solid #e2e8f0;
 
 }
 
 
+
+.sidebar-footer a{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+padding:14px 16px;
+
+border-radius:15px;
+
+text-decoration:none;
+
+color:#ef4444;
+
+font-weight:700;
+
+transition:.3s;
+
+}
+
+
+
+.sidebar-footer a:hover{
+
+background:
+
+rgba(239,68,68,.1);
+
+}
+
+
+
+/* ===========================
+   OVERLAY
+=========================== */
+
+
+.sidebar-overlay{
+
+position:fixed;
+
+inset:0;
+
+background:
+
+rgba(0,0,0,.45);
+
+z-index:900;
+
+display:none;
+
+}
 
 
 
@@ -186,38 +272,16 @@ color:#2563eb;
    MOBILE
 =========================== */
 
-#sidebarOverlay{
 
-position:fixed;
+@media(max-width:900px){
 
-inset:0;
-
-background:rgba(15,23,42,.45);
-
-backdrop-filter:blur(3px);
-
-opacity:0;
-
-visibility:hidden;
-
-pointer-events:none;
-
-transition:.3s ease;
-
-z-index:999;
-
-}
-
-@media(max-width:992px){
 
 .sidebar{
 
 transform:translateX(-100%);
 
-box-shadow:
-15px 0 40px rgba(0,0,0,.15);
-
 }
+
 
 .sidebar.active{
 
@@ -225,30 +289,27 @@ transform:translateX(0);
 
 }
 
-#sidebarOverlay.active{
 
-opacity:1;
 
-visibility:visible;
+.sidebar-overlay.active{
 
-pointer-events:auto;
+display:block;
 
 }
 
-body.menu-open{
-
-overflow:hidden;
 
 }
 
+
+
+@media(min-width:901px){
+
+
+.sidebar-overlay{
+
+display:none!important;
+
 }
 
-@media(min-width:993px){
-
-#sidebarOverlay{
-
-display:none;
-
-}
 
 }

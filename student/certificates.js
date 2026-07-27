@@ -214,22 +214,28 @@ async function loadCertificates(uid){
 
     catch(error){
 
-        console.error(error);
+    console.error("Certificates Error:", error);
 
-        certificateGrid.innerHTML = `
+    alert(error.message);
 
-        <div class="empty-state">
+    certificateGrid.innerHTML = `
 
-            <h2>
+    <div class="empty-state">
 
-                Failed to load certificates.
+        <h2>
 
-            </h2>
+            Failed to load certificates.
 
-        </div>
+        </h2>
 
-        `;
+        <p>
 
-    }
+            ${error.message}
+
+        </p>
+
+    </div>
+
+    `;
 
 }

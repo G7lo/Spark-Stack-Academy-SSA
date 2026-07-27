@@ -1,0 +1,643 @@
+/* ===========================
+   SSA STUDENT SETTINGS
+=========================== */
+
+*{
+
+margin:0;
+padding:0;
+box-sizing:border-box;
+
+}
+
+:root{
+
+--primary:#2563eb;
+--secondary:#1e40af;
+--success:#22c55e;
+--danger:#ef4444;
+--warning:#f59e0b;
+
+--bg:#f5f7fb;
+--card:#ffffff;
+--text:#1e293b;
+--muted:#64748b;
+--border:#e2e8f0;
+
+--radius:20px;
+
+}
+
+body{
+
+background:var(--bg);
+
+font-family:
+"Segoe UI",
+sans-serif;
+
+color:var(--text);
+
+}
+
+.main-content{
+
+padding:25px;
+
+}
+
+.settings-page{
+
+max-width:1100px;
+
+margin:auto;
+
+display:flex;
+
+flex-direction:column;
+
+gap:25px;
+
+}
+
+.page-title{
+
+margin-bottom:10px;
+
+}
+
+.page-title h1{
+
+font-size:32px;
+
+font-weight:800;
+
+margin-bottom:8px;
+
+color:var(--primary);
+
+}
+
+.page-title p{
+
+color:var(--muted);
+
+font-size:15px;
+
+}
+
+
+
+/* ===========================
+CARDS
+=========================== */
+
+.settings-card{
+
+background:rgba(255,255,255,.92);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.7);
+
+border-radius:var(--radius);
+
+padding:25px;
+
+box-shadow:
+
+0 12px 30px
+
+rgba(0,0,0,.08);
+
+display:flex;
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+.settings-card h2{
+
+font-size:22px;
+
+font-weight:700;
+
+color:var(--secondary);
+
+}
+
+
+
+/* ===========================
+PROFILE
+=========================== */
+
+.profile-area{
+
+display:flex;
+
+align-items:center;
+
+gap:25px;
+
+flex-wrap:wrap;
+
+}
+
+.avatar{
+
+width:120px;
+height:120px;
+
+border-radius:50%;
+
+overflow:hidden;
+
+border:5px solid var(--primary);
+
+background:#fff;
+
+}
+
+.avatar img{
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+}
+
+#changePhotoBtn{
+
+padding:12px 22px;
+
+border:none;
+
+border-radius:12px;
+
+background:var(--primary);
+
+color:#fff;
+
+cursor:pointer;
+
+font-weight:700;
+
+transition:.3s;
+
+}
+
+#changePhotoBtn:hover{
+
+transform:translateY(-2px);
+
+background:var(--secondary);
+
+}
+
+
+
+/* ===========================
+FORM
+=========================== */
+
+.form-grid{
+
+display:grid;
+
+grid-template-columns:
+
+repeat(auto-fit,minmax(260px,1fr));
+
+gap:20px;
+
+}
+
+.form-group{
+
+display:flex;
+
+flex-direction:column;
+
+gap:8px;
+
+}
+
+.form-group label{
+
+font-size:14px;
+
+font-weight:700;
+
+color:var(--muted);
+
+}
+
+.form-group input,
+
+.form-group textarea{
+
+padding:14px 16px;
+
+border:1px solid var(--border);
+
+border-radius:14px;
+
+font-size:15px;
+
+outline:none;
+
+background:#fff;
+
+transition:.25s;
+
+}
+
+.form-group textarea{
+
+resize:none;
+
+}
+
+.form-group input:focus,
+
+.form-group textarea:focus{
+
+border-color:var(--primary);
+
+box-shadow:
+
+0 0 0 4px
+
+rgba(37,99,235,.12);
+
+}
+
+
+
+/* ===========================
+BUTTONS
+=========================== */
+
+.primary-btn{
+
+padding:15px;
+
+border:none;
+
+border-radius:14px;
+
+background:var(--primary);
+
+color:#fff;
+
+font-size:15px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.primary-btn:hover{
+
+background:var(--secondary);
+
+transform:translateY(-2px);
+
+}
+
+.danger-btn{
+
+padding:15px;
+
+border:none;
+
+border-radius:14px;
+
+background:var(--danger);
+
+color:#fff;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.danger-btn:hover{
+
+transform:translateY(-2px);
+
+}
+
+
+
+/* ===========================
+ACADEMIC STATS
+=========================== */
+
+.stats-grid{
+
+display:grid;
+
+grid-template-columns:
+
+repeat(auto-fit,minmax(180px,1fr));
+
+gap:20px;
+
+}
+
+.stat-box{
+
+padding:25px;
+
+background:#f8fafc;
+
+border-radius:18px;
+
+text-align:center;
+
+border:1px solid var(--border);
+
+transition:.3s;
+
+}
+
+.stat-box:hover{
+
+transform:translateY(-5px);
+
+}
+
+.stat-box h3{
+
+font-size:34px;
+
+color:var(--primary);
+
+margin-bottom:8px;
+
+}
+
+.stat-box span{
+
+color:var(--muted);
+
+}
+
+
+
+/* ===========================
+SETTINGS ROWS
+=========================== */
+
+.setting-row{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:18px 0;
+
+border-bottom:1px solid var(--border);
+
+}
+
+.setting-row:last-child{
+
+border-bottom:none;
+
+}
+
+
+
+/* ===========================
+SWITCH
+=========================== */
+
+.switch{
+
+position:relative;
+
+width:54px;
+
+height:30px;
+
+display:inline-block;
+
+}
+
+.switch input{
+
+display:none;
+
+}
+
+.switch span{
+
+position:absolute;
+
+inset:0;
+
+background:#d1d5db;
+
+border-radius:30px;
+
+transition:.3s;
+
+}
+
+.switch span::before{
+
+content:"";
+
+position:absolute;
+
+left:4px;
+
+top:4px;
+
+width:22px;
+
+height:22px;
+
+border-radius:50%;
+
+background:#fff;
+
+transition:.3s;
+
+}
+
+.switch input:checked+span{
+
+background:var(--primary);
+
+}
+
+.switch input:checked+span::before{
+
+transform:translateX(24px);
+
+}
+
+
+
+/* ===========================
+ABOUT
+=========================== */
+
+.settings-card p{
+
+color:var(--muted);
+
+line-height:1.7;
+
+}
+
+
+
+/* ===========================
+RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+.main-content{
+
+padding:18px;
+
+}
+
+.page-title h1{
+
+font-size:26px;
+
+}
+
+.settings-card{
+
+padding:20px;
+
+}
+
+.profile-area{
+
+flex-direction:column;
+
+align-items:center;
+
+text-align:center;
+
+}
+
+.avatar{
+
+width:100px;
+height:100px;
+
+}
+
+.form-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.stats-grid{
+
+grid-template-columns:
+
+repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:480px){
+
+.stats-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.setting-row{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:12px;
+
+}
+
+.primary-btn,
+.danger-btn,
+#changePhotoBtn{
+
+width:100%;
+
+}
+
+}
+/* ===========================
+   DARK MODE
+=========================== */
+
+body.dark{
+
+--bg:#0f172a;
+--card:#1e293b;
+--text:#f8fafc;
+--muted:#cbd5e1;
+--border:#334155;
+
+background:var(--bg);
+color:var(--text);
+
+}
+
+body.dark .settings-card,
+body.dark .stat-box,
+body.dark .lesson-card,
+body.dark .course-card,
+body.dark .certificate-card,
+body.dark .dashboard-card{
+
+background:var(--card);
+
+color:var(--text);
+
+border-color:var(--border);
+
+}
+
+body.dark input,
+body.dark textarea,
+body.dark select{
+
+background:#0f172a;
+
+color:#fff;
+
+border-color:#475569;
+
+}
+
+body.dark a{
+
+color:#93c5fd;
+
+}
