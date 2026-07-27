@@ -14,7 +14,7 @@ const sidebarCSS = document.createElement("link");
 
 sidebarCSS.rel = "stylesheet";
 
-sidebarCSS.href = "components/sidebar.css";
+sidebarCSS.href = "components/sidebar.css?v=3";
 
 document.head.appendChild(sidebarCSS);
 
@@ -24,7 +24,7 @@ document.head.appendChild(sidebarCSS);
 
 // Load sidebar HTML
 
-fetch("components/sidebar.html")
+fetch("components/sidebar.html?v=3")
 
 .then(res => res.text())
 
