@@ -5,584 +5,425 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>SSA | Student Dashboard</title>
 
-<link rel="stylesheet"
-href="dashboard.css">
-
-<link rel="stylesheet"
-href="components/sidebar.css">
+<link rel="stylesheet" href="css/student.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/topbar.css">
+<link rel="stylesheet" href="css/responsive.css">
 
 </head>
 
+
 <body>
 
-<div class="dashboard-layout">
 
-<aside id="sidebarContainer"></aside>
+<div class="student-layout">
 
-<main class="student-dashboard">
 
-<div id="topbarContainer"></div>
+    <aside class="sidebar">
 
+        <div class="sidebar-logo">
 
+            <h2>SSA</h2>
 
+            <span>Student Portal</span>
 
+        </div>
 
-<!-- ===========================
-WELCOME
-=========================== -->
 
-<section class="hero-section">
+        <nav class="sidebar-menu">
 
-<div class="hero-text">
+            <a href="dashboard.html" class="active">
+                Dashboard
+            </a>
 
-<h1>
+            <a href="courses.html">
+                Courses
+            </a>
 
-Welcome back,
+            <a href="my-courses.html">
+                My Courses
+            </a>
 
-<span id="studentName">
+            <a href="certificates.html">
+                Certificates
+            </a>
 
-Student
+        </nav>
 
-</span>
 
-👋
+        <div class="sidebar-footer">
 
-</h1>
+            <a href="../index.html">
+                Logout
+            </a>
 
-<p>
+        </div>
 
-Keep building your future one lesson at a time.
 
-</p>
+    </aside>
 
-<div class="hero-meta">
 
-<span id="todayDate">
 
-Monday, July 27
+    <div id="sidebarOverlay"></div>
 
-</span>
 
-<span>
 
-🔥
+    <main class="student-main">
 
-<span id="learningStreak">
 
-0 Day Streak
+        <header class="topbar">
 
-</span>
 
-</span>
+            <button 
+            id="menuBtn"
+            class="menu-btn">
 
-</div>
+                ☰
 
-</div>
+            </button>
 
-<div class="hero-illustration">
 
-🎓
 
-</div>
+            <div class="search-box">
 
-</section>
+                <input 
+                id="courseSearch"
+                type="search"
+                placeholder="Search courses...">
 
 
-
-
-
-<!-- ===========================
-PROFILE
-=========================== -->
-
-<section class="profile-card">
-
-<div class="profile-avatar"
-
-id="studentAvatar">
-
-S
-
-</div>
-
-<div class="profile-details">
-
-<h2 id="studentFullName">
-
-Student Name
-
-</h2>
-
-<p id="studentEmail">
-
-student@email.com
-
-</p>
-
-<p id="studentAdmission">
-
-Admission No:
-Loading...
-
-</p>
-
-<span class="student-badge">
-
-Active Student
-
-</span>
-
-</div>
-
-</section>
-
-
-
-
-
-<!-- ===========================
-QUICK STATS
-=========================== -->
-
-<section class="stats-grid">
-
-
-
-<div class="stat-card">
-
-<div class="stat-icon">
-
-📚
-
-</div>
-
-<div>
-
-<h3>
-
-My Courses
-
-</h3>
-
-<p id="courseCount">
-
-0
-
-</p>
-
-</div>
-
-</div>
-
-
-
-
-
-<div class="stat-card">
-
-<div class="stat-icon">
-
-📖
-
-</div>
-
-<div>
-
-<h3>
-
-Lessons
-
-</h3>
-
-<p id="lessonCount">
-
-0
-
-</p>
-
-</div>
-
-</div>
-
-
-
-
-
-<div class="stat-card">
-
-<div class="stat-icon">
-
-📈
-
-</div>
-
-<div>
-
-<h3>
-
-Progress
-
-</h3>
-
-<p id="progressPercent">
-
-0%
-
-</p>
-
-</div>
-
-</div>
-
-
-
-
-
-<div class="stat-card">
-
-<div class="stat-icon">
-
-🏆
-
-</div>
-
-<div>
-
-<h3>
-
-Certificates
-
-</h3>
-
-<p id="certificateCount">
-
-0
-
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-
-
-
-<!-- ===========================
-CONTINUE LEARNING
-=========================== -->
-
-<section class="dashboard-section">
-
-<div class="section-title">
-
-<h2>
-
-Continue Learning
-
-</h2>
-
-<a href="my-courses.html">
-
-View All
-
-</a>
-
-</div>
-
-<div
-class="continue-card"
-
-id="continueCourse">
-
-<div class="continue-left">
-
-<h3>
-
-No Active Course
-
-</h3>
-
-<p>
-
-Enroll into a course to begin learning.
-
-</p>
-
-</div>
-
-<a
-href="courses.html"
-
-class="continue-btn">
-
-Browse Courses
-
-</a>
-
-</div>
-
-</section>
-
-
-
-
-
-
-<!-- ===========================
-RECENT ACTIVITY
-=========================== -->
-
-<section class="dashboard-section">
-
-<div class="section-title">
-
-<h2>
-
-Recent Activity
-
-</h2>
-
-</div>
-
-<div
-id="recentLessons"
-
-class="activity-list">
-
-<div class="empty-card">
-
-No activity yet.
-
-</div>
-
-</div>
-
-</section>
-<!-- ===========================
-COURSE PROGRESS
-=========================== -->
-
-<section class="dashboard-section">
-
-    <div class="section-title">
-
-        <h2>
-
-            Course Progress
-
-        </h2>
-
-    </div>
-
-    <div id="progressContainer">
-
-        <div class="progress-card">
-
-            <div class="progress-header">
-
-                <h3>
-
-                    No Course Yet
-
-                </h3>
-
-                <span>
-
-                    0%
-
-                </span>
-
-            </div>
-
-            <div class="progress-bar">
-
-                <div
-                class="progress-fill"
-                id="progressBar">
+                <div 
+                id="searchResults">
 
                 </div>
 
+
             </div>
 
+
+
+            <div class="topbar-actions">
+
+
+                <button class="icon-btn">
+
+                    🔔
+
+                </button>
+
+
+                <div class="student-avatar">
+
+                    S
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <section class="dashboard-content">
+
+
+<!-- HERO -->
+
+<div class="hero-card">
+
+
+    <div class="hero-text">
+
+
+        <h1>
+
+            Welcome back,
+
+            <span id="studentName">
+                Student
+            </span>
+
+            👋
+
+        </h1>
+
+
+        <p>
+
+            Keep building your future one lesson at a time.
+
+        </p>
+
+
+        <div class="hero-meta">
+
+
+            <span id="todayDate">
+                Monday
+            </span>
+
+
+            <span>
+
+                🔥
+
+                <span id="learningStreak">
+                    0 Day Streak
+                </span>
+
+            </span>
+
+
         </div>
+
 
     </div>
 
-</section>
+
+
+    <div class="hero-icon">
+
+        🎓
+
+    </div>
+
+
+</div>
 
 
 
 
 
-<!-- ===========================
-RECOMMENDED COURSES
-=========================== -->
+<!-- PROFILE -->
 
-<section class="dashboard-section">
 
-    <div class="section-title">
+<div class="profile-card">
 
-        <h2>
 
-            Recommended Courses
+    <div 
+    class="profile-avatar"
+    id="profileAvatar">
+
+        S
+
+    </div>
+
+
+
+    <div>
+
+
+        <h2 id="studentFullName">
+
+            Student Name
 
         </h2>
 
-        <a href="courses.html">
 
-            Browse All
+        <p id="studentEmail">
 
-        </a>
+            student@email.com
+
+        </p>
+
+
+        <span class="student-badge">
+
+            Active Student
+
+        </span>
+
 
     </div>
 
-    <div
-    class="recommended-grid"
 
-    id="recommendedCourses">
+</div>
 
-        <div class="empty-card">
 
-            Recommendations will appear here.
 
-        </div>
+
+
+
+<!-- STATS -->
+
+
+<div class="stats-grid">
+
+
+
+<div class="stat-card">
+
+    <span>
+        📚
+    </span>
+
+    <div>
+
+        <h3>
+            Courses
+        </h3>
+
+        <p id="courseCount">
+            0
+        </p>
 
     </div>
 
-</section>
+</div>
+
+
+
+<div class="stat-card">
+
+    <span>
+        📖
+    </span>
+
+    <div>
+
+        <h3>
+            Lessons
+        </h3>
+
+        <p id="lessonCount">
+            0
+        </p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="stat-card">
+
+    <span>
+        📈
+    </span>
+
+    <div>
+
+        <h3>
+            Progress
+        </h3>
+
+        <p id="progressPercent">
+            0%
+        </p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="stat-card">
+
+    <span>
+        🏆
+    </span>
+
+    <div>
+
+        <h3>
+            Certificates
+        </h3>
+
+        <p id="certificateCount">
+            0
+        </p>
+
+    </div>
+
+</div>
+
+
+</div>
 
 
 
 
 
-<!-- ===========================
-NOTIFICATIONS
-=========================== -->
+<!-- CONTINUE LEARNING -->
 
-<section class="dashboard-section">
 
-    <div class="section-title">
+<div class="section-card">
+
+
+    <div class="section-header">
 
         <h2>
-
-            Latest Notifications
-
+            Continue Learning
         </h2>
 
-        <a href="notifications.html">
+
+        <a href="my-courses.html">
 
             View All
 
         </a>
 
-    </div>
-
-    <div
-    class="notification-list"
-
-    id="dashboardNotifications">
-
-        <div class="empty-card">
-
-            No notifications yet.
-
-        </div>
 
     </div>
 
-</section>
 
 
+    <div class="continue-card">
 
-
-
-<!-- ===========================
-LEARNING GOALS
-=========================== -->
-
-<section class="dashboard-section">
-
-    <div class="section-title">
-
-        <h2>
-
-            Today's Goal
-
-        </h2>
-
-    </div>
-
-    <div class="goal-card">
-
-        <div class="goal-icon">
-
-            🎯
-
-        </div>
 
         <div>
 
             <h3>
-
-                Complete One Lesson
-
+                No Active Course
             </h3>
 
+
             <p>
-
-                Stay consistent. Even one lesson every day builds momentum.
-
+                Enroll into a course to begin learning.
             </p>
+
 
         </div>
 
+
+
+        <a href="courses.html">
+
+            Browse Courses
+
+        </a>
+
+
     </div>
 
-</section>
-
-
-
-
-
-<!-- ===========================
-FOOTER
-=========================== -->
-
-<footer class="dashboard-footer">
-
-    <p>
-
-        © 2026 Spark Stack Academy
-
-    </p>
-
-</footer>
-
-</main>
 
 </div>
 
 
+</section>
 
 
+    </main>
+
+
+</div>
 
 <script src="https://unpkg.com/lucide@latest"></script>
+<script type="module">
+console.log("HTML MODULE TEST");
+</script>
 
-<script src="components/sidebar.js"></script>
+<script type="module" src="./js/student-app.js?v=2"></script>
 
-<script src="components/topbar.js"></script>
-
-<script type="module"
-src="dashboard.js"></script>
 
 </body>
 
