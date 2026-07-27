@@ -11,6 +11,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+
 const signupForm =
 document.getElementById("signupForm");
 
@@ -23,155 +24,239 @@ const instructorFields =
 document.getElementById("instructorFields");
 
 
+
+/* ===========================
+   ROLE SWITCH
+=========================== */
+
+
 role.addEventListener("change",()=>{
 
-    if(role.value === "instructor"){
 
-        instructorFields.style.display = "block";
+    const instructor =
+    role.value === "instructor";
 
-        document.getElementById("bio").required = true;
-        document.getElementById("expertise").required = true;
 
-    }else{
+    instructorFields.style.display =
+    instructor ? "block" : "none";
 
-        instructorFields.style.display = "none";
 
-        document.getElementById("bio").required = false;
-        document.getElementById("expertise").required = false;
+    document.getElementById("bio").required =
+    instructor;
 
-    }
+
+    document.getElementById("expertise").required =
+    instructor;
+
 
 });
 
 
-signupForm.addEventListener("submit", async(e)=>{
 
-    e.preventDefault();
 
+/* ===========================
+   SIGNUP
+=========================== */
 
-    const name =
-    document.getElementById("name").value.trim();
 
+signupForm.addEventListener(
+"submit",
+async(e)=>{
 
-    const email =
-    document.getElementById("email").value.trim();
 
+e.preventDefault();
 
-    const password =
-    document.getElementById("password").value;
 
 
-    const selectedRole =
-    role.value;
+const name =
+document.getElementById("name")
+.value.trim();
 
 
-    const bio =
-    document.getElementById("bio")?.value.trim() || "";
 
+const email =
+document.getElementById("email")
+.value.trim();
 
-    const expertise =
-    document.getElementById("expertise")?.value.trim() || "";
 
 
+const password =
+document.getElementById("password")
+.value;
 
-    try{
 
 
-        const userCredential =
-        await createUserWithEmailAndPassword(
-            auth,
-            email,
-            password
-        );
+const selectedRole =
+role.value;
 
 
-        const uid =
-        userCredential.user.uid;
 
+const bio =
+document.getElementById("bio")
+?.value.trim() || "";
 
 
-        if(selectedRole === "student"){
 
+const expertise =
+document.getElementById("expertise")
+?.value.trim() || "";
 
-            await setDoc(
-                doc(db,"students",uid),
-                {
 
-                    name,
 
-                    email,
 
-                    role:"student",
+try{
 
-                    coursesEnrolled:0,
 
-                    progress:0,
+const userCredential =
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
 
-                    certificates:0,
 
-                    createdAt:
-                    serverTimestamp()
 
-                }
-            );
+const uid =
+userCredential.user.uid;
 
 
-        }
 
 
 
-        if(selectedRole === "instructor"){
+/* ===========================
+   STUDENT PROFILE
+=========================== */
 
 
-            await setDoc(
-                doc(db,"instructors",uid),
-                {
+if(selectedRole==="student"){
 
-                    name,
 
-                    email,
+await setDoc(
 
-                    role:"instructor",
+doc(
+db,
+"students",
+uid
+),
 
-                    bio,
+{
 
-                    expertise,
+name,
 
-                    verified:false,
+email,
 
-                    totalStudents:0,
+role:"student",
 
-                    totalCourses:0,
+status:"Active",
 
-                    rating:0,
+admissionNumber:"Pending",
 
-                    createdAt:
-                    serverTimestamp()
+coursesEnrolled:0,
 
-                }
-            );
+progress:0,
 
+certificates:0,
 
-        }
+createdAt:
+serverTimestamp()
 
+}
 
+);
 
-        alert("🎉 Account created successfully!");
 
-        window.location.href =
-        "login.html";
+}
 
 
-    }
 
 
-    catch(error){
 
-        console.error(error);
 
-        alert(error.message);
+/* ===========================
+   INSTRUCTOR PROFILE
+=========================== */
 
-    }
+
+if(selectedRole==="instructor"){
+
+
+await setDoc(
+
+doc(
+db,
+"instructors",
+uid
+),
+
+{
+
+name,
+
+email,
+
+role:"instructor",
+
+status:"Pending",
+
+verified:false,
+
+bio,
+
+expertise,
+
+totalStudents:0,
+
+totalCourses:0,
+
+rating:0,
+
+createdAt:
+serverTimestamp()
+
+}
+
+);
+
+
+}
+
+
+
+
+
+
+console.log(
+"Account created successfully"
+);
+
+
+
+window.location.href =
+"login.html";
+
+
+
+
+}
+
+
+catch(error){
+
+
+console.error(
+"SIGNUP ERROR:",
+error
+);
+
+
+
+console.log(
+error.message
+);
+
+
+}
+
 
 
 });

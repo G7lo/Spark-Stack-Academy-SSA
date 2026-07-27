@@ -10,112 +10,218 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+
 const loginForm =
 document.getElementById("loginForm");
 
 
-loginForm.addEventListener("submit", async(e)=>{
-
-    e.preventDefault();
-
-
-    const email =
-    document.getElementById("email").value.trim();
-
-
-    const password =
-    document.getElementById("password").value;
+const loginBtn =
+document.getElementById("loginBtn");
 
 
 
-    try{
+
+loginForm.addEventListener(
+"submit",
+async(e)=>{
 
 
-        const userCredential =
-        await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
-        );
-
-
-        const uid =
-        userCredential.user.uid;
+e.preventDefault();
 
 
 
-        // 1. Check Founder
-
-        const founderSnap =
-        await getDoc(
-            doc(db,"founders",uid)
-        );
-
-
-        if(founderSnap.exists()){
-
-            window.location.href =
-            "founder/dashboard.html";
-
-            return;
-
-        }
+const email =
+document.getElementById("email")
+.value.trim();
 
 
 
-        // 2. Check Instructor
-
-        const instructorSnap =
-        await getDoc(
-            doc(db,"instructors",uid)
-        );
-
-
-        if(instructorSnap.exists()){
-
-            window.location.href =
-            "instructors/dashboard.html";
-
-            return;
-
-        }
+const password =
+document.getElementById("password")
+.value;
 
 
 
-        // 3. Check Student
+loginBtn.disabled = true;
 
-        const studentSnap =
-        await getDoc(
-            doc(db,"students",uid)
-        );
-
-
-        if(studentSnap.exists()){
-
-            window.location.href =
-            "student/dashboard.html";
-
-            return;
-
-        }
+loginBtn.textContent =
+"Logging in...";
 
 
 
-        alert(
-        "Account profile not found."
-        );
+try{
 
 
-    }
+const userCredential =
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
 
 
-    catch(error){
 
-        console.error(error);
+const uid =
+userCredential.user.uid;
 
-        alert(error.message);
 
-    }
+
+
+/* ===========================
+   FOUNDER
+=========================== */
+
+
+const founderSnap =
+await getDoc(
+doc(db,"founders",uid)
+);
+
+
+
+if(founderSnap.exists()){
+
+window.location.href =
+"founder/dashboard.html";
+
+return;
+
+}
+
+
+
+
+/* ===========================
+   ADMIN
+=========================== */
+
+
+const adminSnap =
+await getDoc(
+doc(db,"admins",uid)
+);
+
+
+
+if(adminSnap.exists()){
+
+window.location.href =
+"admin/dashboard.html";
+
+return;
+
+}
+
+
+
+
+
+/* ===========================
+   INSTRUCTOR
+=========================== */
+
+
+const instructorSnap =
+await getDoc(
+doc(db,"instructors",uid)
+);
+
+
+
+if(instructorSnap.exists()){
+
+
+const instructor =
+instructorSnap.data();
+
+
+
+if(
+instructor.status === "Pending"
+){
+
+console.log(
+"Waiting for instructor approval"
+);
+
+}
+
+
+
+window.location.href =
+"instructors/dashboard.html";
+
+
+return;
+
+}
+
+
+
+
+
+/* ===========================
+   STUDENT
+=========================== */
+
+
+const studentSnap =
+await getDoc(
+doc(db,"students",uid)
+);
+
+
+
+if(studentSnap.exists()){
+
+
+window.location.href =
+"student/dashboard.html";
+
+
+return;
+
+}
+
+
+
+
+
+console.error(
+"Profile not found"
+);
+
+
+
+}
+
+
+
+catch(error){
+
+
+console.error(
+"LOGIN ERROR:",
+error
+);
+
+
+
+}
+
+
+
+finally{
+
+
+loginBtn.disabled = false;
+
+loginBtn.textContent =
+"Login";
+
+
+}
+
 
 
 });

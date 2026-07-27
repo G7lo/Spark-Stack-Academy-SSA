@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+SSA Admin Dashboard
+</title>
+
+
+<link rel="stylesheet"
+href="dashboard.css">
+
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-layout">
+
+
+
+<aside id="sidebarContainer"></aside>
+
+
+
+<div id="sidebarOverlay"></div>
+
+
+
+
+<div class="main-content">
+
+
+
+<header id="topbarContainer"></header>
+
+
+
+
+<main class="admin-dashboard">
+
+
+
+<section class="page-header">
+
+
+<div>
+
+<h1>
+
+🛡️ Admin Dashboard
+
+</h1>
+
+
+<p>
+
+Monitor SSA operations, admissions and growth.
+
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- STAT CARDS -->
+
+
+<section class="stats-grid">
+
+
+
+<div class="stat-card">
+
+
+<h3>
+Total Students
+</h3>
+
+
+<p id="studentCount">
+0
+</p>
+
+
+</div>
+
+
+
+
+<div class="stat-card">
+
+
+<h3>
+Total Instructors
+</h3>
+
+
+<p id="instructorCount">
+0
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+
+<h3>
+Total Courses
+</h3>
+
+
+<p id="courseCount">
+0
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+
+<h3>
+Pending Admissions
+</h3>
+
+
+<p id="pendingCount">
+0
+</p>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<!-- RECENT APPLICATIONS -->
+
+
+<section class="dashboard-card">
+
+
+<div class="card-header">
+
+
+<h2>
+Recent Applications
+</h2>
+
+
+<a href="admissions.html">
+
+View All
+
+</a>
+
+
+</div>
+
+
+
+
+<div id="recentApplications">
+
+
+<p>
+Loading applications...
+</p>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<!-- QUICK ACTIONS -->
+
+
+<section class="dashboard-card">
+
+
+<h2>
+
+Quick Actions
+
+</h2>
+
+
+
+<div class="quick-actions">
+
+
+<a href="admissions.html">
+
+🎓 Review Admissions
+
+</a>
+
+
+<a href="students.html">
+
+👨‍🎓 Manage Students
+
+</a>
+
+
+<a href="instructors.html">
+
+👨‍🏫 Manage Instructors
+
+</a>
+
+
+<a href="courses.html">
+
+📚 Manage Courses
+
+</a>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+</main>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+<script type="module"
+src="js/admin-app.js">
+</script>
+
+
+<script type="module"
+src="dashboard.js">
+</script>
+
+
+
+</body>
+
+</html>

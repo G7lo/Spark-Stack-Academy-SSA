@@ -1,0 +1,309 @@
+/* ===========================
+   SSA ADMIN SIDEBAR
+   NAVY + SLATE
+=========================== */
+
+
+:root{
+
+--admin-primary:#1e3a8a;
+--admin-light:#3b82f6;
+--admin-dark:#172554;
+
+--admin-bg:#f8fafc;
+
+--admin-text:#0f172a;
+--admin-muted:#64748b;
+
+--admin-border:rgba(148,163,184,.25);
+
+}
+
+
+
+/* ===========================
+LAYOUT
+=========================== */
+
+
+.dashboard-layout{
+
+display:flex;
+min-height:100vh;
+
+}
+
+
+
+.main-content{
+
+flex:1;
+margin-left:280px;
+transition:.3s;
+
+}
+
+
+
+/* ===========================
+SIDEBAR
+=========================== */
+
+
+.sidebar{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:280px;
+height:100vh;
+
+display:flex;
+flex-direction:column;
+
+background:
+
+rgba(248,250,252,.85);
+
+backdrop-filter:blur(20px);
+
+border-right:
+
+1px solid var(--admin-border);
+
+box-shadow:
+
+0 20px 45px rgba(15,23,42,.12);
+
+z-index:1000;
+
+}
+
+
+
+/* ===========================
+LOGO
+=========================== */
+
+
+.sidebar-logo{
+
+padding:30px 25px;
+
+text-align:center;
+
+border-bottom:
+
+1px solid var(--admin-border);
+
+}
+
+
+
+.sidebar-logo h2{
+
+font-size:36px;
+
+font-weight:900;
+
+letter-spacing:3px;
+
+color:var(--admin-primary);
+
+}
+
+
+
+.sidebar-logo span{
+
+display:block;
+
+margin-top:8px;
+
+font-size:14px;
+
+color:var(--admin-muted);
+
+}
+
+
+
+/* ===========================
+MENU
+=========================== */
+
+
+.sidebar-menu{
+
+flex:1;
+
+padding:20px 15px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:8px;
+
+overflow-y:auto;
+
+}
+
+
+
+.sidebar-menu a{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+padding:15px 18px;
+
+border-radius:14px;
+
+text-decoration:none;
+
+font-weight:600;
+
+color:var(--admin-text);
+
+transition:.25s;
+
+}
+
+
+
+.sidebar-menu a:hover{
+
+background:#dbeafe;
+
+color:var(--admin-primary);
+
+transform:translateX(5px);
+
+}
+
+
+
+.sidebar-menu a.active{
+
+background:
+
+linear-gradient(
+135deg,
+var(--admin-primary),
+var(--admin-light)
+);
+
+color:white;
+
+box-shadow:
+
+0 12px 30px rgba(30,58,138,.25);
+
+}
+
+
+
+.sidebar-menu svg{
+
+width:21px;
+height:21px;
+
+}
+
+
+
+/* ===========================
+FOOTER
+=========================== */
+
+
+.sidebar-footer{
+
+padding:18px;
+
+border-top:
+
+1px solid var(--admin-border);
+
+}
+
+
+
+.sidebar-footer a{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+gap:12px;
+
+padding:15px;
+
+border-radius:14px;
+
+text-decoration:none;
+
+font-weight:700;
+
+background:#fee2e2;
+
+color:#dc2626;
+
+transition:.25s;
+
+}
+
+
+
+.sidebar-footer a:hover{
+
+background:#dc2626;
+
+color:white;
+
+}
+
+
+
+/* ===========================
+MOBILE
+=========================== */
+
+
+@media(max-width:768px){
+
+
+.sidebar{
+
+left:-280px;
+
+transition:.35s;
+
+}
+
+
+
+.sidebar.active{
+
+left:0;
+
+}
+
+
+
+.main-content{
+
+margin-left:0;
+
+}
+
+
+}
