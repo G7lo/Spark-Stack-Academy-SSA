@@ -13,6 +13,7 @@ import {
     limit,
     updateDoc,
     setDoc,
+    runTransaction,
     increment
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -468,6 +469,61 @@ type="video/mp4">
     }
 
 }
+
+async function generateCertificateNumber(){
+
+    const counterRef =
+    doc(
+        db,
+        "settings",
+        "certificateCounter"
+    );
+
+    const year =
+    new Date().getFullYear();
+
+    const number =
+    await runTransaction(
+        db,
+        async(transaction)=>{
+
+            const counterSnap =
+            await transaction.get(counterRef);
+
+            let current = 0;
+
+            if(counterSnap.exists()){
+
+                current =
+                counterSnap.data().current || 0;
+
+            }
+
+            current++;
+
+            transaction.set(
+
+                counterRef,
+
+                {
+                    current
+                },
+
+                {
+                    merge:true
+                }
+
+            );
+
+            return current;
+
+        }
+    );
+
+    return `SSA-CERT-${year}-${String(number).padStart(6,"0")}`;
+
+}
+
 completeBtn.addEventListener("click", completeLesson);
 
 
@@ -587,44 +643,95 @@ await updateDoc(
         "✅ Lesson Completed";
 
 
-        if(progress>=100){
+       if(progress>=100){
+
+    // Load student
+    const studentSnap =
+    await getDoc(
+        doc(db,"students",currentUser.uid)
+    );
+
+    const student =
+    studentSnap.exists()
+    ? studentSnap.data()
+    : {};
+
+
+
+    // Load course
+    const courseSnap =
+    await getDoc(
+        doc(db,"courses",courseId)
+    );
+
+    const course =
+    courseSnap.exists()
+    ? courseSnap.data()
+    : {};
+
+
+
+    // Generate certificate number
+    const certificateNumber =
+await generateCertificateNumber();
+
 
     await setDoc(
 
-        doc(
-            db,
-            "certificates",
-            `${currentUser.uid}_${courseId}`
-        ),
+    doc(
+        db,
+        "certificates",
+        `${currentUser.uid}_${courseId}`
+    ),
 
-        {
+    {
 
-            studentId:
-            currentUser.uid,
+        certificateNumber,
 
-            courseId,
+        studentId:
+        currentUser.uid,
 
-            issuedAt:
-            serverTimestamp()
+        studentName:
+        student.name || "",
 
-        }
+        admissionNumber:
+        student.admissionNumber || "Pending",
 
-    );
+        courseId,
 
+        courseTitle:
+        course.title || "",
 
-    await updateDoc(
+        instructorId:
+        course.instructorId || "",
 
-        doc(db,"students",currentUser.uid),
+        instructorName:
+        course.instructorName || "",
 
-        {
+        academyName:
+        "Spark Stack Academy",
 
-            "stats.certificates":
-            increment(1)
+        academyMotto:
+        "Empowering Future Innovators",
 
-        }
+        headquarters:
+        "Lodwar, Kenya",
 
-    );
+        phone:
+        "+254706088398",
 
+        whatsapp:
+        "+254706088398",
+
+        website:
+        "https://sparkstackacademy.com",
+
+        issuedAt:
+        serverTimestamp()
+
+    }
+
+);
 
     alert("🏆 Congratulations! Course completed!");
 

@@ -1,118 +1,223 @@
-import { auth, db } from "../js/firebase.js";
+import { db } from "../js/firebase.js";
 
 import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-    doc,
-    getDoc
+doc,
+getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-const params = new URLSearchParams(window.location.search);
+const params =
+new URLSearchParams(window.location.search);
 
-const certificateId = params.get("id");
-
-
-const studentName = document.getElementById("studentName");
-const courseTitle = document.getElementById("courseTitle");
-const issuedDate = document.getElementById("issuedDate");
-const certificateNumber = document.getElementById("certificateId");
+const certificateId =
+params.get("id");
 
 
-onAuthStateChanged(auth, async(user)=>{
+if(!certificateId){
 
-    if(!user){
+    window.location.href =
+    "certificates.html";
 
-        window.location.href = "../login.html";
+}
 
-        return;
 
-    }
 
-    if(!certificateId){
-
-        alert("Certificate not found.");
-
-        return;
-
-    }
+async function loadCertificate(){
 
     try{
 
-        const certificateRef =
-        doc(db,"certificates",certificateId);
-
         const certificateSnap =
-        await getDoc(certificateRef);
+        await getDoc(
+
+            doc(
+                db,
+                "certificates",
+                certificateId
+            )
+
+        );
+
 
         if(!certificateSnap.exists()){
 
-            alert("Certificate does not exist.");
+            alert("Certificate not found.");
+
+            window.location.href =
+            "certificates.html";
 
             return;
 
         }
+
 
         const certificate =
         certificateSnap.data();
 
 
-        if(certificate.studentId !== user.uid){
+        document.getElementById(
+"academyName"
+).textContent =
+certificate.academyName;
 
-            alert("Unauthorized access.");
+document.getElementById(
+"academyMotto"
+).textContent =
+certificate.academyMotto;
 
-            return;
+document.getElementById(
+"headquarters"
+).textContent =
+certificate.headquarters;
 
-        }
+document.getElementById(
+"phone"
+).textContent =
+certificate.phone;
+
+document.getElementById(
+"whatsapp"
+).textContent =
+certificate.whatsapp;
+
+document.getElementById(
+"website"
+).textContent =
+certificate.website;
 
 
-        const studentSnap = await getDoc(
-            doc(db,"students",user.uid)
-        );
 
-        if(studentSnap.exists()){
-
-            studentName.textContent =
-            studentSnap.data().name;
-
-        }
+        document.getElementById(
+            "studentName"
+        ).textContent =
+        certificate.studentName;
 
 
-        const courseSnap = await getDoc(
-            doc(db,"courses",certificate.courseId)
-        );
 
-        if(courseSnap.exists()){
+        document.getElementById(
+            "admissionNumber"
+        ).textContent =
+        certificate.admissionNumber ||
+        "Pending";
 
-            courseTitle.textContent =
-            courseSnap.data().title;
 
-        }
+
+        document.getElementById(
+            "courseTitle"
+        ).textContent =
+        certificate.courseTitle;
+
+
+
+        document.getElementById(
+            "instructorName"
+        ).textContent =
+        certificate.instructorName;
+
+
+
+        document.getElementById(
+            "instructorSignature"
+        ).textContent =
+        certificate.instructorName;
+
+
+
+        document.getElementById(
+            "certificateNumber"
+        ).textContent =
+        certificate.certificateNumber;
+
 
 
         if(certificate.issuedAt){
 
-            issuedDate.textContent =
-            "Date: " +
-            certificate.issuedAt
+            document.getElementById(
+                "issuedDate"
+            ).textContent =
+
+            certificate
+            .issuedAt
             .toDate()
-            .toLocaleDateString();
+            .toLocaleDateString(
+
+                "en-KE",
+
+                {
+
+                    year:"numeric",
+
+                    month:"long",
+
+                    day:"numeric"
+
+                }
+
+            );
 
         }
 
 
-        certificateNumber.textContent =
-        "Certificate ID: " + certificateId;
 
-
-    }catch(error){
-
-        console.log(error);
-
-        alert("Error loading certificate.");
+        document.title =
+        certificate.courseTitle +
+        " Certificate";
 
     }
 
-});
+    catch(error){
+
+        console.error(
+            error
+        );
+
+        alert(
+            "Unable to load certificate."
+        );
+
+    }
+
+}
+
+
+
+// ===========================
+// PRINT
+// ===========================
+
+document
+.getElementById("printBtn")
+.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        window.print();
+
+    }
+
+);
+
+
+
+// ===========================
+// DOWNLOAD PDF
+// ===========================
+
+document
+.getElementById("downloadBtn")
+.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        window.print();
+
+    }
+
+);
+
+
+
+loadCertificate();
