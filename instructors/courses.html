@@ -8,35 +8,104 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>My Courses</title>
+<title>
+SSA | My Courses
+</title>
 
 <link rel="stylesheet"
 href="courses.css">
 
 </head>
 
+
 <body>
 
-<div class="courses-page">
 
-    <header class="topbar">
+<div class="dashboard-layout">
 
-        <h1>My Courses</h1>
 
-        <button id="createCourseBtn">
-            + Create Course
-        </button>
+    <aside id="sidebarContainer"></aside>
 
-    </header>
 
-    <div id="coursesContainer">
+    <div id="sidebarOverlay"></div>
 
-    </div>
+
+
+    <main class="main-content">
+
+
+        <header id="topbarContainer"></header>
+
+
+
+        <section class="courses-page">
+
+
+            <div class="page-header">
+
+
+                <div>
+
+                    <h1>
+                        📚 My Courses
+                    </h1>
+
+                    <p>
+                        Manage your courses and learning content.
+                    </p>
+
+                </div>
+
+
+
+                <button
+                id="createCourseBtn"
+                class="primary-btn">
+
+                    ➕ Create Course
+
+                </button>
+
+
+            </div>
+
+
+
+
+            <section class="courses-grid"
+            id="coursesContainer">
+
+
+                <div class="loading-card">
+
+                    Loading courses...
+
+                </div>
+
+
+            </section>
+
+
+
+        </section>
+
+
+    </main>
+
 
 </div>
 
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script type="module"
+src="./js/instructor-app.js"></script>
+
+
 <script type="module"
 src="courses.js"></script>
+
 
 </body>
 

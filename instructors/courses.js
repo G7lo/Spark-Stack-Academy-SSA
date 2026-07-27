@@ -62,41 +62,65 @@ onAuthStateChanged(auth, async(user)=>{
 
         const course = doc.data();
 
-        coursesContainer.innerHTML += `
+        container.innerHTML += `
 
-        <div class="course-card">
+<div class="course-card">
 
-            <h2>${course.title}</h2>
+    <h2>
+        ${course.title}
+    </h2>
 
-            <p>${course.description}</p>
 
-            <span class="status">
-                ${course.status}
-            </span>
+    <p>
+        ${course.description || "No description available."}
+    </p>
 
-            <p>👨‍🎓 ${course.students || 0} Students</p>
 
-<div class="course-actions">
 
-    <button
-    onclick="manageCourse('${doc.id}')">
+    <div class="course-meta">
 
-        Manage
+        <span>
+            📚 ${course.category || "Course"}
+        </span>
 
-    </button>
 
-    <button
-    onclick="editCourse('${doc.id}')">
+        <span>
+            👨‍🎓 ${course.students || 0} Students
+        </span>
 
-        Edit
 
-    </button>
+    </div>
+
+
+
+    <div class="course-actions">
+
+
+        <a 
+        href="manage-course.html?id=${doc.id}"
+        class="manage-btn">
+
+            Manage
+
+        </a>
+
+
+
+        <a
+        href="edit-course.html?id=${doc.id}"
+        class="edit-btn">
+
+            Edit
+
+        </a>
+
+
+    </div>
+
 
 </div>
 
-        </div>
-
-        `;
+`;
 
     });
 
