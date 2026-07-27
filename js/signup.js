@@ -1,8 +1,18 @@
-import { auth, db } from "./firebase.js";
+/* ===========================
+   SSA SIGNUP SYSTEM
+=========================== */
+
+
+import {
+    auth,
+    db
+} from "./firebase.js";
+
 
 import {
     createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 
 import {
     doc,
@@ -12,41 +22,87 @@ import {
 
 
 
+
+
+/* ===========================
+   ELEMENTS
+=========================== */
+
+
 const signupForm =
 document.getElementById("signupForm");
 
 
-const role =
+const roleSelect =
 document.getElementById("role");
 
 
 const instructorFields =
-document.getElementById("instructorFields");
+document.getElementById(
+    "instructorFields"
+);
+
+
+const signupBtn =
+document.getElementById(
+    "signupBtn"
+);
+
+
+
 
 
 
 /* ===========================
-   ROLE SWITCH
+   ROLE FIELD TOGGLE
 =========================== */
 
 
-role.addEventListener("change",()=>{
+roleSelect.addEventListener(
+"change",
+()=>{
 
 
-    const instructor =
-    role.value === "instructor";
+    if(
+        roleSelect.value === "instructor"
+    ){
 
 
-    instructorFields.style.display =
-    instructor ? "block" : "none";
+        instructorFields.style.display =
+        "block";
 
 
-    document.getElementById("bio").required =
-    instructor;
+        document
+        .getElementById("bio")
+        .required = true;
 
 
-    document.getElementById("expertise").required =
-    instructor;
+        document
+        .getElementById("expertise")
+        .required = true;
+
+
+    }
+
+
+    else{
+
+
+        instructorFields.style.display =
+        "none";
+
+
+        document
+        .getElementById("bio")
+        .required = false;
+
+
+        document
+        .getElementById("expertise")
+        .required = false;
+
+
+    }
 
 
 });
@@ -54,8 +110,142 @@ role.addEventListener("change",()=>{
 
 
 
+
+
+
 /* ===========================
-   SIGNUP
+   TOAST SYSTEM
+=========================== */
+
+
+function showToast(
+message,
+type="success"
+){
+
+
+    const container =
+    document.getElementById(
+        "toastContainer"
+    );
+
+
+    if(!container) return;
+
+
+
+    const toast =
+    document.createElement("div");
+
+
+    toast.className =
+    `toast ${type}`;
+
+
+    toast.textContent =
+    message;
+
+
+
+    container.appendChild(toast);
+
+
+
+    setTimeout(()=>{
+
+
+        toast.classList.add(
+            "show"
+        );
+
+
+    },100);
+
+
+
+
+
+    setTimeout(()=>{
+
+
+        toast.classList.remove(
+            "show"
+        );
+
+
+
+        setTimeout(()=>{
+
+
+            toast.remove();
+
+
+        },300);
+
+
+
+    },3000);
+
+
+
+}
+
+
+
+
+
+
+
+
+/* ===========================
+   LOADER
+=========================== */
+
+
+function showLoader(message){
+
+
+    const loader =
+    document.getElementById(
+        "authLoader"
+    );
+
+
+    const text =
+    document.getElementById(
+        "loaderText"
+    );
+
+
+
+    if(loader){
+
+        loader.classList.add(
+            "active"
+        );
+
+    }
+
+
+
+    if(text){
+
+        text.textContent =
+        message;
+
+    }
+
+
+}
+
+
+
+
+
+
+
+/* ===========================
+   SIGNUP FLOW
 =========================== */
 
 
@@ -64,198 +254,298 @@ signupForm.addEventListener(
 async(e)=>{
 
 
-e.preventDefault();
+    e.preventDefault();
 
 
 
-const name =
-document.getElementById("name")
-.value.trim();
 
+    const name =
+    document
+    .getElementById("name")
+    .value
+    .trim();
 
 
-const email =
-document.getElementById("email")
-.value.trim();
 
+    const email =
+    document
+    .getElementById("email")
+    .value
+    .trim();
 
 
-const password =
-document.getElementById("password")
-.value;
 
+    const password =
+    document
+    .getElementById("password")
+    .value;
 
 
-const selectedRole =
-role.value;
 
+    const selectedRole =
+    roleSelect.value;
 
 
-const bio =
-document.getElementById("bio")
-?.value.trim() || "";
 
 
+    const bio =
+    document
+    .getElementById("bio")
+    ?.value
+    .trim()
+    || "";
 
-const expertise =
-document.getElementById("expertise")
-?.value.trim() || "";
 
 
+    const expertise =
+    document
+    .getElementById("expertise")
+    ?.value
+    .trim()
+    || "";
 
 
-try{
 
 
-const userCredential =
-await createUserWithEmailAndPassword(
-auth,
-email,
-password
-);
 
 
 
-const uid =
-userCredential.user.uid;
+    signupBtn.disabled =
+    true;
 
 
 
+    signupBtn.textContent =
+    "Creating Account...";
 
 
-/* ===========================
-   STUDENT PROFILE
-=========================== */
 
 
-if(selectedRole==="student"){
 
 
-await setDoc(
 
-doc(
-db,
-"students",
-uid
-),
+    try{
 
-{
 
-name,
 
-email,
+        const userCredential =
+        await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
 
-role:"student",
 
-status:"Active",
 
-admissionNumber:"Pending",
+        const uid =
+        userCredential.user.uid;
 
-coursesEnrolled:0,
 
-progress:0,
 
-certificates:0,
 
-createdAt:
-serverTimestamp()
 
-}
 
-);
 
+        if(selectedRole === "student"){
 
-}
 
 
+            await setDoc(
 
+                doc(
+                    db,
+                    "students",
+                    uid
+                ),
 
+                {
 
 
-/* ===========================
-   INSTRUCTOR PROFILE
-=========================== */
+                    name,
 
 
-if(selectedRole==="instructor"){
+                    email,
 
 
-await setDoc(
+                    role:"student",
 
-doc(
-db,
-"instructors",
-uid
-),
 
-{
+                    coursesEnrolled:0,
 
-name,
 
-email,
+                    progress:0,
 
-role:"instructor",
 
-status:"Pending",
+                    certificates:0,
 
-verified:false,
 
-bio,
+                    status:"Active",
 
-expertise,
 
-totalStudents:0,
+                    createdAt:
+                    serverTimestamp()
 
-totalCourses:0,
 
-rating:0,
+                }
 
-createdAt:
-serverTimestamp()
+            );
 
-}
 
-);
+        }
 
 
-}
 
 
 
 
 
 
-console.log(
-"Account created successfully"
-);
+        if(selectedRole === "instructor"){
 
 
 
-window.location.href =
-"login.html";
+            await setDoc(
 
+                doc(
+                    db,
+                    "instructors",
+                    uid
+                ),
 
+                {
 
 
-}
+                    name,
 
 
-catch(error){
+                    email,
 
 
-console.error(
-"SIGNUP ERROR:",
-error
-);
+                    role:"instructor",
 
 
+                    bio,
 
-console.log(
-error.message
-);
 
+                    expertise,
 
-}
+
+                    verified:false,
+
+
+                    totalStudents:0,
+
+
+                    totalCourses:0,
+
+
+                    rating:0,
+
+
+                    status:"Pending",
+
+
+                    createdAt:
+                    serverTimestamp()
+
+
+                }
+
+            );
+
+
+        }
+
+
+
+
+
+
+
+        showToast(
+
+        "🎉 Account created successfully!",
+
+        "success"
+
+        );
+
+
+
+
+
+        showLoader(
+
+        "Preparing your SSA login..."
+
+        );
+
+
+
+
+
+
+        setTimeout(()=>{
+
+
+            window.location.href =
+            "login.html";
+
+
+        },1200);
+
+
+
+
+
+    }
+
+
+
+
+
+    catch(error){
+
+
+
+        console.error(
+            error
+        );
+
+
+
+        showToast(
+
+        error.message,
+
+        "error"
+
+        );
+
+
+
+    }
+
+
+
+
+
+
+    finally{
+
+
+        signupBtn.disabled =
+        false;
+
+
+
+        signupBtn.textContent =
+        "Create Account";
+
+
+
+    }
+
 
 
 

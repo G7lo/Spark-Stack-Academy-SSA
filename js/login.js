@@ -1,14 +1,29 @@
-import { auth, db } from "./firebase.js";
+/* ===========================
+   SSA LOGIN SYSTEM
+=========================== */
+
+
+import {
+    auth,
+    db
+} from "./firebase.js";
+
 
 import {
     signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 
 import {
     doc,
     getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+
+
+/* ===========================
+   ELEMENTS
+=========================== */
 
 
 const loginForm =
@@ -21,207 +36,343 @@ document.getElementById("loginBtn");
 
 
 
+
+/* ===========================
+   TOAST SYSTEM
+=========================== */
+
+
+function showToast(message,type="success"){
+
+
+    const container =
+    document.getElementById(
+        "toastContainer"
+    );
+
+
+    if(!container) return;
+
+
+
+    const toast =
+    document.createElement("div");
+
+
+    toast.className =
+    `toast ${type}`;
+
+
+    toast.textContent =
+    message;
+
+
+
+    container.appendChild(toast);
+
+
+
+    setTimeout(()=>{
+
+        toast.classList.add("show");
+
+    },100);
+
+
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+
+        setTimeout(()=>{
+
+            toast.remove();
+
+        },300);
+
+
+    },3000);
+
+
+}
+
+
+
+
+
+/* ===========================
+   LOADER
+=========================== */
+
+
+function showLoader(message){
+
+
+    const loader =
+    document.getElementById(
+        "authLoader"
+    );
+
+
+    const text =
+    document.getElementById(
+        "loaderText"
+    );
+
+
+
+    if(loader){
+
+        loader.classList.add(
+            "active"
+        );
+
+    }
+
+
+    if(text){
+
+        text.textContent =
+        message;
+
+    }
+
+
+}
+
+
+
+
+
+
+/* ===========================
+   LOGIN FLOW
+=========================== */
+
+
 loginForm.addEventListener(
 "submit",
 async(e)=>{
 
 
-e.preventDefault();
+    e.preventDefault();
 
 
 
-const email =
-document.getElementById("email")
-.value.trim();
+    const email =
+    document
+    .getElementById("email")
+    .value
+    .trim();
 
 
 
-const password =
-document.getElementById("password")
-.value;
+    const password =
+    document
+    .getElementById("password")
+    .value;
 
 
 
-loginBtn.disabled = true;
 
-loginBtn.textContent =
-"Logging in...";
+    loginBtn.disabled = true;
 
+    loginBtn.textContent =
+    "Logging in...";
 
 
-try{
 
+    try{
 
-const userCredential =
-await signInWithEmailAndPassword(
-auth,
-email,
-password
-);
 
+        const userCredential =
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
 
 
-const uid =
-userCredential.user.uid;
 
+        const uid =
+        userCredential.user.uid;
 
 
 
-/* ===========================
-   FOUNDER
-=========================== */
 
+        // FOUNDER
 
-const founderSnap =
-await getDoc(
-doc(db,"founders",uid)
-);
+        const founderSnap =
+        await getDoc(
+            doc(
+                db,
+                "founders",
+                uid
+            )
+        );
 
 
+        if(founderSnap.exists()){
 
-if(founderSnap.exists()){
 
-window.location.href =
-"founder/dashboard.html";
+            showLoader(
+            "Loading founder console..."
+            );
 
-return;
 
-}
+            window.location.href =
+            "founder/dashboard.html";
 
 
+            return;
 
+        }
 
-/* ===========================
-   ADMIN
-=========================== */
 
 
-const adminSnap =
-await getDoc(
-doc(db,"admins",uid)
-);
 
 
+        // ADMIN
 
-if(adminSnap.exists()){
+        const adminSnap =
+        await getDoc(
+            doc(
+                db,
+                "admins",
+                uid
+            )
+        );
 
-window.location.href =
-"admin/dashboard.html";
 
-return;
+        if(adminSnap.exists()){
 
-}
 
+            showLoader(
+            "Opening admin command center..."
+            );
 
 
+            window.location.href =
+            "admin/dashboard.html";
 
 
-/* ===========================
-   INSTRUCTOR
-=========================== */
+            return;
 
+        }
 
-const instructorSnap =
-await getDoc(
-doc(db,"instructors",uid)
-);
 
 
 
-if(instructorSnap.exists()){
 
 
-const instructor =
-instructorSnap.data();
+        // INSTRUCTOR
 
+        const instructorSnap =
+        await getDoc(
+            doc(
+                db,
+                "instructors",
+                uid
+            )
+        );
 
 
-if(
-instructor.status === "Pending"
-){
+        if(instructorSnap.exists()){
 
-console.log(
-"Waiting for instructor approval"
-);
 
-}
+            showLoader(
+            "Preparing instructor workspace..."
+            );
 
 
+            window.location.href =
+            "instructors/dashboard.html";
 
-window.location.href =
-"instructors/dashboard.html";
 
+            return;
 
-return;
+        }
 
-}
 
 
 
 
 
-/* ===========================
-   STUDENT
-=========================== */
 
+        // STUDENT
 
-const studentSnap =
-await getDoc(
-doc(db,"students",uid)
-);
+        const studentSnap =
+        await getDoc(
+            doc(
+                db,
+                "students",
+                uid
+            )
+        );
 
 
+        if(studentSnap.exists()){
 
-if(studentSnap.exists()){
 
+            showLoader(
+            "Loading student dashboard..."
+            );
 
-window.location.href =
-"student/dashboard.html";
 
+            window.location.href =
+            "student/dashboard.html";
 
-return;
 
-}
+            return;
 
+        }
 
 
 
 
-console.error(
-"Profile not found"
-);
 
 
+        showToast(
+        "Account profile not found.",
+        "error"
+        );
 
-}
 
 
+    }
 
-catch(error){
 
+    catch(error){
 
-console.error(
-"LOGIN ERROR:",
-error
-);
 
+        console.error(
+            error
+        );
 
 
-}
+        showToast(
+            error.message,
+            "error"
+        );
 
 
+    }
 
-finally{
 
 
-loginBtn.disabled = false;
+    finally{
 
-loginBtn.textContent =
-"Login";
 
+        loginBtn.disabled =
+        false;
 
-}
 
+        loginBtn.textContent =
+        "Login";
+
+
+    }
 
 
 });
