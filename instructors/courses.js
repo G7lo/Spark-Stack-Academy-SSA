@@ -58,11 +58,11 @@ onAuthStateChanged(auth, async(user)=>{
         return;
     }
 
-    snapshot.forEach((doc)=>{
+  snapshot.forEach((doc)=>{
 
-        const course = doc.data();
+    const course = doc.data();
 
-        container.innerHTML += `
+    coursesContainer.innerHTML += `
 
 <div class="course-card">
 
@@ -70,12 +70,9 @@ onAuthStateChanged(auth, async(user)=>{
         ${course.title}
     </h2>
 
-
     <p>
         ${course.description || "No description available."}
     </p>
-
-
 
     <div class="course-meta">
 
@@ -83,18 +80,13 @@ onAuthStateChanged(auth, async(user)=>{
             📚 ${course.category || "Course"}
         </span>
 
-
         <span>
             👨‍🎓 ${course.students || 0} Students
         </span>
 
-
     </div>
 
-
-
     <div class="course-actions">
-
 
         <a 
         href="manage-course.html?id=${doc.id}"
@@ -104,8 +96,6 @@ onAuthStateChanged(auth, async(user)=>{
 
         </a>
 
-
-
         <a
         href="edit-course.html?id=${doc.id}"
         class="edit-btn">
@@ -114,15 +104,13 @@ onAuthStateChanged(auth, async(user)=>{
 
         </a>
 
-
     </div>
-
 
 </div>
 
 `;
 
-    });
+});
 
 });
 
