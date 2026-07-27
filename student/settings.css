@@ -596,48 +596,90 @@ width:100%;
    DARK MODE
 =========================== */
 
+
 body.dark{
-
---bg:#0f172a;
---card:#1e293b;
---text:#f8fafc;
---muted:#cbd5e1;
---border:#334155;
-
-background:var(--bg);
-color:var(--text);
-
-}
-
-body.dark .settings-card,
-body.dark .stat-box,
-body.dark .lesson-card,
-body.dark .course-card,
-body.dark .certificate-card,
-body.dark .dashboard-card{
-
-background:var(--card);
-
-color:var(--text);
-
-border-color:var(--border);
-
-}
-
-body.dark input,
-body.dark textarea,
-body.dark select{
 
 background:#0f172a;
 
-color:#fff;
-
-border-color:#475569;
+color:#e2e8f0;
 
 }
 
-body.dark a{
 
-color:#93c5fd;
+
+body.dark .settings-card{
+
+background:#1e293b;
+
+border-color:#334155;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.3);
+
+}
+
+
+
+body.dark .page-title h1{
+
+color:#f8fafc;
+
+}
+
+
+
+body.dark .page-title p{
+
+color:#94a3b8;
+
+}
+
+
+
+body.dark h2,
+body.dark h3{
+
+color:#f8fafc;
+
+}
+
+
+
+body.dark p,
+body.dark span,
+body.dark label{
+
+color:#cbd5e1;
+
+}
+
+
+
+body.dark input,
+body.dark textarea{
+
+background:#0f172a;
+
+color:#f8fafc;
+
+border-color:#334155;
+
+}
+
+
+
+body.dark .stat-box{
+
+background:#0f172a;
+
+border-color:#334155;
+
+}
+
+
+
+body.dark button{
+
+color:white;
 
 }
