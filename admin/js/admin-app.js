@@ -1,10 +1,5 @@
 /* ===========================
-   SSA ADMIN APP CORE
-=========================== */
-
-
-/* ===========================
-   IMPORTS
+   SSA ADMIN APP V2
 =========================== */
 
 import {
@@ -12,11 +7,10 @@ import {
     db
 } from "../../js/firebase.js";
 
-
 import {
-    onAuthStateChanged
+    onAuthStateChanged,
+    signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
 
 import {
     doc,
@@ -24,278 +18,317 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-
 /* ===========================
    LOAD COMPONENT CSS
 =========================== */
 
-function loadComponentCSS(){
+[
+    "../components/sidebar.css",
+    "../components/topbar.css"
+].forEach(file=>{
 
-    const styles = [
+    if(document.querySelector(`link[href="${file}"]`))
+        return;
 
-        "../components/sidebar.css",
+    const css =
+    document.createElement("link");
 
-        "../components/topbar.css"
+    css.rel="stylesheet";
 
-    ];
+    css.href=file;
 
+    document.head.appendChild(css);
 
-    styles.forEach(file=>{
-
-
-        const link =
-        document.createElement("link");
-
-
-        link.rel =
-        "stylesheet";
+});
 
 
-        link.href =
-        file;
+/* ===========================
+   LOAD COMPONENT
+=========================== */
+
+async function loadComponent(id,file){
+
+    const container =
+    document.getElementById(id);
+
+    if(!container) return;
+
+    try{
+
+        const res =
+        await fetch(file);
+
+        container.innerHTML =
+        await res.text();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
 
 
-        document.head.appendChild(link);
+/* ===========================
+   START
+=========================== */
 
+async function init(){
+
+    await loadComponent(
+
+        "sidebarContainer",
+
+        "../components/sidebar.html"
+
+    );
+
+    await loadComponent(
+
+        "topbarContainer",
+
+        "../components/topbar.html"
+
+    );
+
+    if(typeof lucide!=="undefined"){
+
+        lucide.createIcons();
+
+    }
+
+    setupSidebar();
+
+    setupLogout();
+
+    checkAuth();
+
+    setActivePage();
+
+    setPageTitle();
+
+}
+
+
+/* ===========================
+   SIDEBAR
+=========================== */
+
+function setupSidebar(){
+
+    const menuBtn =
+    document.getElementById("menuBtn");
+
+    const sidebar =
+    document.querySelector(".sidebar");
+
+    const overlay =
+    document.getElementById("sidebarOverlay");
+
+    if(!menuBtn || !sidebar) return;
+
+    menuBtn.onclick=()=>{
+
+        sidebar.classList.toggle("show");
+
+        overlay?.classList.toggle("show");
+
+    };
+
+    overlay?.addEventListener(
+
+        "click",
+
+        ()=>{
+
+            sidebar.classList.remove("show");
+
+            overlay.classList.remove("show");
+
+        }
+
+    );
+
+}
+
+
+/* ===========================
+   ACTIVE PAGE
+=========================== */
+
+function setActivePage(){
+
+    const page =
+    location.pathname
+    .split("/")
+    .pop();
+
+    document
+    .querySelectorAll(".sidebar-nav a")
+    .forEach(link=>{
+
+        if(link.getAttribute("href")===page){
+
+            link.classList.add("active");
+
+        }
 
     });
 
-
 }
 
 
-
 /* ===========================
-   LOAD SIDEBAR
+   PAGE TITLE
 =========================== */
 
-async function loadSidebar(){
+function setPageTitle(){
 
-    const container =
+    const title =
     document.getElementById(
-        "sidebarContainer"
+        "pageTitle"
     );
 
+    if(!title) return;
 
-    if(!container) return;
+    const page =
+    location.pathname
+    .split("/")
+    .pop()
+    .replace(".html","");
 
-
-
-    try{
-
-
-        const response =
-        await fetch(
-            "../components/sidebar.html"
-        );
-
-
-
-        container.innerHTML =
-        await response.text();
-
-
-
-        if(typeof lucide !== "undefined"){
-
-            lucide.createIcons();
-
-        }
-
-
-
-    }
-
-
-    catch(error){
-
-
-        console.error(
-            "Sidebar loading error:",
-            error
-        );
-
-
-    }
-
+    title.textContent =
+    page.charAt(0)
+    .toUpperCase() +
+    page.slice(1);
 
 }
 
 
-
-
 /* ===========================
-   LOAD TOPBAR
+   AUTH
 =========================== */
 
-async function loadTopbar(){
-
-
-    const container =
-    document.getElementById(
-        "topbarContainer"
-    );
-
-
-    if(!container) return;
-
-
-
-    try{
-
-
-        const response =
-        await fetch(
-            "../components/topbar.html"
-        );
-
-
-
-        container.innerHTML =
-        await response.text();
-
-
-
-        if(typeof lucide !== "undefined"){
-
-            lucide.createIcons();
-
-        }
-
-
-
-    }
-
-
-    catch(error){
-
-
-        console.error(
-            "Topbar loading error:",
-            error
-        );
-
-
-    }
-
-
-}
-
-
-
-
-
-/* ===========================
-   ADMIN AUTH CHECK
-=========================== */
-
-function checkAdmin(){
-
+function checkAuth(){
 
     onAuthStateChanged(
-        auth,
-        async(user)=>{
 
+        auth,
+
+        async(user)=>{
 
             if(!user){
 
-
-                window.location.href =
+                location.href=
                 "../login.html";
-
 
                 return;
 
-
             }
-
-
-
 
             try{
 
+                const snap =
+                await getDoc(
 
-                const adminRef =
-                doc(
-                    db,
-                    "admins",
-                    user.uid
+                    doc(
+                        db,
+                        "admins",
+                        user.uid
+                    )
+
                 );
 
+                if(!snap.exists()){
 
-
-                const adminSnap =
-                await getDoc(adminRef);
-
-
-
-
-                if(!adminSnap.exists()){
-
-
-                    console.error(
-                        "Admin profile missing"
-                    );
-
-
-                    window.location.href =
+                    location.href=
                     "../index.html";
-
 
                     return;
 
+                }
+
+                const data =
+                snap.data();
+
+                const adminName =
+                document.getElementById(
+                    "adminName"
+                );
+
+                const avatar =
+                document.querySelector(
+                    ".avatar"
+                );
+
+                if(adminName){
+
+                    adminName.textContent =
+                    data.name ||
+                    "Administrator";
 
                 }
 
+                if(avatar){
 
+                    avatar.textContent =
+                    (
+                        data.name ||
+                        "A"
+                    )
+                    .charAt(0)
+                    .toUpperCase();
 
-                console.log(
-                    "Admin verified:",
-                    user.email
-                );
-
-
+                }
 
             }
-
-
 
             catch(error){
 
-
-                console.error(
-                    "Admin verification error:",
-                    error
-                );
-
-
-                window.location.href =
-                "../index.html";
-
+                console.error(error);
 
             }
 
-
-
         }
-    );
 
+    );
 
 }
 
 
-
-
-
 /* ===========================
-   START ADMIN APP
+   LOGOUT
 =========================== */
 
+function setupLogout(){
 
-loadComponentCSS();
+    document.addEventListener(
 
-loadSidebar();
+        "click",
 
-loadTopbar();
+        async(e)=>{
 
-checkAdmin();
+            if(
+                e.target.closest(
+                    "#logoutBtn"
+                )
+            ){
+
+                await signOut(auth);
+
+                location.href=
+                "../login.html";
+
+            }
+
+        }
+
+    );
+
+}
+
+
+init();

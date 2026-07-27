@@ -1,30 +1,8 @@
 /* ===========================
-   SSA ADMIN TOPBAR
-   NAVY + SLATE
+   SSA TOPBAR V2
 =========================== */
 
-
 .topbar{
-
-width:100%;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:18px 25px;
-
-background:
-
-rgba(255,255,255,.75);
-
-backdrop-filter:blur(20px);
-
-border-bottom:
-
-1px solid rgba(148,163,184,.25);
 
 position:sticky;
 
@@ -32,9 +10,23 @@ top:0;
 
 z-index:900;
 
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:18px 28px;
+
+background:rgba(255,255,255,.88);
+
+backdrop-filter:blur(18px);
+
+border-bottom:1px solid #e2e8f0;
+
+box-shadow:0 8px 25px rgba(0,0,0,.05);
+
 }
-
-
 
 .topbar-left{
 
@@ -42,23 +34,54 @@ display:flex;
 
 align-items:center;
 
-gap:15px;
+gap:18px;
 
 }
 
+.menu-btn{
 
+width:46px;
+height:46px;
+
+border:none;
+
+border-radius:14px;
+
+background:#f1f5f9;
+
+cursor:pointer;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+transition:.25s;
+
+}
+
+.menu-btn:hover{
+
+background:#2563eb;
+
+color:#fff;
+
+}
 
 .topbar-left h2{
 
 font-size:22px;
 
-color:#1e3a8a;
+font-weight:700;
+
+color:#0f172a;
 
 }
 
-
-
 .topbar-left p{
+
+margin-top:4px;
 
 font-size:13px;
 
@@ -66,57 +89,46 @@ color:#64748b;
 
 }
 
-
-
-#menuBtn{
-
-display:none;
-
-border:none;
-
-background:#1e3a8a;
-
-color:white;
-
-padding:10px;
-
-border-radius:12px;
-
-cursor:pointer;
-
-}
-
-
-
 .topbar-right{
 
 display:flex;
 
 align-items:center;
 
-gap:15px;
+gap:16px;
 
 }
-
-
 
 .icon-btn{
 
+width:46px;
+height:46px;
+
 border:none;
 
-background:#eff6ff;
+border-radius:14px;
 
-color:#1e3a8a;
-
-padding:12px;
-
-border-radius:12px;
+background:#f8fafc;
 
 cursor:pointer;
 
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+transition:.25s;
+
 }
 
+.icon-btn:hover{
 
+background:#2563eb;
+
+color:#fff;
+
+}
 
 .admin-profile{
 
@@ -124,40 +136,72 @@ display:flex;
 
 align-items:center;
 
-gap:8px;
+gap:12px;
 
-padding:10px 15px;
+padding:8px 14px;
 
-background:#dbeafe;
+border-radius:16px;
 
-border-radius:14px;
+background:#f8fafc;
 
-color:#1e3a8a;
+}
+
+.avatar{
+
+width:46px;
+height:46px;
+
+border-radius:50%;
+
+background:linear-gradient(
+135deg,
+#2563eb,
+#1d4ed8
+);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+color:#fff;
 
 font-weight:700;
 
+font-size:18px;
+
 }
 
-
-
-@media(max-width:768px){
-
-
-#menuBtn{
+.admin-profile strong{
 
 display:block;
 
+font-size:15px;
+
+color:#0f172a;
+
 }
 
+.admin-profile small{
 
+color:#64748b;
+
+font-size:12px;
+
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media(max-width:768px){
 
 .topbar{
 
-padding:15px;
+padding:16px;
 
 }
-
-
 
 .topbar-left h2{
 
@@ -165,13 +209,10 @@ font-size:18px;
 
 }
 
-
-
-.admin-profile span{
+.admin-profile div:last-child{
 
 display:none;
 
 }
-
 
 }
