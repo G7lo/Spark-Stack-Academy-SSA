@@ -109,6 +109,7 @@ function loadStudentData(){
 
             updateStudentUI(student);
             loadContinueCourses(user.uid);
+            loadDashboardStats(user.uid);
 
 
 
@@ -444,6 +445,126 @@ async function loadContinueCourses(uid){
 
         console.error(
             "Continue Courses:",
+            error
+        );
+
+    }
+
+}
+async function loadDashboardStats(uid){
+
+
+    try{
+
+
+        const enrollmentQuery =
+        query(
+            collection(db,"enrollments"),
+            where("studentId","==",uid)
+        );
+
+
+        const enrollmentSnap =
+        await getDocs(enrollmentQuery);
+
+
+
+        let courseCount = 0;
+        let totalProgress = 0;
+        let totalLessons = 0;
+
+
+
+        for(const enrollment of enrollmentSnap.docs){
+
+
+            const data =
+            enrollment.data();
+
+
+            courseCount++;
+
+
+            totalProgress +=
+            data.progress || 0;
+
+
+
+            const courseSnap =
+            await getDoc(
+                doc(
+                    db,
+                    "courses",
+                    data.courseId
+                )
+            );
+
+
+            if(courseSnap.exists()){
+
+                const course =
+                courseSnap.data();
+
+
+                totalLessons +=
+                course.lessons || 0;
+
+            }
+
+
+        }
+
+
+
+        const averageProgress =
+        courseCount > 0
+        ?
+        Math.round(totalProgress / courseCount)
+        :
+        0;
+
+
+
+        const studentSnap =
+        await getDoc(
+            doc(db,"students",uid)
+        );
+
+
+        let certificates = 0;
+
+
+        if(studentSnap.exists()){
+
+            certificates =
+            studentSnap.data().certificates || 0;
+
+        }
+
+
+
+        document.getElementById("courseCount").textContent =
+        courseCount;
+
+
+        document.getElementById("lessonCount").textContent =
+        totalLessons;
+
+
+        document.getElementById("progressPercent").textContent =
+        averageProgress + "%";
+
+
+        document.getElementById("certificateCount").textContent =
+        certificates;
+
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Dashboard stats:",
             error
         );
 
