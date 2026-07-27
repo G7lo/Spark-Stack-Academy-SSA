@@ -30,11 +30,11 @@ console.log("SSA INSTRUCTOR APP CONNECTED");
 
 window.addEventListener(
 "DOMContentLoaded",
-()=>{
+async()=>{
 
-loadSidebar();
+await loadSidebar();
 
-loadTopbar();
+await loadTopbar();
 
 loadInstructor();
 
@@ -59,25 +59,28 @@ css.href="components/sidebar.css";
 
 document.head.appendChild(css);
 
-
 const container=
 document.getElementById("sidebarContainer");
 
 if(!container) return;
 
-
 const res=
 await fetch("components/sidebar.html");
 
+console.log(res.status);
+
 container.innerHTML=
 await res.text();
-
 
 if(typeof lucide!=="undefined"){
 
 lucide.createIcons();
 
 }
+
+// NEW 👇
+
+highlightActivePage();
 
 }
 
