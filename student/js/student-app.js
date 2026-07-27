@@ -1,4 +1,3 @@
-alert("REAL STUDENT APP LOADED");
 // ===========================
 // SSA STUDENT APP CORE
 // ===========================
@@ -11,7 +10,11 @@ import {
 
 import {
     doc,
-    getDoc
+    getDoc,
+    collection,
+    query,
+    where,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -105,6 +108,7 @@ function loadStudentData(){
 
 
             updateStudentUI(student);
+            loadContinueCourses(user.uid);
 
 
 
@@ -320,5 +324,129 @@ function setupSidebar(){
         }
     );
 
+
+}
+async function loadContinueCourses(uid){
+
+    const container =
+    document.getElementById("continueCourses");
+
+
+    if(!container) return;
+
+
+    try{
+
+
+        const enrollmentQuery =
+        query(
+            collection(db,"enrollments"),
+            where("studentId","==",uid)
+        );
+
+
+        const enrollmentSnap =
+        await getDocs(enrollmentQuery);
+
+
+
+        if(enrollmentSnap.empty){
+
+            container.innerHTML = `
+
+            <h3>
+                No Active Course
+            </h3>
+
+            <p>
+                Enroll into a course to begin learning.
+            </p>
+
+            <a href="courses.html">
+                Browse Courses
+            </a>
+
+            `;
+
+            return;
+
+        }
+
+
+
+        container.innerHTML = "";
+
+
+
+        const courses =
+        enrollmentSnap.docs.slice(0,2);
+
+
+
+        for(const enrollment of courses){
+
+
+            const enrollmentData =
+            enrollment.data();
+
+
+
+            const courseSnap =
+            await getDoc(
+                doc(
+                    db,
+                    "courses",
+                    enrollmentData.courseId
+                )
+            );
+
+
+            if(courseSnap.exists()){
+
+
+                const course =
+                courseSnap.data();
+
+
+
+                container.innerHTML += `
+
+                <div class="course-mini-card">
+
+
+                    <h3>
+                        ${course.title}
+                    </h3>
+
+
+                    <p>
+                        ${enrollmentData.progress}% Complete
+                    </p>
+
+
+                    <a href="course-player.html?id=${courseSnap.id}">
+                        Continue Learning
+                    </a>
+
+
+                </div>
+
+                `;
+
+
+            }
+
+        }
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Continue Courses:",
+            error
+        );
+
+    }
 
 }
