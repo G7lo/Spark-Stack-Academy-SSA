@@ -43,9 +43,8 @@ async function loadCertificates(uid){
 
             collection(db,"certificates"),
 
-            where("studentId","==",uid),
+            where("studentId","==",uid)
 
-            orderBy("issuedAt","desc")
 
         );
 
