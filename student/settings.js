@@ -40,6 +40,9 @@ const logoutBtn =
 document.getElementById("logoutBtn");
 
 
+const darkMode =
+document.getElementById("darkMode");
+
 // Stats
 
 const coursesCount =
@@ -286,3 +289,57 @@ window.location.href =
 
 
 });
+// ===========================
+// THEME SWITCH
+// ===========================
+
+if(darkMode){
+
+
+darkMode.checked =
+localStorage.getItem("theme") === "dark";
+
+
+
+darkMode.addEventListener(
+"change",
+()=>{
+
+
+if(darkMode.checked){
+
+
+localStorage.setItem(
+"theme",
+"dark"
+);
+
+
+document.body.classList.add(
+"dark"
+);
+
+
+}
+
+else{
+
+
+localStorage.setItem(
+"theme",
+"light"
+);
+
+
+document.body.classList.remove(
+"dark"
+);
+
+
+}
+
+
+});
+
+
+}
