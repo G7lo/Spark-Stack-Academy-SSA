@@ -4,9 +4,12 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Instructor Students | SSA</title>
+<title>
+SSA | Instructor Students
+</title>
 
 <link rel="stylesheet" href="students.css">
 
@@ -19,129 +22,211 @@
 <div class="dashboard-layout">
 
 
-<aside id="sidebarContainer"></aside>
+    <aside id="sidebarContainer"></aside>
 
 
-<div class="main-content">
+    <div id="sidebarOverlay"></div>
 
 
-<div class="students-page">
+
+    <main class="main-content">
 
 
-<div class="page-header">
+        <header id="topbarContainer"></header>
 
-<h1>My Students</h1>
 
-<p>Manage students enrolled in your courses</p>
+
+        <section class="students-page">
+
+
+            <div class="page-header">
+
+
+                <div>
+
+                    <h1>
+                        👨‍🎓 My Students
+                    </h1>
+
+
+                    <p>
+                        Manage students enrolled in your courses.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <!-- STATS -->
+
+            <section class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        Total Students
+                    </h3>
+
+                    <p id="totalStudents">
+                        0
+                    </p>
+
+                </div>
+
+
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        Total Courses
+                    </h3>
+
+                    <p id="totalCourses">
+                        0
+                    </p>
+
+                </div>
+
+
+
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        Active Students
+                    </h3>
+
+                    <p id="activeStudents">
+                        0
+                    </p>
+
+                </div>
+
+
+
+            </section>
+
+
+
+
+
+
+            <!-- TABLE -->
+
+            <section class="table-card">
+
+
+
+                <div class="table-header">
+
+
+                    <h2>
+                        📋 Student Enrollment
+                    </h2>
+
+
+
+                    <input
+                    type="text"
+                    id="searchStudent"
+                    placeholder="Search student..."
+                    >
+
+
+                </div>
+
+
+
+
+
+                <div class="table-wrapper">
+
+
+                    <table>
+
+
+                        <thead>
+
+                        <tr>
+
+                        <th>#</th>
+
+                        <th>
+                        Admission No
+                        </th>
+
+
+                        <th>
+                        Student
+                        </th>
+
+
+                        <th>
+                        Courses
+                        </th>
+
+
+                        <th>
+                        Status
+                        </th>
+
+
+                        <th>
+                        Action
+                        </th>
+
+
+                        </tr>
+
+                        </thead>
+
+
+
+                        <tbody id="studentsTable">
+
+
+                        </tbody>
+
+
+
+                    </table>
+
+
+                </div>
+
+
+
+            </section>
+
+
+
+
+        </section>
+
+
+
+    </main>
+
 
 </div>
 
 
 
-<div class="stats-grid">
 
+<script src="https://unpkg.com/lucide@latest"></script>
 
-<div class="stat-card">
-
-<h3>Total Students</h3>
-<p id="totalStudents">0</p>
-
-</div>
-
-
-<div class="stat-card">
-
-<h3>Total Courses</h3>
-<p id="totalCourses">0</p>
-
-</div>
-
-
-<div class="stat-card">
-
-<h3>Active Students</h3>
-<p id="activeStudents">0</p>
-
-</div>
-
-
-</div>
-
-
-
-
-<div class="table-card">
-
-
-<div class="table-header">
-
-<h2>Student Enrollment</h2>
-
-
-<input 
-type="text"
-id="searchStudent"
-placeholder="Search student..."
->
-
-
-</div>
-
-
-
-<div class="table-wrapper">
-
-
-<table>
-
-
-<thead>
-
-<tr>
-
-<th>#</th>
-
-<th>Admission No</th>
-
-<th>Student</th>
-
-<th>Courses</th>
-
-<th>Status</th>
-
-<th>Action</th>
-
-</tr>
-
-</thead>
-
-
-<tbody id="studentsTable">
-
-
-</tbody>
-
-
-</table>
-
-
-</div>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
+<script type="module" src="./js/instructor-app.js"></script>
 
 <script type="module" src="students.js"></script>
+
 
 </body>
 

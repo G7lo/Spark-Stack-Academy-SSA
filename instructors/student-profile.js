@@ -1,14 +1,16 @@
-import { db } from "../firebase.js";
+import { db } from "../js/firebase.js";
 
 import {
 doc,
-getDoc
+getDoc,
+collection,
+query,
+where,
+getDocs
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-
-// GET STUDENT ID
 
 const params =
 new URLSearchParams(window.location.search);
@@ -18,8 +20,6 @@ const studentId =
 params.get("id");
 
 
-
-// ELEMENTS
 
 const studentName =
 document.getElementById("studentName");
@@ -44,37 +44,30 @@ document.getElementById("coursesList");
 
 
 
-// LOAD PROFILE
-
 async function loadStudent(){
 
 
 if(!studentId){
 
-console.log("No student selected");
-
+console.log("Missing student id");
 return;
 
 }
 
 
-
 try{
 
 
-const studentRef =
-doc(db,"students",studentId);
-
-
-const snapshot =
-await getDoc(studentRef);
+const studentSnap =
+await getDoc(
+doc(db,"students",studentId)
+);
 
 
 
-if(!snapshot.exists()){
+if(!studentSnap.exists()){
 
-console.log("Student not found");
-
+console.log("Student missing");
 return;
 
 }
@@ -82,12 +75,12 @@ return;
 
 
 const student =
-snapshot.data();
+studentSnap.data();
 
 
 
 studentName.textContent =
-student.name || "Unknown Student";
+student.name || "Student";
 
 
 studentEmail.textContent =
@@ -99,81 +92,153 @@ studentAdmission.textContent =
 (student.admissionNumber || "Pending");
 
 
-
 studentStatus.textContent =
 student.status || "Active";
 
 
 
-const courses =
-student.courses || [];
+
+
+const enrollQuery =
+query(
+
+collection(db,"enrollments"),
+
+where(
+"studentId",
+"==",
+studentId
+)
+
+);
 
 
 
-courseCount.textContent =
-courses.length;
+const enrollSnap =
+await getDocs(enrollQuery);
 
 
 
-let totalProgress = 0;
+coursesList.innerHTML="";
 
 
 
-coursesList.innerHTML = "";
+let totalProgress=0;
 
 
 
-courses.forEach(course=>{
+for(const enrollment of enrollSnap.docs){
+
+
+const data =
+enrollment.data();
+
 
 
 totalProgress +=
-course.progress || 0;
+data.progress || 0;
+
+
+
+const courseSnap =
+await getDoc(
+
+doc(
+db,
+"courses",
+data.courseId
+)
+
+);
+
+
+
+if(courseSnap.exists()){
+
+
+const course =
+courseSnap.data();
 
 
 
 coursesList.innerHTML += `
 
-<div class="course-box">
+
+<div class="course-item">
+
+
+<div class="course-info">
 
 
 <h3>
+
 ${course.title}
+
 </h3>
 
 
 <p>
-Progress: ${course.progress || 0}%
+
+${course.category || "Course"}
+
 </p>
 
+
+</div>
+
+
+
+<div class="progress-box">
 
 
 <div class="progress-bar">
 
-<div 
-class="progress-fill"
-style="width:${course.progress || 0}%">
+
+<div class="progress-fill"
+
+style="width:${data.progress || 0}%">
 
 </div>
 
+
+</div>
+
+
+<div class="progress-text">
+
+${data.progress || 0}% Complete
+
 </div>
 
 
 </div>
+
+
+</div>
+
 
 `;
 
+}
 
-});
+
+}
+
+
+
+courseCount.textContent =
+enrollSnap.size;
 
 
 
 const average =
-courses.length
+enrollSnap.size
 ?
-Math.round(totalProgress / courses.length)
+Math.round(
+totalProgress / enrollSnap.size
+)
 :
 0;
-
 
 
 averageProgress.textContent =
@@ -183,11 +248,10 @@ average + "%";
 
 }
 
-
 catch(error){
 
-console.log(
-"Profile loading error:",
+console.error(
+"Student profile error:",
 error
 );
 
