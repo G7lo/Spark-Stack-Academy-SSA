@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Instructors Management | Spark Stack Academy</title>
+
+  <link rel="stylesheet"
+    href="instructors.css">
+
+</head>
+
+<body>
+
+  <div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebarContainer"></aside>
+
+    <div id="sidebarOverlay"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <div id="topbarContainer"></div>
+
+      <section class="page">
+
+        <div class="page-header">
+
+          <h1>Instructors Management</h1>
+
+          <p>
+            Manage all Spark Stack Academy instructors,
+            courses, and teaching activity.
+          </p>
+
+        </div>
+
+        <div class="table-card">
+
+          <div class="table-top">
+
+            <h2>Registered Instructors</h2>
+
+            <input type="text"
+              id="searchInput"
+              placeholder="Search instructors by name, email, or expertise...">
+
+          </div>
+
+          <div class="table-wrapper">
+
+            <table class="instructors-table">
+
+              <thead>
+
+                <tr>
+
+                  <th>Instructor</th>
+
+                  <th>Expertise</th>
+
+                  <th>Email</th>
+
+                  <th>Courses</th>
+
+                  <th>Status</th>
+
+                  <th>Actions</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="instructorsTableBody">
+
+                <tr>
+
+                  <td colspan="6"
+                    class="loading-row">
+
+                    Loading instructors...
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- INSTRUCTOR MODAL -->
+  <div class="modal" id="instructorModal">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h3 id="modalTitle">Instructor Details</h3>
+
+        <button class="close-btn"
+          id="closeModal">&times;</button>
+
+      </div>
+
+      <div class="modal-body"
+        id="modalBody">
+
+        Loading...
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script type="module"
+    src="../js/admin-app.js"></script>
+
+  <script type="module"
+    src="instructors.js"></script>
+
+</body>
+
+</html>
