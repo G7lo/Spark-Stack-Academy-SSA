@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Settings | Spark Stack Academy</title>
+
+  <link rel="stylesheet"
+    href="settings.css">
+
+</head>
+
+<body>
+
+  <div class="dashboard-layout">
+
+    <aside id="sidebarContainer"></aside>
+
+    <div id="sidebarOverlay"></div>
+
+    <main class="main-content">
+
+      <div id="topbarContainer"></div>
+
+      <section class="page">
+
+        <div class="page-header">
+
+          <h1>Admin Settings</h1>
+
+          <p>
+            Configure academy branding, contact information,
+            and system preferences.
+          </p>
+
+        </div>
+
+
+        <!-- GENERAL SETTINGS -->
+
+        <div class="table-card">
+
+          <div class="table-top">
+
+            <h2>🏫 Academy Information</h2>
+
+          </div>
+
+          <form id="settingsForm"
+            class="settings-form">
+
+            <div class="form-grid">
+
+              <div class="form-group">
+
+                <label>Academy Name</label>
+
+                <input type="text"
+                  id="academyName"
+                  placeholder="Spark Stack Academy">
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Website URL</label>
+
+                <input type="url"
+                  id="websiteUrl"
+                  placeholder="https://sparkstack.ac.ke">
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Support Email</label>
+
+                <input type="email"
+                  id="supportEmail"
+                  placeholder="support@sparkstack.ac.ke">
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Support Phone</label>
+
+                <input type="text"
+                  id="supportPhone"
+                  placeholder="+254 700 000 000">
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Primary Theme Color</label>
+
+                <input type="color"
+                  id="primaryColor"
+                  value="#2563eb">
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Logo URL</label>
+
+                <input type="url"
+                  id="logoUrl"
+                  placeholder="https://example.com/logo.png">
+
+              </div>
+
+            </div>
+
+            <div class="toggle-row">
+
+              <div>
+
+                <h3>🔒 Maintenance Mode</h3>
+
+                <p>
+                  Temporarily disable student access while
+                  performing system updates.
+                </p>
+
+              </div>
+
+              <label class="switch">
+
+                <input type="checkbox"
+                  id="maintenanceMode">
+
+                <span class="slider"></span>
+
+              </label>
+
+            </div>
+
+            <button type="submit"
+              class="save-btn">
+
+              💾 Save Settings
+
+            </button>
+
+          </form>
+
+        </div>
+
+
+        <!-- PREVIEW -->
+
+        <div class="table-card">
+
+          <div class="table-top">
+
+            <h2>🎨 Live Preview</h2>
+
+          </div>
+
+          <div class="preview-card">
+
+            <div class="preview-logo"
+              id="previewLogo">
+
+              SSA
+
+            </div>
+
+            <div>
+
+              <h3 id="previewName">
+                Spark Stack Academy
+              </h3>
+
+              <p id="previewEmail">
+                support@sparkstack.ac.ke
+              </p>
+
+              <p id="previewPhone">
+                +254 700 000 000
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script type="module"
+    src="../js/admin-app.js"></script>
+
+  <script type="module"
+    src="settings.js"></script>
+
+</body>
+
+</html>

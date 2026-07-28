@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Founder Dashboard | Spark Stack Academy</title>
+
+    <link rel="stylesheet"
+          href="dashboard.css">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Background -->
+
+    <div class="bg-orb orb-1"></div>
+
+    <div class="bg-orb orb-2"></div>
+
+    <div class="bg-orb orb-3"></div>
+
+    <div class="dashboard-layout">
+
+        <!-- Sidebar -->
+
+        <aside id="sidebarContainer"></aside>
+
+        <div id="sidebarOverlay"></div>
+
+        <!-- Main -->
+
+        <main class="main-content">
+
+            <!-- Topbar -->
+
+            <header id="topbarContainer"></header>
+
+            <!-- ==========================
+                 HERO
+            ========================== -->
+
+            <section class="hero-section glass-card">
+
+                <div class="hero-content">
+
+                    <div class="hero-badge">
+
+                        🚀 Founder Command Center
+
+                    </div>
+
+                    <h1>
+
+                        Welcome back,
+
+                        <span>Phinehas</span>
+
+                    </h1>
+
+                    <p>
+
+                        Monitor academy growth, review live platform insights,
+                        and stay informed with executive analytics from
+                        The Spark Stack Academy.
+
+                    </p>
+
+                    <div class="hero-actions">
+
+                        <button
+                            class="primary-btn"
+                            onclick="location.href='spark-ai.html'">
+
+                            🧠 Open SparkMind
+
+                        </button>
+
+                        <button
+                            class="secondary-btn">
+
+                            📊 View Reports
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="hero-insight">
+
+                    <div class="insight-header">
+
+                        ✨ Daily Founder Brief
+
+                    </div>
+
+                    <h3>
+
+                        Academy Status
+
+                    </h3>
+
+                    <p id="dailyInsight">
+
+                        SparkMind is reviewing academy activity and preparing
+                        today's executive summary.
+
+                    </p>
+
+                    <button
+                        class="insight-btn"
+                        onclick="location.href='spark-ai.html'">
+
+                        Open SparkMind →
+
+                    </button>
+
+                </div>
+
+            </section>
+
+            <!-- ==========================
+                 KPI CARDS
+            ========================== -->
+
+            <section class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>Students</span>
+
+                        <div class="stat-icon cyan">
+
+                            👨‍🎓
+
+                        </div>
+
+                    </div>
+
+                    <h2 id="studentCount">
+
+                        0
+
+                    </h2>
+
+                    <small>
+
+                        Active Learners
+
+                    </small>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>Courses</span>
+
+                        <div class="stat-icon purple">
+
+                            📚
+
+                        </div>
+
+                    </div>
+
+                    <h2 id="courseCount">
+
+                        0
+
+                    </h2>
+
+                    <small>
+
+                        Published Courses
+
+                    </small>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>Instructors</span>
+
+                        <div class="stat-icon pink">
+
+                            👨‍🏫
+
+                        </div>
+
+                    </div>
+
+                    <h2 id="instructorCount">
+
+                        0
+
+                    </h2>
+
+                    <small>
+
+                        Teaching Staff
+
+                    </small>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>Enrollments</span>
+
+                        <div class="stat-icon green">
+
+                            🚀
+
+                        </div>
+
+                    </div>
+
+                    <h2 id="enrollmentCount">
+
+                        0
+
+                    </h2>
+
+                    <small>
+
+                        Total Enrollments
+
+                    </small>
+
+                </div>
+                
+                <div class="stat-card glass-card">
+
+    <div class="stat-top">
+
+        <span>
+            💰 Revenue
+        </span>
+
+        <div class="stat-icon green">
+            $
+        </div>
+
+    </div>
+
+
+    <h2 id="revenueCount">
+        $0
+    </h2>
+
+
+    <small>
+        Total Academy Revenue
+    </small>
+
+</div>
+
+            </section>
+
+            <!-- ==========================
+                 CONTENT GRID
+            ========================== -->
+
+            <section class="dashboard-grid">
+                              <!-- ==========================
+                     ANALYTICS
+                ========================== -->
+
+                <section class="dashboard-main">
+
+                    <div class="glass-card analytics-card">
+
+                        <div class="section-header">
+
+                            <h3>
+
+                                📈 Academy Analytics
+
+                            </h3>
+
+                            <span>
+
+                                Live Overview
+
+                            </span>
+
+                        </div>
+
+                        <div class="chart-placeholder">
+
+                            <div class="chart-icon">
+
+                                📊
+
+                            </div>
+
+                            <h4>
+
+                                Analytics Coming Alive
+
+                            </h4>
+
+                            <p>
+
+                                Student growth, enrollments,
+                                revenue and academy trends
+                                will appear here.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ==========================
+                         RECENT ACTIVITY
+                    ========================== -->
+
+                    <div class="glass-card activity-card">
+
+                        <div class="section-header">
+
+                            <h3>
+
+                                📰 Recent Activity
+
+                            </h3>
+
+                        </div>
+
+                        <div class="activity-list">
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon">
+
+                                    👨‍🎓
+
+                                </div>
+
+                                <div>
+
+                                    <h4>
+
+                                        New Student Registered
+
+                                    </h4>
+
+                                    <small>
+
+                                        Waiting for live data...
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon">
+
+                                    📚
+
+                                </div>
+
+                                <div>
+
+                                    <h4>
+
+                                        New Course Published
+
+                                    </h4>
+
+                                    <small>
+
+                                        Waiting for live data...
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon">
+
+                                    👨‍🏫
+
+                                </div>
+
+                                <div>
+
+                                    <h4>
+
+                                        Instructor Joined
+
+                                    </h4>
+
+                                    <small>
+
+                                        Waiting for live data...
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon">
+
+                                    📢
+
+                                </div>
+
+                                <div>
+
+                                    <h4>
+
+                                        New Announcement
+
+                                    </h4>
+
+                                    <small>
+
+                                        Waiting for live data...
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- ==========================
+                     SIDEBAR
+                ========================== -->
+
+                <aside class="dashboard-sidebar">
+
+                    <div class="glass-card sidebar-card">
+
+                        <h3>
+
+                            💚 Academy Health
+
+                        </h3>
+
+                        <ul>
+
+                            <li>
+
+                                🟢 Systems Online
+
+                            </li>
+
+                            <li>
+
+                                🟢 Founder Dashboard Active
+
+                            </li>
+
+                            <li>
+
+                                🟢 SparkMind Connected
+
+                            </li>
+
+                            <li>
+
+                                🟡 Awaiting Live Metrics
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                    <div class="glass-card sidebar-card">
+
+                        <h3>
+
+                            ✨ Founder Insight
+
+                        </h3>
+
+                        <p id="founderInsight">
+
+                            SparkMind is preparing your
+                            executive recommendations.
+
+                        </p>
+
+                    </div>
+                                        <!-- ==========================
+                         QUICK NAVIGATION
+                    ========================== -->
+
+                    <div class="glass-card sidebar-card">
+
+                        <h3>
+
+                            ⚡ Quick Navigation
+
+                        </h3>
+
+                        <div class="quick-grid">
+
+                            <a href="spark-ai.html" class="quick-link">SparkMind</a>
+
+<a href="students.html" class="quick-link">Students</a>
+
+<a href="courses.html" class="quick-link">Courses</a>
+
+<a href="instructors.html" class="quick-link">Instructors</a>
+
+<a href="reports.html" class="quick-link">Reports</a>
+
+<a href="admissions.html" class="quick-link">Admissions</a>
+
+<a href="announcements.html" class="quick-link">announcements</a>
+
+<a href="settings.html" class="quick-link">Settings</a>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ==========================
+                         SYSTEM STATUS
+                    ========================== -->
+
+                    <div class="glass-card sidebar-card">
+
+                        <h3>
+
+                            🛰 System Status
+
+                        </h3>
+
+                        <div class="system-status">
+
+                            <div class="status-row">
+
+                                <span>Founder Dashboard</span>
+
+                                <strong class="online">
+
+                                    Online
+
+                                </strong>
+
+                            </div>
+
+                            <div class="status-row">
+
+                                <span>SparkMind AI</span>
+
+                                <strong class="online">
+
+                                    Connected
+
+                                </strong>
+
+                            </div>
+
+                            <div class="status-row">
+
+                                <span>Cloud Database</span>
+
+                                <strong class="online">
+
+                                    Connected
+
+                                </strong>
+
+                            </div>
+
+                            <div class="status-row">
+
+                                <span>Academy Services</span>
+
+                                <strong class="online">
+
+                                    Healthy
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script
+        type="module"
+        src="./js/founder-app.js"></script>
+
+    <script
+        type="module"
+        src="dashboard.js"></script>
+
+</body>
+
+</html>

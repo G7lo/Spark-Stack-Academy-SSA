@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>SparkMind | Founder OS</title>
+
+    <link rel="stylesheet"
+          href="spark-ai.css">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- ==========================
+         BACKGROUND
+    =========================== -->
+
+    <div class="bg-orb orb-1"></div>
+
+    <div class="bg-orb orb-2"></div>
+
+    <div class="bg-orb orb-3"></div>
+
+    <!-- ==========================
+         LAYOUT
+    =========================== -->
+
+    <div class="dashboard-layout">
+
+        <!-- Sidebar -->
+
+        <aside id="sidebarContainer"></aside>
+
+        <div id="sidebarOverlay"></div>
+
+        <!-- Main -->
+
+        <main class="main-content">
+
+            <!-- Topbar -->
+
+            <header id="topbarContainer"></header>
+
+            <!-- ==========================
+                 HERO
+            =========================== -->
+
+            <section class="spark-hero glass-card">
+
+                <div class="hero-badge">
+
+                    🧠 SparkMind • Founder Intelligence System
+
+                </div>
+
+                <div class="hero-content">
+
+                    <div class="hero-text">
+
+                        <h1>
+
+                            Welcome back,
+
+                            <span>Phinehas</span>
+
+                        </h1>
+
+                        <p>
+
+                            Your executive AI operating system for
+                            monitoring academy performance,
+                            understanding platform intelligence,
+                            reviewing founder insights,
+                            and planning the future of
+                            Spark Stack.
+
+                        </p>
+
+                    </div>
+
+                    <div class="hero-status glass-card">
+
+                        <div class="status-indicator"></div>
+
+                        <div>
+
+                            <h3>
+
+                                SparkMind Online
+
+                            </h3>
+
+                            <p>
+
+                                Powered by Groq AI
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ==========================
+                 LIVE METRICS
+            =========================== -->
+
+            <section class="stats-grid">
+
+                <div class="stat-card glass-card">
+
+                    <span>
+
+                        👨‍🎓 Students
+
+                    </span>
+
+                    <h2 id="briefStudents">
+
+                        0
+
+                    </h2>
+
+                    <small>
+
+                        Active Learners
+
+                    </small>
+
+                </div>
+
+                <div class="stat-card glass-card">
+
+                    <span>
+
+                        📚 Courses
+
+                    </span>
+
+                    <h2 id="briefCourses">
+
+                        0
+
+                    </h2>
+
+                    <small>
+
+                        Published Courses
+
+                    </small>
+
+                </div>
+
+                <div class="stat-card glass-card">
+
+                    <span>
+
+                        👨‍🏫 Instructors
+
+                    </span>
+
+                    <h2 id="briefInstructors">
+
+                        0
+
+                    </h2>
+
+                    <small>
+
+                        Active Instructors
+
+                    </small>
+
+                </div>
+
+                <div class="stat-card glass-card">
+
+                    <span>
+
+                        🚀 Enrollments
+
+                    </span>
+
+                    <h2 id="briefEnrollments">
+
+                        0
+
+                    </h2>
+
+                    <small>
+
+                        Total Enrollments
+
+                    </small>
+
+                </div>
+
+            </section>
+
+            <!-- ==========================
+                 MAIN GRID
+            =========================== -->
+
+            <section class="workspace-grid">
+
+                <!-- ======================
+                     CHAT PANEL
+                ======================= -->
+
+                <section class="chat-panel glass-card">
+
+                    <div class="chat-header">
+
+                        <div class="chat-title">
+
+                            <div class="ai-avatar">
+
+                                ✨
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+
+                                    SparkMind
+
+                                </h3>
+
+                                <p>
+
+                                    Founder Intelligence System
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <span class="status-pill">
+
+                            ● Online
+
+                        </span>
+
+                    </div>
+                                        <!-- ======================
+                         CHAT MESSAGES
+                    ======================= -->
+
+                    <div id="chatMessages"
+                         class="chat-messages">
+
+                        <div class="message ai-message">
+
+                            <div class="message-avatar">
+
+                                ✨
+
+                            </div>
+
+                            <div class="message-content">
+
+                                <p>
+
+                                    Welcome back, Phinehas.
+
+                                </p>
+
+                                <p>
+
+                                    I'm SparkMind, your Founder Intelligence
+                                    System. I can analyze academy performance,
+                                    explain trends, discuss growth strategies,
+                                    summarize platform activity, and help you
+                                    make better decisions for Spark Stack.
+
+                                </p>
+
+                                <div class="message-footer">
+
+                                    <span class="message-time">
+
+                                        SparkMind • Just now
+
+                                    </span>
+
+                                    <button class="copy-btn">
+
+                                        Copy
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ======================
+                         TYPING INDICATOR
+                    ======================= -->
+
+                    <div id="typingIndicator"
+                         class="typing-indicator">
+
+                        <div class="message ai-message">
+
+                            <div class="message-avatar">
+
+                                ✨
+
+                            </div>
+
+                            <div class="message-content typing-box">
+
+                                <span></span>
+
+                                <span></span>
+
+                                <span></span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ======================
+                         AI COMMANDS
+                    ======================= -->
+
+                    <div class="quick-chips">
+
+                        <button
+                            id="dailyBriefBtn"
+                            class="chip-btn">
+
+                            📈 Founder Briefing
+
+                        </button>
+
+                        <button
+                            id="academyHealthBtn"
+                            class="chip-btn">
+
+                            📊 Academy Health
+
+                        </button>
+
+                        <button
+                            id="growthBtn"
+                            class="chip-btn">
+
+                            🚀 Growth Ideas
+
+                        </button>
+
+                        <button
+                            id="roadmapBtn"
+                            class="chip-btn">
+
+                            🗺️ Product Roadmap
+
+                        </button>
+
+                    </div>
+
+                    <!-- ======================
+                         CHAT COMPOSER
+                    ======================= -->
+
+                    <div class="chat-composer">
+
+                        <form id="chatForm"
+                              class="chat-input">
+
+                            <textarea
+                                id="chatInput"
+                                rows="1"
+                                placeholder="Message SparkMind..."></textarea>
+
+                            <div class="composer-actions">
+
+                                <button
+                                    type="button"
+                                    id="clearChat"
+                                    class="icon-btn"
+                                    title="Clear Chat">
+
+                                    🗑️
+
+                                </button>
+
+                                <button
+                                    id="sendBtn"
+                                    type="submit">
+
+                                    ➜
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </section>
+                                <!-- ===================================
+                     FOUNDER SIDEBAR
+                ==================================== -->
+
+                <aside class="workspace-sidebar">
+
+                    <!-- AI COMMAND CENTER -->
+
+                    <div class="glass-card workspace-card">
+
+                        <h3>
+
+                            ⚡ AI Command Center
+
+                        </h3>
+
+                        <p>
+
+                            Ask SparkMind anything about your academy,
+                            platform performance, business strategy,
+                            or the future of Spark Stack.
+
+                        </p>
+
+                    </div>
+
+                    <!-- FOUNDER INSIGHTS -->
+
+                    <div class="glass-card workspace-card">
+
+                        <h3>
+
+                            📈 Founder Insight
+
+                        </h3>
+
+                        <p id="founderInsight">
+
+                            SparkMind is continuously analyzing academy
+                            activity and preparing strategic
+                            recommendations.
+
+                        </p>
+
+                    </div>
+
+                    <!-- ACADEMY HEALTH -->
+
+                    <div class="glass-card workspace-card">
+
+                        <h3>
+
+                            💚 Academy Health
+
+                        </h3>
+
+                        <ul>
+
+                            <li>
+
+                                AI System Online
+
+                            </li>
+
+                            <li>
+
+                                Academy Services Healthy
+
+                            </li>
+
+                            <li>
+
+                                Founder Dashboard Connected
+
+                            </li>
+
+                            <li>
+
+                                Waiting for Live Analytics
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                    <!-- SYSTEM STATUS -->
+
+                    <div class="glass-card workspace-card">
+
+                        <h3>
+
+                            🛰 System Status
+
+                        </h3>
+
+                        <div class="system-status">
+
+                            <div class="status-item">
+
+                                <span>AI</span>
+
+                                <strong>Online</strong>
+
+                            </div>
+
+                            <div class="status-item">
+
+                                <span>Database</span>
+
+                                <strong>Connected</strong>
+
+                            </div>
+
+                            <div class="status-item">
+
+                                <span>Founder OS</span>
+
+                                <strong>Running</strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- ==========================
+         LIBRARIES
+    =========================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- ==========================
+         APP
+    =========================== -->
+
+    <script
+        type="module"
+        src="./js/founder-app.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script
+        type="module"
+        src="spark-ai.js"></script>
+
+</body>
+
+</html>

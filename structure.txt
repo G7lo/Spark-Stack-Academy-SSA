@@ -1,0 +1,144 @@
+.
+├── admin
+│   ├── Settings.html
+│   ├── admissions.css
+│   ├── admissions.html
+│   ├── admissions.js
+│   ├── announcement.js
+│   ├── announcements.css
+│   ├── announcements.html
+│   ├── components
+│   │   ├── sidebar.css
+│   │   ├── sidebar.html
+│   │   ├── topbar.css
+│   │   └── topbar.html
+│   ├── courses.css
+│   ├── courses.html
+│   ├── courses.js
+│   ├── dashboard.css
+│   ├── dashboard.html
+│   ├── dashboard.js
+│   ├── instructors.css
+│   ├── instructors.html
+│   ├── instructors.js
+│   ├── js
+│   │   └── admin-app.js
+│   ├── reports.css
+│   ├── reports.html
+│   ├── reports.js
+│   ├── settings.css
+│   ├── settings.js
+│   ├── students.css
+│   ├── students.html
+│   └── students.js
+├── assets
+│   └── images
+│       ├── ssa-badge.png
+│       └── ssa-logo.png
+├── css
+│   └── auth.css
+├── founder
+│   ├── components
+│   │   ├── sidebar.css
+│   │   ├── sidebar.html
+│   │   ├── topbar.css
+│   │   └── topbar.html
+│   ├── dashboard.css
+│   ├── dashboard.html
+│   ├── dashboard.js
+│   ├── js
+│   │   ├── founder-app.js
+│   │   └── groq.js
+│   ├── spark-ai.css
+│   ├── spark-ai.html
+│   └── spark-ai.js
+├── index.html
+├── instructors
+│   ├── add-lesson.css
+│   ├── add-lesson.html
+│   ├── add-lesson.js
+│   ├── components
+│   │   ├── sidebar.css
+│   │   ├── sidebar.html
+│   │   ├── sidebar.js
+│   │   ├── topbar.css
+│   │   ├── topbar.html
+│   │   └── topbar.js
+│   ├── courses.css
+│   ├── courses.html
+│   ├── courses.js
+│   ├── create-course.css
+│   ├── create-course.html
+│   ├── create-course.js
+│   ├── dashboard.css
+│   ├── dashboard.html
+│   ├── dashboard.js
+│   ├── js
+│   │   └── instructor-app.js
+│   ├── manage-content.css
+│   ├── manage-content.html
+│   ├── manage-content.js
+│   ├── manage-course.css
+│   ├── manage-course.html
+│   ├── manage-course.js
+│   ├── settings.css
+│   ├── settings.html
+│   ├── settings.js
+│   ├── student-profile.css
+│   ├── student-profile.html
+│   ├── student-profile.js
+│   ├── students.css
+│   ├── students.html
+│   └── students.js
+├── js
+│   ├── firebase.js
+│   ├── login.js
+│   ├── signup.js
+│   └── theme.js
+├── login.html
+├── signup.html
+├── structure.txt
+└── student
+    ├── certificate.css
+    ├── certificate.html
+    ├── certificate.js
+    ├── certificates.css
+    ├── certificates.html
+    ├── certificates.js
+    ├── components
+    │   ├── notifications.js
+    │   ├── sidebar.css
+    │   ├── sidebar.html
+    │   ├── sidebar.js
+    │   ├── test.js
+    │   ├── topbar.css
+    │   ├── topbar.html
+    │   └── topbar.js
+    ├── course-player.css
+    ├── course-player.html
+    ├── course-player.js
+    ├── course.css
+    ├── course.html
+    ├── course.js
+    ├── courses.css
+    ├── courses.html
+    ├── courses.js
+    ├── css
+    │   ├── dashboard.css
+    │   ├── responsive.css
+    │   ├── sidebar.css
+    │   ├── student.css
+    │   └── topbar.css
+    ├── dashboard.css
+    ├── dashboard.html
+    ├── dashboard.js
+    ├── js
+    │   └── student-app.js
+    ├── my-courses.css
+    ├── my-courses.html
+    ├── my-courses.js
+    ├── settings.css
+    ├── settings.html
+    └── settings.js
+
+18 directories, 124 files

@@ -1,0 +1,557 @@
+/* ===================================
+   MONETIZATION PAGE
+=================================== */
+
+.page-header{
+
+    padding:28px;
+
+    margin-bottom:24px;
+
+}
+
+.page-header h1{
+
+    font-size:32px;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+.page-header p{
+
+    color:var(--muted);
+
+}
+
+
+/* ===================================
+   OVERVIEW CARDS
+=================================== */
+
+.overview-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+
+    margin-bottom:28px;
+
+}
+
+.overview-card{
+
+    padding:22px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.overview-card h4{
+
+    color:var(--muted);
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
+
+.overview-card h2{
+
+    font-size:32px;
+
+    font-weight:700;
+
+}
+
+
+/* ===================================
+   SECTION
+=================================== */
+
+.section-card{
+
+    padding:24px;
+
+    margin-bottom:24px;
+
+}
+
+.section-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:22px;
+
+}
+
+.section-header h2{
+
+    font-size:22px;
+
+}
+
+
+/* ===================================
+   BUTTONS
+=================================== */
+
+.primary-btn{
+
+    padding:12px 18px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    color:#fff;
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    transition:.25s;
+
+}
+
+.primary-btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+
+/* ===================================
+   PLAN GRID
+=================================== */
+
+.plan-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+
+    gap:20px;
+
+}
+
+.plan-card{
+
+    padding:22px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+    transition:.25s;
+
+}
+
+.plan-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.plan-price{
+
+    font-size:34px;
+
+    font-weight:700;
+
+}
+
+.plan-features{
+
+    list-style:none;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    padding:0;
+
+    margin:0;
+
+}
+
+.plan-features li{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+
+/* ===================================
+   ACTIONS
+=================================== */
+
+.plan-actions{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:auto;
+
+}
+
+.plan-actions button{
+
+    flex:1;
+
+}
+
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media(max-width:992px){
+
+    .overview-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .overview-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .section-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:14px;
+
+    }
+
+}
+
+/* ===================================
+   SETTINGS LIST
+=================================== */
+
+.settings-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+}
+
+.setting-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:18px;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.03);
+
+}
+
+.setting-item strong{
+
+    font-weight:600;
+
+}
+
+.setting-item span{
+
+    color:var(--muted);
+
+}
+
+
+/* ===================================
+   EMPTY STATE
+=================================== */
+
+.empty-state{
+
+    text-align:center;
+
+    padding:60px 20px;
+
+    color:var(--muted);
+
+    border:2px dashed rgba(255,255,255,.08);
+
+    border-radius:18px;
+
+}
+
+
+/* ===================================
+   MODALS
+=================================== */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.6);
+
+    backdrop-filter:blur(8px);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px;
+
+    z-index:9999;
+
+}
+
+.modal.active{
+
+    display:flex;
+
+    animation:fadeIn .25s ease;
+
+}
+
+.modal-content{
+
+    width:100%;
+
+    max-width:700px;
+
+    max-height:90vh;
+
+    overflow-y:auto;
+
+    padding:28px;
+
+    border-radius:22px;
+
+}
+
+
+/* ===================================
+   FORM
+=================================== */
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    margin-bottom:18px;
+
+}
+
+.form-row{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:18px;
+
+}
+
+.form-group label{
+
+    font-weight:600;
+
+}
+
+.form-group input,
+
+.form-group textarea,
+
+.form-group select{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.05);
+
+    color:inherit;
+
+    font-size:15px;
+
+}
+
+.form-group textarea{
+
+    resize:vertical;
+
+    min-height:120px;
+
+}
+
+
+/* ===================================
+   SWITCH
+=================================== */
+
+.switch{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin:18px 0;
+
+}
+
+
+/* ===================================
+   MODAL ACTIONS
+=================================== */
+
+.modal-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:14px;
+
+    margin-top:30px;
+
+}
+
+.modal-actions button{
+
+    padding:12px 22px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+}
+
+#cancelPlanBtn,
+#cancelCouponBtn{
+
+    background:rgba(255,255,255,.08);
+
+    color:inherit;
+
+}
+
+
+/* ===================================
+   ANIMATION
+=================================== */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.96);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+
+/* ===================================
+   MOBILE
+=================================== */
+
+@media(max-width:768px){
+
+    .form-row{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .modal-content{
+
+        padding:20px;
+
+    }
+
+    .modal-actions{
+
+        flex-direction:column-reverse;
+
+    }
+
+    .modal-actions button{
+
+        width:100%;
+
+    }
+
+}

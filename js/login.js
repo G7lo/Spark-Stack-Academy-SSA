@@ -207,7 +207,7 @@ async(e)=>{
         await getDoc(
             doc(
                 db,
-                "founders",
+                "founder",
                 uid
             )
         );
