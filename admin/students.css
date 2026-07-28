@@ -686,3 +686,20 @@ font-weight:700;
 cursor:pointer;
 
 }
+.course-list{
+display:grid;
+gap:10px;
+margin-top:10px;
+}
+
+.course-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:10px 12px;
+border-radius:10px;
+background:white;
+border:1px solid #e2e8f0;
+font-size:14px;
+font-weight:600;
+}
