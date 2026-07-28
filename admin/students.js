@@ -219,11 +219,26 @@ searchInput.addEventListener("input", e => {
 // ACTIONS
 // ===========================
 
+// Modal elements
+const modal = document.getElementById("studentModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalBody = document.getElementById("modalBody");
+
+// Close modal
+document.getElementById("closeModal")
+  .addEventListener("click", () => {
+    modal.classList.remove("show");
+  });
+
+// Table actions
 tableBody.addEventListener("click", async e => {
 
   const btn = e.target;
 
-  // Suspend / Activate
+  // ===========================
+  // SUSPEND / ACTIVATE
+  // ===========================
+
   if (btn.classList.contains("suspend-btn")) {
 
     const id = btn.dataset.id;
@@ -253,16 +268,142 @@ tableBody.addEventListener("click", async e => {
     }
   }
 
-  // View
+  // ===========================
+  // VIEW STUDENT
+  // ===========================
+
   if (btn.classList.contains("view-btn")) {
 
-    alert("Student profile view coming next 🚀");
+    const student = studentsData.find(
+      s => s.id === btn.dataset.id
+    );
+
+    modalTitle.textContent = "Student Details";
+
+    modalBody.innerHTML = `
+      <div class="detail-row">
+        <strong>Full Name</strong>
+        ${student.name || student.fullName || "N/A"}
+      </div>
+
+      <div class="detail-row">
+        <strong>Email</strong>
+        ${student.email || "N/A"}
+      </div>
+
+      <div class="detail-row">
+        <strong>Admission Number</strong>
+        ${student.admissionNo || "N/A"}
+      </div>
+
+      <div class="detail-row">
+        <strong>Course</strong>
+        ${student.course || student.program || "N/A"}
+      </div>
+
+      <div class="detail-row">
+        <strong>Status</strong>
+        ${student.status || "active"}
+      </div>
+    `;
+
+    modal.classList.add("show");
   }
 
-  // Edit
+  // ===========================
+  // EDIT STUDENT
+  // ===========================
+
   if (btn.classList.contains("edit-btn")) {
 
-    alert("Student edit form coming next ✨");
+    const student = studentsData.find(
+      s => s.id === btn.dataset.id
+    );
+
+    modalTitle.textContent = "Edit Student";
+
+    modalBody.innerHTML = `
+      <form class="edit-form"
+        id="editStudentForm">
+
+        <input type="text"
+          id="editName"
+          value="${student.name || student.fullName || ""}"
+          placeholder="Student name">
+
+        <input type="email"
+          id="editEmail"
+          value="${student.email || ""}"
+          placeholder="Email address">
+
+        <input type="text"
+          id="editAdmissionNo"
+          value="${student.admissionNo || ""}"
+          placeholder="Admission number">
+
+        <input type="text"
+          id="editCourse"
+          value="${student.course || student.program || ""}"
+          placeholder="Course">
+
+        <select id="editStatus">
+          <option value="active"
+            ${student.status === "active" ? "selected" : ""}>
+            Active
+          </option>
+
+          <option value="pending"
+            ${student.status === "pending" ? "selected" : ""}>
+            Pending
+          </option>
+
+          <option value="suspended"
+            ${student.status === "suspended" ? "selected" : ""}>
+            Suspended
+          </option>
+        </select>
+
+        <button type="submit"
+          class="save-btn">
+
+          Save Changes
+
+        </button>
+
+      </form>
+    `;
+
+    modal.classList.add("show");
+
+    document.getElementById("editStudentForm")
+      .addEventListener("submit", async ev => {
+
+        ev.preventDefault();
+
+        await updateDoc(
+          doc(db, "students", student.id),
+          {
+            name:
+              document.getElementById("editName").value,
+
+            email:
+              document.getElementById("editEmail").value,
+
+            admissionNo:
+              document.getElementById("editAdmissionNo").value,
+
+            course:
+              document.getElementById("editCourse").value,
+
+            status:
+              document.getElementById("editStatus").value
+          }
+        );
+
+        modal.classList.remove("show");
+
+        loadStudents();
+      });
   }
 });
 
