@@ -1,66 +1,44 @@
-/* ===========================
-   SSA ADMIN DASHBOARD
-=========================== */
-
-
 import { db } from "../js/firebase.js";
 
 
 import {
-
 collection,
 getDocs,
 query,
-where,
 orderBy,
 limit
-
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 
-/* ===========================
-   ELEMENTS
-=========================== */
+console.log("SSA ADMIN DASHBOARD CONNECTED");
 
 
-const studentCount =
-document.getElementById(
-"studentCount"
-);
 
 
-const instructorCount =
-document.getElementById(
-"instructorCount"
-);
+// ===========================
+// LOAD DASHBOARD DATA
+// ===========================
 
 
-const courseCount =
-document.getElementById(
-"courseCount"
-);
+window.addEventListener(
+"DOMContentLoaded",
+()=>{
 
+loadStats();
 
-const pendingCount =
-document.getElementById(
-"pendingCount"
-);
+loadRecentAdmissions();
 
-
-const recentApplications =
-document.getElementById(
-"recentApplications"
-);
+});
 
 
 
 
 
-/* ===========================
-   LOAD STATS
-=========================== */
+// ===========================
+// STATISTICS
+// ===========================
 
 
 async function loadStats(){
@@ -79,16 +57,6 @@ db,
 
 
 
-const instructorsSnap =
-await getDocs(
-collection(
-db,
-"instructors"
-)
-);
-
-
-
 const coursesSnap =
 await getDocs(
 collection(
@@ -99,15 +67,21 @@ db,
 
 
 
-const pendingSnap =
+const instructorsSnap =
 await getDocs(
-query(
-collection(db,"applications"),
-where(
-"status",
-"==",
-"Pending"
+collection(
+db,
+"instructors"
 )
+);
+
+
+
+const admissionsSnap =
+await getDocs(
+collection(
+db,
+"applications"
 )
 );
 
@@ -115,35 +89,41 @@ where(
 
 
 
-studentCount.textContent =
+document.getElementById(
+"studentCount"
+).textContent =
 studentsSnap.size;
 
 
 
-instructorCount.textContent =
-instructorsSnap.size;
-
-
-
-courseCount.textContent =
+document.getElementById(
+"courseCount"
+).textContent =
 coursesSnap.size;
 
 
 
-pendingCount.textContent =
-pendingSnap.size;
+document.getElementById(
+"instructorCount"
+).textContent =
+instructorsSnap.size;
+
+
+
+document.getElementById(
+"applicationCount"
+).textContent =
+admissionsSnap.size;
 
 
 
 }
 
-
-
 catch(error){
 
 
 console.error(
-"Stats loading error:",
+"Dashboard stats error:",
 error
 );
 
@@ -151,28 +131,43 @@ error
 }
 
 
-
 }
 
 
 
 
 
-/* ===========================
-   RECENT APPLICATIONS
-=========================== */
 
 
-async function loadApplications(){
+// ===========================
+// RECENT ADMISSIONS
+// ===========================
+
+
+async function loadRecentAdmissions(){
+
+
+const container =
+document.getElementById(
+"recentAdmissions"
+);
+
+
+
+if(!container) return;
+
 
 
 try{
 
 
-const applicationsQuery =
+const q =
 query(
 
-collection(db,"applications"),
+collection(
+db,
+"applications"
+),
 
 orderBy(
 "createdAt",
@@ -185,27 +180,17 @@ limit(5)
 
 
 
-const snapshot =
-await getDocs(
-applicationsQuery
-);
+
+const snap =
+await getDocs(q);
 
 
 
-recentApplications.innerHTML="";
+if(snap.empty){
 
 
-
-if(snapshot.empty){
-
-
-recentApplications.innerHTML=`
-
-<p>
-No applications yet.
-</p>
-
-`;
+container.innerHTML =
+"<p>No applications yet</p>";
 
 return;
 
@@ -214,55 +199,47 @@ return;
 
 
 
-snapshot.forEach((doc)=>{
 
 
-const app =
+container.innerHTML="";
+
+
+
+snap.forEach(doc=>{
+
+
+const data =
 doc.data();
 
 
 
-recentApplications.innerHTML += `
+const item =
+document.createElement(
+"div"
+);
 
 
-<div class="application-item">
+
+item.className =
+"admission-item";
 
 
-<div>
+
+item.innerHTML = `
 
 <strong>
-
-${app.name || "Applicant"}
-
+${data.name || "Unknown"}
 </strong>
 
-
-<br>
-
-
-<small>
-
-${app.program || "Program not selected"}
-
-</small>
-
-
-</div>
-
-
-
-<span>
-
-${app.status || "Pending"}
-
-</span>
-
-
-
-</div>
-
+<p>
+${data.course || "No course"}
+</p>
 
 `;
+
+
+
+container.appendChild(item);
 
 
 
@@ -272,44 +249,20 @@ ${app.status || "Pending"}
 
 }
 
-
-
 catch(error){
 
 
 console.error(
-"Applications error:",
+"Admissions loading error:",
 error
 );
 
 
 
-recentApplications.innerHTML=`
-
-<p>
-Failed loading applications.
-</p>
-
-`;
-
-
+container.innerHTML =
+"<p>Unable to load admissions</p>";
 
 }
 
 
-
 }
-
-
-
-
-
-
-/* ===========================
-   START
-=========================== */
-
-
-loadStats();
-
-loadApplications();

@@ -5,17 +5,17 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<title>
-SSA Admin Dashboard
-</title>
+<title>Admin Dashboard | Spark Stack Academy</title>
 
 
-<link rel="stylesheet"
-href="dashboard.css">
+<link rel="stylesheet" href="dashboard.css">
+
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 
 
 </head>
@@ -27,52 +27,48 @@ href="dashboard.css">
 <div class="dashboard-layout">
 
 
+<!-- SIDEBAR -->
 
 <aside id="sidebarContainer"></aside>
-
 
 
 <div id="sidebarOverlay"></div>
 
 
 
+<!-- MAIN -->
 
-<div class="main-content">
-
-
-
-<header id="topbarContainer"></header>
+<main class="main-content">
 
 
 
+<!-- TOPBAR -->
 
-<main class="admin-dashboard">
+<div id="topbarContainer"></div>
 
 
 
-<section class="page-header">
 
+<section class="dashboard-page">
+
+
+
+<div class="page-header">
 
 <div>
 
-<h1>
-
-🛡️ Admin Dashboard
-
+<h1 id="pageTitle">
+Admin Dashboard
 </h1>
 
-
 <p>
-
-Monitor SSA operations, admissions and growth.
-
+Welcome back, <span id="adminName">Admin</span>
 </p>
-
 
 </div>
 
 
-</section>
+</div>
 
 
 
@@ -80,110 +76,30 @@ Monitor SSA operations, admissions and growth.
 
 <!-- STAT CARDS -->
 
-
-<section class="stats-grid">
-
-
-
-<div class="stat-card">
-
-
-<h3>
-Total Students
-</h3>
-
-
-<p id="studentCount">
-0
-</p>
-
-
-</div>
-
+<div class="stats-grid">
 
 
 
 <div class="stat-card">
 
-
-<h3>
-Total Instructors
-</h3>
-
-
-<p id="instructorCount">
-0
-</p>
-
-
+<div class="icon">
+<i data-lucide="users"></i>
 </div>
 
 
-
-
-
-<div class="stat-card">
-
+<div>
 
 <h3>
-Total Courses
+Students
 </h3>
 
 
-<p id="courseCount">
+<h2 id="studentCount">
 0
-</p>
-
-
-</div>
-
-
-
-
-
-<div class="stat-card">
-
-
-<h3>
-Pending Admissions
-</h3>
-
-
-<p id="pendingCount">
-0
-</p>
-
-
-</div>
-
-
-
-</section>
-
-
-
-
-
-
-<!-- RECENT APPLICATIONS -->
-
-
-<section class="dashboard-card">
-
-
-<div class="card-header">
-
-
-<h2>
-Recent Applications
 </h2>
 
 
-<a href="admissions.html">
-
-View All
-
-</a>
+</div>
 
 
 </div>
@@ -191,67 +107,154 @@ View All
 
 
 
-<div id="recentApplications">
 
+
+<div class="stat-card">
+
+<div class="icon">
+<i data-lucide="book-open"></i>
+</div>
+
+
+<div>
+
+<h3>
+Courses
+</h3>
+
+
+<h2 id="courseCount">
+0
+</h2>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="stat-card">
+
+<div class="icon">
+<i data-lucide="user-plus"></i>
+</div>
+
+
+<div>
+
+<h3>
+Admissions
+</h3>
+
+
+<h2 id="applicationCount">
+0
+</h2>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="stat-card">
+
+<div class="icon">
+<i data-lucide="graduation-cap"></i>
+</div>
+
+
+<div>
+
+<h3>
+Instructors
+</h3>
+
+
+<h2 id="instructorCount">
+0
+</h2>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<!-- CONTENT GRID -->
+
+<div class="dashboard-grid">
+
+
+
+<div class="panel">
+
+<h2>
+Recent Admissions
+</h2>
+
+
+<div id="recentAdmissions">
 
 <p>
-Loading applications...
+Loading...
 </p>
+
+</div>
 
 
 </div>
 
 
 
-</section>
 
 
 
-
-
-
-<!-- QUICK ACTIONS -->
-
-
-<section class="dashboard-card">
-
+<div class="panel">
 
 <h2>
-
 Quick Actions
-
 </h2>
 
 
-
-<div class="quick-actions">
+<div class="actions">
 
 
 <a href="admissions.html">
-
-🎓 Review Admissions
-
+<i data-lucide="clipboard-check"></i>
+Admissions
 </a>
 
 
 <a href="students.html">
-
-👨‍🎓 Manage Students
-
-</a>
-
-
-<a href="instructors.html">
-
-👨‍🏫 Manage Instructors
-
+<i data-lucide="users"></i>
+Students
 </a>
 
 
 <a href="courses.html">
-
-📚 Manage Courses
-
+<i data-lucide="book"></i>
+Courses
 </a>
 
 
@@ -259,9 +262,16 @@ Quick Actions
 </div>
 
 
+</div>
+
+
+
+</div>
+
+
+
+
 </section>
-
-
 
 
 
@@ -269,28 +279,15 @@ Quick Actions
 
 
 
-
-</div>
-
-
-
 </div>
 
 
 
 
-<script src="https://unpkg.com/lucide@latest"></script>
 
+<script type="module" src="js/admin-app.js"></script>
 
-<script type="module"
-src="js/admin-app.js">
-</script>
-
-
-<script type="module"
-src="dashboard.js">
-</script>
-
+<script type="module" src="dashboard.js"></script>
 
 
 </body>
