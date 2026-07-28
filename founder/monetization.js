@@ -71,8 +71,6 @@ window.addEventListener(
 
     ()=>{
 
-        initModals();
-
         loadPlans();
 
         loadCoupons();
@@ -314,10 +312,6 @@ async(e)=>{
 // LOAD PRICING
 // ===================================
 
-import {
-    getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 
 async function loadPricing(){
 
@@ -400,7 +394,17 @@ async function openPricingEditor(){
     }
 
 
-    pricingModal.classList.add("active");
+    window.addEventListener(
+"click",
+e=>{
+
+    if(e.target===pricingModal){
+
+        pricingModal.classList.remove("active");
+
+    }
+
+});
 
 }
 
