@@ -3,15 +3,15 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Revenue | Founder OS</title>
+<title>Revenue | Founder OS</title>
 
-    <link rel="stylesheet" href="dashboard.css">
 
-    <link rel="stylesheet" href="revenue.css">
+<link rel="stylesheet" href="revenue.css">
+
 
 </head>
 
@@ -22,214 +22,149 @@
 <div class="dashboard-layout">
 
 
-    <!-- Sidebar -->
-
-    <aside id="sidebarContainer"></aside>
+<aside id="sidebarContainer"></aside>
 
 
-    <div id="sidebarOverlay"></div>
+<div id="sidebarOverlay"></div>
 
 
 
-    <!-- Main -->
-
-    <main class="main-content">
+<main class="main-content">
 
 
-        <!-- Topbar -->
-
-        <header id="topbarContainer"></header>
+<header id="topbarContainer"></header>
 
 
 
-        <!-- Revenue Header -->
+<section class="page-header glass-card">
 
-        <section class="page-header glass-card">
+<h1>
+📊 Revenue Analytics
+</h1>
 
+<p>
+Track academy earnings, subscriptions, course sales and transactions.
+</p>
 
-            <div>
-
-                <h1>
-                    💰 Revenue Center
-                </h1>
-
-
-                <p>
-                    Monitor Spark Stack Academy's financial growth,
-                    subscriptions, and income streams.
-                </p>
-
-            </div>
-
-
-        </section>
+</section>
 
 
 
-
-        <!-- Revenue Stats -->
-
-        <section class="stats-grid">
+<section class="revenue-grid">
 
 
-            <div class="stat-card glass-card">
+<div class="glass-card revenue-card">
 
-                <span>
-                    Total Revenue
-                </span>
+<h3>
+💰 Total Revenue
+</h3>
 
-                <h2 id="totalRevenue">
-    $0
+<h1 id="totalRevenue">
+KES 0
+</h1>
+
+</div>
+
+
+
+<div class="glass-card revenue-card">
+
+<h3>
+💎 Premium Subscribers
+</h3>
+
+<h1 id="totalSubscribers">
+0
+</h1>
+
+</div>
+
+
+
+<div class="glass-card revenue-card">
+
+<h3>
+🎓 Course Sales
+</h3>
+
+<h1 id="courseSales">
+0
+</h1>
+
+</div>
+
+
+
+<div class="glass-card revenue-card">
+
+<h3>
+🎟️ Coupon Usage
+</h3>
+
+<h1 id="couponUsage">
+0
+</h1>
+
+</div>
+
+
+</section>
+
+
+
+
+<section class="glass-card">
+
+
+<h2>
+Recent Transactions
 </h2>
 
-                <small>
-                    Lifetime earnings
-                </small>
 
-            </div>
+<div id="transactionsContainer">
+
+Loading...
+
+</div>
+
+
+</section>
 
 
 
-            <div class="stat-card glass-card">
 
-                <span>
-                    Monthly Revenue
-                </span>
+<section class="glass-card">
 
-                <h2 id="monthlyRevenue">
-    $0
+
+<h2>
+Revenue Growth
 </h2>
 
-                <small>
-                    Current month
-                </small>
 
-            </div>
+<canvas id="revenueChart"></canvas>
 
 
-
-
-            <div class="stat-card glass-card">
-
-                <span>
-                    Premium Users
-                </span>
-
-                <h2 id="premiumUsers">
-    0
-</h2>
-
-                <small>
-                    Active subscriptions
-                </small>
-
-            </div>
+</section>
 
 
 
-
-            <div class="stat-card glass-card">
-
-                <span>
-                    Course Sales
-                </span>
-
-                <h2 id="courseSales">
-    0
-</h2>
-
-                <small>
-                    Paid enrollments
-                </small>
-
-            </div>
-
-
-        </section>
-
-
-
-
-
-        <!-- Revenue Content -->
-
-        <section class="dashboard-grid">
-
-
-
-            <div class="glass-card analytics-card">
-
-
-                <div class="section-header">
-
-                    <h3>
-                        📈 Revenue Growth
-                    </h3>
-
-                </div>
-
-
-                <div class="chart-placeholder">
-
-                    Revenue analytics chart coming soon
-
-                </div>
-
-
-            </div>
-
-
-
-
-
-            <aside class="dashboard-sidebar">
-
-
-                <div class="glass-card sidebar-card">
-
-                    <h3>
-                        💳 Revenue Sources
-                    </h3>
-
-
-                    <ul>
-
-                        <li>
-                            Premium Subscriptions
-                        </li>
-
-                        <li>
-                            Course Payments
-                        </li>
-
-                        <li>
-                            Certificates
-                        </li>
-
-                    </ul>
-
-
-                </div>
-
-
-
-            </aside>
-
-
-        </section>
-
-
-
-    </main>
+</main>
 
 
 </div>
 
 
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 <script type="module" src="js/founder-app.js"></script>
 
+
 <script type="module" src="revenue.js"></script>
+
+
+
 </body>
 
 </html>

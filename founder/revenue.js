@@ -1,336 +1,305 @@
 // ===================================
 // SPARK STACK ACADEMY
-// REVENUE MANAGEMENT CORE
-// PRODUCTION VERSION
+// REVENUE ANALYTICS
 // ===================================
 
 import { db } from "../../js/firebase.js";
 
 import {
     collection,
-    getDocs,
-    query,
-    where
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-console.log("💰 Revenue Core Loaded");
 
-
-// ===================================
-// ELEMENTS
-// ===================================
-
-const totalRevenueEl =
-    document.getElementById("totalRevenue");
-
-const monthlyRevenueEl =
-    document.getElementById("monthlyRevenue");
-
-const premiumUsersEl =
-    document.getElementById("premiumUsers");
-
-const courseSalesEl =
-    document.getElementById("courseSales");
-
-
-// ===================================
-// FORMAT MONEY
-// ===================================
-
-function formatMoney(amount){
-
-    return new Intl.NumberFormat(
-        "en-US",
-        {
-            style:"currency",
-            currency:"USD"
-        }
-    ).format(amount);
-
-}
-
-
-// ===================================
-// LOAD REVENUE DATA
-// ===================================
-
-async function loadRevenue(){
-
-    try{
-
-
-        showLoading();
+console.log("📊 Revenue Loaded");
 
 
 
-        const [
-            revenue,
-            monthlyRevenue,
-            premiumUsers,
-            courseSales
+const totalRevenue =
+document.getElementById("totalRevenue");
 
-        ] = await Promise.all([
+const totalSubscribers =
+document.getElementById("totalSubscribers");
 
-            getTotalRevenue(),
+const courseSales =
+document.getElementById("courseSales");
 
-            getMonthlyRevenue(),
+const couponUsage =
+document.getElementById("couponUsage");
 
-            getPremiumUsers(),
-
-            getCourseSales()
-
-        ]);
+const transactionsContainer =
+document.getElementById("transactionsContainer");
 
 
 
-        updateRevenueUI({
-
-            revenue,
-
-            monthlyRevenue,
-
-            premiumUsers,
-
-            courseSales
-
-        });
+let monthlyRevenue = {};
 
 
 
-    }
+function loadRevenue(){
 
 
-    catch(error){
+onSnapshot(
 
-        console.error(
-            "Revenue loading failed:",
-            error
-        );
+collection(
+db,
+"transactions"
+),
 
-        showError();
-
-    }
+(snapshot)=>{
 
 
-}
+let revenue = 0;
+
+let subscribers = 0;
+
+let courses = 0;
+
+let coupons = 0;
 
 
-// ===================================
-// TOTAL REVENUE
-// ===================================
-
-async function getTotalRevenue(){
+monthlyRevenue = {};
 
 
-    const ref =
-        collection(
-            db,
-            "revenue",
-            "transactions",
-            "items"
-        );
+
+transactionsContainer.innerHTML="";
 
 
-    const snapshot =
-        await getDocs(
-            query(
-                ref,
-                where(
-                    "status",
-                    "==",
-                    "completed"
-                )
-            )
-        );
 
+if(snapshot.empty){
 
-    let total = 0;
+transactionsContainer.innerHTML =
+`
+<p>
+No transactions yet.
+</p>
+`;
 
-
-    snapshot.forEach(doc=>{
-
-        total +=
-            Number(
-                doc.data().amount || 0
-            );
-
-    });
-
-
-    return total;
+return;
 
 }
 
 
 
-// ===================================
-// MONTHLY REVENUE
-// ===================================
-
-async function getMonthlyRevenue(){
-
-    // Will add timestamp filtering
-    // after confirming your Firestore timestamp format
+snapshot.forEach(doc=>{
 
 
-    return 0;
-
-}
+const data = doc.data();
 
 
 
-// ===================================
-// PREMIUM USERS
-// ===================================
+if(data.status === "completed"){
 
-async function getPremiumUsers(){
-
-
-    const ref =
-        collection(
-            db,
-            "revenue",
-            "subscriptions",
-            "items"
-        );
-
-
-    const snapshot =
-        await getDocs(
-            query(
-                ref,
-                where(
-                    "status",
-                    "==",
-                    "active"
-                )
-            )
-        );
-
-
-    return snapshot.size;
+revenue += Number(data.amount || 0);
 
 }
 
 
 
-// ===================================
-// COURSE SALES
-// ===================================
+if(data.type==="premium"){
 
-async function getCourseSales(){
+subscribers++;
 
-
-    const ref =
-        collection(
-            db,
-            "revenue",
-            "transactions",
-            "items"
-        );
+}
 
 
-    const snapshot =
-        await getDocs(
-            query(
-                ref,
-                where(
-                    "type",
-                    "==",
-                    "course"
-                ),
-                where(
-                    "status",
-                    "==",
-                    "completed"
-                )
-            )
-        );
+if(data.type==="course"){
+
+courses++;
+
+}
 
 
-    return snapshot.size;
+if(data.type==="coupon"){
+
+coupons++;
 
 }
 
 
 
-// ===================================
-// UPDATE UI
-// ===================================
 
-function updateRevenueUI(data){
+// MONTHLY GRAPH DATA
 
-
-    if(totalRevenueEl){
-
-        totalRevenueEl.textContent =
-            formatMoney(
-                data.revenue
-            );
-
-    }
+if(data.createdAt){
 
 
-    if(monthlyRevenueEl){
-
-        monthlyRevenueEl.textContent =
-            formatMoney(
-                data.monthlyRevenue
-            );
-
-    }
+const date =
+data.createdAt.toDate();
 
 
-    if(premiumUsersEl){
+const month =
+date.toLocaleString(
+"default",
+{
+month:"short"
+}
+);
 
-        premiumUsersEl.textContent =
-            data.premiumUsers;
-
-    }
 
 
-    if(courseSalesEl){
-
-        courseSalesEl.textContent =
-            data.courseSales;
-
-    }
+monthlyRevenue[month] =
+(monthlyRevenue[month] || 0)
++
+Number(data.amount || 0);
 
 
 }
 
 
-// ===================================
-// STATES
-// ===================================
 
-function showLoading(){
 
-    console.log(
-        "Loading revenue..."
-    );
+// TRANSACTION UI
+
+transactionsContainer.innerHTML +=
+`
+
+<div class="transaction-item">
+
+
+<div>
+
+<strong>
+${data.type || "Payment"}
+</strong>
+
+
+<p>
+${data.status || "pending"}
+</p>
+
+
+</div>
+
+
+
+<span>
+${data.currency || "KES"}
+${data.amount || 0}
+</span>
+
+
+</div>
+
+`;
+
+
+
+});
+
+
+
+totalRevenue.textContent =
+`KES ${revenue.toLocaleString()}`;
+
+
+totalSubscribers.textContent =
+subscribers;
+
+
+courseSales.textContent =
+courses;
+
+
+couponUsage.textContent =
+coupons;
+
+
+
+updateChart();
+
+
+
+}
+
+);
+
 
 }
 
 
-function showError(){
 
-    if(totalRevenueEl){
+let revenueChart;
 
-        totalRevenueEl.textContent =
-            "Error";
 
-    }
+
+function updateChart(){
+
+
+const ctx =
+document.getElementById(
+"revenueChart"
+);
+
+
+
+if(!ctx) return;
+
+
+
+if(revenueChart){
+
+revenueChart.destroy();
 
 }
 
 
 
-// ===================================
-// START
-// ===================================
+revenueChart =
+new Chart(
+
+ctx,
+
+{
+
+type:"line",
+
+data:{
+
+
+labels:
+Object.keys(monthlyRevenue),
+
+
+
+datasets:[{
+
+label:"Revenue",
+
+data:
+Object.values(monthlyRevenue)
+
+}]
+
+},
+
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+display:true
+
+}
+
+}
+
+}
+
+}
+
+);
+
+
+}
+
+
 
 window.addEventListener(
-    "DOMContentLoaded",
-    loadRevenue
+"DOMContentLoaded",
+loadRevenue
 );

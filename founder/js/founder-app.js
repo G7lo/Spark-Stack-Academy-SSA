@@ -668,3 +668,158 @@ document.addEventListener(
 
     }
 );
+// ===================================
+// GLOBAL SEARCH
+// ===================================
+
+
+function initSearch(){
+
+
+const searchInput =
+document.getElementById(
+    "globalSearch"
+);
+
+
+const searchResults =
+document.getElementById(
+    "searchResults"
+);
+
+
+
+if(!searchInput) return;
+
+
+
+const pages = [
+
+{
+title:"Revenue Analytics",
+url:"revenue.html"
+},
+
+{
+title:"Monetization",
+url:"monetization.html"
+},
+
+{
+title:"Academy Profile",
+url:"academy-profile.html"
+},
+
+{
+title:"Spark AI Settings",
+url:"spark-ai-settings.html"
+},
+
+{
+title:"Security",
+url:"security.html"
+},
+
+{
+title:"Certificates",
+url:"certificates.html"
+},
+
+{
+title:"Platform Settings",
+url:"platform-settings.html"
+}
+
+];
+
+
+
+searchInput.addEventListener(
+"input",
+()=>{
+
+
+const value =
+searchInput.value
+.toLowerCase()
+.trim();
+
+
+
+searchResults.innerHTML="";
+
+
+
+if(!value){
+
+searchResults.style.display="none";
+
+return;
+
+}
+
+
+
+const matches =
+pages.filter(page=>
+
+page.title
+.toLowerCase()
+.includes(value)
+
+);
+
+
+
+matches.forEach(page=>{
+
+
+const item =
+document.createElement("div");
+
+
+item.className =
+"search-result";
+
+
+item.textContent =
+page.title;
+
+
+
+item.onclick=()=>{
+
+window.location.href =
+page.url;
+
+};
+
+
+
+searchResults.appendChild(item);
+
+
+});
+
+
+
+searchResults.style.display =
+matches.length
+? "block"
+:"none";
+
+
+});
+
+
+}
+
+
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+initSearch();
+
+});
