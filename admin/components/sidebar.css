@@ -267,11 +267,39 @@ translateX(-100%);
 
 }
 
-.sidebar.show{
+
+.sidebar.active{
 
 transform:
 translateX(0);
 
 }
+
+}
+#sidebarOverlay{
+
+position:fixed;
+
+inset:0;
+
+background:
+rgba(15,23,42,.45);
+
+opacity:0;
+
+visibility:hidden;
+
+transition:.3s;
+
+z-index:999;
+
+}
+
+
+#sidebarOverlay.show{
+
+opacity:1;
+
+visibility:visible;
 
 }
