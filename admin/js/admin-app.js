@@ -94,13 +94,13 @@ async function loadLayout(){
 
     await loadComponent(
         "sidebarContainer",
-        "../../components/sidebar.html"
+        "../components/sidebar.html"
     );
 
 
     await loadComponent(
         "topbarContainer",
-        "../../components/topbar.html"
+        "../components/topbar.html"
     );
 
 
