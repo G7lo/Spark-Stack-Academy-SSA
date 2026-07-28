@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Students Management | Spark Stack Academy</title>
+
+  <link rel="stylesheet"
+    href="students.css">
+
+</head>
+
+<body>
+
+  <div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebarContainer"></aside>
+
+    <div id="sidebarOverlay"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <div id="topbarContainer"></div>
+
+      <section class="page">
+
+        <div class="page-header">
+
+          <h1>Students Management</h1>
+
+          <p>Manage all registered Spark Stack Academy students.</p>
+
+        </div>
+
+        <div class="table-card">
+
+          <div class="table-top">
+
+            <h2>Registered Students</h2>
+
+            <input type="text"
+              id="searchInput"
+              placeholder="Search by name, email, or admission number...">
+
+          </div>
+
+          <div class="table-wrapper">
+
+            <table class="students-table">
+
+              <thead>
+
+                <tr>
+
+                  <th>Student</th>
+
+                  <th>Admission No</th>
+
+                  <th>Email</th>
+
+                  <th>Course</th>
+
+                  <th>Status</th>
+
+                  <th>Actions</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="studentsTableBody">
+
+                <tr>
+
+                  <td colspan="6"
+                    class="loading-row">
+
+                    Loading students...
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script type="module"
+  src="../js/admin-app.js"></script>
+
+<script type="module"
+  src="students.js"></script>
+
+</body>
+
+</html>
