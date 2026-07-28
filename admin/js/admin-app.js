@@ -1,334 +1,481 @@
-/* ===========================
-   SSA ADMIN APP V2
-=========================== */
+/* ===================================
+   SSA FOUNDER ADMIN CORE V2
+   CLEAN BUILD
+=================================== */
+
 
 import {
     auth,
     db
 } from "../../js/firebase.js";
 
+
 import {
     onAuthStateChanged,
     signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+} 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 
 import {
     doc,
     getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-/* ===========================
-   LOAD COMPONENT CSS
-=========================== */
-
-[
-    "../components/sidebar.css",
-    "../components/topbar.css"
-].forEach(file=>{
-
-    if(document.querySelector(`link[href="${file}"]`))
-        return;
-
-    const css =
-    document.createElement("link");
-
-    css.rel="stylesheet";
-
-    css.href=file;
-
-    document.head.appendChild(css);
-
-});
 
 
-/* ===========================
-   LOAD COMPONENT
-=========================== */
 
-async function loadComponent(id,file){
+// ===========================
+// COMPONENT LOADER
+// ===========================
+
+
+async function loadComponent(id, path){
 
     const container =
     document.getElementById(id);
 
+
     if(!container) return;
+
 
     try{
 
-        const res =
-        await fetch(file);
+        const response =
+        await fetch(path);
 
-        container.innerHTML =
-        await res.text();
+
+        if(!response.ok){
+
+            throw new Error(
+                `Component missing: ${path}`
+            );
+
+        }
+
+
+        const html =
+        await response.text();
+
+
+        container.innerHTML = html;
+
 
     }
 
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Component loading failed:",
+            error
+        );
+
+
+        container.innerHTML =
+        "";
 
     }
 
 }
 
 
-/* ===========================
-   START
-=========================== */
 
-async function init(){
+
+
+// ===========================
+// LOAD GLOBAL COMPONENTS
+// ===========================
+
+
+async function loadLayout(){
+
 
     await loadComponent(
-
         "sidebarContainer",
-
-        "../components/sidebar.html"
-
+        "../../components/sidebar.html"
     );
+
 
     await loadComponent(
-
         "topbarContainer",
-
-        "../components/topbar.html"
-
+        "../../components/topbar.html"
     );
 
-    if(typeof lucide!=="undefined"){
-
-        lucide.createIcons();
-
-    }
 
     setupSidebar();
 
     setupLogout();
 
-    checkAuth();
-
-    setActivePage();
-
-    setPageTitle();
-
 }
 
 
-/* ===========================
-   SIDEBAR
-=========================== */
 
-function setupSidebar(){
 
-    const menuBtn =
-    document.getElementById("menuBtn");
 
-    const sidebar =
-    document.querySelector(".sidebar");
+// ===========================
+// AUTH CHECK
+// ===========================
 
-    const overlay =
-    document.getElementById("sidebarOverlay");
 
-    if(!menuBtn || !sidebar) return;
+onAuthStateChanged(
+    auth,
+    async(user)=>{
 
-    menuBtn.onclick=()=>{
 
-        sidebar.classList.toggle("show");
+        if(!user){
 
-        overlay?.classList.toggle("show");
+            window.location.href =
+            "../../login.html";
 
-    };
-
-    overlay?.addEventListener(
-
-        "click",
-
-        ()=>{
-
-            sidebar.classList.remove("show");
-
-            overlay.classList.remove("show");
+            return;
 
         }
 
+
+
+        try{
+
+
+            const userRef =
+            doc(
+                db,
+                "users",
+                user.uid
+            );
+
+
+            const snap =
+            await getDoc(userRef);
+
+
+
+            if(!snap.exists()){
+
+                console.error(
+                    "User profile missing"
+                );
+
+                return;
+
+            }
+
+
+
+            const data =
+            snap.data();
+
+
+
+            if(data.role !== "admin" &&
+               data.role !== "founder"){
+
+                window.location.href =
+                "../../login.html";
+
+                return;
+
+            }
+
+
+
+            console.log(
+                "Admin authenticated:",
+                data.name
+            );
+
+
+
+            const name =
+            document.getElementById(
+                "adminName"
+            );
+
+
+            if(name){
+
+                name.textContent =
+                data.name || "Founder";
+
+            }
+
+
+        }
+
+        catch(error){
+
+            console.error(
+                "Auth error:",
+                error
+            );
+
+        }
+
+
+    }
+
+);
+
+
+
+
+
+
+
+// ===========================
+// LOGOUT
+// ===========================
+
+
+function setupLogout(){
+
+
+    const buttons =
+    document.querySelectorAll(
+        "#logoutBtn"
     );
+
+
+    buttons.forEach(btn=>{
+
+
+        btn.addEventListener(
+            "click",
+            async()=>{
+
+
+                try{
+
+                    await signOut(auth);
+
+
+                    window.location.href =
+                    "../../login.html";
+
+
+                }
+
+                catch(error){
+
+                    console.error(
+                        "Logout failed",
+                        error
+                    );
+
+                }
+
+
+            }
+        );
+
+
+    });
+
 
 }
 
 
-/* ===========================
-   ACTIVE PAGE
-=========================== */
+
+
+
+
+// ===========================
+// SIDEBAR MOBILE CONTROL
+// ===========================
+
+
+function setupSidebar(){
+
+
+    const menuBtn =
+    document.getElementById(
+        "menuBtn"
+    );
+
+
+    const sidebar =
+    document.querySelector(
+        ".sidebar"
+    );
+
+
+    const overlay =
+    document.getElementById(
+        "sidebarOverlay"
+    );
+
+
+
+    if(
+        !menuBtn ||
+        !sidebar ||
+        !overlay
+    ){
+
+        return;
+
+    }
+
+
+
+
+    menuBtn.onclick = ()=>{
+
+
+        sidebar.classList.toggle(
+            "active"
+        );
+
+
+        overlay.classList.toggle(
+            "show"
+        );
+
+
+    };
+
+
+
+
+
+    overlay.onclick = ()=>{
+
+
+        sidebar.classList.remove(
+            "active"
+        );
+
+
+        overlay.classList.remove(
+            "show"
+        );
+
+
+    };
+
+
+}
+
+
+
+
+
+
+
+
+// ===========================
+// ACTIVE PAGE
+// ===========================
+
 
 function setActivePage(){
 
-    const page =
+
+    const current =
     location.pathname
     .split("/")
     .pop();
 
-    document
-    .querySelectorAll(".sidebar-nav a")
-    .forEach(link=>{
 
-        if(link.getAttribute("href")===page){
 
-            link.classList.add("active");
+    const links =
+    document.querySelectorAll(
+        ".sidebar a"
+    );
+
+
+
+    links.forEach(link=>{
+
+
+        link.classList.remove(
+            "active"
+        );
+
+
+
+        if(
+            link.href.includes(
+                current
+            )
+        ){
+
+            link.classList.add(
+                "active"
+            );
 
         }
 
+
     });
+
 
 }
 
 
-/* ===========================
-   PAGE TITLE
-=========================== */
+
+
+
+
+
+// ===========================
+// PAGE TITLE
+// ===========================
+
 
 function setPageTitle(){
+
 
     const title =
     document.getElementById(
         "pageTitle"
     );
 
+
     if(!title) return;
 
-    const page =
-    location.pathname
-    .split("/")
-    .pop()
-    .replace(".html","");
+
+
+    let page =
+    document.title
+    .replace(
+        " | Spark Stack Academy",
+        ""
+    );
+
+
 
     title.textContent =
-    page.charAt(0)
-    .toUpperCase() +
-    page.slice(1);
+    page;
+
 
 }
 
 
-/* ===========================
-   AUTH
-=========================== */
-
-function checkAuth(){
-
-    onAuthStateChanged(
-
-        auth,
-
-        async(user)=>{
-
-            if(!user){
-
-                location.href=
-                "../login.html";
-
-                return;
-
-            }
-
-            try{
-
-                const snap =
-                await getDoc(
-
-                    doc(
-                        db,
-                        "admins",
-                        user.uid
-                    )
-
-                );
-
-                if(!snap.exists()){
-
-                    location.href=
-                    "../index.html";
-
-                    return;
-
-                }
-
-                const data =
-                snap.data();
-
-                const adminName =
-                document.getElementById(
-                    "adminName"
-                );
-
-                const avatar =
-                document.querySelector(
-                    ".avatar"
-                );
-
-                if(adminName){
-
-                    adminName.textContent =
-                    data.name ||
-                    "Administrator";
-
-                }
-
-                if(avatar){
-
-                    avatar.textContent =
-                    (
-                        data.name ||
-                        "A"
-                    )
-                    .charAt(0)
-                    .toUpperCase();
-
-                }
-
-            }
-
-            catch(error){
-
-                console.error(error);
-
-            }
-
-        }
-
-    );
-
-}
 
 
-/* ===========================
-   LOGOUT
-=========================== */
-
-function setupLogout(){
-
-    document.addEventListener(
-
-        "click",
-
-        async(e)=>{
-
-            if(
-                e.target.closest(
-                    "#logoutBtn"
-                )
-            ){
-
-                await signOut(auth);
-
-                location.href=
-                "../login.html";
-
-            }
-
-        }
-
-    );
-
-}
 
 
-init();
+
+// ===========================
+// START APP
+// ===========================
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async()=>{
+
+
+        await loadLayout();
+
+
+        setActivePage();
+
+
+        setPageTitle();
+
+
+    }
+);
