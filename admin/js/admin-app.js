@@ -1,221 +1,353 @@
-/* ===================================
-   SSA FOUNDER ADMIN CORE V2
-   CLEAN BUILD
-=================================== */
+// ===========================
+// SSA ADMIN APP CORE
+// ===========================
+
+
+import { auth, db } from "../../js/firebase.js";
 
 
 import {
-    auth,
-    db
-} from "../../js/firebase.js";
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 import {
-    onAuthStateChanged,
-    signOut
-} 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+doc,
+getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-import {
-    doc,
-    getDoc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import "../../js/theme.js";
+
+
+console.log("SSA ADMIN APP CONNECTED");
+
+
+
+
+// ===========================
+// INITIALIZE
+// ===========================
+
+
+window.addEventListener(
+"DOMContentLoaded",
+async()=>{
+
+
+await loadSidebar();
+
+await loadTopbar();
+
+loadAdmin();
+
+highlightActivePage();
+
+
+});
+
+
 
 
 
 
 
 // ===========================
-// COMPONENT LOADER
+// LOAD SIDEBAR
 // ===========================
 
 
-async function loadComponent(id, path){
-
-    const container =
-    document.getElementById(id);
+async function loadSidebar(){
 
 
-    if(!container) return;
+const css =
+document.createElement("link");
 
 
-    try{
-
-        const response =
-        await fetch(path);
+css.rel="stylesheet";
 
 
-        if(!response.ok){
-
-            throw new Error(
-                `Component missing: ${path}`
-            );
-
-        }
+css.href="components/sidebar.css";
 
 
-        const html =
-        await response.text();
-
-
-        container.innerHTML = html;
-
-
-    }
-
-    catch(error){
-
-        console.error(
-            "Component loading failed:",
-            error
-        );
-
-
-        container.innerHTML =
-        "";
-
-    }
-
-}
+document.head.appendChild(css);
 
 
 
+const container =
+document.getElementById(
+"sidebarContainer"
+);
 
 
-// ===========================
-// LOAD GLOBAL COMPONENTS
-// ===========================
+
+if(!container) return;
 
 
-async function loadLayout(){
+
+const res =
+await fetch(
+"components/sidebar.html"
+);
 
 
-    await loadComponent(
-        "sidebarContainer",
-        "../components/sidebar.html"
-    );
+
+container.innerHTML =
+await res.text();
 
 
-    await loadComponent(
-        "topbarContainer",
-        "../components/topbar.html"
-    );
 
+if(typeof lucide !== "undefined"){
 
-    setupSidebar();
-
-    setupLogout();
+lucide.createIcons();
 
 }
 
 
 
+highlightActivePage();
+
+
+}
+
+
+
+
+
 
 
 // ===========================
-// AUTH CHECK
+// LOAD TOPBAR
 // ===========================
+
+
+async function loadTopbar(){
+
+
+const css =
+document.createElement("link");
+
+
+css.rel="stylesheet";
+
+
+css.href="components/topbar.css";
+
+
+document.head.appendChild(css);
+
+
+
+
+const container =
+document.getElementById(
+"topbarContainer"
+);
+
+
+
+if(!container) return;
+
+
+
+
+const res =
+await fetch(
+"components/topbar.html"
+);
+
+
+
+container.innerHTML =
+await res.text();
+
+
+
+
+if(typeof lucide !== "undefined"){
+
+lucide.createIcons();
+
+}
+
+
+
+
+setupSidebar();
+
+setupLogout();
+
+
+}
+
+
+
+
+
+
+
+
+// ===========================
+// LOAD ADMIN AUTH
+// ===========================
+
+
+function loadAdmin(){
 
 
 onAuthStateChanged(
-    auth,
-    async(user)=>{
+
+auth,
+
+async(user)=>{
 
 
-        if(!user){
+if(!user){
 
-            window.location.href =
-            "../../login.html";
+window.location.href =
+"../login.html";
 
-            return;
+return;
 
-        }
-
-
-
-        try{
-
-
-            const userRef =
-            doc(
-                db,
-                "users",
-                user.uid
-            );
-
-
-            const snap =
-            await getDoc(userRef);
+}
 
 
 
-            if(!snap.exists()){
-
-                console.error(
-                    "User profile missing"
-                );
-
-                return;
-
-            }
+try{
 
 
-
-            const data =
-            snap.data();
-
-
-
-            if(data.role !== "admin" &&
-               data.role !== "founder"){
-
-                window.location.href =
-                "../../login.html";
-
-                return;
-
-            }
-
-
-
-            console.log(
-                "Admin authenticated:",
-                data.name
-            );
-
-
-
-            const name =
-            document.getElementById(
-                "adminName"
-            );
-
-
-            if(name){
-
-                name.textContent =
-                data.name || "Founder";
-
-            }
-
-
-        }
-
-        catch(error){
-
-            console.error(
-                "Auth error:",
-                error
-            );
-
-        }
-
-
-    }
-
+const ref =
+doc(
+db,
+"users",
+user.uid
 );
+
+
+
+const snap =
+await getDoc(ref);
+
+
+
+if(!snap.exists()){
+
+
+console.log(
+"Admin profile missing"
+);
+
+
+return;
+
+}
+
+
+
+const admin =
+snap.data();
+
+
+
+if(
+admin.role !== "admin"
+){
+
+
+console.log(
+"Access denied"
+);
+
+
+window.location.href =
+"../login.html";
+
+
+return;
+
+
+}
+
+
+
+updateAdminUI(
+admin,
+user
+);
+
+
+
+}
+
+catch(error){
+
+
+console.error(
+"Admin auth error:",
+error
+);
+
+
+}
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+// ===========================
+// UPDATE ADMIN UI
+// ===========================
+
+
+function updateAdminUI(admin,user){
+
+
+
+const name =
+document.getElementById(
+"adminName"
+);
+
+
+
+if(name){
+
+name.textContent =
+admin.name || "Admin";
+
+}
+
+
+
+const email =
+document.getElementById(
+"adminEmail"
+);
+
+
+
+if(email){
+
+email.textContent =
+user.email || "";
+
+}
+
+
+
+}
+
+
 
 
 
@@ -231,46 +363,29 @@ onAuthStateChanged(
 function setupLogout(){
 
 
-    const buttons =
-    document.querySelectorAll(
-        "#logoutBtn"
-    );
+const logout =
+document.getElementById(
+"logoutBtn"
+);
 
 
-    buttons.forEach(btn=>{
+
+if(!logout) return;
 
 
-        btn.addEventListener(
-            "click",
-            async()=>{
+
+logout.onclick =
+async()=>{
 
 
-                try{
-
-                    await signOut(auth);
+await signOut(auth);
 
 
-                    window.location.href =
-                    "../../login.html";
+window.location.href =
+"../login.html";
 
 
-                }
-
-                catch(error){
-
-                    console.error(
-                        "Logout failed",
-                        error
-                    );
-
-                }
-
-
-            }
-        );
-
-
-    });
+};
 
 
 }
@@ -280,79 +395,81 @@ function setupLogout(){
 
 
 
+
+
 // ===========================
-// SIDEBAR MOBILE CONTROL
+// MOBILE SIDEBAR
 // ===========================
 
 
 function setupSidebar(){
 
 
-    const menuBtn =
-    document.getElementById(
-        "menuBtn"
-    );
 
-
-    const sidebar =
-    document.querySelector(
-        ".sidebar"
-    );
-
-
-    const overlay =
-    document.getElementById(
-        "sidebarOverlay"
-    );
+const menuBtn =
+document.getElementById(
+"menuBtn"
+);
 
 
 
-    if(
-        !menuBtn ||
-        !sidebar ||
-        !overlay
-    ){
+const sidebar =
+document.querySelector(
+".sidebar"
+);
 
-        return;
 
-    }
+
+const overlay =
+document.getElementById(
+"sidebarOverlay"
+);
 
 
 
 
-    menuBtn.onclick = ()=>{
-
-
-        sidebar.classList.toggle(
-            "active"
-        );
-
-
-        overlay.classList.toggle(
-            "show"
-        );
-
-
-    };
+if(
+!menuBtn ||
+!sidebar ||
+!overlay
+) return;
 
 
 
 
-
-    overlay.onclick = ()=>{
-
-
-        sidebar.classList.remove(
-            "active"
-        );
+menuBtn.onclick = ()=>{
 
 
-        overlay.classList.remove(
-            "show"
-        );
+sidebar.classList.toggle(
+"active"
+);
 
 
-    };
+overlay.classList.toggle(
+"show"
+);
+
+
+};
+
+
+
+
+
+overlay.onclick = ()=>{
+
+
+sidebar.classList.remove(
+"active"
+);
+
+
+overlay.classList.remove(
+"show"
+);
+
+
+};
 
 
 }
@@ -369,113 +486,48 @@ function setupSidebar(){
 // ===========================
 
 
-function setActivePage(){
-
-
-    const current =
-    location.pathname
-    .split("/")
-    .pop();
+function highlightActivePage(){
 
 
 
-    const links =
-    document.querySelectorAll(
-        ".sidebar a"
-    );
-
-
-
-    links.forEach(link=>{
-
-
-        link.classList.remove(
-            "active"
-        );
-
-
-
-        if(
-            link.href.includes(
-                current
-            )
-        ){
-
-            link.classList.add(
-                "active"
-            );
-
-        }
-
-
-    });
-
-
-}
+const current =
+window.location.pathname
+.split("/")
+.pop();
 
 
 
 
+document
+.querySelectorAll(
+".sidebar a"
+)
+.forEach(link=>{
 
 
 
-// ===========================
-// PAGE TITLE
-// ===========================
-
-
-function setPageTitle(){
-
-
-    const title =
-    document.getElementById(
-        "pageTitle"
-    );
-
-
-    if(!title) return;
-
-
-
-    let page =
-    document.title
-    .replace(
-        " | Spark Stack Academy",
-        ""
-    );
-
-
-
-    title.textContent =
-    page;
-
-
-}
-
-
-
-
-
-
-
-// ===========================
-// START APP
-// ===========================
-
-
-document.addEventListener(
-    "DOMContentLoaded",
-    async()=>{
-
-
-        await loadLayout();
-
-
-        setActivePage();
-
-
-        setPageTitle();
-
-
-    }
+link.classList.remove(
+"active"
 );
+
+
+
+if(
+link.getAttribute("href")
+=== current
+){
+
+
+link.classList.add(
+"active"
+);
+
+
+}
+
+
+
+});
+
+
+}
