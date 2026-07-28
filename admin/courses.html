@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Courses Management | Spark Stack Academy</title>
+
+  <link rel="stylesheet"
+    href="courses.css">
+
+</head>
+
+<body>
+
+  <div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebarContainer"></aside>
+
+    <div id="sidebarOverlay"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <div id="topbarContainer"></div>
+
+      <section class="page">
+
+        <div class="page-header">
+
+          <div>
+
+            <h1>Courses Management</h1>
+
+            <p>
+              Manage all academy courses, instructors,
+              enrollments, and publication status.
+            </p>
+
+          </div>
+
+          <button class="add-course-btn"
+            id="addCourseBtn">
+
+            + New Course
+
+          </button>
+
+        </div>
+
+
+        <!-- COURSE STATS -->
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+
+            <h3>Total Courses</h3>
+
+            <p id="totalCourses">0</p>
+
+          </div>
+
+          <div class="stat-card">
+
+            <h3>Published</h3>
+
+            <p id="publishedCourses">0</p>
+
+          </div>
+
+          <div class="stat-card">
+
+            <h3>Drafts</h3>
+
+            <p id="draftCourses">0</p>
+
+          </div>
+
+          <div class="stat-card">
+
+            <h3>Total Enrollments</h3>
+
+            <p id="totalEnrollments">0</p>
+
+          </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="table-card">
+
+          <div class="table-top">
+
+            <h2>All Courses</h2>
+
+            <input type="text"
+              id="searchInput"
+              placeholder="Search courses, instructors, or categories...">
+
+          </div>
+
+          <div class="table-wrapper">
+
+            <table class="courses-table">
+
+              <thead>
+
+                <tr>
+
+                  <th>Course</th>
+
+                  <th>Instructor</th>
+
+                  <th>Category</th>
+
+                  <th>Enrollments</th>
+
+                  <th>Status</th>
+
+                  <th>Actions</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="coursesTableBody">
+
+                <tr>
+
+                  <td colspan="6"
+                    class="loading-row">
+
+                    Loading courses...
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- COURSE MODAL -->
+
+  <div class="modal"
+    id="courseModal">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h3 id="modalTitle">
+          Course Details
+        </h3>
+
+        <button class="close-btn"
+          id="closeModal">
+
+          &times;
+
+        </button>
+
+      </div>
+
+      <div class="modal-body"
+        id="modalBody">
+
+        Loading...
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script type="module"
+    src="../js/admin-app.js"></script>
+
+  <script type="module"
+    src="courses.js"></script>
+
+</body>
+
+</html>
