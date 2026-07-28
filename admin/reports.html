@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Reports Dashboard | Spark Stack Academy</title>
+
+  <link rel="stylesheet"
+    href="reports.css">
+
+</head>
+
+<body>
+
+  <div class="dashboard-layout">
+
+    <aside id="sidebarContainer"></aside>
+
+    <div id="sidebarOverlay"></div>
+
+    <main class="main-content">
+
+      <div id="topbarContainer"></div>
+
+      <section class="page">
+
+        <div class="page-header">
+
+          <h1>Reports Dashboard</h1>
+
+          <p>
+            Founder analytics for students, instructors,
+            courses, and enrollments.
+          </p>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <h3>Total Students</h3>
+            <p id="totalStudents">0</p>
+          </div>
+
+          <div class="stat-card">
+            <h3>Total Instructors</h3>
+            <p id="totalInstructors">0</p>
+          </div>
+
+          <div class="stat-card">
+            <h3>Total Courses</h3>
+            <p id="totalCourses">0</p>
+          </div>
+
+          <div class="stat-card">
+            <h3>Total Enrollments</h3>
+            <p id="totalEnrollments">0</p>
+          </div>
+
+        </div>
+
+
+        <!-- REPORT CARDS -->
+
+        <div class="report-grid">
+
+          <div class="report-card">
+
+            <h2>📚 Published Courses</h2>
+
+            <p id="publishedCourses">0</p>
+
+          </div>
+
+          <div class="report-card">
+
+            <h2>📝 Draft Courses</h2>
+
+            <p id="draftCourses">0</p>
+
+          </div>
+
+          <div class="report-card">
+
+            <h2>👨‍🏫 Active Instructors</h2>
+
+            <p id="activeInstructors">0</p>
+
+          </div>
+
+          <div class="report-card">
+
+            <h2>🎓 Active Students</h2>
+
+            <p id="activeStudents">0</p>
+
+          </div>
+
+        </div>
+
+
+        <!-- TOP COURSES -->
+
+        <div class="table-card">
+
+          <div class="table-top">
+
+            <h2>Top Courses by Enrollment</h2>
+
+          </div>
+
+          <div id="topCoursesList"
+            class="top-list">
+
+            Loading...
+
+          </div>
+
+        </div>
+
+
+        <!-- EXPORTS -->
+
+        <div class="table-card">
+
+          <div class="table-top">
+
+            <h2>Export Reports</h2>
+
+          </div>
+
+          <div class="export-actions">
+
+            <button id="exportStudents"
+              class="export-btn">
+
+              Export Students
+
+            </button>
+
+            <button id="exportCourses"
+              class="export-btn">
+
+              Export Courses
+
+            </button>
+
+            <button id="exportEnrollments"
+              class="export-btn">
+
+              Export Enrollments
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script type="module"
+    src="../js/admin-app.js"></script>
+
+  <script type="module"
+    src="reports.js"></script>
+
+</body>
+
+</html>

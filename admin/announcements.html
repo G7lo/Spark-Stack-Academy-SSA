@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Announcements | Spark Stack Academy</title>
+
+  <link rel="stylesheet"
+    href="announcements.css">
+
+</head>
+
+<body>
+
+  <div class="dashboard-layout">
+
+    <aside id="sidebarContainer"></aside>
+
+    <div id="sidebarOverlay"></div>
+
+    <main class="main-content">
+
+      <div id="topbarContainer"></div>
+
+      <section class="page">
+
+        <div class="page-header">
+
+          <h1>Announcements Center</h1>
+
+          <p>
+            Send announcements to students,
+            instructors, or the entire academy.
+          </p>
+
+        </div>
+
+
+        <!-- CREATE ANNOUNCEMENT -->
+
+        <div class="table-card">
+
+          <div class="table-top">
+
+            <h2>Create Announcement</h2>
+
+          </div>
+
+          <form id="announcementForm"
+            class="announcement-form">
+
+            <input type="text"
+              id="title"
+              placeholder="Announcement title"
+              required>
+
+            <select id="audience"
+              required>
+
+              <option value="">
+                Select audience
+              </option>
+
+              <option value="students">
+                All Students
+              </option>
+
+              <option value="instructors">
+                All Instructors
+              </option>
+
+              <option value="all">
+                Everyone
+              </option>
+
+            </select>
+
+            <select id="priority">
+
+              <option value="normal">
+                Normal
+              </option>
+
+              <option value="important">
+                Important
+              </option>
+
+              <option value="urgent">
+                Urgent
+              </option>
+
+            </select>
+
+            <textarea id="message"
+              rows="6"
+              placeholder="Write your announcement message..."
+              required></textarea>
+
+            <button type="submit"
+              class="publish-btn">
+
+              Publish Announcement
+
+            </button>
+
+          </form>
+
+        </div>
+
+
+        <!-- ANNOUNCEMENTS LIST -->
+
+        <div class="table-card">
+
+          <div class="table-top">
+
+            <h2>Recent Announcements</h2>
+
+          </div>
+
+          <div id="announcementsList"
+            class="announcement-list">
+
+            Loading announcements...
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script type="module"
+    src="../js/admin-app.js"></script>
+
+  <script type="module"
+    src="announcements.js"></script>
+
+</body>
+
+</html>
