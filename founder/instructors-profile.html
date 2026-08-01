@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Instructor Profile | Spark Stack Academy</title>
+
+<link rel="stylesheet" href="instructors-profile.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+
+
+<div class="dashboard-layout">
+
+
+<aside id="sidebarContainer"></aside>
+
+<div id="sidebarOverlay"></div>
+
+
+
+<main class="main-content">
+
+
+<header id="topbarContainer"></header>
+
+
+
+<!-- PROFILE HEADER -->
+
+<section class="profile-header glass-card">
+
+
+<div class="profile-info">
+
+
+<div class="profile-avatar"
+id="profileAvatar">
+
+A
+
+</div>
+
+
+<div>
+
+
+<div class="profile-badge">
+
+👨‍🏫 Instructor
+
+</div>
+
+
+<h1 id="profileName">
+
+Loading...
+
+</h1>
+
+
+<p id="profileExpertise">
+
+Loading expertise...
+
+</p>
+
+
+<div class="profile-status"
+id="profileStatus">
+
+🟢 Active
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="profile-actions">
+
+
+<button class="primary-btn"
+id="editInstructorBtn">
+
+✏️ Edit
+
+</button>
+
+
+<button class="secondary-btn"
+id="assignCourseBtn">
+
+📚 Assign Course
+
+</button>
+
+
+<button class="back-btn"
+onclick="history.back()">
+
+← Back
+
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- QUICK STATS -->
+
+
+<section class="stats-grid">
+
+
+<div class="stat-card">
+
+<span>
+Courses
+</span>
+
+<h2 id="courseCount">
+0
+</h2>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<span>
+Students
+</span>
+
+<h2 id="studentCount">
+0
+</h2>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<span>
+Rating
+</span>
+
+<h2 id="ratingCount">
+0.0
+</h2>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<span>
+Joined
+</span>
+
+<h2 id="joinedDate">
+--
+</h2>
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- TABS -->
+
+
+<section class="profile-tabs glass-card">
+
+
+<button class="tab-btn active"
+data-tab="overview">
+
+Overview
+
+</button>
+
+
+<button class="tab-btn"
+data-tab="courses">
+
+Courses
+
+</button>
+
+
+<button class="tab-btn"
+data-tab="students">
+
+Students
+
+</button>
+
+
+<button class="tab-btn"
+data-tab="activity">
+
+Activity
+
+</button>
+
+
+</section>
+
+
+
+
+
+<!-- TAB CONTENT -->
+
+
+<div class="tab-container">
+
+
+
+<section id="overviewTab"
+class="tab-content active">
+
+
+<div class="profile-grid">
+
+
+<div class="glass-card info-card">
+
+
+<h3>
+👤 Instructor Information
+</h3>
+
+
+<p>
+Name:
+<strong id="infoName">
+--
+</strong>
+</p>
+
+
+<p>
+Email:
+<strong id="infoEmail">
+--
+</strong>
+</p>
+
+
+<p>
+Phone:
+<strong id="infoPhone">
+--
+</strong>
+</p>
+
+
+<p>
+Expertise:
+<strong id="infoExpertise">
+--
+</strong>
+</p>
+
+
+<p>
+Status:
+<strong id="infoStatus">
+--
+</strong>
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="glass-card info-card">
+
+
+<h3>
+📝 Biography
+</h3>
+
+
+<p id="infoBio">
+
+No biography added.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<section id="coursesTab"
+class="tab-content">
+
+
+<div class="section-header">
+
+<h2>
+📚 Assigned Courses
+</h2>
+
+</div>
+
+
+<div id="coursesGrid"
+class="courses-grid">
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<section id="studentsTab"
+class="tab-content">
+
+
+<div class="glass-card">
+
+
+<h2>
+👨‍🎓 Students
+</h2>
+
+
+<div id="studentsList">
+
+No students assigned.
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<section id="activityTab"
+class="tab-content">
+
+
+<div class="glass-card">
+
+
+<h2>
+📜 Activity
+</h2>
+
+
+<div id="activityList">
+
+Account created.
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+</div>
+
+
+<div class="modal" id="editModal">
+
+<div class="modal-content glass-card">
+
+
+<div class="modal-header">
+
+<h3>Edit Instructor</h3>
+
+<button id="closeEditModal">
+✕
+</button>
+
+</div>
+
+
+<form id="editInstructorForm">
+
+
+<input 
+id="editName"
+placeholder="Full Name"
+required>
+
+
+<input 
+id="editEmail"
+placeholder="Email"
+required>
+
+
+<input 
+id="editExpertise"
+placeholder="Expertise"
+required>
+
+
+<textarea 
+id="editBio"
+placeholder="Biography">
+</textarea>
+
+
+<select id="editStatus">
+
+<option value="active">
+Active
+</option>
+
+<option value="inactive">
+Inactive
+</option>
+
+<option value="suspended">
+Suspended
+</option>
+
+</select>
+
+
+<button class="primary-btn">
+
+Save Changes
+
+</button>
+
+
+</form>
+
+
+</div>
+
+</div>
+
+
+<div class="modal" id="assignCourseModal">
+
+<div class="modal-content glass-card">
+
+
+<div class="modal-header">
+
+<h3>📚 Assign Course</h3>
+
+<button id="closeAssignModal">
+✕
+</button>
+
+</div>
+
+
+
+<form id="assignCourseForm">
+
+
+<label>Select Course</label>
+
+
+<select id="courseSelect">
+
+<option>
+Loading courses...
+</option>
+
+</select>
+
+
+
+<button class="primary-btn">
+
+Assign Course
+
+</button>
+
+
+</form>
+
+
+</div>
+
+</div>
+
+
+</main>
+
+</div>
+
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+
+lucide.createIcons();
+
+</script>
+
+
+<script type="module"
+src="./js/founder-app.js"></script>
+
+
+<script type="module"
+src="instructors-profile.js"></script>
+
+
+</body>
+
+</html>

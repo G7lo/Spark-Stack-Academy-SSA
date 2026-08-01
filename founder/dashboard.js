@@ -4,198 +4,202 @@
 
 import "./js/founder-app.js";
 
+import { db } from "../js/firebase.js";
+
+import {
+collection,
+onSnapshot,
+query,
+orderBy,
+limit
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 /* ===================================
-   ELEMENTS
+   KPI ELEMENTS
 =================================== */
 
 const studentCount =
-    document.getElementById("studentCount");
-
-const courseCount =
-    document.getElementById("courseCount");
+document.getElementById("studentCount");
 
 const instructorCount =
-    document.getElementById("instructorCount");
-
-const revenueCount =
-    document.getElementById("revenueCount");
+document.getElementById("instructorCount");
 
 const enrollmentCount =
-    document.getElementById("enrollmentCount");
+document.getElementById("enrollmentCount");
 
-const dailyInsight = document.getElementById("dailyInsight");
-const founderInsight = document.getElementById("founderInsight");
+const revenueCount =
+document.getElementById("revenueCount");
 
-/* ===================================
-   DEMO DATA
-=================================== */
+const activityFeed =
+document.getElementById("activityFeed");
 
-const dashboardData = {
-
-    students:248,
-
-    courses:18,
-
-    instructors:7,
-
-    revenue:12500,
-
-    enrollments:396
-
-
-};
+const founderInsight =
+document.getElementById("founderInsight");
 
 /* ===================================
-   COUNTER ANIMATION
+   STUDENTS
 =================================== */
 
-function animateCounter(element,target){
+onSnapshot(
+collection(db,"students"),
+(snapshot)=>{
 
-    let current=0;
+studentCount.textContent =
+snapshot.size.toLocaleString();
 
-    const step=Math.max(1,Math.ceil(target/60));
+});
 
-    const timer=setInterval(()=>{
+/* ===================================
+   INSTRUCTORS
+=================================== */
 
-        current+=step;
+onSnapshot(
+collection(db,"instructors"),
+(snapshot)=>{
 
-        if(current>=target){
+instructorCount.textContent =
+snapshot.size.toLocaleString();
 
-            current=target;
+});
 
-            clearInterval(timer);
+/* ===================================
+   ENROLLMENTS
+=================================== */
 
-        }
+onSnapshot(
+collection(db,"enrollments"),
+(snapshot)=>{
 
-        element.textContent=current.toLocaleString();
+enrollmentCount.textContent =
+snapshot.size.toLocaleString();
 
-    },20);
+});
+
+/* ===================================
+   REVENUE
+=================================== */
+
+onSnapshot(
+collection(db,"payments"),
+(snapshot)=>{
+
+let total=0;
+
+snapshot.forEach(doc=>{
+
+const payment=doc.data();
+
+total+=payment.amount||0;
+
+});
+
+revenueCount.textContent=
+"$"+total.toLocaleString();
+
+});
+
+/* ===================================
+   RECENT ACTIVITY
+=================================== */
+
+const activityQuery=query(
+
+collection(db,"activity"),
+
+orderBy("createdAt","desc"),
+
+limit(8)
+
+);
+
+onSnapshot(activityQuery,(snapshot)=>{
+
+activityFeed.innerHTML="";
+
+if(snapshot.empty){
+
+activityFeed.innerHTML=`
+
+<div class="empty-state">
+
+<div class="empty-icon">📡</div>
+
+<h4>No Recent Activity</h4>
+
+<p>Activity will appear here.</p>
+
+</div>
+
+`;
+
+return;
 
 }
 
-/* ===================================
-   LOAD STATS
-=================================== */
+snapshot.forEach(doc=>{
 
-function loadDashboard(){
+const item=doc.data();
 
-    animateCounter(
-        studentCount,
-        dashboardData.students
-    );
+activityFeed.innerHTML+=`
 
+<div class="activity-item">
 
-    animateCounter(
-        courseCount,
-        dashboardData.courses
-    );
+<div class="activity-icon">
 
+${item.icon||"✨"}
 
-    animateCounter(
-        instructorCount,
-        dashboardData.instructors
-    );
+</div>
 
+<div>
 
-    animateCounter(
-        revenueCount,
-        dashboardData.revenue
-    );
+<h4>${item.title}</h4>
 
+<small>${item.message}</small>
 
-    animateCounter(
-        enrollmentCount,
-        dashboardData.enrollments
-    );
+</div>
 
-}
-/* ===================================
-   DYNAMIC GREETING
-=================================== */
+</div>
 
-function updateGreeting(){
+`;
 
-    const hour = new Date().getHours();
+});
 
-    let greeting = "Good Evening";
-
-    if(hour < 12){
-
-        greeting = "Good Morning";
-
-    }
-
-    else if(hour < 18){
-
-        greeting = "Good Afternoon";
-
-    }
-
-    const title = document.querySelector(".hero-section h1");
-
-    if(title){
-
-        title.innerHTML = `
-            ${greeting},
-            <span>Phinehas</span>
-        `;
-    }
-
-}
+});
 
 /* ===================================
-   FOUNDER INSIGHTS
+   SPARK AI
 =================================== */
 
-const insights = [
+const insights=[
 
-    "Student engagement is stable. Consider publishing a new course this week.",
+"Everything is running smoothly.",
 
-    "Review instructor activity to maintain high teaching quality.",
+"Admissions are growing steadily.",
 
-    "Admissions are an opportunity for growth. Monitor new applications regularly.",
+"Student engagement remains healthy.",
 
-    "SparkMind recommends checking academy analytics for emerging trends."
+"Revenue trends look positive.",
+
+"No critical issues detected."
 
 ];
 
-function rotateInsights(){
+let index=0;
 
-    let index = 0;
+setInterval(()=>{
 
-    function update(){
+founderInsight.textContent=
 
-        if(dailyInsight){
+insights[index];
 
-            dailyInsight.textContent = insights[index];
-        }
+index++;
 
-        if(founderInsight){
+if(index>=insights.length){
 
-            founderInsight.textContent = insights[index];
-        }
-
-        index = (index + 1) % insights.length;
-    }
-
-    update();
-
-    setInterval(update,10000);
+index=0;
 
 }
 
-/* ===================================
-   INITIALIZE
-=================================== */
+},10000);
 
-window.addEventListener("DOMContentLoaded",()=>{
-
-    updateGreeting();
-
-    loadDashboard();
-
-    rotateInsights();
-
-    console.log("🚀 Founder Dashboard Ready");
-
-});
+console.log("🚀 Founder Dashboard Ready");

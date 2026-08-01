@@ -1,0 +1,2071 @@
+/* ===================================
+   GOOGLE FONT
+=================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* ===================================
+   ROOT
+=================================== */
+
+:root{
+
+    --primary:#3b82f6;
+    --primary-dark:#2563eb;
+
+    --success:#22c55e;
+    --danger:#ef4444;
+    --warning:#f59e0b;
+    --purple:#8b5cf6;
+    --cyan:#06b6d4;
+
+    --bg:#071426;
+    --surface:#0f1f35;
+    --surface-light:#172a45;
+
+    --text:#ffffff;
+    --muted:#9ca3af;
+    --border:rgba(255,255,255,.08);
+
+    --radius:20px;
+    --shadow:0 20px 50px rgba(0,0,0,.25);
+
+    --transition:.3s ease;
+
+}
+
+/* ===================================
+   RESET
+=================================== */
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    font-family:"Inter",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+
+}
+
+/* ===================================
+   BACKGROUND
+=================================== */
+
+.bg-orb{
+
+    position:fixed;
+    border-radius:50%;
+    filter:blur(120px);
+    z-index:-1;
+    opacity:.35;
+
+}
+
+.orb-1{
+
+    width:320px;
+    height:320px;
+    background:#2563eb;
+    top:-100px;
+    left:-80px;
+
+}
+
+.orb-2{
+
+    width:280px;
+    height:280px;
+    background:#8b5cf6;
+    right:-100px;
+    top:35%;
+
+}
+
+.orb-3{
+
+    width:260px;
+    height:260px;
+    background:#06b6d4;
+    bottom:-100px;
+    left:40%;
+
+}
+
+/* ===================================
+   LAYOUT
+=================================== */
+
+.dashboard-layout{
+
+    display:flex;
+    min-height:100vh;
+
+}
+
+.main-content{
+
+    flex:1;
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+
+}
+
+/* ===================================
+   GLASS CARD
+=================================== */
+
+.glass-card{
+
+    background:rgba(15,31,53,.72);
+    backdrop-filter:blur(20px);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+
+}
+
+/* ===================================
+   BUTTONS
+=================================== */
+
+.primary-btn,
+.secondary-btn{
+
+    border:none;
+    outline:none;
+    cursor:pointer;
+    border-radius:14px;
+    padding:14px 22px;
+    font-size:.95rem;
+    font-weight:700;
+    transition:var(--transition);
+
+}
+
+.primary-btn{
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    color:#fff;
+
+}
+
+.primary-btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.secondary-btn{
+
+    background:transparent;
+    color:var(--text);
+    border:1px solid rgba(255,255,255,.12);
+
+}
+
+.secondary-btn:hover{
+
+    background:rgba(255,255,255,.05);
+
+}
+
+/* ===================================
+   PAGE HERO
+=================================== */
+
+.page-hero{
+
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+    padding:30px;
+
+}
+
+.hero-content{
+
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+
+}
+
+.hero-badge{
+
+    display:inline-flex;
+    align-items:center;
+    width:fit-content;
+    padding:8px 16px;
+
+    border-radius:999px;
+
+    background:rgba(59,130,246,.12);
+
+    color:#7dd3fc;
+
+    font-size:13px;
+    font-weight:700;
+
+}
+
+.hero-content h1{
+
+    font-size:2.2rem;
+    font-weight:800;
+    line-height:1.2;
+
+}
+
+.hero-content p{
+
+    max-width:700px;
+    color:var(--muted);
+    line-height:1.8;
+
+}
+
+.hero-actions{
+
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+
+}
+
+.hero-actions button{
+
+    width:100%;
+
+}
+
+/* ===================================
+   TABLET
+=================================== */
+
+@media(min-width:768px){
+
+.hero-actions{
+
+    flex-direction:row;
+
+}
+
+.hero-actions button{
+
+    width:auto;
+    min-width:180px;
+
+}
+
+}
+
+/* ===================================
+   DESKTOP
+=================================== */
+
+@media(min-width:1024px){
+
+.page-hero{
+
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+.hero-content{
+
+    flex:1;
+
+}
+
+.hero-actions{
+
+    align-items:center;
+
+}
+
+}
+/* ===================================
+   KPI GRID
+=================================== */
+
+.stats-grid{
+
+    display:grid;
+    grid-template-columns:1fr;
+    gap:20px;
+
+}
+
+/* ===================================
+   STAT CARD
+=================================== */
+
+.stat-card{
+
+    background:rgba(15,31,53,.72);
+    backdrop-filter:blur(20px);
+
+    border:1px solid var(--border);
+    border-radius:20px;
+
+    padding:24px;
+
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+
+    transition:var(--transition);
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-6px);
+
+    border-color:rgba(59,130,246,.35);
+
+    box-shadow:
+    0 20px 40px rgba(0,0,0,.25);
+
+}
+
+/* ===================================
+   STAT TOP
+=================================== */
+
+.stat-top{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+}
+
+.stat-top span{
+
+    color:var(--muted);
+
+    font-size:.9rem;
+
+    font-weight:600;
+
+}
+
+/* ===================================
+   ICON
+=================================== */
+
+.stat-icon{
+
+    width:52px;
+    height:52px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:16px;
+
+    font-size:1.3rem;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+/* ===================================
+   ICON COLORS
+=================================== */
+
+.stat-icon.cyan{
+
+    background:rgba(6,182,212,.12);
+    color:#22d3ee;
+
+}
+
+.stat-icon.green{
+
+    background:rgba(34,197,94,.12);
+    color:#4ade80;
+
+}
+
+.stat-icon.blue{
+
+    background:rgba(59,130,246,.12);
+    color:#60a5fa;
+
+}
+
+.stat-icon.purple{
+
+    background:rgba(139,92,246,.12);
+    color:#a78bfa;
+
+}
+
+.stat-icon.red{
+
+    background:rgba(239,68,68,.12);
+    color:#f87171;
+
+}
+
+.stat-icon.gold{
+
+    background:rgba(245,158,11,.12);
+    color:#fbbf24;
+
+}
+
+/* ===================================
+   VALUES
+=================================== */
+
+.stat-card h2{
+
+    font-size:2.2rem;
+
+    font-weight:800;
+
+    color:var(--text);
+
+    line-height:1;
+
+}
+
+.stat-card small{
+
+    color:var(--muted);
+
+    font-size:.92rem;
+
+    font-weight:500;
+
+}
+
+/* ===================================
+   TABLET
+=================================== */
+
+@media(min-width:768px){
+
+.stats-grid{
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+}
+
+}
+
+/* ===================================
+   LAPTOP
+=================================== */
+
+@media(min-width:1024px){
+
+.stats-grid{
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+}
+
+}
+
+/* ===================================
+   LARGE DESKTOP
+=================================== */
+
+@media(min-width:1400px){
+
+.stats-grid{
+
+    grid-template-columns:
+    repeat(6,1fr);
+
+}
+
+}
+/* ===================================
+   FILTER BAR
+=================================== */
+
+.filter-bar{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    padding:24px;
+
+}
+
+/* ===================================
+   FILTER LEFT
+=================================== */
+
+.filter-left{
+
+    width:100%;
+
+}
+
+/* ===================================
+   SEARCH BOX
+=================================== */
+
+.search-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    width:100%;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid var(--border);
+
+    transition:var(--transition);
+
+}
+
+.search-box:focus-within{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 4px rgba(59,130,246,.15);
+
+}
+
+.search-box i{
+
+    width:20px;
+
+    height:20px;
+
+    color:var(--muted);
+
+    flex-shrink:0;
+
+}
+
+.search-box input{
+
+    width:100%;
+
+    border:none;
+
+    outline:none;
+
+    background:transparent;
+
+    color:var(--text);
+
+    font-size:.95rem;
+
+    font-family:inherit;
+
+}
+
+.search-box input::placeholder{
+
+    color:var(--muted);
+
+}
+
+/* ===================================
+   FILTER RIGHT
+=================================== */
+
+.filter-right{
+
+    display:grid;
+
+    grid-template-columns:1fr;
+
+    gap:14px;
+
+}
+
+/* ===================================
+   SELECT
+=================================== */
+
+.filter-right select{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border-radius:14px;
+
+    border:1px solid var(--border);
+
+    background:rgba(255,255,255,.04);
+
+    color:var(--text);
+
+    font-size:.95rem;
+
+    font-family:inherit;
+
+    outline:none;
+
+    transition:var(--transition);
+
+}
+
+.filter-right select:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 4px rgba(59,130,246,.15);
+
+}
+
+.filter-right option{
+
+    background:var(--surface);
+
+    color:var(--text);
+
+}
+
+/* ===================================
+   REFRESH BUTTON
+=================================== */
+
+#refreshStudents{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+}
+
+#refreshStudents i{
+
+    width:18px;
+
+    height:18px;
+
+}
+
+/* ===================================
+   TABLET
+=================================== */
+
+@media(min-width:768px){
+
+.filter-right{
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+}
+
+}
+
+/* ===================================
+   DESKTOP
+=================================== */
+
+@media(min-width:1024px){
+
+.filter-bar{
+
+    flex-direction:row;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+}
+
+.filter-left{
+
+    flex:1;
+
+    max-width:420px;
+
+}
+
+.filter-right{
+
+    flex:1;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    align-items:center;
+
+}
+
+}
+/* ===================================
+   STUDENTS TABLE
+=================================== */
+
+.students-table{
+
+    padding:24px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+/* ===================================
+   TABLE HEADER
+=================================== */
+
+.table-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+}
+
+.table-header h3{
+
+    font-size:1.15rem;
+
+    font-weight:700;
+
+    color:var(--text);
+
+}
+
+.table-header span{
+
+    color:var(--muted);
+
+    font-size:.9rem;
+
+    font-weight:600;
+
+}
+
+/* ===================================
+   TABLE WRAPPER
+=================================== */
+
+.table-responsive{
+
+    width:100%;
+
+    overflow-x:auto;
+
+    border-radius:16px;
+
+}
+
+/* ===================================
+   TABLE
+=================================== */
+
+table{
+
+    width:100%;
+
+    min-width:900px;
+
+    border-collapse:collapse;
+
+}
+
+thead{
+
+    background:rgba(255,255,255,.04);
+
+}
+
+th{
+
+    text-align:left;
+
+    padding:16px 18px;
+
+    color:var(--muted);
+
+    font-size:.82rem;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+    letter-spacing:.04em;
+
+    border-bottom:1px solid var(--border);
+
+    white-space:nowrap;
+
+}
+
+td{
+
+    padding:18px;
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+
+    color:var(--text);
+
+    font-size:.94rem;
+
+    vertical-align:middle;
+
+}
+
+tbody tr{
+
+    transition:var(--transition);
+
+}
+
+tbody tr:hover{
+
+    background:rgba(255,255,255,.03);
+
+}
+
+/* ===================================
+   STUDENT INFO
+=================================== */
+
+.student-info{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    min-width:220px;
+
+}
+
+.student-avatar{
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:.9rem;
+
+    font-weight:800;
+
+    color:#fff;
+
+    flex-shrink:0;
+
+}
+
+.student-details{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+
+}
+
+.student-details strong{
+
+    font-size:.95rem;
+
+    font-weight:700;
+
+    color:var(--text);
+
+}
+
+.student-details small{
+
+    font-size:.82rem;
+
+    color:var(--muted);
+
+}
+
+/* ===================================
+   STATUS BADGES
+=================================== */
+
+.status-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    font-size:.78rem;
+
+    font-weight:700;
+
+    text-transform:capitalize;
+
+    border:1px solid transparent;
+
+    white-space:nowrap;
+
+}
+
+.status-badge.active{
+
+    background:rgba(34,197,94,.12);
+
+    color:#4ade80;
+
+    border-color:rgba(34,197,94,.22);
+
+}
+
+.status-badge.graduated{
+
+    background:rgba(139,92,246,.12);
+
+    color:#a78bfa;
+
+    border-color:rgba(139,92,246,.22);
+
+}
+
+.status-badge.suspended{
+
+    background:rgba(239,68,68,.12);
+
+    color:#f87171;
+
+    border-color:rgba(239,68,68,.22);
+
+}
+
+/* ===================================
+   PROGRESS BAR
+=================================== */
+
+.progress-cell{
+
+    min-width:160px;
+
+}
+
+.progress-wrapper{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.progress-bar{
+
+    flex:1;
+
+    height:8px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.08);
+
+    overflow:hidden;
+
+}
+
+.progress-fill{
+
+    height:100%;
+
+    border-radius:inherit;
+
+    background:linear-gradient(
+        90deg,
+        var(--primary),
+        #22d3ee
+    );
+
+}
+
+.progress-value{
+
+    min-width:40px;
+
+    text-align:right;
+
+    font-size:.82rem;
+
+    font-weight:700;
+
+    color:var(--muted);
+
+}
+
+/* ===================================
+   ACTION BUTTONS
+=================================== */
+
+.table-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.action-btn{
+
+    width:36px;
+
+    height:36px;
+
+    border:none;
+
+    border-radius:10px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    transition:var(--transition);
+
+    background:rgba(255,255,255,.05);
+
+    color:var(--text);
+
+}
+
+.action-btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.action-btn.view:hover{
+
+    background:rgba(59,130,246,.18);
+
+    color:#93c5fd;
+
+}
+
+.action-btn.edit:hover{
+
+    background:rgba(245,158,11,.18);
+
+    color:#fbbf24;
+
+}
+
+.action-btn.delete:hover{
+
+    background:rgba(239,68,68,.18);
+
+    color:#f87171;
+
+}
+
+.action-btn i{
+
+    width:16px;
+
+    height:16px;
+
+}
+
+/* ===================================
+   EMPTY STATE
+=================================== */
+
+.empty-state{
+
+    padding:60px 24px !important;
+
+    text-align:center;
+
+}
+
+.empty-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:12px;
+
+    max-width:320px;
+
+    margin:0 auto;
+
+}
+
+.empty-icon{
+
+    width:72px;
+
+    height:72px;
+
+    border-radius:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:2rem;
+
+    background:rgba(59,130,246,.12);
+
+    color:#93c5fd;
+
+}
+
+.empty-content h3{
+
+    font-size:1.1rem;
+
+    font-weight:700;
+
+    color:var(--text);
+
+}
+
+.empty-content p{
+
+    color:var(--muted);
+
+    line-height:1.6;
+
+}
+
+/* ===================================
+   MOBILE IMPROVEMENTS
+=================================== */
+
+@media(max-width:767px){
+
+.students-table{
+
+    padding:20px;
+
+}
+
+.table-header{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+}
+
+td,
+th{
+
+    padding:14px 16px;
+
+}
+
+}
+/* ===================================
+   STUDENTS TABLE
+=================================== */
+
+.students-table{
+
+    padding:24px;
+
+    overflow:hidden;
+
+}
+
+.table-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:16px;
+
+    margin-bottom:24px;
+
+}
+
+.table-header h3{
+
+    font-size:1.2rem;
+
+    font-weight:700;
+
+    color:var(--text);
+
+}
+
+.table-header span{
+
+    color:var(--muted);
+
+    font-size:.9rem;
+
+    font-weight:600;
+
+}
+
+/* ===================================
+   RESPONSIVE TABLE
+=================================== */
+
+.table-responsive{
+
+    width:100%;
+
+    overflow-x:auto;
+
+}
+
+.table-responsive::-webkit-scrollbar{
+
+    height:8px;
+
+}
+
+.table-responsive::-webkit-scrollbar-thumb{
+
+    background:rgba(255,255,255,.12);
+
+    border-radius:999px;
+
+}
+
+table{
+
+    width:100%;
+
+    min-width:1050px;
+
+    border-collapse:collapse;
+
+}
+
+thead th{
+
+    padding:18px 16px;
+
+    text-align:left;
+
+    color:var(--muted);
+
+    font-size:.82rem;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+    border-bottom:1px solid var(--border);
+
+}
+
+tbody td{
+
+    padding:18px 16px;
+
+    border-bottom:1px solid rgba(255,255,255,.06);
+
+    color:var(--text);
+
+    vertical-align:middle;
+
+}
+
+tbody tr{
+
+    transition:var(--transition);
+
+}
+
+tbody tr:hover{
+
+    background:rgba(255,255,255,.03);
+
+}
+
+/* ===================================
+   STUDENT INFO
+=================================== */
+
+.student-info{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.student-avatar{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+
+    color:#fff;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--purple)
+    );
+
+    flex-shrink:0;
+
+}
+
+.student-details{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+
+}
+
+.student-name{
+
+    font-weight:700;
+
+}
+
+.student-id{
+
+    font-size:.82rem;
+
+    color:var(--muted);
+
+}
+
+/* ===================================
+   STATUS BADGES
+=================================== */
+
+.status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:7px 14px;
+
+    border-radius:999px;
+
+    font-size:.82rem;
+
+    font-weight:700;
+
+}
+
+.status.active{
+
+    color:#4ade80;
+
+    background:rgba(34,197,94,.12);
+
+}
+
+.status.graduated{
+
+    color:#60a5fa;
+
+    background:rgba(59,130,246,.12);
+
+}
+
+.status.suspended{
+
+    color:#f87171;
+
+    background:rgba(239,68,68,.12);
+
+}
+
+/* ===================================
+   PROGRESS
+=================================== */
+
+.progress{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.progress-bar{
+
+    width:140px;
+
+    height:8px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.08);
+
+    overflow:hidden;
+
+}
+
+.progress-fill{
+
+    height:100%;
+
+    border-radius:999px;
+
+    background:linear-gradient(
+        90deg,
+        #22c55e,
+        #3b82f6
+    );
+
+}
+
+.progress span{
+
+    font-size:.8rem;
+
+    color:var(--muted);
+
+}
+
+/* ===================================
+   ACTION BUTTONS
+=================================== */
+
+.action-buttons{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.action-btn{
+
+    width:38px;
+
+    height:38px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    color:var(--text);
+
+    background:rgba(255,255,255,.06);
+
+    transition:var(--transition);
+
+}
+
+.action-btn:hover{
+
+    background:var(--primary);
+
+    transform:translateY(-2px);
+
+}
+
+/* ===================================
+   EMPTY STATE
+=================================== */
+
+.empty-state{
+
+    padding:70px 20px;
+
+    text-align:center;
+
+}
+
+.empty-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:16px;
+
+}
+
+.empty-icon{
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:2.5rem;
+
+    background:rgba(59,130,246,.10);
+
+}
+
+.empty-content h3{
+
+    font-size:1.35rem;
+
+    font-weight:700;
+
+}
+
+.empty-content p{
+
+    color:var(--muted);
+
+    max-width:420px;
+
+    line-height:1.7;
+
+}
+/* ===================================
+   PAGINATION
+=================================== */
+
+.pagination{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:16px;
+
+    margin-bottom:30px;
+
+}
+
+.page-info{
+
+    color:var(--muted);
+
+    font-size:.95rem;
+
+    font-weight:600;
+
+}
+
+.page-btn{
+
+    width:100%;
+
+    max-width:180px;
+
+    padding:14px 20px;
+
+    border:none;
+
+    outline:none;
+
+    cursor:pointer;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid var(--border);
+
+    color:var(--text);
+
+    font-weight:700;
+
+    transition:var(--transition);
+
+}
+
+.page-btn:hover{
+
+    background:var(--primary);
+
+    border-color:var(--primary);
+
+    transform:translateY(-2px);
+
+}
+
+.page-btn:disabled{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+}
+
+/* ===================================
+   FADE ANIMATION
+=================================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.page-hero,
+.stat-card,
+.filter-bar,
+.students-table,
+.pagination{
+
+    animation:fadeUp .6s ease both;
+
+}
+
+.stat-card:nth-child(2){
+
+    animation-delay:.08s;
+
+}
+
+.stat-card:nth-child(3){
+
+    animation-delay:.16s;
+
+}
+
+.stat-card:nth-child(4){
+
+    animation-delay:.24s;
+
+}
+
+.stat-card:nth-child(5){
+
+    animation-delay:.32s;
+
+}
+
+.stat-card:nth-child(6){
+
+    animation-delay:.40s;
+
+}
+
+/* ===================================
+   GLOBAL SCROLLBAR
+=================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+    height:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:var(--bg);
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:rgba(255,255,255,.15);
+
+    border-radius:999px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:var(--primary);
+
+}
+
+/* ===================================
+   TABLET
+=================================== */
+
+@media(min-width:768px){
+
+.pagination{
+
+    flex-direction:row;
+
+    justify-content:space-between;
+
+}
+
+.page-btn{
+
+    width:auto;
+
+    min-width:170px;
+
+}
+
+}
+
+/* ===================================
+   MOBILE OPTIMIZATION
+=================================== */
+
+@media(max-width:767px){
+
+.main-content{
+
+    padding:18px;
+
+}
+
+.page-hero,
+.filter-bar,
+.students-table{
+
+    padding:20px;
+
+}
+
+.hero-content h1{
+
+    font-size:1.8rem;
+
+}
+
+.table-header{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+}
+
+.stat-card{
+
+    padding:20px;
+
+}
+
+}
+
+/* ===================================
+   LARGE SCREENS
+=================================== */
+
+@media(min-width:1440px){
+
+.main-content{
+
+    max-width:1700px;
+
+    margin:0 auto;
+
+    width:100%;
+
+}
+
+}
+
+/* ===================================
+   ACCESSIBILITY
+=================================== */
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible{
+
+    outline:2px solid var(--primary);
+
+    outline-offset:3px;
+
+}
+
+/* ===================================
+   SELECTION
+=================================== */
+
+::selection{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}
+/* ===================================
+   STUDENT MODAL
+=================================== */
+
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:rgba(0,0,0,.6);
+
+    backdrop-filter:blur(8px);
+
+    z-index:1000;
+
+    padding:20px;
+
+}
+
+
+.modal.active{
+
+    display:flex;
+
+}
+
+
+.modal-content{
+
+    width:100%;
+
+    max-width:500px;
+
+    padding:28px;
+
+}
+
+
+.modal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+
+.modal-header button{
+
+    background:none;
+
+    border:none;
+
+    color:white;
+
+    font-size:20px;
+
+    cursor:pointer;
+
+}
+
+
+#studentForm{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+
+#studentForm input,
+#studentForm select{
+
+    padding:14px;
+
+    border-radius:12px;
+
+    border:1px solid var(--border);
+
+    background:rgba(255,255,255,.05);
+
+    color:white;
+
+    outline:none;
+
+}
+/* ===========================
+   DASHBOARD RESPONSIVE LAYOUT
+=========================== */
+
+
+/* Desktop */
+
+.main-content{
+
+margin-left:var(--sidebar-width);
+
+width:calc(100% - var(--sidebar-width));
+
+transition:.35s ease;
+
+}
+
+
+
+/* Mobile */
+
+@media(max-width:768px){
+
+
+.main-content{
+
+margin-left:0;
+
+width:100%;
+
+}
+
+
+
+.sidebar{
+
+box-shadow:
+10px 0 40px rgba(0,0,0,.45);
+
+}
+
+
+
+}

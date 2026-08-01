@@ -587,38 +587,54 @@ visibility:visible;
 
 
 /* ===========================
-   MOBILE SIDEBAR
+   MOBILE SIDEBAR FIX
 =========================== */
-
 
 @media(max-width:768px){
 
+    .sidebar{
 
+        position:fixed;
+
+        top:0;
+        left:0;
+
+        height:100vh;
+
+        width:280px;
+
+        transform:translateX(-100%);
+
+        transition:transform .35s ease;
+
+        z-index:1000;
+
+    }
+
+
+    .sidebar.active{
+
+        transform:translateX(0);
+
+    }
+
+
+    #sidebarOverlay{
+
+        display:block;
+
+    }
+
+
+    body.menu-open{
+
+        overflow:hidden;
+
+    }
+
+}
 .sidebar{
 
-left:-280px;
-
-
-transition:left .35s ease;
-
-
-}
-
-
-
-.sidebar.active{
-
-left:0;
-
-}
-
-
-
-body.menu-open{
-
-overflow:hidden;
-
-}
-
+transition:transform .35s ease;
 
 }

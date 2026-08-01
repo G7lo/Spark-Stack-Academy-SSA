@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Platform Settings | Founder OS
+</title>
+
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+
+<link rel="stylesheet"
+href="platform-settings.css">
+
+
+</head>
+
+
+
+<body>
+
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+
+
+<div class="dashboard-layout">
+
+
+
+<aside id="sidebarContainer"></aside>
+
+
+<div id="sidebarOverlay"></div>
+
+
+
+
+<main class="main-content">
+
+
+
+<header id="topbarContainer"></header>
+
+
+
+
+
+<!-- ===================================
+     PAGE HEADER
+=================================== -->
+
+
+<section class="page-header glass-card">
+
+
+<h1>
+
+⚙️ Platform Settings
+
+</h1>
+
+
+<p>
+
+Control Spark Stack Academy's complete ecosystem,
+security, admissions, students and platform rules.
+
+</p>
+
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     GENERAL SETTINGS
+=================================== -->
+
+
+<section class="section-card glass-card">
+
+
+<h2>
+🏫 General Settings
+</h2>
+
+
+
+<div class="form-grid">
+
+
+
+<div class="input-group">
+
+<label>
+Academy Name
+</label>
+
+
+<input
+id="academyName"
+type="text">
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Support Email
+</label>
+
+
+<input
+id="supportEmail"
+type="email">
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Phone Number
+</label>
+
+
+<input
+id="supportPhone"
+type="text">
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Website
+</label>
+
+
+<input
+id="website"
+type="url">
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Timezone
+</label>
+
+
+<select id="timezone">
+
+<option>
+Africa/Nairobi
+</option>
+
+<option>
+UTC
+</option>
+
+<option>
+Europe/London
+</option>
+
+</select>
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Language
+</label>
+
+
+<select id="language">
+
+<option>
+English
+</option>
+
+<option>
+Swahili
+</option>
+
+<option>
+French
+</option>
+
+
+</select>
+
+</div>
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- ===================================
+     ADMISSIONS CONTROL
+=================================== -->
+
+
+<section class="section-card glass-card">
+
+
+<h2>
+
+📝 Admissions Management
+
+</h2>
+
+
+
+
+<div class="form-grid">
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Admission Prefix
+</label>
+
+
+<input
+id="admissionPrefix"
+type="text"
+value="SSA">
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Admission Year
+</label>
+
+
+<input
+id="admissionYear"
+type="number">
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Next Admission Number
+</label>
+
+
+<input
+id="nextAdmissionNumber"
+type="number"
+value="1">
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Default Student Status
+</label>
+
+
+<select id="defaultStudentStatus">
+
+
+<option>
+Active
+</option>
+
+
+<option>
+Pending
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="toggle-list">
+
+
+
+<div class="toggle-item">
+
+<span>
+Auto Generate Admission Numbers
+</span>
+
+
+<input
+id="autoAdmission"
+type="checkbox"
+checked>
+
+
+</div>
+
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Require Approval Before Account Creation
+</span>
+
+
+<input
+id="requireAdmissionApproval"
+type="checkbox"
+checked>
+
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- ===================================
+     STUDENT PORTAL
+=================================== -->
+
+
+<section class="section-card glass-card">
+
+
+<h2>
+
+🎓 Student Portal Controls
+
+</h2>
+
+
+
+
+<div class="form-grid">
+
+
+
+<div class="input-group">
+
+
+<label>
+Student Login Method
+</label>
+
+
+
+<select id="studentLoginMethod">
+
+
+<option value="admission">
+
+Admission Number
+
+</option>
+
+
+
+<option value="email">
+
+Email
+
+</option>
+
+
+
+<option value="both">
+
+Both
+
+</option>
+
+
+
+</select>
+
+
+</div>
+
+
+
+
+<div class="input-group">
+
+<label>
+Default Password Method
+</label>
+
+
+<select id="passwordMethod">
+
+
+<option>
+Admission Number
+</option>
+
+
+<option>
+Generated Password
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="toggle-list">
+
+
+
+<div class="toggle-item">
+
+<span>
+Enable Student Portal
+</span>
+
+
+<input
+id="studentPortal"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Allow Profile Editing
+</span>
+
+
+<input
+id="studentProfileEdit"
+type="checkbox">
+
+</div>
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Show Course Progress
+</span>
+
+
+<input
+id="showProgress"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Show Certificates
+</span>
+
+
+<input
+id="showCertificates"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
+<!-- ===================================
+     INSTRUCTOR SYSTEM
+=================================== -->
+
+
+<section class="section-card glass-card">
+
+
+<h2>
+
+👨‍🏫 Instructor Controls
+
+</h2>
+
+
+
+<div class="toggle-list">
+
+
+
+<div class="toggle-item">
+
+<span>
+Require Instructor Approval
+</span>
+
+
+<input
+id="instructorApproval"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Allow Course Creation
+</span>
+
+
+<input
+id="allowCourseCreation"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Allow Student Management
+</span>
+
+
+<input
+id="allowInstructorStudents"
+type="checkbox">
+
+</div>
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Enable Instructor Earnings
+</span>
+
+
+<input
+id="instructorEarnings"
+type="checkbox">
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ===================================
+     SECURITY SETTINGS
+=================================== -->
+
+
+<section class="section-card glass-card">
+
+
+<h2>
+
+🔐 Security Controls
+
+</h2>
+
+
+
+<div class="form-grid">
+
+
+
+<div class="input-group">
+
+<label>
+Session Timeout (Minutes)
+</label>
+
+
+<input
+id="sessionTimeout"
+type="number"
+value="30">
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Maximum Login Attempts
+</label>
+
+
+<input
+id="maxLoginAttempts"
+type="number"
+value="5">
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Password Expiry Days
+</label>
+
+
+<input
+id="passwordExpiry"
+type="number"
+value="90">
+
+</div>
+
+
+
+</div>
+
+
+
+
+<div class="toggle-list">
+
+
+
+<div class="toggle-item">
+
+<span>
+Two Factor Authentication
+</span>
+
+
+<input
+id="twoFactor"
+type="checkbox">
+
+</div>
+
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Track Login Activity
+</span>
+
+
+<input
+id="loginTracking"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Enable Security Alerts
+</span>
+
+
+<input
+id="securityAlerts"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- ===================================
+     NOTIFICATIONS
+=================================== -->
+
+
+<section class="section-card glass-card">
+
+
+<h2>
+
+🔔 Notification Center
+
+</h2>
+
+
+
+<div class="toggle-list">
+
+
+
+<div class="toggle-item">
+
+<span>
+Email Notifications
+</span>
+
+
+<input
+id="emailNotifications"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Admission Approval Alerts
+</span>
+
+
+<input
+id="admissionAlerts"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+
+
+<div class="toggle-item">
+
+<span>
+New Student Alerts
+</span>
+
+
+<input
+id="newStudentAlerts"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Certificate Issued Alerts
+</span>
+
+
+<input
+id="certificateAlerts"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+
+<div class="toggle-item">
+
+<span>
+System Announcements
+</span>
+
+
+<input
+id="systemAnnouncements"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ===================================
+     SPARK AI
+=================================== -->
+
+
+<section class="section-card glass-card">
+
+
+<h2>
+
+🤖 Spark AI Configuration
+
+</h2>
+
+
+
+
+<div class="form-grid">
+
+
+
+<div class="input-group">
+
+<label>
+AI Assistant Name
+</label>
+
+
+<input
+id="aiName"
+type="text"
+value="Spark AI">
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Daily AI Request Limit
+</label>
+
+
+<input
+id="aiLimit"
+type="number"
+value="100">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="toggle-list">
+
+
+
+<div class="toggle-item">
+
+<span>
+Enable Spark AI
+</span>
+
+
+<input
+id="enableAI"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Allow Student AI Access
+</span>
+
+
+<input
+id="studentAI"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Allow Instructor AI Access
+</span>
+
+
+<input
+id="instructorAI"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
+<!-- ===================================
+     BRANDING SETTINGS
+=================================== -->
+
+
+<section class="section-card glass-card">
+
+
+<h2>
+
+🎨 Branding
+
+</h2>
+
+
+
+<div class="form-grid">
+
+
+
+<div class="input-group">
+
+<label>
+Academy Logo
+</label>
+
+
+<input
+type="file"
+id="academyLogo"
+accept="image/*">
+
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Academy Seal
+</label>
+
+
+<input
+type="file"
+id="academySeal"
+accept="image/*">
+
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Favicon
+</label>
+
+
+<input
+type="file"
+id="academyFavicon"
+accept="image/*">
+
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Theme Color
+</label>
+
+
+<input
+type="color"
+id="themeColor"
+value="#3b82f6">
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ===================================
+     PAYMENT SETTINGS
+=================================== -->
+
+
+<section class="section-card glass-card">
+
+
+<h2>
+
+💳 Payment Settings
+
+</h2>
+
+
+
+<div class="form-grid">
+
+
+
+<div class="input-group">
+
+<label>
+Currency
+</label>
+
+
+<select id="currency">
+
+
+<option>
+KES
+</option>
+
+
+<option>
+USD
+</option>
+
+
+<option>
+EUR
+</option>
+
+
+<option>
+GBP
+</option>
+
+
+</select>
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Tax Percentage
+</label>
+
+
+<input
+id="taxRate"
+type="number"
+value="0">
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Refund Period Days
+</label>
+
+
+<input
+id="refundPeriod"
+type="number"
+value="7">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="toggle-list">
+
+
+<div class="toggle-item">
+
+<span>
+Enable Payments
+</span>
+
+
+<input
+id="enablePayments"
+type="checkbox"
+checked>
+
+</div>
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Allow Refunds
+</span>
+
+
+<input
+id="allowRefunds"
+type="checkbox">
+
+</div>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- ===================================
+     ANALYTICS
+=================================== -->
+
+
+<section class="section-card glass-card">
+
+
+<h2>
+
+📊 Analytics Controls
+
+</h2>
+
+
+
+
+<div class="toggle-list">
+
+
+
+<div class="toggle-item">
+
+<span>
+Analytics Tracking
+</span>
+
+
+<input
+id="analyticsTracking"
+type="checkbox"
+checked>
+
+
+</div>
+
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Student Behaviour Tracking
+</span>
+
+
+<input
+id="studentTracking"
+type="checkbox">
+
+</div>
+
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Course Performance Tracking
+</span>
+
+
+<input
+id="courseAnalytics"
+type="checkbox"
+checked>
+
+
+</div>
+
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Revenue Analytics
+</span>
+
+
+<input
+id="revenueAnalytics"
+type="checkbox"
+checked>
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- ===================================
+     SYSTEM PREFERENCES
+=================================== -->
+
+
+<section class="section-card glass-card">
+
+
+<h2>
+
+🌍 System Preferences
+
+</h2>
+
+
+
+<div class="toggle-list">
+
+
+
+<div class="toggle-item">
+
+<span>
+Maintenance Mode
+</span>
+
+
+<input
+id="maintenanceMode"
+type="checkbox">
+
+
+</div>
+
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Automatic Backup
+</span>
+
+
+<input
+id="autoBackup"
+type="checkbox"
+checked>
+
+
+</div>
+
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Debug Mode
+</span>
+
+
+<input
+id="debugMode"
+type="checkbox">
+
+
+</div>
+
+
+
+
+
+<div class="toggle-item">
+
+<span>
+Activity Logs
+</span>
+
+
+<input
+id="activityLogs"
+type="checkbox"
+checked>
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- ===================================
+     BACKUP & RESTORE
+=================================== -->
+
+
+<section class="section-card glass-card">
+
+
+<h2>
+
+💾 Backup & Restore
+
+</h2>
+
+
+
+<div class="form-grid">
+
+
+
+<div class="input-group">
+
+<label>
+Backup Frequency
+</label>
+
+
+<select id="backupFrequency">
+
+
+<option>
+Daily
+</option>
+
+
+<option>
+Weekly
+</option>
+
+
+<option>
+Monthly
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+<div class="input-group">
+
+<label>
+Last Backup
+</label>
+
+
+<input
+id="lastBackup"
+type="text"
+readonly>
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+<!-- ===================================
+     PLATFORM INFORMATION
+=================================== -->
+
+<section class="section-card glass-card">
+
+    <h2>
+
+        🌐 Platform Information
+
+    </h2>
+
+    <div class="platform-info-grid">
+
+        <div class="info-card">
+
+            <span class="info-label">
+
+                Founder OS
+
+            </span>
+
+            <h3 id="platformVersion">
+
+                v1.0.0
+
+            </h3>
+
+        </div>
+
+        <div class="info-card">
+
+            <span class="info-label">
+
+                Academy Version
+
+            </span>
+
+            <h3 id="academyVersion">
+
+                SSA 2026.1
+
+            </h3>
+
+        </div>
+
+        <div class="info-card">
+
+            <span class="info-label">
+
+                Firebase
+
+            </span>
+
+            <h3 id="firebaseStatus">
+
+                🟢 Connected
+
+            </h3>
+
+        </div>
+
+        <div class="info-card">
+
+            <span class="info-label">
+
+                Firestore
+
+            </span>
+
+            <h3 id="firestoreStatus">
+
+                🟢 Online
+
+            </h3>
+
+        </div>
+
+        <div class="info-card">
+
+            <span class="info-label">
+
+                Authentication
+
+            </span>
+
+            <h3 id="authStatus">
+
+                🟢 Active
+
+            </h3>
+
+        </div>
+
+        <div class="info-card">
+
+            <span class="info-label">
+
+                Cloud Storage
+
+            </span>
+
+            <h3 id="storageStatus">
+
+                🟢 Available
+
+            </h3>
+
+        </div>
+
+        <div class="info-card">
+
+            <span class="info-label">
+
+                Environment
+
+            </span>
+
+            <h3 id="environmentStatus">
+
+                Development
+
+            </h3>
+
+        </div>
+
+        <div class="info-card">
+
+            <span class="info-label">
+
+                Last Platform Sync
+
+            </span>
+
+            <h3 id="lastPlatformSync">
+
+                --
+
+            </h3>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     DANGER ZONE
+=================================== -->
+
+
+<section class="section-card danger-zone">
+
+
+<h2>
+
+🚨 Danger Zone
+
+</h2>
+
+
+
+
+<button
+class="danger-btn"
+id="clearCache">
+
+Clear Cache
+
+</button>
+
+
+
+
+
+<button
+class="danger-btn"
+id="disablePlatform">
+
+Disable Platform
+
+</button>
+
+
+
+
+
+<button
+class="danger-btn"
+id="resetSystem">
+
+Reset System Settings
+
+</button>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- ===================================
+     ACTION BAR
+=================================== -->
+
+
+<div class="action-bar">
+
+
+<button
+class="secondary-btn"
+id="exportSettings">
+
+📤 Export Settings
+
+</button>
+
+
+
+<button
+class="secondary-btn"
+id="importSettings">
+
+📥 Import Settings
+
+</button>
+
+
+
+<button
+class="secondary-btn"
+id="resetSettings">
+
+♻️ Restore Defaults
+
+</button>
+
+
+
+<button
+class="primary-btn"
+id="savePlatformSettings">
+
+💾 Save Platform
+
+</button>
+
+
+
+</div>
+
+
+
+</main>
+
+
+</div>
+
+
+
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+<script
+type="module"
+src="./js/founder-app.js">
+</script>
+
+
+
+<script
+type="module"
+src="platform-settings.js">
+</script>
+
+
+
+</body>
+
+</html>

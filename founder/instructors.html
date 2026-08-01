@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Instructors | Spark Stack Academy</title>
+
+<link rel="stylesheet" href="instructors.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+
+
+<div class="dashboard-layout">
+
+
+<aside id="sidebarContainer"></aside>
+
+<div id="sidebarOverlay"></div>
+
+
+
+<main class="main-content">
+
+
+<header id="topbarContainer"></header>
+
+
+
+<!-- HERO -->
+
+<section class="page-hero glass-card">
+
+
+<div class="hero-content">
+
+
+<div class="hero-badge">
+
+👨‍🏫 Instructor Management
+
+</div>
+
+
+<h1>
+
+Instructors
+
+</h1>
+
+
+<p>
+
+Manage academy instructors, assign courses,
+track teaching performance and control your
+learning team from one dashboard.
+
+</p>
+
+
+</div>
+
+
+
+<div class="hero-actions">
+
+
+<button 
+class="primary-btn"
+id="addInstructorBtn">
+
+➕ Add Instructor
+
+</button>
+
+
+<button
+class="secondary-btn"
+id="exportInstructorBtn">
+
+📥 Export CSV
+
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+<!-- KPI -->
+
+<section class="stats-grid">
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<span>Total Instructors</span>
+
+<div class="stat-icon cyan">
+👨‍🏫
+</div>
+
+</div>
+
+<h2 id="instructorCount">
+0
+</h2>
+
+<small>
+Registered Instructors
+</small>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<span>Active</span>
+
+<div class="stat-icon green">
+🟢
+</div>
+
+</div>
+
+<h2 id="activeInstructorCount">
+0
+</h2>
+
+<small>
+Currently Teaching
+</small>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<span>Courses Assigned</span>
+
+<div class="stat-icon blue">
+📚
+</div>
+
+</div>
+
+<h2 id="assignedCourseCount">
+0
+</h2>
+
+<small>
+Teaching Courses
+</small>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<span>New This Month</span>
+
+<div class="stat-icon purple">
+✨
+</div>
+
+</div>
+
+<h2 id="newInstructorCount">
+0
+</h2>
+
+<small>
+New Members
+</small>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<span>Students Managed</span>
+
+<div class="stat-icon gold">
+👨‍🎓
+</div>
+
+</div>
+
+<h2 id="managedStudentCount">
+0
+</h2>
+
+<small>
+Assigned Learners
+</small>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<span>Suspended</span>
+
+<div class="stat-icon red">
+🚫
+</div>
+
+</div>
+
+<h2 id="suspendedInstructorCount">
+0
+</h2>
+
+<small>
+Inactive Accounts
+</small>
+
+</div>
+
+
+</section>
+<!-- ===================================
+     FILTER BAR
+=================================== -->
+
+<section class="filter-bar glass-card">
+
+
+<div class="filter-left">
+
+
+<div class="search-box">
+
+
+<i data-lucide="search"></i>
+
+
+<input
+type="text"
+id="instructorSearch"
+placeholder="Search instructors...">
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="filter-right">
+
+
+
+<select id="specializationFilter">
+
+<option value="">
+All Specializations
+</option>
+
+</select>
+
+
+
+<select id="statusFilter">
+
+
+<option value="">
+All Status
+</option>
+
+
+<option value="active">
+Active
+</option>
+
+
+<option value="inactive">
+Inactive
+</option>
+
+
+<option value="suspended">
+Suspended
+</option>
+
+
+</select>
+
+
+
+<select id="sortInstructors">
+
+
+<option value="newest">
+Newest First
+</option>
+
+
+<option value="oldest">
+Oldest First
+</option>
+
+
+<option value="name">
+A - Z
+</option>
+
+
+</select>
+
+
+
+<button
+class="secondary-btn"
+id="refreshInstructors">
+
+
+<i data-lucide="refresh-cw"></i>
+
+
+Refresh
+
+
+</button>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     INSTRUCTOR TABLE
+=================================== -->
+
+
+<section class="students-table glass-card">
+
+
+<div class="table-header">
+
+
+<h3>
+
+👨‍🏫 Instructor Directory
+
+</h3>
+
+
+<span id="instructorTotal">
+
+0 Instructors
+
+</span>
+
+
+</div>
+
+
+
+
+<div class="table-responsive">
+
+
+<table>
+
+
+<thead>
+
+
+<tr>
+
+
+<th>
+Instructor
+</th>
+
+
+<th>
+Specialization
+</th>
+
+
+<th>
+Courses
+</th>
+
+
+<th>
+Students
+</th>
+
+
+<th>
+Email
+</th>
+
+
+<th>
+Status
+</th>
+
+
+<th>
+Joined
+</th>
+
+
+<th>
+Actions
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="instructorsTableBody">
+
+
+<tr>
+
+
+<td colspan="8"
+class="empty-state">
+
+
+<div class="empty-content">
+
+
+<div class="empty-icon">
+
+👨‍🏫
+
+</div>
+
+
+
+<h3>
+
+No Instructors Found
+
+</h3>
+
+
+
+<p>
+
+Add instructors to manage your academy teaching team.
+
+</p>
+
+
+</div>
+
+
+</td>
+
+
+</tr>
+
+
+</tbody>
+
+
+
+</table>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     PAGINATION
+=================================== -->
+
+
+<section class="pagination">
+
+
+<button
+class="page-btn"
+id="prevPage">
+
+
+← Previous
+
+
+</button>
+
+
+
+<div
+class="page-info"
+id="pageInfo">
+
+
+Page 1 of 1
+
+
+</div>
+
+
+
+
+<button
+class="page-btn"
+id="nextPage">
+
+
+Next →
+
+
+</button>
+
+
+</section>
+<!-- ===================================
+     ADD INSTRUCTOR MODAL
+=================================== -->
+
+<div class="modal" id="instructorModal">
+
+
+<div class="modal-content glass-card">
+
+
+<div class="modal-header">
+
+
+<h3>
+Add New Instructor
+</h3>
+
+
+
+<button id="closeInstructorModal">
+
+✕
+
+</button>
+
+
+</div>
+
+
+
+
+<form id="instructorForm">
+
+
+
+<input
+type="text"
+id="instructorName"
+placeholder="Full Name"
+required>
+
+
+
+<input
+type="email"
+id="instructorEmail"
+placeholder="Email Address"
+required>
+
+
+
+<input
+type="tel"
+id="instructorPhone"
+placeholder="Phone Number">
+
+
+
+<input
+type="text"
+id="instructorSpecialization"
+placeholder="Specialization"
+required>
+
+
+
+
+<!-- Multiple courses -->
+
+<label>
+Assign Courses
+</label>
+
+
+<select
+id="instructorCourses"
+multiple>
+
+
+</select>
+
+
+
+
+<textarea
+id="instructorBio"
+placeholder="Instructor Bio"></textarea>
+
+
+
+
+
+<select id="instructorStatus">
+
+
+<option value="active">
+Active
+</option>
+
+
+<option value="inactive">
+Inactive
+</option>
+
+
+<option value="suspended">
+Suspended
+</option>
+
+
+</select>
+
+
+
+
+
+<button
+type="submit"
+class="primary-btn">
+
+
+Save Instructor
+
+
+</button>
+
+
+
+</form>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+<script
+type="module"
+src="./js/founder-app.js">
+</script>
+
+
+<script
+type="module"
+src="instructors.js">
+</script>
+
+
+
+</body>

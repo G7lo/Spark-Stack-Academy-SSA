@@ -1,185 +1,659 @@
-// ===================================
-// SPARK STACK ACADEMY
-// REVENUE ANALYTICS
-// ===================================
+/* ===================================
+   FOUNDER OS
+   REVENUE ANALYTICS ENGINE
+=================================== */
+
 
 import { db } from "../../js/firebase.js";
 
+import "./js/founder-auth.js";
+
+
 import {
-    collection,
-    onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+collection,
+query,
+orderBy,
+onSnapshot,
+doc,
+updateDoc
+
+} from 
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-console.log("📊 Revenue Loaded");
 
+/* ===================================
+   ELEMENTS
+=================================== */
 
 
 const totalRevenue =
 document.getElementById("totalRevenue");
 
-const totalSubscribers =
-document.getElementById("totalSubscribers");
+const monthlyRevenue =
+document.getElementById("monthlyRevenue");
 
-const courseSales =
-document.getElementById("courseSales");
+const todayRevenue =
+document.getElementById("todayRevenue");
 
-const couponUsage =
-document.getElementById("couponUsage");
+const transactionCount =
+document.getElementById("transactionCount");
 
-const transactionsContainer =
-document.getElementById("transactionsContainer");
+const successfulPayments =
+document.getElementById("successfulPayments");
 
+const pendingPayments =
+document.getElementById("pendingPayments");
 
-
-let monthlyRevenue = {};
-
-
-
-function loadRevenue(){
+const failedPayments =
+document.getElementById("failedPayments");
 
 
-onSnapshot(
-
-collection(
-db,
-"transactions"
-),
-
-(snapshot)=>{
+const transactionsTable =
+document.getElementById("transactionsTable");
 
 
-let revenue = 0;
-
-let subscribers = 0;
-
-let courses = 0;
-
-let coupons = 0;
-
-
-monthlyRevenue = {};
+const withdrawalsTable =
+document.getElementById("withdrawalsTable");
 
 
 
-transactionsContainer.innerHTML="";
+/* BREAKDOWN */
+
+const courseRevenue =
+document.getElementById("courseRevenue");
+
+const registrationRevenue =
+document.getElementById("registrationRevenue");
+
+const certificateRevenue =
+document.getElementById("certificateRevenue");
+
+const examRevenue =
+document.getElementById("examRevenue");
+
+const breakdownTotal =
+document.getElementById("breakdownTotal");
 
 
 
-if(snapshot.empty){
+/* PAYMENT METHODS */
 
-transactionsContainer.innerHTML =
-`
-<p>
-No transactions yet.
-</p>
-`;
+const mpesaRevenue =
+document.getElementById("mpesaRevenue");
 
-return;
+const cardRevenue =
+document.getElementById("cardRevenue");
 
-}
+const bankRevenue =
+document.getElementById("bankRevenue");
 
+const paypalRevenue =
+document.getElementById("paypalRevenue");
 
+const loadingOverlay =
+document.getElementById("loadingOverlay");
 
-snapshot.forEach(doc=>{
+const pendingWithdrawals =
+document.getElementById("pendingWithdrawals");
 
+let revenueChart;
 
-const data = doc.data();
-
-
-
-if(data.status === "completed"){
-
-revenue += Number(data.amount || 0);
-
-}
+/* ===================================
+   HELPERS
+=================================== */
 
 
+function money(value){
 
-if(data.type==="premium"){
-
-subscribers++;
-
-}
-
-
-if(data.type==="course"){
-
-courses++;
-
-}
-
-
-if(data.type==="coupon"){
-
-coupons++;
+return "KES " +
+Number(value)
+.toLocaleString();
 
 }
 
 
 
+function today(){
 
-// MONTHLY GRAPH DATA
+return new Date()
+.toISOString()
+.split("T")[0];
 
-if(data.createdAt){
-
-
-const date =
-data.createdAt.toDate();
-
-
-const month =
-date.toLocaleString(
-"default",
-{
-month:"short"
 }
+
+
+
+/* ===================================
+   LOAD PAYMENTS
+=================================== */
+
+
+const paymentsQuery =
+query(
+
+collection(db,"payments"),
+
+orderBy(
+"createdAt",
+"desc"
+)
+
 );
 
 
 
-monthlyRevenue[month] =
-(monthlyRevenue[month] || 0)
-+
+onSnapshot(
+
+paymentsQuery,
+
+(snapshot)=>{
+
+try{
+
+
+let lifetime = 0;
+
+let monthly = 0;
+
+let todayMoney = 0;
+
+
+let count = 0;
+
+let success = 0;
+
+let pending = 0;
+
+let failed = 0;
+
+
+
+let course = 0;
+
+let registration = 0;
+
+let certificate = 0;
+
+let exam = 0;
+
+
+
+let mpesa = 0;
+
+let card = 0;
+
+let bank = 0;
+
+let paypal = 0;
+
+let dailyRevenue = {};
+
+transactionsTable.innerHTML="";
+
+
+
+snapshot.forEach((payment)=>{
+
+
+const data = payment.data();
+
+
+
+count++;
+
+
+
+if(data.status==="completed"){
+
+
+let amount =
 Number(data.amount || 0);
 
+let date =
+data.createdAt
+?.toDate()
+.toLocaleDateString()
+|| "Unknown";
+
+
+if(!dailyRevenue[date]){
+
+dailyRevenue[date] = 0;
+
+}
+
+
+dailyRevenue[date] += amount;
+
+lifetime += amount;
+
+
+
+if(
+data.createdAt
+?.toDate()
+.toISOString()
+.includes(
+new Date()
+.toISOString()
+.slice(0,7)
+)
+
+){
+
+monthly += amount;
+
+}
+
+
+
+if(
+data.createdAt
+?.toDate()
+.toISOString()
+.startsWith(today())
+
+){
+
+todayMoney += amount;
 
 }
 
 
 
 
-// TRANSACTION UI
-
-transactionsContainer.innerHTML +=
-`
-
-<div class="transaction-item">
+switch(data.type){
 
 
-<div>
+case "course":
 
-<strong>
-${data.type || "Payment"}
-</strong>
+course += amount;
 
-
-<p>
-${data.status || "pending"}
-</p>
+break;
 
 
-</div>
+case "registration":
+
+registration += amount;
+
+break;
+
+
+case "certificate":
+
+certificate += amount;
+
+break;
+
+
+case "exam":
+
+exam += amount;
+
+break;
+
+
+}
 
 
 
-<span>
-${data.currency || "KES"}
-${data.amount || 0}
+switch(data.method){
+
+
+case "mpesa":
+
+mpesa += amount;
+
+break;
+
+
+case "card":
+
+card += amount;
+
+break;
+
+
+case "bank":
+
+bank += amount;
+
+break;
+
+
+case "paypal":
+
+paypal += amount;
+
+break;
+
+
+}
+
+
+success++;
+
+
+}
+
+else if(data.status==="pending"){
+
+pending++;
+
+}
+
+else{
+
+failed++;
+
+}
+
+
+
+
+transactionsTable.innerHTML += `
+
+<tr>
+
+<td>
+${data.receipt || "--"}
+</td>
+
+
+<td>
+${data.studentName || "Unknown"}
+</td>
+
+
+<td>
+${data.admissionNo || "--"}
+</td>
+
+
+<td>
+${data.type || "--"}
+</td>
+
+
+<td>
+${data.method || "--"}
+</td>
+
+
+<td>
+${money(data.amount)}
+</td>
+
+
+<td>
+
+<span class="status ${data.status}">
+${data.status}
 </span>
 
+</td>
 
-</div>
+
+<td>
+
+${data.createdAt
+?.toDate()
+.toLocaleDateString()
+|| "--"}
+
+</td>
+
+
+<td>
+
+<button class="table-action">
+
+View
+
+</button>
+
+</td>
+
+
+</tr>
+
+`;
+
+}
+
+
+});
+
+createRevenueChart(
+
+Object.keys(dailyRevenue),
+
+Object.values(dailyRevenue)
+
+);
+
+/* UPDATE DASHBOARD */
+
+
+totalRevenue.textContent =
+money(lifetime);
+
+
+monthlyRevenue.textContent =
+money(monthly);
+
+
+todayRevenue.textContent =
+money(todayMoney);
+
+
+
+transactionCount.textContent =
+count;
+
+
+successfulPayments.textContent =
+success;
+
+
+pendingPayments.textContent =
+pending;
+
+
+failedPayments.textContent =
+failed;
+
+
+
+courseRevenue.textContent =
+money(course);
+
+
+registrationRevenue.textContent =
+money(registration);
+
+
+certificateRevenue.textContent =
+money(certificate);
+
+
+examRevenue.textContent =
+money(exam);
+
+
+
+breakdownTotal.textContent =
+money(lifetime);
+
+
+
+mpesaRevenue.textContent =
+money(mpesa);
+
+cardRevenue.textContent =
+money(card);
+
+bankRevenue.textContent =
+money(bank);
+
+paypalRevenue.textContent =
+money(paypal);
+
+if(loadingOverlay){
+
+loadingOverlay.style.display = "none";
+
+}
+
+}
+
+catch(error){
+
+console.error(
+"Revenue loading error:",
+error
+);
+
+}
+
+});
+
+
+/* ===================================
+   WITHDRAWAL ENGINE
+=================================== */
+
+
+const withdrawalsQuery =
+query(
+
+collection(db,"withdrawals"),
+
+orderBy(
+"requestedAt",
+"desc"
+)
+
+);
+
+
+
+onSnapshot(
+
+withdrawalsQuery,
+
+(snapshot)=>{
+
+
+withdrawalsTable.innerHTML="";
+
+
+let pendingAmount = 0;
+
+
+
+snapshot.forEach((withdrawal)=>{
+
+
+const data =
+withdrawal.data();
+
+
+
+if(data.status==="pending"){
+
+pendingAmount += Number(data.amount || 0);
+
+}
+
+
+
+withdrawalsTable.innerHTML += `
+
+<tr>
+
+
+<td>
+
+${data.instructor || "Unknown"}
+
+</td>
+
+
+<td>
+
+${data.method || "--"}
+
+</td>
+
+
+<td>
+
+KES ${Number(data.amount || 0)
+.toLocaleString()}
+
+</td>
+
+
+<td>
+
+<span class="status ${data.status}">
+
+${data.status}
+
+</span>
+
+</td>
+
+
+<td>
+
+${
+data.requestedAt
+?.toDate()
+.toLocaleDateString()
+|| "--"
+}
+
+</td>
+
+
+<td>
+
+
+<button
+
+class="withdraw-action approve"
+
+data-id="${withdrawal.id}"
+
+>
+
+Approve
+
+</button>
+
+
+
+<button
+
+class="withdraw-action reject"
+
+data-id="${withdrawal.id}"
+
+>
+
+Reject
+
+</button>
+
+
+</td>
+
+
+</tr>
 
 `;
 
@@ -189,29 +663,72 @@ ${data.amount || 0}
 
 
 
-totalRevenue.textContent =
-`KES ${revenue.toLocaleString()}`;
+pendingWithdrawals.textContent =
+money(pendingAmount);
 
 
-totalSubscribers.textContent =
-subscribers;
+if(loadingOverlay){
 
-
-courseSales.textContent =
-courses;
-
-
-couponUsage.textContent =
-coupons;
-
-
-
-updateChart();
-
-
+loadingOverlay.style.display = "none";
 
 }
 
+}
+
+);
+
+
+
+
+
+/* ===================================
+   WITHDRAWAL APPROVAL SYSTEM
+=================================== */
+
+
+document.addEventListener(
+
+"click",
+
+async(e)=>{
+
+
+
+const id =
+e.target.dataset.id;
+
+
+
+if(!id) return;
+
+
+
+if(
+e.target.classList.contains("approve")
+){
+
+
+await updateDoc(
+
+doc(
+db,
+"withdrawals",
+id
+),
+
+{
+
+status:"completed",
+
+processedAt:new Date()
+
+}
+
+);
+
+
+console.log(
+"Withdrawal approved"
 );
 
 
@@ -219,11 +736,48 @@ updateChart();
 
 
 
-let revenueChart;
+if(
+e.target.classList.contains("reject")
+){
 
 
+await updateDoc(
 
-function updateChart(){
+doc(
+db,
+"withdrawals",
+id
+),
+
+{
+
+status:"failed",
+
+processedAt:new Date()
+
+}
+
+);
+
+
+console.log(
+"Withdrawal rejected"
+);
+
+
+}
+
+
+}
+
+);
+
+/* ===================================
+   REVENUE CHART ENGINE
+=================================== */
+
+
+function createRevenueChart(labels, values){
 
 
 const ctx =
@@ -232,9 +786,7 @@ document.getElementById(
 );
 
 
-
 if(!ctx) return;
-
 
 
 if(revenueChart){
@@ -243,6 +795,17 @@ revenueChart.destroy();
 
 }
 
+
+
+if(typeof Chart === "undefined"){
+
+console.error(
+"Chart.js not loaded"
+);
+
+return;
+
+}
 
 
 revenueChart =
@@ -257,17 +820,18 @@ type:"line",
 data:{
 
 
-labels:
-Object.keys(monthlyRevenue),
-
+labels:labels,
 
 
 datasets:[{
 
-label:"Revenue",
+label:"Revenue (KES)",
 
-data:
-Object.values(monthlyRevenue)
+data:values,
+
+tension:.4,
+
+fill:true
 
 }]
 
@@ -276,9 +840,12 @@ Object.values(monthlyRevenue)
 
 options:{
 
+
 responsive:true,
 
+
 plugins:{
+
 
 legend:{
 
@@ -286,9 +853,202 @@ display:true
 
 }
 
-}
+
+},
+
+
+scales:{
+
+
+y:{
+
+
+beginAtZero:true
 
 }
+
+
+}
+
+
+}
+
+
+}
+
+);
+
+
+}
+
+/* ===================================
+   ACTION CENTER
+=================================== */
+
+
+/* REFRESH REVENUE */
+
+const refreshRevenue =
+document.getElementById(
+"refreshRevenue"
+);
+
+
+const refreshDashboard =
+document.getElementById(
+"refreshRevenueDashboard"
+);
+
+
+
+function reloadDashboard(){
+
+location.reload();
+
+}
+
+
+
+if(refreshRevenue){
+
+refreshRevenue.addEventListener(
+"click",
+reloadDashboard
+);
+
+}
+
+
+
+if(refreshDashboard){
+
+refreshDashboard.addEventListener(
+"click",
+reloadDashboard
+);
+
+}
+
+
+
+
+
+/* REFRESH WITHDRAWALS */
+
+
+const refreshWithdrawals =
+document.getElementById(
+"refreshWithdrawals"
+);
+
+
+if(refreshWithdrawals){
+
+refreshWithdrawals.addEventListener(
+"click",
+reloadDashboard
+);
+
+}
+
+
+
+
+
+/* ===================================
+   CSV EXPORT
+=================================== */
+
+
+const exportCSV =
+document.getElementById(
+"exportCSV"
+);
+
+
+
+if(exportCSV){
+
+
+exportCSV.addEventListener(
+"click",
+()=>{
+
+
+const table =
+document.querySelector(
+".transactions-section table"
+);
+
+
+
+let csv = [];
+
+
+table
+.querySelectorAll("tr")
+.forEach(row=>{
+
+
+let rowData=[];
+
+
+row
+.querySelectorAll("th,td")
+.forEach(cell=>{
+
+rowData.push(
+cell.innerText
+.replace(/,/g,"")
+);
+
+});
+
+
+csv.push(
+rowData.join(",")
+);
+
+
+});
+
+
+
+const blob =
+new Blob(
+
+[csv.join("\n")],
+
+{
+type:"text/csv"
+}
+
+);
+
+
+
+const url =
+URL.createObjectURL(blob);
+
+
+
+const link =
+document.createElement("a");
+
+
+link.href=url;
+
+
+link.download =
+"revenue-report.csv";
+
+
+link.click();
+
+
+
+URL.revokeObjectURL(url);
+
 
 }
 
@@ -299,7 +1059,31 @@ display:true
 
 
 
-window.addEventListener(
-"DOMContentLoaded",
-loadRevenue
+
+
+/* ===================================
+   PRINT REPORT
+=================================== */
+
+
+const printReport =
+document.getElementById(
+"printReport"
 );
+
+
+
+if(printReport){
+
+
+printReport.addEventListener(
+"click",
+()=>{
+
+window.print();
+
+}
+
+);
+
+}

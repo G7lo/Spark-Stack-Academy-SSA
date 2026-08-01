@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Announcements | Founder OS
+</title>
+
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link
+rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="announcements.css">
+
+</head>
+
+<body>
+
+<!-- Background -->
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<div class="dashboard-layout">
+
+<!-- Sidebar -->
+
+<aside id="sidebarContainer"></aside>
+
+<div id="sidebarOverlay"></div>
+
+<!-- Main -->
+
+<main class="main-content">
+
+<!-- Topbar -->
+
+<header id="topbarContainer"></header>
+
+<!-- ==========================
+PAGE HEADER
+========================== -->
+
+<section class="page-header glass-card">
+
+<h1>
+
+📢 Announcements
+
+</h1>
+
+<p>
+
+Create, schedule and manage academy-wide announcements.
+
+</p>
+
+</section>
+
+<!-- ==========================
+CREATE ANNOUNCEMENT
+========================== -->
+
+<section class="glass-card section-card">
+
+<h2>
+
+Create Announcement
+
+</h2>
+
+<div class="form-grid">
+
+<div class="input-group">
+
+<label>
+
+Title
+
+</label>
+
+<input
+id="announcementTitle"
+type="text"
+placeholder="Announcement title">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Category
+
+</label>
+
+<select id="announcementCategory">
+
+<option>General</option>
+
+<option>Academic</option>
+
+<option>Exams</option>
+
+<option>Events</option>
+
+<option>System</option>
+
+<option>Emergency</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Message
+
+</label>
+
+<textarea
+id="announcementMessage"
+rows="8"
+placeholder="Write your announcement..."></textarea>
+
+</div>
+
+</section>
+
+<!-- ==========================
+VISIBILITY
+========================== -->
+
+<section class="glass-card section-card">
+
+<h2>
+
+Visibility
+
+</h2>
+
+<div class="form-grid">
+
+<div class="input-group">
+
+<label>
+
+Audience
+
+</label>
+
+<select id="announcementAudience">
+
+<option>Everyone</option>
+
+<option>Students</option>
+
+<option>Instructors</option>
+
+<option>Admins</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Publish Date
+
+</label>
+
+<input
+id="publishDate"
+type="datetime-local">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Expiry Date
+
+</label>
+
+<input
+id="expiryDate"
+type="datetime-local">
+
+</div>
+
+</div>
+
+</section>
+<!-- ===================================
+     OPTIONS
+=================================== -->
+
+<section class="glass-card section-card">
+
+<h2>
+
+Announcement Options
+
+</h2>
+
+<div class="toggle-list">
+
+<div class="toggle-item">
+
+<span>
+
+📌 Pin Announcement
+
+</span>
+
+<input
+type="checkbox"
+id="pinAnnouncement">
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+🔔 Send Push Notification
+
+</span>
+
+<input
+type="checkbox"
+id="sendPush">
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+📧 Send Email Notification
+
+</span>
+
+<input
+type="checkbox"
+id="sendEmail">
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+💬 Show as Dashboard Popup
+
+</span>
+
+<input
+type="checkbox"
+id="showPopup">
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+🚨 Mark as Important
+
+</span>
+
+<input
+type="checkbox"
+id="importantAnnouncement">
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================
+     ACTIONS
+=================================== -->
+
+<div class="action-bar">
+
+<button
+class="secondary-btn"
+id="saveDraftBtn">
+
+💾 Save Draft
+
+</button>
+
+<button
+class="primary-btn"
+id="publishAnnouncementBtn">
+
+🚀 Publish Announcement
+
+</button>
+
+</div>
+
+<!-- ===================================
+     RECENT ANNOUNCEMENTS
+=================================== -->
+
+<section class="glass-card section-card">
+
+<div class="section-header">
+
+<h2>
+
+Recent Announcements
+
+</h2>
+
+<span id="announcementCount">
+
+0 Announcements
+
+</span>
+
+</div>
+
+<div id="announcementList">
+
+<p class="empty-state">
+
+No announcements have been published yet.
+
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script
+type="module"
+src="./js/founder-app.js"></script>
+
+<script
+type="module"
+src="announcements.js"></script>
+
+</body>
+
+</html>

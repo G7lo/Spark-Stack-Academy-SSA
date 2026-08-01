@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Academy Profile | Founder OS</title>
+
+<link rel="stylesheet"
+href="academy-profile.css">
+
+</head>
+
+<body>
+
+<div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside id="sidebarContainer"></aside>
+
+    <div id="sidebarOverlay"></div>
+
+    <main class="main-content">
+
+        <!-- Topbar -->
+        <header id="topbarContainer"></header>
+
+        <!-- Page Header -->
+        <section class="page-header glass-card">
+
+            <h1>🏫 Academy Profile</h1>
+
+            <p>
+                Manage your academy branding,
+                founder information and public profile.
+            </p>
+
+        </section>
+
+        <!-- Branding -->
+        <section class="glass-card section-card">
+
+            <h2>Academy Branding</h2>
+
+            <div class="profile-grid">
+
+                <div class="upload-box">
+
+                    <img
+                    id="logoPreview"
+                    src="https://placehold.co/160x160?text=Logo">
+
+                    <label>Academy Logo</label>
+
+                    <input
+                    type="file"
+                    id="academyLogo"
+                    accept="image/*">
+
+                </div>
+
+                <div class="upload-box">
+
+                    <img
+                    id="bannerPreview"
+                    src="https://placehold.co/500x220?text=Banner">
+
+                    <label>Academy Banner</label>
+
+                    <input
+                    type="file"
+                    id="academyBanner"
+                    accept="image/*">
+
+                </div>
+
+                <div class="upload-box">
+
+                    <img
+                    id="sealPreview"
+                    src="https://placehold.co/160x160?text=Seal">
+
+                    <label>Certificate Seal</label>
+
+                    <input
+                    type="file"
+                    id="academySeal"
+                    accept="image/*">
+
+                </div>
+
+                <div class="upload-box">
+
+                    <img
+                    id="faviconPreview"
+                    src="https://placehold.co/80x80?text=Icon">
+
+                    <label>Favicon</label>
+
+                    <input
+                    type="file"
+                    id="academyFavicon"
+                    accept="image/*">
+
+                </div>
+
+            </div>
+
+            <div class="form-grid">
+
+                <div class="input-group">
+
+                    <label>Academy Name</label>
+
+                    <input
+                    type="text"
+                    id="academyName">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Tagline</label>
+
+                    <input
+                    type="text"
+                    id="academyTagline">
+
+                </div>
+
+                <div class="input-group full">
+
+                    <label>Description</label>
+
+                    <textarea
+                    id="academyDescription"
+                    rows="5"></textarea>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Founder -->
+        <section class="glass-card section-card">
+
+            <h2>Founder Information</h2>
+
+            <div class="profile-grid">
+
+                <div class="upload-box">
+
+                    <img
+                    id="founderPreview"
+                    src="https://placehold.co/160x160?text=Founder">
+
+                    <label>Founder Photo</label>
+
+                    <input
+                    type="file"
+                    id="founderPhoto"
+                    accept="image/*">
+
+                </div>
+
+            </div>
+
+            <div class="form-grid">
+
+                <div class="input-group">
+
+                    <label>Founder Name</label>
+
+                    <input
+                    type="text"
+                    id="founderName">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Founder Title</label>
+
+                    <input
+                    type="text"
+                    id="founderTitle">
+
+                </div>
+
+                <div class="input-group full">
+
+                    <label>Founder Bio</label>
+
+                    <textarea
+                    id="founderBio"
+                    rows="5"></textarea>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Contact -->
+        <section class="glass-card section-card">
+
+            <h2>Contact Information</h2>
+
+            <div class="form-grid">
+
+                <div class="input-group">
+
+                    <label>Email</label>
+
+                    <input
+                    type="email"
+                    id="academyEmail">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Phone</label>
+
+                    <input
+                    type="text"
+                    id="academyPhone">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>WhatsApp</label>
+
+                    <input
+                    type="text"
+                    id="academyWhatsapp">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Website</label>
+
+                    <input
+                    type="text"
+                    id="academyWebsite">
+
+                </div>
+
+                <div class="input-group full">
+
+                    <label>Address</label>
+
+                    <input
+                    type="text"
+                    id="academyAddress">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>City</label>
+
+                    <input
+                    type="text"
+                    id="academyCity">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Country</label>
+
+                    <input
+                    type="text"
+                    id="academyCountry">
+
+                </div>
+
+            </div>
+
+        </section>
+                <!-- Social Media -->
+        <section class="glass-card section-card">
+
+            <h2>🌐 Social Media</h2>
+
+            <div class="form-grid">
+
+                <div class="input-group">
+                    <label>Facebook</label>
+                    <input type="url" id="facebook">
+                </div>
+
+                <div class="input-group">
+                    <label>Instagram</label>
+                    <input type="url" id="instagram">
+                </div>
+
+                <div class="input-group">
+                    <label>X (Twitter)</label>
+                    <input type="url" id="twitter">
+                </div>
+
+                <div class="input-group">
+                    <label>LinkedIn</label>
+                    <input type="url" id="linkedin">
+                </div>
+
+                <div class="input-group">
+                    <label>YouTube</label>
+                    <input type="url" id="youtube">
+                </div>
+
+                <div class="input-group">
+                    <label>TikTok</label>
+                    <input type="url" id="tiktok">
+                </div>
+
+                <div class="input-group full">
+                    <label>GitHub</label>
+                    <input type="url" id="github">
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Academy Settings -->
+        <section class="glass-card section-card">
+
+            <h2>⚙️ Academy Settings</h2>
+
+            <div class="form-grid">
+
+                <div class="input-group">
+
+                    <label>Language</label>
+
+                    <select id="language">
+
+                        <option>English</option>
+                        <option>French</option>
+                        <option>Arabic</option>
+                        <option>Swahili</option>
+
+                    </select>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Currency</label>
+
+                    <select id="currency">
+
+                        <option>KES</option>
+                        <option>USD</option>
+                        <option>EUR</option>
+                        <option>GBP</option>
+
+                    </select>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Time Zone</label>
+
+                    <input
+                    type="text"
+                    id="timezone"
+                    placeholder="Africa/Nairobi">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Student ID Prefix</label>
+
+                    <input
+                    type="text"
+                    id="studentPrefix"
+                    placeholder="SSA-STU">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Certificate Prefix</label>
+
+                    <input
+                    type="text"
+                    id="certificatePrefix"
+                    placeholder="SSA-CERT">
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Academy Statistics -->
+
+        <section class="glass-card section-card">
+
+            <h2>📊 Academy Statistics</h2>
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <h4>Students</h4>
+
+                    <h2 id="totalStudents">0</h2>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <h4>Courses</h4>
+
+                    <h2 id="totalCourses">0</h2>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <h4>Instructors</h4>
+
+                    <h2 id="totalInstructors">0</h2>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <h4>Certificates</h4>
+
+                    <h2 id="totalCertificates">0</h2>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Action Buttons -->
+
+        <section class="action-bar">
+
+            <button
+            class="secondary-btn"
+            id="resetProfileBtn">
+
+                Reset
+
+            </button>
+
+            <button
+            class="primary-btn"
+            id="saveProfileBtn">
+
+                💾 Save Academy Profile
+
+            </button>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script type="module" src="js/founder-app.js"></script>
+
+<script type="module" src="academy-profile.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Notifications | Founder OS
+</title>
+
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+
+<link rel="stylesheet"
+href="notifications.css">
+
+
+</head>
+
+
+<body>
+
+
+<!-- BACKGROUND EFFECTS -->
+
+<div class="bg-orb orb-1"></div>
+
+<div class="bg-orb orb-2"></div>
+
+<div class="bg-orb orb-3"></div>
+
+
+
+<div class="dashboard-layout">
+
+
+
+<!-- ===================================
+     SIDEBAR
+=================================== -->
+
+
+<aside id="sidebarContainer"></aside>
+
+
+<div id="sidebarOverlay"></div>
+
+
+
+
+
+<!-- ===================================
+     MAIN CONTENT
+=================================== -->
+
+
+<main class="main-content">
+
+
+
+
+
+<!-- ===================================
+     TOPBAR
+=================================== -->
+
+
+<header id="topbarContainer"></header>
+
+
+
+
+
+<!-- ===================================
+     PAGE HEADER
+=================================== -->
+
+
+<section class="notification-header glass-card">
+
+
+<div>
+
+
+<h1>
+
+🔔 Notifications Center
+
+</h1>
+
+
+<p>
+
+Manage academy alerts, financial updates,
+security events and system activities.
+
+</p>
+
+
+</div>
+
+
+
+<div class="header-actions">
+
+
+<button
+class="secondary-btn"
+id="markAllRead">
+
+
+✓ Mark All Read
+
+</button>
+
+
+
+<button
+class="primary-btn"
+id="refreshNotifications">
+
+
+🔄 Refresh
+
+</button>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     NOTIFICATION OVERVIEW
+=================================== -->
+
+
+<section class="notification-stats">
+
+
+
+<div class="glass-card notification-stat">
+
+
+<div class="stat-icon">
+
+🔔
+
+</div>
+
+
+<div>
+
+
+<h3>
+Total Notifications
+</h3>
+
+
+<h2 id="totalNotifications">
+
+0
+
+</h2>
+
+
+<p>
+All system alerts
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass-card notification-stat">
+
+
+<div class="stat-icon unread">
+
+📩
+
+</div>
+
+
+<div>
+
+
+<h3>
+Unread
+</h3>
+
+
+<h2 id="unreadNotifications">
+
+0
+
+</h2>
+
+
+<p>
+Require attention
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass-card notification-stat">
+
+
+<div class="stat-icon payment">
+
+💳
+
+</div>
+
+
+<div>
+
+
+<h3>
+Financial Alerts
+</h3>
+
+
+<h2 id="financialNotifications">
+
+0
+
+</h2>
+
+
+<p>
+Payments & wallets
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass-card notification-stat">
+
+
+<div class="stat-icon security">
+
+🔐
+
+</div>
+
+
+<div>
+
+
+<h3>
+Security Alerts
+</h3>
+
+
+<h2 id="securityNotifications">
+
+0
+
+</h2>
+
+
+<p>
+Protection events
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     FILTER BAR
+=================================== -->
+
+
+<section class="glass-card notification-filter">
+
+
+<div class="filter-group">
+
+
+<button
+class="filter-btn active"
+data-filter="all">
+
+All
+
+</button>
+
+
+
+<button
+class="filter-btn"
+data-filter="payment">
+
+💳 Payments
+
+</button>
+
+
+
+<button
+class="filter-btn"
+data-filter="student">
+
+🎓 Students
+
+</button>
+
+
+
+<button
+class="filter-btn"
+data-filter="instructor">
+
+👨‍🏫 Instructors
+
+</button>
+
+
+
+<button
+class="filter-btn"
+data-filter="security">
+
+🔐 Security
+
+</button>
+
+
+
+</div>
+
+
+
+</section>
+
+
+<!-- ===================================
+     NOTIFICATION FEED
+=================================== -->
+
+
+<section class="glass-card notification-panel">
+
+
+<div class="section-header">
+
+
+<div>
+
+
+<h2>
+
+📢 Recent Notifications
+
+</h2>
+
+
+<p>
+
+Live academy updates and important events.
+
+</p>
+
+
+</div>
+
+
+
+<div class="notification-tools">
+
+
+<input
+
+type="search"
+
+id="notificationSearch"
+
+placeholder="Search notifications...">
+
+
+<select id="notificationPriority">
+
+
+<option value="all">
+
+All Priority
+
+</option>
+
+
+<option value="critical">
+
+Critical
+
+</option>
+
+
+<option value="high">
+
+High
+
+</option>
+
+
+<option value="normal">
+
+Normal
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- NOTIFICATION LIST -->
+
+
+<div
+
+class="notification-list"
+
+id="notificationList">
+
+
+
+
+
+<!-- DEFAULT EMPTY STATE -->
+
+
+<div class="empty-state">
+
+
+<div class="empty-icon">
+
+🔔
+
+</div>
+
+
+<h3>
+
+No Notifications Yet
+
+</h3>
+
+
+<p>
+
+Academy activities will appear here automatically.
+
+</p>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ===================================
+     CRITICAL ALERTS
+=================================== -->
+
+
+<section class="glass-card critical-section">
+
+
+
+<div class="section-header">
+
+
+<div>
+
+
+<h2>
+
+🚨 Critical Alerts
+
+</h2>
+
+
+<p>
+
+Important issues requiring immediate action.
+
+</p>
+
+
+</div>
+
+
+<span class="alert-count">
+
+0 Active
+
+</span>
+
+
+</div>
+
+
+
+
+
+<div
+
+class="critical-list"
+
+id="criticalList">
+
+
+
+
+
+<div class="critical-empty">
+
+
+✅
+
+No critical alerts.
+
+</div>
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- ===================================
+     NOTIFICATION TEMPLATE
+=================================== -->
+
+
+<template id="notificationTemplate">
+
+
+
+<div class="notification-card">
+
+
+
+<div class="notification-icon">
+
+
+🔔
+
+
+</div>
+
+
+
+
+<div class="notification-content">
+
+
+
+<div class="notification-top">
+
+
+<h3 class="notification-title">
+
+Title
+
+</h3>
+
+
+<span class="notification-time">
+
+Just now
+
+</span>
+
+
+</div>
+
+
+
+
+
+<p class="notification-message">
+
+Message goes here.
+
+</p>
+
+
+
+
+<div class="notification-footer">
+
+
+
+<span class="notification-type">
+
+System
+
+</span>
+
+
+
+
+<div class="notification-actions">
+
+
+
+<button
+
+class="read-btn">
+
+
+Mark Read
+
+</button>
+
+
+
+<button
+
+class="view-btn">
+
+
+View
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</template>
+
+
+
+
+
+<!-- ===================================
+     LOAD MORE
+=================================== -->
+
+
+<div class="load-more-area">
+
+
+<button
+
+class="secondary-btn"
+
+id="loadMoreNotifications">
+
+
+Load More
+
+</button>
+
+
+</div>
+
+<!-- ===================================
+     NOTIFICATION SETTINGS
+=================================== -->
+
+
+<section class="settings-grid">
+
+
+
+<!-- ALERT PREFERENCES -->
+
+
+<div class="glass-card settings-card">
+
+
+<div class="section-header">
+
+
+<div>
+
+
+<h2>
+
+⚙️ Alert Preferences
+
+</h2>
+
+
+<p>
+
+Control academy notification behavior.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="settings-list">
+
+
+
+
+
+<div class="setting-item">
+
+
+<div>
+
+
+<strong>
+
+Payment Alerts
+
+</strong>
+
+
+<p>
+
+Notify when students complete payments.
+
+</p>
+
+
+</div>
+
+
+
+<label class="switch">
+
+
+<input
+
+type="checkbox"
+
+id="paymentAlerts"
+
+checked>
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="setting-item">
+
+
+<div>
+
+
+<strong>
+
+Student Registration Alerts
+
+</strong>
+
+
+<p>
+
+Receive new student signup notifications.
+
+</p>
+
+
+</div>
+
+
+
+<label class="switch">
+
+
+<input
+
+type="checkbox"
+
+id="studentAlerts"
+
+checked>
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="setting-item">
+
+
+<div>
+
+
+<strong>
+
+Instructor Activity
+
+</strong>
+
+
+<p>
+
+Monitor instructor updates and payouts.
+
+</p>
+
+
+</div>
+
+
+
+<label class="switch">
+
+
+<input
+
+type="checkbox"
+
+id="instructorAlerts"
+
+checked>
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="setting-item">
+
+
+<div>
+
+
+<strong>
+
+Security Notifications
+
+</strong>
+
+
+<p>
+
+Receive login and security warnings.
+
+</p>
+
+
+</div>
+
+
+
+<label class="switch">
+
+
+<input
+
+type="checkbox"
+
+id="securityAlerts"
+
+checked>
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- DELIVERY SETTINGS -->
+
+
+<div class="glass-card settings-card">
+
+
+<div class="section-header">
+
+
+<div>
+
+
+<h2>
+
+📡 Delivery Channels
+
+</h2>
+
+
+<p>
+
+Choose where notifications appear.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="settings-list">
+
+
+
+
+
+<div class="setting-item">
+
+
+<div>
+
+
+<strong>
+
+Dashboard Notifications
+
+</strong>
+
+
+<p>
+
+Show alerts inside Founder OS.
+
+</p>
+
+
+</div>
+
+
+
+<label class="switch">
+
+
+<input
+
+type="checkbox"
+
+id="dashboardNotifications"
+
+checked>
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="setting-item">
+
+
+<div>
+
+
+<strong>
+
+Email Notifications
+
+</strong>
+
+
+<p>
+
+Send important alerts through email.
+
+</p>
+
+
+</div>
+
+
+
+<label class="switch">
+
+
+<input
+
+type="checkbox"
+
+id="emailNotifications">
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="setting-item">
+
+
+<div>
+
+
+<strong>
+
+Critical Alert Mode
+
+</strong>
+
+
+<p>
+
+Always notify for financial/security events.
+
+</p>
+
+
+</div>
+
+
+
+<label class="switch">
+
+
+<input
+
+type="checkbox"
+
+id="criticalMode"
+
+checked>
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+<button
+
+class="primary-btn"
+
+id="saveNotificationSettings">
+
+
+💾 Save Notification Settings
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+</section>
+
+<!-- ===================================
+     NOTIFICATION HISTORY
+=================================== -->
+
+
+<section class="glass-card notification-history">
+
+
+
+<div class="section-header">
+
+
+
+<div>
+
+
+<h2>
+
+📜 Notification History
+
+</h2>
+
+
+<p>
+
+Complete record of academy alerts and events.
+
+</p>
+
+
+</div>
+
+
+
+<div class="header-actions">
+
+
+<button
+
+class="secondary-btn"
+
+id="exportNotifications">
+
+
+📄 Export
+
+</button>
+
+
+
+<button
+
+class="secondary-btn"
+
+id="clearReadNotifications">
+
+
+🗑 Clear Read
+
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="table-responsive">
+
+
+<table>
+
+
+<thead>
+
+
+<tr>
+
+
+<th>
+
+Date
+
+</th>
+
+
+<th>
+
+Title
+
+</th>
+
+
+<th>
+
+Category
+
+</th>
+
+
+<th>
+
+Priority
+
+</th>
+
+
+<th>
+
+Recipient
+
+</th>
+
+
+<th>
+
+Status
+
+</th>
+
+
+<th>
+
+Actions
+
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+
+
+<tbody id="notificationHistoryTable">
+
+
+<tr>
+
+
+<td
+
+colspan="7"
+
+class="empty-table">
+
+
+No notification history available.
+
+
+</td>
+
+
+</tr>
+
+
+
+</tbody>
+
+
+
+</table>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ===================================
+     ADMIN BROADCAST CENTER
+=================================== -->
+
+
+<section class="glass-card broadcast-center">
+
+
+
+<div class="section-header">
+
+
+<div>
+
+
+<h2>
+
+📢 Announcement Center
+
+</h2>
+
+
+<p>
+
+Send important announcements to academy users.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="broadcast-form">
+
+
+
+
+
+<div class="form-group">
+
+
+<label>
+
+Target Audience
+
+</label>
+
+
+
+<select id="broadcastTarget">
+
+
+<option value="all">
+
+All Users
+
+</option>
+
+
+<option value="students">
+
+Students
+
+</option>
+
+
+<option value="instructors">
+
+Instructors
+
+</option>
+
+
+<option value="admins">
+
+Administrators
+
+</option>
+
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="form-group">
+
+
+<label>
+
+Priority
+
+</label>
+
+
+
+<select id="broadcastPriority">
+
+
+<option value="normal">
+
+Normal
+
+</option>
+
+
+<option value="high">
+
+High
+
+</option>
+
+
+<option value="critical">
+
+Critical
+
+</option>
+
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="form-group full-width">
+
+
+<label>
+
+Message Title
+
+</label>
+
+
+
+<input
+
+type="text"
+
+id="broadcastTitle"
+
+placeholder="Enter announcement title...">
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="form-group full-width">
+
+
+<label>
+
+Message Content
+
+</label>
+
+
+
+<textarea
+
+id="broadcastMessage"
+
+rows="5"
+
+placeholder="Write announcement...">
+
+</textarea>
+
+
+
+</div>
+
+
+
+
+
+
+
+<button
+
+class="primary-btn"
+
+id="sendBroadcast">
+
+
+📨 Send Announcement
+
+</button>
+
+
+
+</div>
+
+
+
+</section>
+
+<!-- ===================================
+     NOTIFICATION SECURITY CENTER
+=================================== -->
+
+
+<section class="security-grid">
+
+
+
+<!-- SECURITY STATUS -->
+
+
+<div class="glass-card security-card">
+
+
+
+<div class="section-title">
+
+
+<h2>
+
+🔐 Notification Security
+
+</h2>
+
+
+<p>
+
+Protect notification delivery and prevent unauthorized alerts.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="security-list">
+
+
+
+
+
+<div class="security-item">
+
+
+<span>
+
+Firestore Connection
+
+</span>
+
+
+<span
+
+class="status connected"
+
+id="notificationFirestoreStatus">
+
+
+Connected
+
+</span>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="security-item">
+
+
+<span>
+
+Real-Time Listener
+
+</span>
+
+
+<span
+
+class="status connected"
+
+id="notificationRealtimeStatus">
+
+
+Active
+
+</span>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="security-item">
+
+
+<span>
+
+Unauthorized Broadcast Protection
+
+</span>
+
+
+<span
+
+class="status connected">
+
+
+Enabled
+
+</span>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="security-item">
+
+
+<span>
+
+Current Administrator
+
+</span>
+
+
+<strong id="notificationAdmin">
+
+
+Founder
+
+</strong>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="security-item">
+
+
+<span>
+
+Last Security Check
+
+</span>
+
+
+<strong id="notificationSecurityCheck">
+
+
+Never
+
+</strong>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- NOTIFICATION RULE ENGINE -->
+
+
+<div class="glass-card rules-card">
+
+
+
+<div class="section-title">
+
+
+<h2>
+
+🧠 Notification Rules
+
+</h2>
+
+
+<p>
+
+Automate alerts based on academy events.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="rules-list">
+
+
+
+
+
+<div class="rule-item">
+
+
+<div>
+
+
+<h3>
+
+Payment Detection
+
+</h3>
+
+
+<p>
+
+Automatically notify when payments are received.
+
+</p>
+
+
+</div>
+
+
+
+<label class="switch">
+
+
+<input
+
+type="checkbox"
+
+id="paymentRule"
+
+checked>
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="rule-item">
+
+
+<div>
+
+
+<h3>
+
+Wallet Activity
+
+</h3>
+
+
+<p>
+
+Alert founder on treasury movements.
+
+</p>
+
+
+</div>
+
+
+
+<label class="switch">
+
+
+<input
+
+type="checkbox"
+
+id="walletRule"
+
+checked>
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="rule-item">
+
+
+<div>
+
+
+<h3>
+
+Security Events
+
+</h3>
+
+
+<p>
+
+Monitor suspicious account activity.
+
+</p>
+
+
+</div>
+
+
+
+<label class="switch">
+
+
+<input
+
+type="checkbox"
+
+id="securityRule"
+
+checked>
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="rule-item">
+
+
+<div>
+
+
+<h3>
+
+System Updates
+
+</h3>
+
+
+<p>
+
+Notify administrators about platform changes.
+
+</p>
+
+
+</div>
+
+
+
+<label class="switch">
+
+
+<input
+
+type="checkbox"
+
+id="systemRule"
+
+checked>
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<button
+
+class="primary-btn"
+
+id="saveNotificationRules">
+
+
+💾 Save Rules
+
+</button>
+
+
+
+</div>
+
+
+
+</section>
+
+<!-- ===================================
+     QUICK ACTION BAR
+=================================== -->
+
+
+<div class="action-bar">
+
+
+
+<button
+
+class="secondary-btn"
+
+id="refreshNotificationSystem">
+
+
+🔄 Refresh System
+
+</button>
+
+
+
+
+
+<button
+
+class="secondary-btn"
+
+id="backupNotifications">
+
+
+💾 Backup Notifications
+
+</button>
+
+
+
+
+
+<button
+
+class="secondary-btn"
+
+id="printNotifications">
+
+
+🖨 Print Report
+
+</button>
+
+
+
+
+
+<button
+
+class="primary-btn"
+
+id="saveAllNotificationSettings">
+
+
+💾 Save All Settings
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+</main>
+
+</div>
+
+
+
+
+
+
+<!-- ===================================
+     SCRIPTS
+=================================== -->
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+
+<script
+
+type="module"
+
+src="./js/founder-app.js">
+
+</script>
+
+
+
+<script
+
+type="module"
+
+src="./js/founder-auth.js">
+
+</script>
+
+
+
+<script
+
+type="module"
+
+src="notifications.js">
+
+</script>
+
+
+
+
+
+</body>
+
+</html>

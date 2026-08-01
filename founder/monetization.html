@@ -3,1023 +3,1034 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <title>Monetization | Spark Stack Academy</title>
+<title>
+Monetization | Founder OS
+</title>
 
-    <link rel="stylesheet"
-          href="dashboard.css">
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
 
-    <link rel="stylesheet"
-          href="monetization.css">
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="monetization.css">
 
 </head>
 
 <body>
 
+<!-- Background -->
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
 <div class="dashboard-layout">
 
-    <!-- Sidebar -->
-    <aside id="sidebarContainer"></aside>
+<aside id="sidebarContainer"></aside>
 
-    <div id="sidebarOverlay"></div>
+<div id="sidebarOverlay"></div>
 
-    <!-- Main -->
-    <main class="main-content">
+<main class="main-content">
 
-        <!-- Topbar -->
-        <header id="topbarContainer"></header>
+<header id="topbarContainer"></header>
 
+<!-- ===================================
+     PAGE HEADER
+=================================== -->
 
-        <!-- ==========================
-             PAGE HEADER
-        =========================== -->
+<section class="page-header glass-card">
 
-        <section class="page-header glass-card">
+<div>
 
-            <div>
+<h1>
+💎 Monetization Center
+</h1>
 
-                <h1>
-                    💰 Monetization
-                </h1>
+<p>
 
-                <p>
+Manage every income stream across Spark Stack Academy from one dashboard.
 
-                    Configure premium subscriptions,
-                    pricing, coupons, taxes,
-                    refunds and revenue settings.
-
-                </p>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ==========================
-             OVERVIEW
-        =========================== -->
-
-        <section class="overview-grid">
-
-            <div class="overview-card glass-card">
-
-                <span>Premium Plans</span>
-
-                <h2 id="planCount">
-                    0
-                </h2>
-
-            </div>
-
-
-            <div class="overview-card glass-card">
-
-                <span>Coupons</span>
-
-                <h2 id="couponCount">
-                    0
-                </h2>
-
-            </div>
-
-
-            <div class="overview-card glass-card">
-
-                <span>Currency</span>
-
-                <h2 id="currencyText">
-                    USD
-                </h2>
-
-            </div>
-
-
-            <div class="overview-card glass-card">
-
-                <span>Platform Fee</span>
-
-                <h2 id="platformFee">
-                    0%
-                </h2>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ==========================
-             PREMIUM PLANS
-        =========================== -->
-
-        <section class="section-card glass-card">
-
-            <div class="section-header">
-
-                <h2>
-
-                    ⭐ Premium Membership Plans
-
-                </h2>
-
-                <button
-                    class="primary-btn"
-                    id="newPlanBtn">
-
-                    + New Plan
-
-                </button>
-
-            </div>
-
-
-            <div
-                id="plansContainer"
-                class="plan-grid">
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ==========================
-             COURSE PRICING
-        =========================== -->
-
-        <section class="section-card glass-card">
-
-            <div class="section-header">
-
-                <h2>
-
-                    📚 Course Pricing
-
-                </h2>
-
-                <button
-                    class="primary-btn"
-                    id="editPricingBtn">
-
-                    Edit
-
-                </button>
-
-            </div>
-
-
-            <div class="settings-list">
-
-                <div class="setting-item">
-
-                    <strong>
-
-                        Default Course Price
-
-                    </strong>
-
-                    <span id="coursePrice">
-
-                        Not configured
-
-                    </span>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <strong>
-
-                        Certificate Price
-
-                    </strong>
-
-                    <span id="certificatePrice">
-
-                        Not configured
-
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-
-        <!-- ==========================
-             COUPONS
-        =========================== -->
-
-        <section class="section-card glass-card">
-
-            <div class="section-header">
-
-                <h2>
-
-                    🎟 Coupon Codes
-
-                </h2>
-
-                <button
-                    class="primary-btn"
-                    id="newCouponBtn">
-
-                    + New Coupon
-
-                </button>
-
-            </div>
-
-
-            <div
-                id="couponContainer">
-
-                <p class="empty-state">
-
-                    No coupons created.
-
-                </p>
-
-            </div>
-
-        </section>
-
-
-
-
-        <!-- ==========================
-             REVENUE SHARING
-        =========================== -->
-
-        <section class="section-card glass-card">
-
-            <div class="section-header">
-
-                <h2>
-
-                    💸 Revenue Sharing
-
-                </h2>
-
-            </div>
-
-
-            <div class="settings-list">
-
-                <div class="setting-item">
-
-                    <strong>
-
-                        Instructor Share
-
-                    </strong>
-
-                    <span id="instructorShare">
-
-                        70%
-
-                    </span>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <strong>
-
-                        Academy Share
-
-                    </strong>
-
-                    <span id="academyShare">
-
-                        30%
-
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-
-        <!-- ==========================
-             TAX
-        =========================== -->
-
-        <section class="section-card glass-card">
-
-            <div class="section-header">
-
-                <h2>
-
-                    🧾 Tax Settings
-
-                </h2>
-
-            </div>
-
-
-            <div class="settings-list">
-
-                <div class="setting-item">
-
-                    <strong>
-
-                        Tax Status
-
-                    </strong>
-
-                    <span id="taxStatus">
-
-                        Disabled
-
-                    </span>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <strong>
-
-                        Tax Rate
-
-                    </strong>
-
-                    <span id="taxRate">
-
-                        0%
-
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-
-        <!-- ==========================
-             REFUNDS
-        =========================== -->
-
-        <section class="section-card glass-card">
-
-            <div class="section-header">
-
-                <h2>
-
-                    ↩ Refund Policy
-
-                </h2>
-
-            </div>
-
-
-            <div class="settings-list">
-
-                <div class="setting-item">
-
-                    <strong>
-
-                        Refund Window
-
-                    </strong>
-
-                    <span id="refundWindow">
-
-                        14 Days
-
-                    </span>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <strong>
-
-                        Auto Approval
-
-                    </strong>
-
-                    <span id="refundApproval">
-
-                        Disabled
-
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-
-        <!-- ==========================
-             CURRENCY
-        =========================== -->
-
-        <section class="section-card glass-card">
-
-            <div class="section-header">
-
-                <h2>
-
-                    🌍 Currency
-
-                </h2>
-
-            </div>
-
-
-            <div class="settings-list">
-
-                <div class="setting-item">
-
-                    <strong>
-
-                        Default Currency
-
-                    </strong>
-
-                    <span id="defaultCurrency">
-
-                        USD
-
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-    </main>
+</p>
 
 </div>
+
+<div class="header-actions">
+
+<button
+class="secondary-btn"
+id="exportRevenue">
+
+📤 Export Report
+
+</button>
+
+<button
+class="primary-btn"
+id="saveMonetization">
+
+💾 Save Changes
+
+</button>
+
+</div>
+
+</section>
+
+<!-- ===================================
+     REVENUE OVERVIEW
+=================================== -->
+
+<section class="stats-grid">
+
+<div class="stat-card glass-card">
+
+<span>Total Revenue</span>
+
+<h2 id="totalRevenue">
+KES 0
+</h2>
+
+<small>All-time earnings</small>
+
+</div>
+
+
+<div class="stat-card glass-card">
+
+<span>Monthly Revenue</span>
+
+<h2 id="monthlyRevenue">
+KES 0
+</h2>
+
+<small>Current month</small>
+
+</div>
+
+
+<div class="stat-card glass-card">
+
+<span>Today's Revenue</span>
+
+<h2 id="todayRevenue">
+KES 0
+</h2>
+
+<small>Today's earnings</small>
+
+</div>
+
+
+<div class="stat-card glass-card">
+
+<span>Pending Withdrawals</span>
+
+<h2 id="pendingWithdrawals">
+KES 0
+</h2>
+
+<small>Awaiting payout</small>
+
+</div>
+
+</section>
+<!-- ===================================
+     COURSE PRICING
+=================================== -->
+
+<section class="section-card glass-card">
+
+<h2>
+
+📚 Course Pricing
+
+</h2>
+
+<div class="form-grid">
+
+<div class="input-group">
+
+<label>
+
+Default Course Fee (KES)
+
+</label>
+
+<input
+type="number"
+id="defaultCourseFee"
+placeholder="5000">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Registration Fee (KES)
+
+</label>
+
+<input
+type="number"
+id="registrationFee"
+placeholder="1000">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Examination Fee (KES)
+
+</label>
+
+<input
+type="number"
+id="examFee"
+placeholder="500">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Certificate Fee (KES)
+
+</label>
+
+<input
+type="number"
+id="certificateFee"
+placeholder="1000">
+
+</div>
+
+</div>
+
+</section>
+
 
 
 <!-- ===================================
-     PREMIUM PLAN MODAL
+     PREMIUM SUBSCRIPTIONS
 =================================== -->
 
-<div
-    class="modal"
-    id="planModal">
+<section class="section-card glass-card">
 
-    <div class="modal-content glass-card">
+<h2>
 
-        <div class="section-header">
+⭐ Premium Membership
 
-            <h2 id="planModalTitle">
+</h2>
 
-                New Premium Plan
+<div class="form-grid">
 
-            </h2>
+<div class="input-group">
 
-            <button
-                id="closePlanModal"
-                class="icon-btn">
+<label>
 
-                ✕
+Monthly Plan (KES)
 
-            </button>
+</label>
 
-        </div>
-
-
-        <form id="planForm">
-
-            <div class="form-group">
-
-                <label>
-
-                    Plan Name
-
-                </label>
-
-                <input
-                    type="text"
-                    id="planName"
-                    required
-                    placeholder="Pro Monthly">
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-
-                    Description
-
-                </label>
-
-                <textarea
-                    id="planDescription"
-                    rows="3"
-                    placeholder="Describe this plan..."></textarea>
-
-            </div>
-
-
-            <div class="form-row">
-
-                <div class="form-group">
-
-                    <label>
-
-                        Price
-
-                    </label>
-
-                    <input
-                        type="number"
-                        id="planPrice"
-                        min="0"
-                        step="0.01"
-                        required>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-
-                        Currency
-
-                    </label>
-
-                    <select id="planCurrency">
-
-                        <option>USD</option>
-
-                        <option>KES</option>
-
-                        <option>EUR</option>
-
-                        <option>GBP</option>
-
-                    </select>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-row">
-
-                <div class="form-group">
-
-                    <label>
-
-                        Billing Cycle
-
-                    </label>
-
-                    <select id="billingCycle">
-
-                        <option value="monthly">
-
-                            Monthly
-
-                        </option>
-
-                        <option value="quarterly">
-
-                            Quarterly
-
-                        </option>
-
-                        <option value="yearly">
-
-                            Yearly
-
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-
-                        Badge
-
-                    </label>
-
-                    <input
-                        type="text"
-                        id="planBadge"
-                        placeholder="Popular">
-
-                </div>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-
-                    Features
-                    <small>(one per line)</small>
-
-                </label>
-
-                <textarea
-                    id="planFeatures"
-                    rows="6"
-                    placeholder="Unlimited Premium Courses
-Certificates
-Priority Support"></textarea>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-
-                    Accent Color
-
-                </label>
-
-                <input
-                    type="color"
-                    id="planColor"
-                    value="#2563eb">
-
-            </div>
-
-
-            <label class="switch">
-
-                <input
-                    type="checkbox"
-                    id="planActive"
-                    checked>
-
-                <span>
-
-                    Active Plan
-
-                </span>
-
-            </label>
-
-
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    id="cancelPlanBtn">
-
-                    Cancel
-
-                </button>
-
-                <button
-                    type="submit"
-                    class="primary-btn">
-
-                    Save Plan
-
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
+<input
+type="number"
+id="premiumMonthly"
+placeholder="500">
 
 </div>
+
+<div class="input-group">
+
+<label>
+
+Quarterly Plan (KES)
+
+</label>
+
+<input
+type="number"
+id="premiumQuarterly"
+placeholder="1350">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Annual Plan (KES)
+
+</label>
+
+<input
+type="number"
+id="premiumYearly"
+placeholder="4500">
+
+</div>
+
+</div>
+
+<div class="toggle-list">
+
+<div class="toggle-item">
+
+<span>
+
+Enable Premium Membership
+
+</span>
+
+<input
+type="checkbox"
+id="enablePremium"
+checked>
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+Allow Premium Certificates
+
+</span>
+
+<input
+type="checkbox"
+id="premiumCertificates"
+checked>
+
+</div>
+
+</div>
+
+</section>
+
+
 
 <!-- ===================================
-     COUPON MODAL
+     PAYMENT GATEWAYS
 =================================== -->
 
-<div
-    class="modal"
-    id="couponModal">
+<section class="section-card glass-card">
 
-    <div class="modal-content glass-card">
+<h2>
 
-        <div class="section-header">
+💳 Payment Gateways
 
-            <h2>
+</h2>
 
-                New Coupon
+<div class="toggle-list">
 
-            </h2>
+<div class="toggle-item">
 
-            <button
-                id="closeCouponModal"
-                class="icon-btn">
+<span>
 
-                ✕
+Enable M-Pesa
 
-            </button>
+</span>
 
-        </div>
-
-        <form id="couponForm">
-
-            <div class="form-group">
-
-                <label>
-
-                    Coupon Code
-
-                </label>
-
-                <input
-                    type="text"
-                    id="couponCode"
-                    placeholder="WELCOME20"
-                    required>
-
-            </div>
-
-
-            <div class="form-row">
-
-                <div class="form-group">
-
-                    <label>
-
-                        Discount Type
-
-                    </label>
-
-                    <select id="couponType">
-
-                        <option value="percentage">
-
-                            Percentage
-
-                        </option>
-
-                        <option value="fixed">
-
-                            Fixed Amount
-
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-
-                        Value
-
-                    </label>
-
-                    <input
-                        type="number"
-                        id="couponValue"
-                        min="0"
-                        required>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-row">
-
-                <div class="form-group">
-
-                    <label>
-
-                        Expiry Date
-
-                    </label>
-
-                    <input
-                        type="date"
-                        id="couponExpiry">
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-
-                        Usage Limit
-
-                    </label>
-
-                    <input
-                        type="number"
-                        id="couponLimit"
-                        min="1"
-                        placeholder="Unlimited">
-
-                </div>
-
-            </div>
-
-
-            <label class="switch">
-
-                <input
-                    type="checkbox"
-                    id="couponActive"
-                    checked>
-
-                <span>
-
-                    Active Coupon
-
-                </span>
-
-            </label>
-
-
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    id="cancelCouponBtn">
-
-                    Cancel
-
-                </button>
-
-                <button
-                    type="submit"
-                    class="primary-btn">
-
-                    Save Coupon
-
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
+<input
+type="checkbox"
+id="enableMpesa"
+checked>
 
 </div>
+
+<div class="toggle-item">
+
+<span>
+
+Enable Card Payments
+
+</span>
+
+<input
+type="checkbox"
+id="enableCards">
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+Enable PayPal
+
+</span>
+
+<input
+type="checkbox"
+id="enablePaypal">
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+Enable Bank Transfer
+
+</span>
+
+<input
+type="checkbox"
+id="enableBank">
+
+</div>
+
+</div>
+
+</section>
+<!-- ===================================
+     INSTRUCTOR EARNINGS
+=================================== -->
+
+<section class="section-card glass-card">
+
+<h2>
+
+👨‍🏫 Instructor Earnings
+
+</h2>
+
+<div class="form-grid">
+
+<div class="input-group">
+
+<label>
+
+Instructor Revenue Share (%)
+
+</label>
+
+<input
+type="number"
+id="instructorShare"
+min="0"
+max="100"
+value="70">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Platform Commission (%)
+
+</label>
+
+<input
+type="number"
+id="platformCommission"
+min="0"
+max="100"
+value="30">
+
+</div>
+
+</div>
+
+<div class="toggle-list">
+
+<div class="toggle-item">
+
+<span>
+
+Enable Instructor Earnings
+
+</span>
+
+<input
+type="checkbox"
+id="enableInstructorEarnings"
+checked>
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+Automatic Monthly Payouts
+
+</span>
+
+<input
+type="checkbox"
+id="automaticPayouts">
+
+</div>
+
+</div>
+
+</section>
+
+
 
 <!-- ===================================
-     COURSE PRICING MODAL
+     DISCOUNTS & COUPONS
 =================================== -->
 
-<div class="modal" id="pricingModal">
+<section class="section-card glass-card">
 
-    <div class="modal-content glass-card">
+<h2>
 
-        <div class="section-header">
+🎟 Discounts & Coupons
 
-            <h2>
-                📚 Course Pricing Settings
-            </h2>
+</h2>
 
-            <button
-                id="closePricingModal"
-                class="icon-btn">
+<div class="form-grid">
 
-                ✕
+<div class="input-group">
 
-            </button>
+<label>
 
-        </div>
+Maximum Discount (%)
 
+</label>
 
-        <form id="pricingForm">
-
-
-            <div class="form-row">
-
-                <div class="form-group">
-
-                    <label>
-                        Default Course Price
-                    </label>
-
-                    <input
-                        type="number"
-                        id="coursePriceInput"
-                        placeholder="49.99">
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Currency
-                    </label>
-
-                    <select id="pricingCurrency">
-
-                        <option value="USD">
-                            USD
-                        </option>
-
-                        <option value="KES">
-                            KES
-                        </option>
-
-                        <option value="EUR">
-                            EUR
-                        </option>
-
-                    </select>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Certificate Price
-                </label>
-
-                <input
-                    type="number"
-                    id="certificatePriceInput"
-                    placeholder="10">
-
-            </div>
-
-
-            <label class="switch">
-
-                <input
-                    type="checkbox"
-                    id="freeCoursesToggle">
-
-                <span>
-                    Allow Free Courses
-                </span>
-
-            </label>
-
-
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    id="cancelPricingBtn">
-
-                    Cancel
-
-                </button>
-
-
-                <button
-                    type="submit"
-                    class="primary-btn">
-
-                    Save Pricing
-
-                </button>
-
-            </div>
-
-
-        </form>
-
-    </div>
+<input
+type="number"
+id="maxDiscount"
+value="50">
 
 </div>
+
+<div class="input-group">
+
+<label>
+
+Coupon Expiry (Days)
+
+</label>
+
+<input
+type="number"
+id="couponExpiry"
+value="30">
+
+</div>
+
+</div>
+
+<div class="toggle-list">
+
+<div class="toggle-item">
+
+<span>
+
+Enable Coupons
+
+</span>
+
+<input
+type="checkbox"
+id="enableCoupons"
+checked>
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+Allow Scholarship Discounts
+
+</span>
+
+<input
+type="checkbox"
+id="scholarships"
+checked>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ===================================
+     WITHDRAWALS
+=================================== -->
+
+<section class="section-card glass-card">
+
+<h2>
+
+💸 Withdrawal Settings
+
+</h2>
+
+<div class="form-grid">
+
+<div class="input-group">
+
+<label>
+
+Minimum Withdrawal (KES)
+
+</label>
+
+<input
+type="number"
+id="minimumWithdrawal"
+value="1000">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Withdrawal Fee (%)
+
+</label>
+
+<input
+type="number"
+id="withdrawalFee"
+value="2">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Processing Time
+
+</label>
+
+<select
+id="withdrawalTime">
+
+<option>
+Instant
+</option>
+
+<option>
+24 Hours
+</option>
+
+<option>
+48 Hours
+</option>
+
+<option>
+72 Hours
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="toggle-list">
+
+<div class="toggle-item">
+
+<span>
+
+Enable Withdrawals
+
+</span>
+
+<input
+type="checkbox"
+id="enableWithdrawals"
+checked>
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+Require Founder Approval
+
+</span>
+
+<input
+type="checkbox"
+id="withdrawalApproval"
+checked>
+
+</div>
+
+</div>
+
+</section>
+<!-- ===================================
+     REVENUE ANALYTICS
+=================================== -->
+
+<section class="section-card glass-card">
+
+<h2>
+
+📈 Revenue Analytics
+
+</h2>
+
+<div class="toggle-list">
+
+<div class="toggle-item">
+
+<span>
+
+Enable Revenue Dashboard
+
+</span>
+
+<input
+type="checkbox"
+id="enableRevenueDashboard"
+checked>
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+Track Student Purchases
+
+</span>
+
+<input
+type="checkbox"
+id="trackStudentPurchases"
+checked>
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+Track Instructor Earnings
+
+</span>
+
+<input
+type="checkbox"
+id="trackInstructorRevenue"
+checked>
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+Generate Monthly Reports
+
+</span>
+
+<input
+type="checkbox"
+id="monthlyRevenueReports"
+checked>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ===================================
+     TAX & BILLING
+=================================== -->
+
+<section class="section-card glass-card">
+
+<h2>
+
+🧾 Tax & Billing
+
+</h2>
+
+<div class="form-grid">
+
+<div class="input-group">
+
+<label>
+
+VAT (%)
+
+</label>
+
+<input
+type="number"
+id="vatRate"
+value="16">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Billing Cycle
+
+</label>
+
+<select
+id="billingCycle">
+
+<option>
+
+Monthly
+
+</option>
+
+<option>
+
+Quarterly
+
+</option>
+
+<option>
+
+Yearly
+
+</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Invoice Prefix
+
+</label>
+
+<input
+type="text"
+id="invoicePrefix"
+value="SSA-INV">
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ===================================
+     CURRENCY SETTINGS
+=================================== -->
+
+<section class="section-card glass-card">
+
+<h2>
+
+🌍 Currency Configuration
+
+</h2>
+
+<div class="form-grid">
+
+<div class="input-group">
+
+<label>
+
+Default Currency
+
+</label>
+
+<select
+id="defaultCurrency">
+
+<option>
+KES
+</option>
+
+<option>
+USD
+</option>
+
+<option>
+EUR
+</option>
+
+<option>
+GBP
+</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Currency Symbol
+
+</label>
+
+<input
+type="text"
+id="currencySymbol"
+value="KSh">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Decimal Places
+
+</label>
+
+<input
+type="number"
+id="decimalPlaces"
+value="2">
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ===================================
+     DANGER ZONE
+=================================== -->
+
+<section class="section-card danger-zone">
+
+<h2>
+
+🚨 Danger Zone
+
+</h2>
+
+<p>
+
+These actions affect your academy's financial system.
+Proceed carefully.
+
+</p>
+
+<div class="danger-actions">
+
+<button
+class="danger-btn"
+id="resetMonetization">
+
+Reset Monetization
+
+</button>
+
+<button
+class="danger-btn"
+id="clearTransactions">
+
+Clear Transactions
+
+</button>
+
+<button
+class="danger-btn"
+id="disablePayments">
+
+Disable Payments
+
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- ===================================
+     ACTION BAR
+=================================== -->
+
+<div class="action-bar">
+
+<button
+class="secondary-btn"
+id="exportMonetization">
+
+📤 Export
+
+</button>
+
+<button
+class="secondary-btn"
+id="importMonetization">
+
+📥 Import
+
+</button>
+
+<button
+class="secondary-btn"
+id="restoreDefaults">
+
+♻️ Restore Defaults
+
+</button>
+
+<button
+class="primary-btn"
+id="saveMonetization">
+
+💾 Save Monetization
+
+</button>
+
+</div>
+
+
+
+</main>
+
+</div>
+
 
 
 <script
+src="https://unpkg.com/lucide@latest">
+</script>
+
+<script
 type="module"
-src="js/founder-app.js">
+src="./js/founder-app.js">
 </script>
 
 <script

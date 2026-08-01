@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Certificate Settings | Founder OS
+</title>
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="certificates.css">
+
+</head>
+
+<body>
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<div class="dashboard-layout">
+
+<aside id="sidebarContainer"></aside>
+
+<div id="sidebarOverlay"></div>
+
+<main class="main-content">
+
+<header id="topbarContainer"></header>
+
+<section class="page-header glass-card">
+
+<h1>
+
+📜 Certificate Settings
+
+</h1>
+
+<p>
+
+Customize academy certificates, verification and issuance settings.
+
+</p>
+
+</section>
+
+<section class="glass-card section-card">
+
+<h2>
+
+Certificate Information
+
+</h2>
+
+<div class="form-grid">
+
+<div class="input-group">
+
+<label>
+
+Certificate Title
+
+</label>
+
+<input
+type="text"
+id="certificateTitle"
+placeholder="Spark Stack Academy Certificate">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Certificate Prefix
+
+</label>
+
+<input
+type="text"
+id="certificatePrefix"
+placeholder="SSA">
+
+</div>
+
+</div>
+
+</section>
+
+<section class="glass-card section-card">
+
+<h2>
+
+Digital Signatures
+
+</h2>
+
+<div class="form-grid">
+
+<div class="input-group">
+
+<label>
+
+Founder Name
+
+</label>
+
+<input
+type="text"
+id="founderName">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Founder Title
+
+</label>
+
+<input
+type="text"
+id="founderTitle"
+placeholder="Founder & CEO">
+
+</div>
+
+</div>
+
+</section>
+
+<section class="glass-card section-card">
+
+<h2>
+
+Certificate Options
+
+</h2>
+
+<div class="toggle-list">
+
+<div class="toggle-item">
+
+<span>
+
+Enable QR Verification
+
+</span>
+
+<input
+type="checkbox"
+id="enableQR">
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+Auto Issue Certificates
+
+</span>
+
+<input
+type="checkbox"
+id="autoIssue">
+
+</div>
+
+<div class="toggle-item">
+
+<span>
+
+Allow Certificate Downloads
+
+</span>
+
+<input
+type="checkbox"
+id="allowDownloads">
+
+</div>
+
+</div>
+
+</section>
+<!-- ===================================
+     ACTIONS
+=================================== -->
+
+<div class="action-bar">
+
+<button
+class="primary-btn"
+id="saveCertificateSettings">
+
+💾 Save Settings
+
+</button>
+
+</div>
+
+<!-- ===================================
+     CERTIFICATE STATISTICS
+=================================== -->
+
+<section class="glass-card section-card">
+
+<div class="section-header">
+
+<h2>
+
+📊 Certificate Statistics
+
+</h2>
+
+</div>
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<h4>
+
+Issued
+
+</h4>
+
+<h2 id="issuedCertificates">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>
+
+Verified
+
+</h4>
+
+<h2 id="verifiedCertificates">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>
+
+Pending
+
+</h4>
+
+<h2 id="pendingCertificates">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>
+
+Downloads
+
+</h4>
+
+<h2 id="certificateDownloads">
+
+0
+
+</h2>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================
+     RECENT CERTIFICATES
+=================================== -->
+
+<section class="glass-card section-card">
+
+<div class="section-header">
+
+<h2>
+
+📜 Recent Certificates
+
+</h2>
+
+<span id="certificateCount">
+
+0 Certificates
+
+</span>
+
+</div>
+
+<div id="certificateList">
+
+<p class="empty-state">
+
+No certificates have been issued yet.
+
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script
+type="module"
+src="./js/founder-app.js"></script>
+
+<script
+type="module"
+src="certificates.js"></script>
+
+</body>
+
+</html>

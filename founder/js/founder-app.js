@@ -12,10 +12,15 @@ import {
 
 import {
     doc,
-    getDoc
+    getDoc,
+    collection,
+    query,
+    where,
+    orderBy,
+    limit,
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import "../../js/theme.js";
+// import "../../js/theme.js";
 
 console.log("🚀 Founder Core Initialized");
 
@@ -89,15 +94,17 @@ window.addEventListener(
 
             await Promise.all([
 
-                loadSidebar(),
+    loadSidebar(),
 
-                loadTopbar()
+    loadTopbar()
 
-            ]);
+]);
 
-            highlightActivePage();
+setupSidebar();
 
-            loadFounder();
+highlightActivePage();
+
+loadFounder();
 
         }
 
@@ -162,45 +169,39 @@ async function loadComponent({
 
 }
 
-/* ===================================
-   LOAD SIDEBAR
-=================================== */
-
 async function loadSidebar(){
 
-    await loadComponent({
+console.log("Loading sidebar...");
 
-        containerId:"sidebarContainer",
+await loadComponent({
 
-        html:"components/sidebar.html",
+containerId:"sidebarContainer",
 
-        css:"components/sidebar.css",
+html:"components/sidebar.html",
 
-        callback:highlightActivePage
+css:"components/sidebar.css",
 
-    });
+callback:highlightActivePage
+
+});
 
 }
-
-/* ===================================
-   LOAD TOPBAR
-=================================== */
 
 async function loadTopbar(){
 
     await loadComponent({
 
-        containerId:"topbarContainer",
+        containerId: "topbarContainer",
 
-        html:"components/topbar.html",
+        html: "components/topbar.html",
 
-        css:"components/topbar.css",
+        css: "components/topbar.css",
 
-        callback:()=>{
-
-    setupSidebar();
+        callback: () => {
 
     setupTopbar();
+
+    lucide.createIcons();
 
 }
 
@@ -213,6 +214,7 @@ async function loadTopbar(){
 =================================== */
 
 function setupSidebar(){
+  console.log("Sidebar initialized");
 
     const menuBtn =
         document.getElementById("menuBtn");
@@ -300,10 +302,9 @@ function setupTopbar(){
 
     // Search
 
-    const search =
-        document.getElementById(
-            "founderSearch"
-        );
+    const search = document.getElementById(
+    "globalSearch"
+);
 
 
     if(search){
@@ -330,29 +331,68 @@ function setupTopbar(){
     }
 
 
-    // Notifications
+// Notifications
 
-    const notificationBtn =
-        document.getElementById(
-            "notificationsBtn"
-        );
+const notificationBtn =
+document.getElementById(
+"notificationsBtn"
+);
 
 
-    if(notificationBtn){
+if(notificationBtn){
 
-        notificationBtn.addEventListener(
-            "click",
-            ()=>{
+notificationBtn.addEventListener(
+"click",
+()=>{
 
-                console.log(
-                    "Notifications clicked"
-                );
 
-            }
-        );
+const dropdown =
+document.getElementById(
+"notificationDropdown"
+);
 
-    }
 
+if(dropdown){
+
+dropdown.classList.toggle(
+"active"
+);
+
+}
+
+
+}
+
+);
+
+}
+
+
+
+// View All Notifications
+
+const viewAllBtn =
+document.getElementById(
+"viewAllNotifications"
+);
+
+
+if(viewAllBtn){
+
+viewAllBtn.addEventListener(
+"click",
+()=>{
+
+
+window.location.href =
+"notifications/notifications.html";
+
+
+}
+
+);
+
+}
 }
 /* ===================================
    LOAD FOUNDER PROFILE
@@ -375,7 +415,12 @@ function loadFounder(){
                 return;
 
             }
-
+            listenToNotifications(
+user.uid
+);
+loadTopNotifications(
+user.uid
+);
 
             try{
 
@@ -570,6 +615,333 @@ function updateFounderUI(founder){
 
 
     window.founderData = founder;
+
+}
+
+/* ===================================
+   REALTIME NOTIFICATION BADGE
+=================================== */
+
+
+function listenToNotifications(uid){
+
+
+const badge =
+document.getElementById(
+"notificationCount"
+);
+
+
+
+const notificationQuery =
+query(
+
+collection(
+db,
+"notifications"
+),
+
+where(
+"userId",
+"==",
+uid
+)
+
+);
+
+
+
+onSnapshot(
+
+notificationQuery,
+
+(snapshot)=>{
+
+
+let isNewNotification = false;
+
+
+snapshot.docChanges().forEach(change=>{
+
+
+if(change.type === "added"){
+
+
+const data =
+change.doc.data();
+
+
+
+if(
+data.createdAt &&
+Date.now() -
+data.createdAt.toDate().getTime()
+< 10000
+){
+
+isNewNotification = true;
+
+}
+
+
+}
+
+
+});
+
+
+
+if(isNewNotification){
+
+playNotificationSound();
+
+}
+
+
+let unread = 0;
+
+
+
+snapshot.forEach(doc=>{
+
+
+const data =
+doc.data();
+
+
+
+if(data.read === false){
+
+unread++;
+
+}
+
+
+});
+
+
+
+
+if(badge){
+
+
+badge.textContent =
+unread;
+
+
+
+badge.style.display =
+unread > 0
+? "flex"
+: "none";
+
+
+}
+
+
+
+}
+
+);
+
+
+
+}
+/* ===================================
+   TOPBAR NOTIFICATION DROPDOWN
+=================================== */
+
+
+function loadTopNotifications(uid){
+
+
+const list =
+document.getElementById(
+"topNotificationsList"
+);
+
+
+const unread =
+document.getElementById(
+"dropdownUnread"
+);
+
+
+
+if(!list) return;
+
+
+
+const notificationQuery = query(
+
+collection(
+db,
+"notifications"
+),
+
+where(
+"userId",
+"==",
+uid
+),
+
+orderBy(
+"createdAt",
+"desc"
+),
+
+limit(5)
+
+);
+
+
+
+
+onSnapshot(
+
+notificationQuery,
+
+(snapshot)=>{
+
+
+list.innerHTML="";
+
+
+let unreadCount = 0;
+
+
+
+if(snapshot.empty){
+
+
+list.innerHTML = `
+
+<p class="empty-notifications">
+
+No new notifications
+
+</p>
+
+`;
+
+return;
+
+
+}
+
+
+
+
+snapshot.forEach((doc)=>{
+
+
+const data =
+doc.data();
+
+
+
+if(data.read === false){
+
+unreadCount++;
+
+}
+
+
+
+const item =
+document.createElement("div");
+
+
+
+item.className =
+"top-notification-item";
+
+
+
+item.innerHTML = `
+
+<div class="top-notification-icon">
+
+🔔
+
+</div>
+
+
+<div class="top-notification-content">
+
+<h4>
+
+${data.title || "Notification"}
+
+</h4>
+
+
+<p>
+
+${data.message || ""}
+
+</p>
+
+</div>
+
+`;
+
+
+
+list.appendChild(item);
+
+
+
+});
+
+
+
+if(unread){
+
+unread.textContent =
+unreadCount;
+
+}
+
+
+}
+
+
+);
+
+
+
+}
+/* ===================================
+   NOTIFICATION SOUND ENGINE
+=================================== */
+
+
+function playNotificationSound(){
+
+
+const audio =
+new Audio(
+"notifications/assets/sounds/notification.mp3"
+);
+
+
+
+audio.volume = 0.5;
+
+
+
+audio.play()
+
+.catch(error=>{
+
+console.log(
+"Sound waiting for user interaction",
+error
+);
+
+});
+
 
 }
 /* ===================================

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Admissions | Spark Stack Academy</title>
+
+<link rel="stylesheet" href="admissions.css">
+
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+</head>
+
+
+<body>
+
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+
+
+<div class="dashboard-layout">
+
+
+
+<aside id="sidebarContainer"></aside>
+
+<div id="sidebarOverlay"></div>
+
+
+
+<main class="main-content">
+
+
+<header id="topbarContainer"></header>
+
+
+
+<!-- HERO -->
+
+<section class="page-hero glass-card">
+
+
+<div class="hero-content">
+
+
+<div class="hero-badge">
+
+📝 Admission Management
+
+</div>
+
+
+
+<h1>
+
+Student Admissions
+
+</h1>
+
+
+
+<p>
+
+Review applications, approve students,
+generate admission numbers and create
+student portal accounts.
+
+</p>
+
+
+</div>
+
+
+
+<div class="hero-actions">
+
+
+<button class="primary-btn"
+id="refreshAdmissions">
+
+🔄 Refresh
+
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- STATS -->
+
+
+<section class="stats-grid">
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<span>
+Pending
+</span>
+
+<div class="stat-icon gold">
+⏳
+</div>
+
+</div>
+
+
+<h2 id="pendingCount">
+0
+</h2>
+
+
+<small>
+Waiting Review
+</small>
+
+
+</div>
+
+
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<span>
+Approved
+</span>
+
+<div class="stat-icon green">
+✅
+</div>
+
+</div>
+
+
+<h2 id="approvedCount">
+0
+</h2>
+
+
+<small>
+Successful Admissions
+</small>
+
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<span>
+Rejected
+</span>
+
+<div class="stat-icon red">
+❌
+</div>
+
+</div>
+
+
+<h2 id="rejectedCount">
+0
+</h2>
+
+
+<small>
+Declined Applications
+</small>
+
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<span>
+Total Applications
+</span>
+
+<div class="stat-icon blue">
+📚
+</div>
+
+</div>
+
+
+<h2 id="totalCount">
+0
+</h2>
+
+
+<small>
+All Applications
+</small>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<!-- TABLE -->
+
+
+<section class="students-table glass-card">
+
+
+<div class="table-header">
+
+
+<h3>
+
+📋 Applications
+
+</h3>
+
+
+<span id="applicationTotal">
+
+0 Applications
+
+</span>
+
+
+</div>
+
+
+
+
+
+<div class="table-responsive">
+
+
+<table>
+
+
+<thead>
+
+
+<tr>
+
+<th>
+Applicant
+</th>
+
+<th>
+Course
+</th>
+
+<th>
+Email
+</th>
+
+<th>
+Status
+</th>
+
+<th>
+Date
+</th>
+
+<th>
+Actions
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="applicationsTable">
+
+
+<tr>
+
+<td colspan="6">
+
+Loading applications...
+
+</td>
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</section>
+
+
+
+
+</main>
+
+
+</div>
+
+
+
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+<script type="module"
+src="./js/founder-app.js"></script>
+
+
+<script type="module"
+src="admissions.js"></script>
+
+
+
+</body>
+
+</html>

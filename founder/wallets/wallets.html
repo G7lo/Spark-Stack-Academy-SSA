@@ -1,0 +1,3826 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Academy Wallets | Founder OS
+</title>
+
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+
+<link rel="stylesheet"
+href="wallets.css">
+
+</head>
+
+
+<body>
+
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+
+
+<div class="dashboard-layout">
+
+
+
+<!-- SIDEBAR -->
+
+<aside id="sidebarContainer"></aside>
+
+<div id="sidebarOverlay"></div>
+
+
+
+
+<!-- MAIN CONTENT -->
+
+<main class="main-content">
+
+
+
+<!-- TOPBAR -->
+
+<header id="topbarContainer"></header>
+
+
+
+
+<!-- ===================================
+     WALLET HEADER
+=================================== -->
+
+
+<section class="wallet-header glass-card">
+
+
+<div>
+
+
+<h1>
+🏦 Academy Wallets
+</h1>
+
+
+<p>
+
+Secure treasury management for Founder OS.
+Manage academy funds, instructor wallets,
+internal transfers and financial operations.
+
+</p>
+
+
+</div>
+
+
+
+
+<div class="wallet-actions">
+
+
+<button
+class="secondary-btn"
+id="exportFinance">
+
+📄 Export
+
+</button>
+
+
+
+<button
+class="primary-btn"
+id="refreshWallets">
+
+🔄 Refresh
+
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     FINANCIAL OVERVIEW
+=================================== -->
+
+
+<section class="wallet-stats">
+
+
+
+<div class="glass-card stat-card">
+
+
+<div class="stat-icon treasury">
+
+🏦
+
+</div>
+
+
+<div>
+
+<h3>
+Academy Treasury
+</h3>
+
+
+<h2 id="treasuryBalance">
+
+KES 0
+
+</h2>
+
+
+<p>
+
+Available Funds
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass-card stat-card">
+
+
+<div class="stat-icon founder">
+
+👑
+
+</div>
+
+
+<div>
+
+<h3>
+Founder Wallet
+</h3>
+
+
+<h2 id="founderBalance">
+
+KES 0
+
+</h2>
+
+
+<p>
+
+Current Balance
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass-card stat-card">
+
+
+<div class="stat-icon instructors">
+
+👨‍🏫
+
+</div>
+
+
+<div>
+
+<h3>
+Instructor Wallets
+</h3>
+
+
+<h2 id="instructorBalance">
+
+KES 0
+
+</h2>
+
+
+<p>
+
+Combined Balance
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass-card stat-card">
+
+
+<div class="stat-icon transfers">
+
+🔄
+
+</div>
+
+
+<div>
+
+<h3>
+Transfers Today
+</h3>
+
+
+<h2 id="transferCount">
+
+0
+
+</h2>
+
+
+<p>
+
+Successful Transfers
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+</section>
+<!-- ===================================
+     TREASURY CONTROL CENTER
+=================================== -->
+
+
+<section class="treasury-grid">
+
+
+<!-- TREASURY OVERVIEW -->
+
+
+<div class="glass-card treasury-card">
+
+
+<div class="section-title">
+
+
+<h2>
+🏦 Academy Treasury
+</h2>
+
+
+<p>
+
+Central financial vault for all academy funds.
+
+</p>
+
+
+</div>
+
+
+
+<div class="treasury-balance">
+
+
+<h1 id="treasuryAvailable">
+
+KES 0
+
+</h1>
+
+
+<span>
+
+Available Balance
+
+</span>
+
+
+</div>
+
+
+
+
+<div class="treasury-stats">
+
+
+
+<div>
+
+<h4>
+Reserved Funds
+</h4>
+
+<p id="reservedFunds">
+
+KES 0
+
+</p>
+
+</div>
+
+
+
+<div>
+
+<h4>
+Pending Withdrawals
+</h4>
+
+<p id="pendingWithdrawals">
+
+KES 0
+
+</p>
+
+</div>
+
+
+
+<div>
+
+<h4>
+Monthly Revenue
+</h4>
+
+<p id="monthlyRevenue">
+
+KES 0
+
+</p>
+
+</div>
+
+
+
+<div>
+
+<h4>
+Last Reconciliation
+</h4>
+
+<p id="lastReconciliation">
+
+Never
+
+</p>
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- QUICK TREASURY ACTIONS -->
+
+
+<div class="glass-card treasury-actions">
+
+
+<h2>
+⚡ Quick Treasury Actions
+</h2>
+
+
+<p>
+
+Move funds securely within the academy.
+
+</p>
+
+
+
+<button
+class="primary-btn"
+id="depositFunds">
+
+💰 Deposit Funds
+
+</button>
+
+
+
+<button
+class="secondary-btn"
+id="withdrawFunds">
+
+💸 Withdraw Funds
+
+</button>
+
+
+
+<button
+class="secondary-btn"
+id="transferFunds">
+
+🔄 Internal Transfer
+
+</button>
+
+
+
+<button
+class="secondary-btn"
+id="reconcileAccounts">
+
+📊 Reconcile Accounts
+
+</button>
+
+
+
+<button
+class="secondary-btn"
+id="backupFinance">
+
+💾 Backup Finance
+
+</button>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     INSTRUCTOR WALLETS
+=================================== -->
+
+
+<section class="glass-card instructor-wallets">
+
+
+
+<div class="section-header">
+
+
+<div>
+
+
+<h2>
+👨‍🏫 Instructor Wallets
+</h2>
+
+
+<p>
+
+Manage instructor balances, payroll and wallet security.
+
+</p>
+
+
+</div>
+
+
+
+<div class="header-actions">
+
+
+<input
+type="search"
+id="walletSearch"
+placeholder="Search instructor...">
+
+
+<select id="walletFilter">
+
+
+<option value="all">
+
+All Wallets
+
+</option>
+
+
+<option value="active">
+
+Active
+
+</option>
+
+
+<option value="frozen">
+
+Frozen
+
+</option>
+
+
+<option value="empty">
+
+Zero Balance
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="table-responsive">
+
+
+<table>
+
+
+<thead>
+
+
+<tr>
+
+
+<th>
+Instructor
+</th>
+
+
+<th>
+Staff ID
+</th>
+
+
+<th>
+Wallet ID
+</th>
+
+
+<th>
+Balance
+</th>
+
+
+<th>
+Status
+</th>
+
+
+<th>
+Last Transaction
+</th>
+
+
+<th>
+Actions
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="instructorWalletTable">
+
+
+<tr>
+
+
+<td colspan="7"
+class="empty-table">
+
+
+No instructor wallets found.
+
+
+</td>
+
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<!-- ===================================
+     WALLET ACTION MODAL
+=================================== -->
+
+
+<div
+class="modal"
+id="walletModal">
+
+
+<div class="modal-card">
+
+
+
+<div class="modal-header">
+
+
+<h2>
+
+💳 Wallet Management
+
+</h2>
+
+
+
+<button
+id="closeWalletModal">
+
+✕
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<div class="modal-body">
+
+
+
+<div class="form-group">
+
+
+<label>
+
+Action
+
+</label>
+
+
+
+<select id="walletAction">
+
+
+<option value="credit">
+
+Credit Wallet
+
+</option>
+
+
+
+<option value="debit">
+
+Debit Wallet
+
+</option>
+
+
+
+<option value="freeze">
+
+Freeze Wallet
+
+</option>
+
+
+
+<option value="unfreeze">
+
+Unfreeze Wallet
+
+</option>
+
+
+
+</select>
+
+
+
+</div>
+
+
+
+
+
+<div class="form-group">
+
+
+<label>
+
+Amount
+
+</label>
+
+
+
+<input
+type="number"
+id="walletAmount"
+placeholder="KES">
+
+
+
+</div>
+
+
+
+
+
+<div class="form-group">
+
+
+<label>
+
+Reason
+
+</label>
+
+
+
+<textarea
+id="walletReason"
+rows="4"
+placeholder="Enter reason..."></textarea>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="modal-footer">
+
+
+
+<button
+class="secondary-btn"
+id="cancelWalletAction">
+
+Cancel
+
+</button>
+
+
+
+<button
+class="primary-btn"
+id="confirmWalletAction">
+
+Confirm
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+<!-- ===================================
+     TRANSACTION & AUDIT CENTER
+=================================== -->
+
+
+<section class="glass-card transaction-center">
+
+
+<div class="section-header">
+
+
+<div>
+
+
+<h2>
+📜 Financial Transaction Ledger
+</h2>
+
+
+<p>
+
+Every financial movement inside the academy is permanently recorded.
+
+</p>
+
+
+</div>
+
+
+
+<div class="header-actions">
+
+
+<input
+type="search"
+id="transactionHistorySearch"
+placeholder="Search transaction...">
+
+
+
+<select
+id="transactionHistoryFilter">
+
+
+<option value="all">
+
+All
+
+</option>
+
+
+<option value="deposit">
+
+Deposits
+
+</option>
+
+
+<option value="withdrawal">
+
+Withdrawals
+
+</option>
+
+
+<option value="transfer">
+
+Transfers
+
+</option>
+
+
+<option value="salary">
+
+Instructor Payroll
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="table-responsive">
+
+
+<table>
+
+
+<thead>
+
+
+<tr>
+
+
+<th>
+Transaction ID
+</th>
+
+
+<th>
+Type
+</th>
+
+
+<th>
+From
+</th>
+
+
+<th>
+To
+</th>
+
+
+<th>
+Amount
+</th>
+
+
+<th>
+Status
+</th>
+
+
+<th>
+Approved By
+</th>
+
+
+<th>
+Date
+</th>
+
+
+<th>
+Actions
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+
+<tbody id="transactionHistoryTable">
+
+
+<tr>
+
+
+<td colspan="9"
+class="empty-table">
+
+
+No financial transactions found.
+
+
+</td>
+
+
+</tr>
+
+
+</tbody>
+
+
+
+</table>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ===================================
+     AUDIT LOGS
+=================================== -->
+
+
+<section class="glass-card audit-section">
+
+
+
+<div class="section-header">
+
+
+
+<div>
+
+
+<h2>
+🛡 Audit Logs
+</h2>
+
+
+<p>
+
+Security events and administrator activities.
+
+</p>
+
+
+</div>
+
+
+
+
+<button
+class="secondary-btn"
+id="exportAuditLogs">
+
+📄 Export Logs
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+<div
+class="audit-list"
+id="auditList">
+
+
+<div class="audit-item">
+
+
+<div class="audit-icon">
+
+🔒
+
+</div>
+
+
+
+
+<div>
+
+
+<h4>
+
+System Ready
+
+</h4>
+
+
+
+<p>
+
+Financial audit logs will appear here.
+
+</p>
+
+
+
+
+<small>
+
+Waiting for activity...
+
+</small>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ===================================
+     SECURITY & APPROVAL CENTER
+=================================== -->
+
+
+
+<section class="security-grid">
+
+
+
+
+
+<!-- SECURITY CENTER -->
+
+
+<div class="glass-card security-card">
+
+
+
+<div class="section-title">
+
+
+
+<h2>
+
+🔐 Security Center
+
+</h2>
+
+
+
+<p>
+
+Monitor and protect academy financial operations.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+<div class="security-list">
+
+
+
+<div class="security-item">
+
+
+<span>
+
+Treasury Status
+
+</span>
+
+
+<span
+class="status connected"
+id="treasuryStatus">
+
+Secure
+
+</span>
+
+
+</div>
+
+
+
+
+
+
+<div class="security-item">
+
+
+<span>
+
+Wallet Encryption
+
+</span>
+
+
+<span
+class="status connected">
+
+Enabled
+
+</span>
+
+
+</div>
+
+
+
+
+
+
+<div class="security-item">
+
+
+<span>
+
+Firestore Connection
+
+</span>
+
+
+<span
+class="status connected"
+id="firestoreStatus">
+
+Connected
+
+</span>
+
+
+</div>
+
+
+
+
+
+
+<div class="security-item">
+
+
+<span>
+
+Current Administrator
+
+</span>
+
+
+<strong id="currentAdmin">
+
+Founder
+
+</strong>
+
+
+</div>
+
+
+
+
+
+
+<div class="security-item">
+
+
+<span>
+
+Last Security Check
+
+</span>
+
+
+<strong id="lastSecurityCheck">
+
+Never
+
+</strong>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- APPROVAL CENTER -->
+
+
+<div class="glass-card approval-card">
+
+
+
+<div class="section-title">
+
+
+
+<h2>
+
+✅ Approval Center
+
+</h2>
+
+
+
+<p>
+
+Require confirmation for sensitive financial operations.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+<div class="settings-list">
+
+
+
+
+
+<div class="setting-item">
+
+
+<span>
+
+Require Approval Above
+
+</span>
+
+
+
+<input
+type="number"
+id="approvalLimit"
+placeholder="50000">
+
+
+
+</div>
+
+
+
+
+
+
+<div class="setting-item">
+
+
+<span>
+
+Lock Treasury
+
+</span>
+
+
+
+<label class="switch">
+
+
+<input
+type="checkbox"
+id="lockTreasury">
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="setting-item">
+
+
+<span>
+
+Freeze All Instructor Wallets
+
+</span>
+
+
+
+<label class="switch">
+
+
+<input
+type="checkbox"
+id="freezeWallets">
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="setting-item">
+
+
+<span>
+
+Enable Audit Notifications
+
+</span>
+
+
+
+<label class="switch">
+
+
+<input
+type="checkbox"
+id="auditNotifications"
+checked>
+
+
+<span class="slider"></span>
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+<button
+class="primary-btn"
+id="saveSecuritySettings">
+
+
+💾 Save Security Settings
+
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     QUICK ACTION BAR
+=================================== -->
+
+
+<div class="action-bar">
+
+
+
+<button
+class="secondary-btn"
+id="backupWallets">
+
+💾 Backup Wallets
+
+</button>
+
+
+
+
+
+<button
+class="secondary-btn"
+id="exportLedger">
+
+📄 Export Ledger
+
+</button>
+
+
+
+
+
+<button
+class="secondary-btn"
+id="printFinancialReport">
+
+🖨 Print Report
+
+</button>
+
+
+
+
+
+<button
+class="primary-btn"
+id="refreshFinance">
+
+🔄 Refresh Financial Data
+
+</button>
+
+
+
+</div>
+<!-- ===================================
+     TRANSACTION & AUDIT CENTER
+=================================== -->
+
+<section class="glass-card transaction-center">
+
+<div class="section-header">
+
+<div>
+
+<h2>
+📜 Financial Transaction Ledger
+</h2>
+
+<p>
+Every financial movement inside the academy is permanently recorded.
+</p>
+
+</div>
+
+
+<div class="header-actions">
+
+<input
+type="search"
+id="transactionHistorySearch"
+placeholder="Search transaction...">
+
+
+<select id="transactionHistoryFilter">
+
+<option value="all">
+All
+</option>
+
+<option value="deposit">
+Deposits
+</option>
+
+<option value="withdrawal">
+Withdrawals
+</option>
+
+<option value="transfer">
+Transfers
+</option>
+
+<option value="salary">
+Instructor Payroll
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+
+<div class="table-responsive">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Transaction ID
+</th>
+
+<th>
+Type
+</th>
+
+<th>
+From
+</th>
+
+<th>
+To
+</th>
+
+<th>
+Amount
+</th>
+
+<th>
+Status
+</th>
+
+<th>
+Approved By
+</th>
+
+<th>
+Date
+</th>
+
+<th>
+Actions
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="transactionHistoryTable">
+
+<tr>
+
+<td colspan="9"
+class="empty-table">
+
+No financial transactions found.
+
+</td>
+
+</tr>
+
+</tbody>
+
+
+</table>
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     AUDIT LOGS
+=================================== -->
+
+<section class="glass-card audit-section">
+
+
+<div class="section-header">
+
+<div>
+
+<h2>
+🛡 Audit Logs
+</h2>
+
+<p>
+Security events and administrator activities.
+</p>
+
+</div>
+
+
+<button
+class="secondary-btn"
+id="exportAuditLogs">
+
+📄 Export Logs
+
+</button>
+
+
+</div>
+
+
+
+<div
+class="audit-list"
+id="auditList">
+
+
+<div class="audit-item">
+
+
+<div class="audit-icon">
+
+🔒
+
+</div>
+
+
+<div>
+
+
+<h4>
+System Ready
+</h4>
+
+
+<p>
+Financial audit logs will appear here.
+</p>
+
+
+<small>
+Waiting for activity...
+</small>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     SECURITY & APPROVAL CENTER
+=================================== -->
+
+<section class="security-grid">
+
+
+<div class="glass-card security-card">
+
+
+<div class="section-title">
+
+
+<h2>
+🔐 Security Center
+</h2>
+
+
+<p>
+Monitor and protect academy financial operations.
+</p>
+
+
+</div>
+
+
+
+<div class="security-list">
+
+
+<div class="security-item">
+
+<span>
+Treasury Status
+</span>
+
+
+<span
+class="status connected"
+id="treasuryStatus">
+
+Secure
+
+</span>
+
+
+</div>
+
+
+
+
+<div class="security-item">
+
+<span>
+Wallet Encryption
+</span>
+
+
+<span
+class="status connected">
+
+Enabled
+
+</span>
+
+
+</div>
+
+
+
+
+<div class="security-item">
+
+<span>
+Firestore Connection
+</span>
+
+
+<span
+class="status connected"
+id="firestoreStatus">
+
+Connected
+
+</span>
+
+
+</div>
+
+
+
+
+<div class="security-item">
+
+<span>
+Current Administrator
+</span>
+
+
+<strong id="currentAdmin">
+
+Founder
+
+</strong>
+
+
+</div>
+
+
+
+
+<div class="security-item">
+
+<span>
+Last Security Check
+</span>
+
+
+<strong id="lastSecurityCheck">
+
+Never
+
+</strong>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="glass-card approval-card">
+
+
+<div class="section-title">
+
+
+<h2>
+✅ Approval Center
+</h2>
+
+
+<p>
+Require confirmation for sensitive financial operations.
+</p>
+
+
+</div>
+
+
+
+<div class="settings-list">
+
+
+<div class="setting-item">
+
+
+<span>
+Require Approval Above
+</span>
+
+
+<input
+type="number"
+id="approvalLimit"
+placeholder="50000">
+
+
+</div>
+
+
+
+
+<div class="setting-item">
+
+<span>
+Lock Treasury
+</span>
+
+
+<label class="switch">
+
+<input
+type="checkbox"
+id="lockTreasury">
+
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+
+
+<div class="setting-item">
+
+<span>
+Freeze All Instructor Wallets
+</span>
+
+
+<label class="switch">
+
+<input
+type="checkbox"
+id="freezeWallets">
+
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+
+
+<div class="setting-item">
+
+<span>
+Enable Audit Notifications
+</span>
+
+
+<label class="switch">
+
+<input
+type="checkbox"
+id="auditNotifications"
+checked>
+
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+</div>
+
+
+
+<button
+class="primary-btn"
+id="saveSecuritySettings">
+
+💾 Save Security Settings
+
+</button>
+
+
+</div>
+
+
+
+</section>
+<!-- ===================================
+     QUICK ACTION BAR
+=================================== -->
+
+<div class="action-bar">
+
+<button
+class="secondary-btn"
+id="backupWallets">
+
+💾 Backup Wallets
+
+</button>
+
+
+<button
+class="secondary-btn"
+id="exportLedger">
+
+📄 Export Ledger
+
+</button>
+
+
+<button
+class="secondary-btn"
+id="printFinancialReport">
+
+🖨 Print Report
+
+</button>
+
+
+<button
+class="primary-btn"
+id="refreshFinance">
+
+🔄 Refresh Financial Data
+
+</button>
+
+
+</div>
+
+
+
+
+
+<!-- ===================================
+     WALLET OVERVIEW
+=================================== -->
+
+<section class="wallet-overview">
+
+
+
+<!-- Founder Wallet -->
+
+<div class="wallet-card founder-wallet">
+
+
+<div class="wallet-top">
+
+
+<div>
+
+<span class="wallet-label">
+
+Founder Wallet
+
+</span>
+
+
+<h2 id="founderWalletBalance">
+
+KES 0.00
+
+</h2>
+
+
+</div>
+
+
+
+<div class="wallet-icon">
+
+👑
+
+</div>
+
+
+</div>
+
+
+
+<div class="wallet-meta">
+
+
+<div>
+
+<small>
+Total Income
+</small>
+
+
+<strong id="walletIncome">
+
+KES 0
+
+</strong>
+
+
+</div>
+
+
+
+<div>
+
+<small>
+Total Withdrawn
+</small>
+
+
+<strong id="walletWithdrawn">
+
+KES 0
+
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- Instructor Wallet -->
+
+<div class="wallet-card instructor-wallet">
+
+
+<div class="wallet-top">
+
+
+<div>
+
+<span class="wallet-label">
+
+Instructor Wallets
+
+</span>
+
+
+<h2 id="instructorWalletTotal">
+
+KES 0.00
+
+</h2>
+
+
+</div>
+
+
+
+<div class="wallet-icon">
+
+👨‍🏫
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="wallet-meta">
+
+
+<div>
+
+<small>
+Active Wallets
+</small>
+
+
+<strong id="walletCount">
+
+0
+
+</strong>
+
+
+</div>
+
+
+
+<div>
+
+<small>
+Pending Payouts
+</small>
+
+
+<strong id="pendingPayouts">
+
+KES 0
+
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- Student Payments -->
+
+<div class="wallet-card student-wallet">
+
+
+<div class="wallet-top">
+
+
+<div>
+
+<span class="wallet-label">
+
+Student Payments
+
+</span>
+
+
+<h2 id="studentPayments">
+
+KES 0.00
+
+</h2>
+
+
+</div>
+
+
+
+<div class="wallet-icon">
+
+🎓
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="wallet-meta">
+
+
+<div>
+
+<small>
+Today's Payments
+</small>
+
+
+<strong id="todayPayments">
+
+0
+
+</strong>
+
+
+</div>
+
+
+
+<div>
+
+<small>
+Pending Verification
+</small>
+
+
+<strong id="pendingVerification">
+
+0
+
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ===================================
+     INSTRUCTOR WALLET MANAGER
+=================================== -->
+
+
+<section class="glass-card wallet-manager">
+
+
+<div class="section-header">
+
+
+<div>
+
+
+<h2>
+
+👨‍🏫 Instructor Wallet Manager
+
+</h2>
+
+
+<p>
+
+Manage instructor earnings, balances and payouts.
+
+</p>
+
+
+</div>
+
+
+
+<button
+class="primary-btn"
+id="refreshWallets">
+
+🔄 Refresh
+
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="wallet-search">
+
+
+<input
+type="search"
+id="walletSearch"
+placeholder="Search instructor name or ID...">
+
+
+
+<select id="walletStatusFilter">
+
+
+<option value="all">
+
+All Wallets
+
+</option>
+
+
+<option value="active">
+
+Active
+
+</option>
+
+
+<option value="pending">
+
+Pending Payout
+
+</option>
+
+
+<option value="suspended">
+
+Suspended
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+<div class="table-responsive">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+Instructor
+</th>
+
+<th>
+Instructor ID
+</th>
+
+<th>
+Wallet ID
+</th>
+
+<th>
+Available Balance
+</th>
+
+<th>
+Pending Earnings
+</th>
+
+<th>
+Total Paid
+</th>
+
+<th>
+Status
+</th>
+
+<th>
+Actions
+</th>
+
+
+</tr>
+
+</thead>
+
+
+
+
+<tbody id="walletTable">
+
+
+<tr>
+
+
+<td colspan="8"
+class="empty-table">
+
+
+No instructor wallets found.
+
+
+</td>
+
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- ===================================
+     WITHDRAWAL APPROVAL CENTER
+=================================== -->
+
+
+<section class="glass-card withdrawal-center">
+
+
+<div class="section-header">
+
+
+<div>
+
+
+<h2>
+
+💸 Withdrawal Approval Center
+
+</h2>
+
+
+<p>
+
+Review, approve or reject instructor payout requests.
+
+</p>
+
+
+</div>
+
+
+
+<div class="withdrawal-summary">
+
+
+<span>
+
+Pending Requests
+
+</span>
+
+
+<strong id="pendingWithdrawals">
+
+0
+
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="withdrawal-filters">
+
+
+<input
+type="search"
+id="withdrawalSearch"
+placeholder="Search instructor or request ID...">
+
+
+
+<select id="withdrawalFilter">
+
+
+<option value="all">
+
+All Requests
+
+</option>
+
+
+<option value="pending">
+
+Pending
+
+</option>
+
+
+<option value="approved">
+
+Approved
+
+</option>
+
+
+<option value="rejected">
+
+Rejected
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+<div class="table-responsive">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+
+<th>
+Request ID
+</th>
+
+
+<th>
+Instructor
+</th>
+
+
+<th>
+Wallet ID
+</th>
+
+
+<th>
+Amount
+</th>
+
+
+<th>
+Payment Method
+</th>
+
+
+<th>
+Requested Date
+</th>
+
+
+<th>
+Status
+</th>
+
+
+<th>
+Actions
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="withdrawalTable">
+
+
+<tr>
+
+
+<td colspan="8"
+class="empty-table">
+
+
+No withdrawal requests.
+
+
+</td>
+
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</section>
+<!-- ===================================
+     INTERNAL FINANCIAL LEDGER
+=================================== -->
+
+<section class="glass-card ledger-section">
+
+
+<div class="section-header">
+
+<div>
+
+<h2>
+📒 Internal Financial Ledger
+</h2>
+
+<p>
+Track every money movement inside the academy.
+</p>
+
+</div>
+
+
+<button
+class="secondary-btn"
+id="exportLedger">
+
+📄 Export Ledger
+
+</button>
+
+
+</div>
+
+
+
+
+<div class="ledger-summary">
+
+
+<div class="ledger-card">
+
+<span>
+Total Credits
+</span>
+
+<strong id="totalCredits">
+KES 0
+</strong>
+
+</div>
+
+
+
+<div class="ledger-card">
+
+<span>
+Total Debits
+</span>
+
+<strong id="totalDebits">
+KES 0
+</strong>
+
+</div>
+
+
+
+<div class="ledger-card">
+
+<span>
+Current Balance
+</span>
+
+<strong id="ledgerBalance">
+KES 0
+</strong>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="table-responsive">
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+Transaction ID
+</th>
+
+<th>
+Type
+</th>
+
+<th>
+Description
+</th>
+
+<th>
+Reference
+</th>
+
+<th>
+Amount
+</th>
+
+<th>
+Created By
+</th>
+
+<th>
+Date
+</th>
+
+
+</tr>
+
+</thead>
+
+
+
+<tbody id="ledgerTable">
+
+
+<tr>
+
+<td colspan="7"
+class="empty-table">
+
+No ledger records available.
+
+</td>
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ===================================
+     WALLET SECURITY CONTROLS
+=================================== -->
+
+
+<section class="glass-card security-section">
+
+
+<div class="section-header">
+
+
+<div>
+
+<h2>
+🛡 Wallet Security Controls
+</h2>
+
+
+<p>
+Protect academy funds and control financial permissions.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="security-grid">
+
+
+<div class="security-card">
+
+
+<div class="security-icon">
+🔐
+</div>
+
+
+<div>
+
+<h3>
+Founder Approval Lock
+</h3>
+
+
+<p>
+Require founder confirmation before withdrawals and major wallet actions.
+</p>
+
+
+</div>
+
+
+
+<label class="switch">
+
+<input
+type="checkbox"
+id="founderApprovalLock"
+checked>
+
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+
+
+
+<div class="security-card">
+
+
+<div class="security-icon">
+💰
+</div>
+
+
+<div>
+
+<h3>
+Withdrawal Limits
+</h3>
+
+
+<p>
+Set maximum amount instructors can request.
+</p>
+
+
+</div>
+
+
+<input
+type="number"
+id="withdrawalLimit"
+placeholder="KES 50,000">
+
+
+</div>
+
+
+
+
+
+<div class="security-card">
+
+
+<div class="security-icon">
+🚨
+</div>
+
+
+<div>
+
+<h3>
+Transaction Alerts
+</h3>
+
+
+<p>
+Receive alerts for large or suspicious transactions.
+</p>
+
+
+</div>
+
+
+<label class="switch">
+
+<input
+type="checkbox"
+id="transactionAlerts"
+checked>
+
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+
+
+
+
+<div class="security-card">
+
+
+<div class="security-icon">
+💾
+</div>
+
+
+<div>
+
+<h3>
+Financial Backup
+</h3>
+
+
+<p>
+Create secure backups of wallet records and ledgers.
+</p>
+
+
+</div>
+
+
+<button
+class="secondary-btn"
+id="backupWallet">
+
+Backup Now
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- ===================================
+     MINI BANK DASHBOARD
+=================================== -->
+
+
+<section class="bank-dashboard">
+
+
+<div class="section-header">
+
+
+<div>
+
+<h2>
+🏦 Spark Stack Academy Bank
+</h2>
+
+
+<p>
+Complete financial overview and academy treasury management.
+</p>
+
+
+</div>
+
+
+
+<span class="bank-status">
+
+🟢 System Secure
+
+</span>
+
+
+</div>
+
+
+
+
+
+
+<div class="bank-cards">
+
+
+
+<div class="glass-card bank-card">
+
+
+<div class="bank-icon">
+
+💎
+
+</div>
+
+
+<div>
+
+<span>
+Total Academy Funds
+</span>
+
+
+<h2 id="totalAcademyFunds">
+
+KES 0
+
+</h2>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass-card bank-card">
+
+
+<div class="bank-icon">
+
+💰
+
+</div>
+
+
+<div>
+
+<span>
+Available Balance
+</span>
+
+
+<h2 id="availableBalance">
+
+KES 0
+
+</h2>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass-card bank-card">
+
+
+<div class="bank-icon">
+
+🔒
+
+</div>
+
+
+<div>
+
+<span>
+Reserved Funds
+</span>
+
+
+<h2 id="reservedFunds">
+
+KES 0
+
+</h2>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass-card bank-card">
+
+
+<div class="bank-icon">
+
+👨‍🏫
+
+</div>
+
+
+<div>
+
+<span>
+Instructor Earnings Owed
+</span>
+
+
+<h2 id="instructorLiability">
+
+KES 0
+
+</h2>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="glass-card cash-flow-card">
+
+
+<div class="section-header">
+
+<h2>
+📊 Cash Flow
+</h2>
+
+</div>
+
+
+
+<div class="cash-flow-grid">
+
+
+<div>
+
+<small>
+Money In
+</small>
+
+<strong id="moneyIn">
+KES 0
+</strong>
+
+</div>
+
+
+
+<div>
+
+<small>
+Money Out
+</small>
+
+<strong id="moneyOut">
+KES 0
+</strong>
+
+</div>
+
+
+
+<div>
+
+<small>
+Net Balance
+</small>
+
+<strong id="netBalance">
+KES 0
+</strong>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass-card bank-actions">
+
+
+<h2>
+⚡ Treasury Actions
+</h2>
+
+
+<div class="action-buttons">
+
+
+<button
+class="primary-btn"
+id="createTransfer">
+
+↔ Internal Transfer
+
+</button>
+
+
+<button
+class="secondary-btn"
+id="freezeWallet">
+
+🔒 Freeze Wallet
+
+</button>
+
+
+<button
+class="secondary-btn"
+id="generateStatement">
+
+📄 Generate Statement
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- ===================================
+     REVENUE BREAKDOWN
+=================================== -->
+
+
+<section class="glass-card revenue-section">
+
+
+<div class="section-header">
+
+
+<div>
+
+<h2>
+📈 Revenue Breakdown
+</h2>
+
+
+<p>
+Understand where academy income is coming from.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="revenue-grid">
+
+
+<div class="revenue-item">
+
+<span>
+Course Payments
+</span>
+
+<strong id="courseRevenue">
+KES 0
+</strong>
+
+</div>
+
+
+
+<div class="revenue-item">
+
+<span>
+Subscriptions
+</span>
+
+<strong id="subscriptionRevenue">
+KES 0
+</strong>
+
+</div>
+
+
+
+<div class="revenue-item">
+
+<span>
+Certificates
+</span>
+
+<strong id="certificateRevenue">
+KES 0
+</strong>
+
+</div>
+
+
+
+<div class="revenue-item">
+
+<span>
+Other Income
+</span>
+
+<strong id="otherRevenue">
+KES 0
+</strong>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     RECENT BANK TRANSACTIONS
+=================================== -->
+
+
+<section class="glass-card bank-transactions">
+
+
+<div class="section-header">
+
+
+<div>
+
+<h2>
+🏦 Recent Bank Transactions
+</h2>
+
+
+<p>
+Latest movement inside academy accounts.
+</p>
+
+
+</div>
+
+
+<button
+class="secondary-btn"
+id="viewAllBankTransactions">
+
+View All
+
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="table-responsive">
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+Reference
+</th>
+
+<th>
+Description
+</th>
+
+<th>
+Type
+</th>
+
+<th>
+Amount
+</th>
+
+<th>
+Status
+</th>
+
+<th>
+Date
+</th>
+
+</tr>
+
+
+</thead>
+
+
+<tbody id="bankTransactionsTable">
+
+
+<tr>
+
+<td colspan="6"
+class="empty-table">
+
+No bank transactions available.
+
+</td>
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- ===================================
+     FINANCIAL CONTROLS
+=================================== -->
+
+
+<section class="glass-card financial-controls">
+
+
+<div class="section-header">
+
+
+<div>
+
+<h2>
+⚙️ Financial Controls
+</h2>
+
+
+<p>
+Manage academy banking rules and restrictions.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="control-list">
+
+
+<div class="control-item">
+
+<div>
+
+<strong>
+Automatic Instructor Payments
+</strong>
+
+
+<p>
+Automatically release approved instructor earnings.
+</p>
+
+
+</div>
+
+
+<label class="switch">
+
+<input
+type="checkbox"
+id="autoInstructorPayments">
+
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+
+
+<div class="control-item">
+
+<div>
+
+<strong>
+Large Transaction Approval
+</strong>
+
+
+<p>
+Require founder approval above a set amount.
+</p>
+
+
+</div>
+
+
+<label class="switch">
+
+<input
+type="checkbox"
+id="largeTransactionApproval"
+checked>
+
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+
+<div class="control-item">
+
+<div>
+
+<strong>
+Daily Financial Report
+</strong>
+
+
+<p>
+Generate automatic financial summaries.
+</p>
+
+
+</div>
+
+
+<label class="switch">
+
+<input
+type="checkbox"
+id="dailyFinancialReport"
+checked>
+
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+</main>
+
+
+</div>
+
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+<script type="module" src="./js/founder-app.js"></script>
+
+<script type="module" src="./js/founder-auth.js"></script>
+
+<script type="module" src="wallets.js"></script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,620 @@
+/* ===================================
+   SECURITY SETTINGS
+=================================== */
+
+:root{
+
+--bg:#07111f;
+
+--card:rgba(255,255,255,.06);
+
+--border:rgba(255,255,255,.08);
+
+--primary:#3b82f6;
+
+--secondary:#8b5cf6;
+
+--danger:#ef4444;
+
+--success:#22c55e;
+
+--text:#ffffff;
+
+--muted:#94a3b8;
+
+--radius:22px;
+
+--shadow:0 18px 45px rgba(0,0,0,.35);
+
+}
+
+
+/* ===================================
+   GLOBAL
+=================================== */
+
+*{
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
+}
+
+
+body{
+
+font-family:"Inter",sans-serif;
+
+background:var(--bg);
+
+color:var(--text);
+
+overflow-x:hidden;
+
+}
+
+
+/* ===================================
+   BACKGROUND ORBS
+=================================== */
+
+.bg-orb{
+
+position:fixed;
+
+border-radius:50%;
+
+filter:blur(120px);
+
+opacity:.18;
+
+z-index:-1;
+
+}
+
+
+.orb-1{
+
+width:320px;
+
+height:320px;
+
+background:#2563eb;
+
+top:-120px;
+
+left:-120px;
+
+}
+
+
+.orb-2{
+
+width:280px;
+
+height:280px;
+
+background:#8b5cf6;
+
+right:-100px;
+
+top:35%;
+
+}
+
+
+.orb-3{
+
+width:300px;
+
+height:300px;
+
+background:#06b6d4;
+
+bottom:-120px;
+
+left:40%;
+
+}
+
+
+/* ===================================
+   MAIN CONTENT
+=================================== */
+
+.main-content{
+
+padding:30px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:24px;
+
+}
+
+
+
+/* ===================================
+   GLASS CARD
+=================================== */
+
+.glass-card{
+
+background:var(--card);
+
+border:1px solid var(--border);
+
+backdrop-filter:blur(20px);
+
+border-radius:var(--radius);
+
+box-shadow:var(--shadow);
+
+}
+
+
+
+/* ===================================
+   HEADER
+=================================== */
+
+.page-header{
+
+padding:28px;
+
+}
+
+
+.page-header h1{
+
+font-size:2rem;
+
+font-weight:800;
+
+margin-bottom:10px;
+
+}
+
+
+.page-header p{
+
+color:var(--muted);
+
+line-height:1.7;
+
+}
+
+
+
+/* ===================================
+   SECTION
+=================================== */
+
+.section-card{
+
+padding:26px;
+
+}
+
+
+.section-card h2{
+
+font-size:1.2rem;
+
+margin-bottom:22px;
+
+font-weight:700;
+
+}
+
+
+
+/* ===================================
+   FORM
+=================================== */
+
+.form-grid{
+
+display:grid;
+
+grid-template-columns:
+
+repeat(auto-fit,minmax(260px,1fr));
+
+gap:22px;
+
+}
+
+
+.input-group{
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+}
+
+
+.input-group label{
+
+font-weight:600;
+
+font-size:.9rem;
+
+color:#dbeafe;
+
+}
+
+
+.input-group input{
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:14px;
+
+padding:14px 16px;
+
+color:#fff;
+
+outline:none;
+
+font-size:.95rem;
+
+transition:.3s;
+
+}
+
+
+.input-group input:focus{
+
+border-color:#3b82f6;
+
+box-shadow:
+
+0 0 0 3px rgba(59,130,246,.18);
+
+}
+/* ===================================
+   TOGGLE LIST
+=================================== */
+
+.toggle-list{
+
+display:flex;
+
+flex-direction:column;
+
+gap:16px;
+
+}
+
+
+.toggle-item{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:16px 18px;
+
+background:rgba(255,255,255,.04);
+
+border:1px solid rgba(255,255,255,.06);
+
+border-radius:16px;
+
+transition:.3s;
+
+}
+
+
+.toggle-item:hover{
+
+background:rgba(59,130,246,.08);
+
+}
+
+
+.toggle-item span{
+
+font-weight:600;
+
+color:#e2e8f0;
+
+}
+
+
+.toggle-item input{
+
+width:20px;
+
+height:20px;
+
+accent-color:#3b82f6;
+
+cursor:pointer;
+
+}
+
+
+/* ===================================
+   SESSION CARD
+=================================== */
+
+.session-card{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:18px;
+
+margin-bottom:18px;
+
+background:rgba(255,255,255,.04);
+
+border-radius:16px;
+
+border:1px solid rgba(255,255,255,.06);
+
+}
+
+
+.session-info h3{
+
+font-size:1rem;
+
+margin-bottom:6px;
+
+}
+
+
+.session-info p{
+
+color:var(--muted);
+
+font-size:.9rem;
+
+}
+
+
+/* ===================================
+   STATUS
+=================================== */
+
+.status-online{
+
+background:rgba(34,197,94,.15);
+
+color:#4ade80;
+
+padding:8px 14px;
+
+border-radius:50px;
+
+font-size:.85rem;
+
+font-weight:700;
+
+}
+
+
+
+/* ===================================
+   SECURITY ACTIVITY
+=================================== */
+
+#securityActivity{
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+}
+
+
+.activity-item{
+
+padding:16px;
+
+background:rgba(255,255,255,.04);
+
+border-radius:14px;
+
+border-left:4px solid #3b82f6;
+
+}
+
+
+.activity-item h4{
+
+margin-bottom:6px;
+
+}
+
+
+.activity-item p{
+
+color:var(--muted);
+
+font-size:.9rem;
+
+}
+
+
+
+/* ===================================
+   EMPTY STATE
+=================================== */
+
+.empty-state{
+
+text-align:center;
+
+padding:30px;
+
+color:var(--muted);
+
+}
+
+
+
+/* ===================================
+   BUTTONS
+=================================== */
+
+.action-bar{
+
+display:flex;
+
+justify-content:flex-end;
+
+margin-top:10px;
+
+}
+
+
+.primary-btn{
+
+padding:14px 28px;
+
+border:none;
+
+border-radius:14px;
+
+background:linear-gradient(
+
+135deg,
+
+#2563eb,
+
+#8b5cf6
+
+);
+
+color:white;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
+box-shadow:
+
+0 12px 30px rgba(37,99,235,.35);
+
+}
+
+
+.primary-btn:hover{
+
+transform:translateY(-3px);
+
+box-shadow:
+
+0 18px 40px rgba(37,99,235,.45);
+
+}
+
+
+/* ===================================
+   ANIMATION
+=================================== */
+
+.glass-card{
+
+animation:fadeUp .45s ease;
+
+}
+
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+
+transform:translateY(18px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media(max-width:768px){
+
+.main-content{
+
+padding:18px;
+
+}
+
+
+.section-card{
+
+padding:20px;
+
+}
+
+
+.session-card{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:14px;
+
+}
+
+
+.action-bar{
+
+width:100%;
+
+}
+
+
+.primary-btn{
+
+width:100%;
+
+}
+
+
+.page-header h1{
+
+font-size:1.6rem;
+
+}
+
+}

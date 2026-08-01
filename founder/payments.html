@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Payment Integration | Founder OS
+</title>
+
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+
+<link rel="stylesheet"
+href="payments.css">
+
+
+</head>
+
+
+<body>
+
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+
+
+<div class="dashboard-layout">
+
+
+
+<!-- SIDEBAR -->
+
+<aside id="sidebarContainer"></aside>
+
+
+<div id="sidebarOverlay"></div>
+
+
+
+
+<!-- MAIN CONTENT -->
+
+<main class="main-content">
+
+
+
+<!-- TOPBAR -->
+
+<header id="topbarContainer"></header>
+
+
+
+<!-- ===================================
+     PAGE HEADER
+=================================== -->
+
+
+<section class="page-header glass-card">
+
+
+<div>
+
+
+<h1>
+💳 Payment Integration
+</h1>
+
+
+<p>
+
+Manage payment gateways, transaction records,
+receipts and academy financial systems.
+
+</p>
+
+
+</div>
+
+
+<button
+class="primary-btn"
+id="refreshPayments">
+
+🔄 Refresh
+
+</button>
+
+
+</section>
+<!-- ===================================
+     PAYMENT PROVIDERS
+=================================== -->
+
+
+<section class="providers-section">
+
+
+<div class="section-title">
+
+<h2>
+🔌 Payment Providers
+</h2>
+
+<p>
+Connect and manage academy payment gateways.
+</p>
+
+</div>
+
+
+
+
+<div class="providers-grid">
+
+
+
+<!-- M-PESA -->
+
+<div class="glass-card provider-card">
+
+
+<div class="provider-top">
+
+
+<div class="provider-icon mpesa">
+
+📱
+
+</div>
+
+
+<div>
+
+<h3>
+M-Pesa
+</h3>
+
+<span class="status connected">
+
+Connected
+
+</span>
+
+</div>
+
+
+</div>
+
+
+
+<p>
+
+Mobile money payments through M-Pesa API.
+
+</p>
+
+
+
+<div class="provider-actions">
+
+
+<button
+class="secondary-btn"
+id="configureMpesa">
+
+Configure
+
+</button>
+
+
+
+<button
+class="toggle-btn active"
+id="toggleMpesa">
+
+ON
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- CARD PAYMENTS -->
+
+
+<div class="glass-card provider-card">
+
+
+<div class="provider-top">
+
+
+<div class="provider-icon card">
+
+💳
+
+</div>
+
+
+<div>
+
+<h3>
+Card Payments
+</h3>
+
+
+<span class="status pending">
+
+Not Connected
+
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+<p>
+
+Accept secure card payments through gateway providers.
+
+</p>
+
+
+
+<div class="provider-actions">
+
+
+<button
+class="secondary-btn"
+id="configureCards">
+
+Configure
+
+</button>
+
+
+
+<button
+class="toggle-btn"
+id="toggleCards">
+
+OFF
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- BANK TRANSFER -->
+
+
+<div class="glass-card provider-card">
+
+
+<div class="provider-top">
+
+
+<div class="provider-icon bank">
+
+🏦
+
+</div>
+
+
+<div>
+
+<h3>
+Bank Transfer
+</h3>
+
+
+<span class="status connected">
+
+Active
+
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+<p>
+
+Receive direct academy bank payments.
+
+</p>
+
+
+
+<div class="provider-actions">
+
+
+<button
+class="secondary-btn"
+id="configureBank">
+
+Configure
+
+</button>
+
+
+
+<button
+class="toggle-btn active"
+id="toggleBank">
+
+ON
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- PAYPAL -->
+
+
+<div class="glass-card provider-card">
+
+
+<div class="provider-top">
+
+
+<div class="provider-icon paypal">
+
+🌍
+
+</div>
+
+
+<div>
+
+<h3>
+PayPal
+
+</h3>
+
+
+<span class="status pending">
+
+Not Connected
+
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+<p>
+
+International payment support.
+
+</p>
+
+
+
+<div class="provider-actions">
+
+
+<button
+class="secondary-btn"
+id="configurePaypal">
+
+Configure
+
+</button>
+
+
+
+<button
+class="toggle-btn"
+id="togglePaypal">
+
+OFF
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+</section>
+<!-- ===================================
+     GATEWAY CONFIGURATION
+=================================== -->
+
+<section class="gateway-section">
+
+<div class="glass-card gateway-card">
+
+<div class="section-title">
+
+<h2>
+⚙️ Gateway Configuration
+</h2>
+
+<p>
+Configure payment gateways and callback settings.
+</p>
+
+</div>
+
+
+
+<div class="gateway-grid">
+
+
+
+<!-- Provider -->
+
+<div class="form-group">
+
+<label for="gatewayProvider">
+
+Payment Provider
+
+</label>
+
+<select id="gatewayProvider">
+
+<option value="mpesa">
+M-Pesa
+</option>
+
+<option value="card">
+Card Gateway
+</option>
+
+<option value="bank">
+Bank Transfer
+</option>
+
+<option value="paypal">
+PayPal
+</option>
+
+</select>
+
+</div>
+
+
+
+<!-- Environment -->
+
+<div class="form-group">
+
+<label for="gatewayEnvironment">
+
+Environment
+
+</label>
+
+<select id="gatewayEnvironment">
+
+<option value="sandbox">
+
+Sandbox / Testing
+
+</option>
+
+<option value="production">
+
+Production
+
+</option>
+
+</select>
+
+</div>
+
+
+
+<!-- Callback URL -->
+
+<div class="form-group full-width">
+
+<label for="callbackUrl">
+
+Callback URL
+
+</label>
+
+<input
+type="text"
+id="callbackUrl"
+placeholder="https://yourdomain.com/api/payment/callback">
+
+</div>
+
+
+
+<!-- Webhook URL -->
+
+<div class="form-group full-width">
+
+<label for="webhookUrl">
+
+Webhook URL
+
+</label>
+
+<input
+type="text"
+id="webhookUrl"
+placeholder="https://yourdomain.com/api/payment/webhook">
+
+</div>
+
+</div>
+
+
+
+<div class="gateway-status">
+
+<div>
+
+<strong>
+
+Gateway Status
+
+</strong>
+
+<p id="gatewayStatus">
+
+🟢 Connected
+
+</p>
+
+</div>
+
+
+
+<div>
+
+<strong>
+
+Last Sync
+
+</strong>
+
+<p id="lastGatewaySync">
+
+Never
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="gateway-actions">
+
+<button
+class="secondary-btn"
+id="testGateway">
+
+🧪 Test Connection
+
+</button>
+
+
+
+<button
+class="primary-btn"
+id="saveGateway">
+
+💾 Save Configuration
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+<!-- ===================================
+     TRANSACTION LEDGER
+=================================== -->
+
+<section class="glass-card transactions-section">
+
+<div class="section-header">
+
+<div>
+
+<h2>
+📑 Transaction Ledger
+</h2>
+
+<p>
+
+View, search and manage all academy payment transactions.
+
+</p>
+
+</div>
+
+<div class="header-actions">
+
+<input
+type="search"
+id="transactionSearch"
+placeholder="Search receipt, student or transaction ID...">
+
+<select id="transactionFilter">
+
+<option value="all">
+All Transactions
+</option>
+
+<option value="completed">
+Completed
+</option>
+
+<option value="pending">
+Pending
+</option>
+
+<option value="failed">
+Failed
+</option>
+
+<option value="refunded">
+Refunded
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+
+<div class="table-responsive">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Receipt No.
+</th>
+
+<th>
+Student
+</th>
+
+<th>
+Admission No.
+</th>
+
+<th>
+Payment Type
+</th>
+
+<th>
+Method
+</th>
+
+<th>
+Amount
+</th>
+
+<th>
+Transaction ID
+</th>
+
+<th>
+Status
+</th>
+
+<th>
+Date
+</th>
+
+<th>
+Actions
+</th>
+
+</tr>
+
+</thead>
+
+<tbody id="transactionsTable">
+
+<tr>
+
+<td colspan="10"
+class="empty-table">
+
+No transactions available.
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+<!-- ===================================
+     RECEIPT CENTER
+=================================== -->
+
+<section class="receipt-grid">
+
+<!-- Receipt Preview -->
+
+<div class="glass-card receipt-preview">
+
+<div class="section-title">
+
+<h2>
+🧾 Official Receipt
+</h2>
+
+<p>
+
+Preview academy payment receipts before printing.
+
+</p>
+
+</div>
+
+
+
+<div id="receiptPreview"
+class="receipt-paper">
+
+<div class="receipt-header">
+
+<img
+src="../../assets/images/academy-logo.png"
+alt="Academy Logo"
+class="receipt-logo">
+
+<div>
+
+<h2>
+
+THE SPARK STACK ACADEMY
+
+</h2>
+
+<p>
+
+Learn • Build • Innovate
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<hr>
+
+
+
+<div class="receipt-details">
+
+<p>
+
+<strong>
+
+Receipt No:
+
+</strong>
+
+<span id="receiptNumber">
+
+SSA-000001
+
+</span>
+
+</p>
+
+
+
+<p>
+
+<strong>
+
+Date:
+
+</strong>
+
+<span id="receiptDate">
+
+--
+
+</span>
+
+</p>
+
+
+
+<p>
+
+<strong>
+
+Student:
+
+</strong>
+
+<span id="receiptStudent">
+
+--
+
+</span>
+
+</p>
+
+
+
+<p>
+
+<strong>
+
+Admission No:
+
+</strong>
+
+<span id="receiptAdmission">
+
+--
+
+</span>
+
+</p>
+
+
+
+<p>
+
+<strong>
+
+Payment Type:
+
+</strong>
+
+<span id="receiptType">
+
+--
+
+</span>
+
+</p>
+
+
+
+<p>
+
+<strong>
+
+Payment Method:
+
+</strong>
+
+<span id="receiptMethod">
+
+--
+
+</span>
+
+</p>
+
+
+
+<p>
+
+<strong>
+
+Transaction ID:
+
+</strong>
+
+<span id="receiptTransaction">
+
+--
+
+</span>
+
+</p>
+
+
+
+<p>
+
+<strong>
+
+Amount Paid:
+
+</strong>
+
+<span id="receiptAmount">
+
+KES 0
+
+</span>
+
+</p>
+
+</div>
+
+
+
+<div class="receipt-footer">
+
+<div>
+
+<p>
+
+Authorized By
+
+</p>
+
+<strong>
+
+Founder OS
+
+</strong>
+
+</div>
+
+
+
+<div>
+
+<img
+src="../../assets/images/academy-seal.png"
+alt="Academy Seal"
+class="receipt-seal">
+
+<p>
+
+Official Academy Seal
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- Receipt Actions -->
+
+<div class="glass-card receipt-actions">
+
+<h2>
+
+📄 Receipt Actions
+
+</h2>
+
+<p>
+
+Generate, print or download official academy receipts.
+
+</p>
+
+
+
+<button
+class="primary-btn"
+id="generateReceipt">
+
+🧾 Generate Receipt
+
+</button>
+
+
+
+<button
+class="secondary-btn"
+id="printReceipt">
+
+🖨 Print Receipt
+
+</button>
+
+
+
+<button
+class="secondary-btn"
+id="downloadReceipt">
+
+📥 Download PDF
+
+</button>
+
+
+
+<button
+class="secondary-btn"
+id="emailReceipt">
+
+📧 Email Receipt
+
+</button>
+
+</div>
+
+</section>
+<!-- ===================================
+     PAYMENT SETTINGS
+=================================== -->
+
+<section class="settings-grid">
+
+<div class="glass-card settings-card">
+
+<h2>
+⚙️ Payment Settings
+</h2>
+
+<div class="settings-list">
+
+<div class="setting-item">
+
+<span>
+Default Currency
+</span>
+
+<select id="defaultCurrency">
+
+<option value="KES" selected>
+KES - Kenyan Shilling
+</option>
+
+<option value="USD">
+USD - US Dollar
+</option>
+
+<option value="EUR">
+EUR - Euro
+</option>
+
+</select>
+
+</div>
+
+
+
+<div class="setting-item">
+
+<span>
+Receipt Prefix
+</span>
+
+<input
+type="text"
+id="receiptPrefix"
+value="SSA">
+
+</div>
+
+
+
+<div class="setting-item">
+
+<span>
+Receipt Number Format
+</span>
+
+<input
+type="text"
+id="receiptFormat"
+value="SSA-2026-000001">
+
+</div>
+
+
+
+<div class="setting-item">
+
+<span>
+Automatic Receipt Generation
+</span>
+
+<label class="switch">
+
+<input
+type="checkbox"
+id="autoReceipt"
+checked>
+
+<span class="slider"></span>
+
+</label>
+
+</div>
+
+
+
+<div class="setting-item">
+
+<span>
+Email Receipts
+</span>
+
+<label class="switch">
+
+<input
+type="checkbox"
+id="emailReceipts"
+checked>
+
+<span class="slider"></span>
+
+</label>
+
+</div>
+
+
+
+<div class="setting-item">
+
+<span>
+Allow Manual Refunds
+</span>
+
+<label class="switch">
+
+<input
+type="checkbox"
+id="manualRefunds">
+
+<span class="slider"></span>
+
+</label>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="glass-card system-card">
+
+<h2>
+📊 System Status
+</h2>
+
+<div class="system-status">
+
+<div>
+
+<strong>
+Payments Today
+</strong>
+
+<p id="paymentsToday">
+0
+</p>
+
+</div>
+
+<div>
+
+<strong>
+Pending Payments
+</strong>
+
+<p id="pendingPaymentsCount">
+0
+</p>
+
+</div>
+
+<div>
+
+<strong>
+Successful Payments
+</strong>
+
+<p id="successfulPaymentsCount">
+0
+</p>
+
+</div>
+
+<div>
+
+<strong>
+Last Backup
+</strong>
+
+<p id="lastBackup">
+Never
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ===================================
+     ACTION BAR
+=================================== -->
+
+<div class="action-bar">
+
+<button
+class="secondary-btn"
+id="exportTransactions">
+
+📄 Export CSV
+
+</button>
+
+<button
+class="secondary-btn"
+id="backupPayments">
+
+💾 Backup
+
+</button>
+
+<button
+class="secondary-btn"
+id="printTransactions">
+
+🖨 Print
+
+</button>
+
+<button
+class="primary-btn"
+id="savePaymentSettings">
+
+💾 Save Settings
+
+</button>
+
+</div>
+
+</main>
+
+</div>
+
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script
+type="module"
+src="./js/founder-app.js">
+</script>
+
+<script
+type="module"
+src="./js/founder-auth.js">
+</script>
+
+<script
+type="module"
+src="payments.js">
+</script>
+
+</body>
+
+</html>

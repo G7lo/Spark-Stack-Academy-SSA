@@ -1,0 +1,293 @@
+<section class="page-header glass-card">
+
+    <h1>🤖 Spark AI Settings</h1>
+
+    <p>
+        Configure Spark AI, API providers, model behavior and response limits.
+    </p>
+
+</section>
+
+<section class="glass-card section-card">
+
+    <h2>AI Provider</h2>
+
+    <div class="form-grid">
+
+        <div class="input-group">
+
+            <label>Provider</label>
+
+            <select id="aiProvider">
+
+                <option value="groq">Groq</option>
+
+                <option value="openai">OpenAI</option>
+
+                <option value="gemini">Google Gemini</option>
+
+                <option value="claude">Claude</option>
+
+            </select>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Model</label>
+
+            <input
+                id="aiModel"
+                placeholder="llama-3.3-70b-versatile">
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="glass-card section-card">
+
+    <h2>API Configuration</h2>
+
+    <div class="form-grid">
+
+        <div class="input-group">
+
+            <label>API Key</label>
+
+            <input
+                type="password"
+                id="apiKey"
+                placeholder="••••••••••••">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Endpoint</label>
+
+            <input
+                id="apiEndpoint"
+                placeholder="https://api.groq.com/openai/v1">
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="glass-card section-card">
+
+    <h2>Model Configuration</h2>
+
+    <div class="form-grid">
+
+        <div class="input-group">
+
+            <label>Temperature</label>
+
+            <input
+                type="number"
+                step="0.1"
+                min="0"
+                max="2"
+                id="temperature">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Max Tokens</label>
+
+            <input
+                type="number"
+                id="maxTokens">
+
+        </div>
+
+    </div>
+
+</section>
+<section class="glass-card section-card">
+
+    <h2>AI Behavior</h2>
+
+    <div class="form-grid">
+
+        <div class="input-group">
+
+            <label>System Prompt</label>
+
+            <textarea
+                id="systemPrompt"
+                rows="8"
+                placeholder="You are Spark AI..."></textarea>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>AI Personality</label>
+
+            <select id="aiPersonality">
+
+                <option value="professional">Professional</option>
+
+                <option value="friendly">Friendly</option>
+
+                <option value="creative">Creative</option>
+
+                <option value="educator">Educator</option>
+
+                <option value="technical">Technical</option>
+
+            </select>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Default Language</label>
+
+            <select id="defaultLanguage">
+
+                <option value="en">English</option>
+
+                <option value="sw">Swahili</option>
+
+                <option value="fr">French</option>
+
+            </select>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Response Style</label>
+
+            <select id="responseStyle">
+
+                <option value="balanced">Balanced</option>
+
+                <option value="short">Short</option>
+
+                <option value="detailed">Detailed</option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="glass-card section-card">
+
+    <h2>AI Features</h2>
+
+    <div class="toggle-list">
+
+        <div class="toggle-item">
+
+            <span>Enable Streaming</span>
+
+            <input
+                type="checkbox"
+                id="enableStreaming">
+
+        </div>
+
+        <div class="toggle-item">
+
+            <span>Enable Conversation Memory</span>
+
+            <input
+                type="checkbox"
+                id="enableMemory">
+
+        </div>
+
+        <div class="toggle-item">
+
+            <span>Enable Web Search</span>
+
+            <input
+                type="checkbox"
+                id="enableWeb">
+
+        </div>
+
+        <div class="toggle-item">
+
+            <span>Allow Code Execution</span>
+
+            <input
+                type="checkbox"
+                id="enableCode">
+
+        </div>
+
+        <div class="toggle-item">
+
+            <span>Enable Image Generation</span>
+
+            <input
+                type="checkbox"
+                id="enableImages">
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="glass-card section-card">
+
+    <h2>Usage Limits</h2>
+
+    <div class="form-grid">
+
+        <div class="input-group">
+
+            <label>Requests Per Minute</label>
+
+            <input
+                type="number"
+                id="rateLimit">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Maximum Conversation Length</label>
+
+            <input
+                type="number"
+                id="conversationLimit">
+
+        </div>
+
+    </div>
+
+</section>
+
+<div class="action-bar">
+
+    <button
+        class="secondary-btn"
+        id="testConnectionBtn">
+
+        Test Connection
+
+    </button>
+
+    <button
+        class="primary-btn"
+        id="saveAISettingsBtn">
+
+        Save Settings
+
+    </button>
+
+</div>

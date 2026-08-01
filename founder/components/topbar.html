@@ -39,25 +39,72 @@ placeholder="Search Founder OS..."
     </button>
 
 
-    <div class="notification-wrapper">
+  <div class="notification-wrapper">
 
-      <button class="icon-btn"
-              id="notificationsBtn"
-              aria-label="Notifications">
+  <button class="icon-btn"
+          id="notificationsBtn"
+          aria-label="Notifications">
 
-        <i data-lucide="bell"></i>
+    <i data-lucide="bell"></i>
 
-        <span class="notification-badge"
-              id="notificationCount"
-              style="display:none">
+    <span class="notification-badge"
+          id="notificationCount"
+          style="display:none">
 
-          0
+      0
 
-        </span>
+    </span>
 
-      </button>
+  </button>
+
+
+
+  <!-- NOTIFICATION DROPDOWN -->
+
+  <div class="notification-dropdown"
+       id="notificationDropdown">
+
+
+    <div class="dropdown-header">
+
+      <h3>
+        Notifications
+      </h3>
+
+      <span id="dropdownUnread">
+        0
+      </span>
 
     </div>
+
+
+
+    <div id="topNotificationsList">
+
+
+      <p class="empty-notifications">
+
+        No new notifications
+
+      </p>
+
+
+    </div>
+
+
+
+    <button
+    id="viewAllNotifications">
+
+      View All Notifications
+
+    </button>
+
+
+  </div>
+
+
+</div>
 
 
     <div class="profile-chip">
