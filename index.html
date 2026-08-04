@@ -5,1294 +5,1427 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<title>Spark Stack Academy</title>
+<meta name="description"
+content="Spark Stack Academy - Learn. Build. Innovate. Empowering Africa through world-class technology education.">
 
+<meta name="keywords"
+content="Spark Stack Academy, Programming, AI, Cybersecurity, Web Development, Software Engineering">
 
-<style>
+<meta name="author"
+content="SparkStack International">
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
-}
+<title>
 
+Spark Stack Academy | Learn • Build • Innovate
 
-body{
+</title>
 
-    min-height:100vh;
+<link rel="stylesheet"
+href="css/index.css">
 
-    background:
-    radial-gradient(
-        circle at center,
-        #123b73,
-        #020617 60%
-    );
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
 
-    color:white;
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
 
-    overflow-x:hidden;
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
 
-}
-
-
-/* STAR BACKGROUND */
-
-body::before{
-
-    content:"";
-
-    position:fixed;
-
-    inset:0;
-
-    background-image:
-    radial-gradient(
-        white 1px,
-        transparent 1px
-    );
-
-    background-size:50px 50px;
-
-    opacity:.15;
-
-    pointer-events:none;
-
-}
-
-
-/* GLOBAL BUTTONS */
-
-button{
-
-    padding:16px 35px;
-
-    margin:10px;
-
-    border-radius:30px;
-
-    border:1px solid #38bdf8;
-
-    background:
-
-    rgba(15,23,42,.7);
-
-    color:white;
-
-    cursor:pointer;
-
-    font-size:1rem;
-
-    box-shadow:
-
-    0 0 20px #2563eb;
-
-    transition:.3s;
-
-}
-
-
-button:hover{
-
-    background:#2563eb;
-
-    transform:translateY(-5px);
-
-}
-
-
-a{
-
-    text-decoration:none;
-
-}
-
-
-
-/* 3D CORE */
-
-
-.core{
-
-    width:280px;
-
-    height:280px;
-
-    border-radius:50%;
-
-    position:absolute;
-
-
-    background:
-
-    radial-gradient(
-        circle at 30% 30%,
-        #67e8f9,
-        #2563eb 40%,
-        #020617 70%
-    );
-
-
-    box-shadow:
-
-    0 0 80px #2563eb,
-
-    inset 0 0 50px #38bdf8;
-
-
-    animation:
-    rotate 8s linear infinite;
-
-}
-
-
-@keyframes rotate{
-
-from{
-
-transform:rotateY(0deg);
-
-}
-
-to{
-
-transform:rotateY(360deg);
-
-}
-
-}
-
-
-/* FLOATING TECH */
-
-.node{
-
-    position:absolute;
-
-    padding:15px 25px;
-
-    border-radius:20px;
-
-    background:
-
-    rgba(255,255,255,.08);
-
-
-    border:
-
-    1px solid rgba(255,255,255,.2);
-
-
-    backdrop-filter:blur(10px);
-
-
-    animation:
-    float 5s infinite;
-
-}
-
-
-@keyframes float{
-
-50%{
-
-transform:translateY(-20px);
-
-}
-
-}
-
-/* HERO SECTION */
-
-
-.hero{
-
-    min-height:100vh;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    position:relative;
-
-    text-align:center;
-
-}
-
-
-
-.container{
-
-    position:relative;
-
-    z-index:2;
-
-}
-
-
-
-h1{
-
-    font-size:
-    clamp(3rem,6vw,5rem);
-
-    letter-spacing:3px;
-
-
-    text-shadow:
-
-    0 0 25px #38bdf8;
-
-}
-
-
-
-h1 span{
-
-    color:#38bdf8;
-
-}
-
-
-
-.hero p{
-
-    max-width:650px;
-
-    margin:25px auto;
-
-    color:#cbd5e1;
-
-    font-size:1.2rem;
-
-}
-
-
-
-.buttons{
-
-    margin-top:35px;
-
-}
-
-
-
-
-.ai{
-
-    top:20%;
-
-    left:15%;
-
-}
-
-
-
-.web{
-
-    top:25%;
-
-    right:15%;
-
-}
-
-
-
-.cloud{
-
-    bottom:20%;
-
-    left:20%;
-
-}
-
-
-
-.cyber{
-
-    bottom:20%;
-
-    right:20%;
-
-}
-
-/* ABOUT SECTION */
-
-
-.about{
-
-    position:relative;
-
-    padding:90px 30px;
-
-    text-align:center;
-
-}
-
-
-
-.about h2{
-
-    font-size:3rem;
-
-    margin-bottom:20px;
-
-    color:#38bdf8;
-
-    text-shadow:
-
-    0 0 20px #2563eb;
-
-}
-
-
-
-.about > p{
-
-    max-width:700px;
-
-    margin:auto;
-
-    color:#cbd5e1;
-
-}
-
-
-
-.cards{
-
-    display:flex;
-
-    justify-content:center;
-
-    gap:25px;
-
-    flex-wrap:wrap;
-
-    margin-top:50px;
-
-}
-
-
-
-.card{
-
-    width:280px;
-
-    padding:30px;
-
-    border-radius:25px;
-
-
-    background:
-
-    rgba(255,255,255,.06);
-
-
-    border:
-
-    1px solid rgba(255,255,255,.15);
-
-
-    backdrop-filter:blur(15px);
-
-
-    box-shadow:
-
-    0 0 30px rgba(37,99,235,.2);
-
-
-    transition:.4s;
-
-}
-
-
-
-.card:hover{
-
-    transform:
-
-    translateY(-15px);
-
-
-    box-shadow:
-
-    0 0 40px #2563eb;
-
-}
-
-
-
-.card h3{
-
-    margin-bottom:15px;
-
-    color:#67e8f9;
-
-}
-
-/* LEARNING PATHS */
-
-
-.paths{
-
-    padding:100px 30px;
-
-    text-align:center;
-
-}
-
-
-
-.paths h2{
-
-    font-size:3rem;
-
-    margin-bottom:50px;
-
-    color:#38bdf8;
-
-    text-shadow:
-
-    0 0 20px #2563eb;
-
-}
-
-
-
-.path-grid{
-
-    display:flex;
-
-    justify-content:center;
-
-    flex-wrap:wrap;
-
-    gap:25px;
-
-}
-
-
-
-.path-card{
-
-    width:260px;
-
-    padding:30px;
-
-
-    border-radius:25px;
-
-
-    background:
-
-    rgba(15,23,42,.75);
-
-
-
-    border:
-
-    1px solid rgba(56,189,248,.3);
-
-
-
-    box-shadow:
-
-    0 0 25px rgba(37,99,235,.25);
-
-
-
-    transition:.4s;
-
-}
-
-
-
-.path-card:hover{
-
-    transform:
-
-    translateY(-12px)
-    scale(1.03);
-
-
-
-    border-color:#38bdf8;
-
-
-
-    box-shadow:
-
-    0 0 40px #2563eb;
-
-}
-
-
-
-.path-card h3{
-
-    color:#67e8f9;
-
-    margin-bottom:15px;
-
-}
-
-/* STATS SECTION */
-
-
-.stats{
-
-    padding:100px 30px;
-
-    text-align:center;
-
-    background:
-
-    linear-gradient(
-        transparent,
-        #020617
-    );
-
-}
-
-
-
-.stats h2{
-
-    font-size:3rem;
-
-    margin-bottom:50px;
-
-    color:#38bdf8;
-
-    text-shadow:
-
-    0 0 20px #2563eb;
-
-}
-
-
-
-.stats-grid{
-
-    display:flex;
-
-    justify-content:center;
-
-    flex-wrap:wrap;
-
-    gap:25px;
-
-}
-
-
-
-.stat-card{
-
-    width:220px;
-
-    padding:35px;
-
-
-    border-radius:25px;
-
-
-    background:
-
-    rgba(255,255,255,.06);
-
-
-
-    border:
-
-    1px solid rgba(56,189,248,.25);
-
-
-
-    backdrop-filter:blur(15px);
-
-
-
-    box-shadow:
-
-    0 0 30px rgba(37,99,235,.2);
-
-
-
-    transition:.4s;
-
-}
-
-
-
-.stat-card:hover{
-
-    transform:
-
-    translateY(-10px);
-
-
-
-    box-shadow:
-
-    0 0 40px #2563eb;
-
-}
-
-
-
-.stat-card h3{
-
-    font-size:3rem;
-
-    color:#67e8f9;
-
-}
-
-
-
-.stat-card p{
-
-    margin-top:15px;
-
-    color:#cbd5e1;
-
-}
-
-/* CERTIFICATE SECTION */
-
-
-.certificates{
-
-    padding:100px 30px;
-
-    text-align:center;
-
-}
-
-
-
-.certificates h2{
-
-    font-size:3rem;
-
-    color:#38bdf8;
-
-    margin-bottom:20px;
-
-    text-shadow:
-
-    0 0 20px #2563eb;
-
-}
-
-
-
-.certificates > p{
-
-    max-width:700px;
-
-    margin:auto;
-
-    color:#cbd5e1;
-
-}
-
-
-
-.certificate-box{
-
-    display:flex;
-
-    justify-content:center;
-
-    flex-wrap:wrap;
-
-    gap:25px;
-
-    margin-top:50px;
-
-}
-
-
-
-.certificate-card{
-
-    width:280px;
-
-    padding:35px;
-
-    border-radius:25px;
-
-
-    background:
-
-    rgba(255,255,255,.06);
-
-
-    border:
-
-    1px solid rgba(56,189,248,.25);
-
-
-    box-shadow:
-
-    0 0 30px rgba(37,99,235,.2);
-
-
-    transition:.4s;
-
-}
-
-
-
-.certificate-card:hover{
-
-    transform:
-
-    translateY(-12px);
-
-
-    box-shadow:
-
-    0 0 40px #2563eb;
-
-}
-
-
-
-.certificate-card h3{
-
-    color:#67e8f9;
-
-    margin-bottom:15px;
-
-}
-
-/* FOOTER */
-
-
-.footer{
-
-    padding:70px 30px 30px;
-
-    text-align:center;
-
-    background:
-
-    #020617;
-
-    border-top:
-
-    1px solid rgba(56,189,248,.2);
-
-    box-shadow:
-
-    0 -10px 40px rgba(37,99,235,.2);
-
-}
-
-
-
-.footer-brand h2{
-
-    color:#38bdf8;
-
-    font-size:2rem;
-
-    text-shadow:
-
-    0 0 20px #2563eb;
-
-}
-
-
-
-.footer-brand p{
-
-    color:#cbd5e1;
-
-    margin-top:15px;
-
-}
-
-
-
-.footer-links{
-
-    display:flex;
-
-    justify-content:center;
-
-    flex-wrap:wrap;
-
-    gap:25px;
-
-    margin:40px 0;
-
-}
-
-
-
-.footer-links a{
-
-    color:white;
-
-    transition:.3s;
-
-}
-
-
-
-.footer-links a:hover{
-
-    color:#38bdf8;
-
-    text-shadow:
-
-    0 0 15px #2563eb;
-
-}
-
-
-
-.footer-bottom{
-
-    padding-top:20px;
-
-    border-top:
-
-    1px solid rgba(255,255,255,.1);
-
-    color:#94a3b8;
-
-}
-
-</style>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 </head>
+
 <body>
 
+<!-- ===========================
+     PRELOADER
+=========================== -->
 
-<section class="hero">
+<div id="preloader">
 
+<div class="loader">
 
-<div class="core"></div>
+<img
+src="assets/images/ssa-logo.png"
+alt="Spark Stack Academy">
 
+<h2>
 
-<div class="node ai">
-🤖 Artificial Intelligence
+Spark Stack Academy
+
+</h2>
+
+<div class="loading-bar">
+
+<span></span>
+
 </div>
 
-
-<div class="node web">
-💻 Web Development
 </div>
 
-
-<div class="node cloud">
-☁ Cloud Technology
 </div>
 
+<!-- ===========================
+     HEADER
+=========================== -->
 
-<div class="node cyber">
-🔐 Cyber Security
+<header>
+
+<nav class="navbar">
+
+<a
+href="index.html"
+class="logo">
+
+<img
+src="assets/images/ssa-logo.png"
+alt="SSA Logo">
+
+<div>
+
+<h2>
+
+Spark Stack Academy
+
+</h2>
+
+<span>
+
+Learn • Build • Innovate
+
+</span>
+
 </div>
 
+</a>
 
+<ul class="nav-links">
 
-<div class="container">
+<li>
 
+<a
+href="#home"
+class="active">
+
+Home
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#courses">
+
+Courses
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#about">
+
+About
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#instructors">
+
+Instructors
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#contact">
+
+Contact
+
+</a>
+
+</li>
+
+</ul>
+
+<div class="nav-buttons">
+
+<a
+href="login.html"
+class="login-btn">
+
+Login
+
+</a>
+
+<a
+href="signup.html"
+class="signup-btn">
+
+Get Started
+
+</a>
+
+</div>
+
+<button
+id="menuBtn"
+class="menu-btn">
+
+<i class="fa-solid fa-bars"></i>
+
+</button>
+
+</nav>
+
+</header>
+
+<!-- ===========================
+     HERO SECTION
+=========================== -->
+
+<section
+id="home"
+class="hero">
+
+<div class="hero-content">
+
+<div class="hero-badge">
+
+<i class="fa-solid fa-bolt"></i>
+
+Africa's Next Generation Tech Academy
+
+</div>
 
 <h1>
 
-Welcome to
+Learn Today.
 
-<br>
+Build Tomorrow.
 
-<span>
-The Spark Stack Academy
-</span>
+Lead the Future.
 
 </h1>
 
-
 <p>
 
-A next-generation technology academy building
-developers, engineers and innovators for the digital future.
+Master Software Development, Artificial Intelligence,
+Cybersecurity, Data Science, UI/UX Design and more with
+industry-focused courses designed for future innovators.
 
 </p>
 
+<div class="hero-buttons">
 
+<a
+href="signup.html"
+class="primary-btn">
 
-<div class="buttons">
+Start Learning
 
+</a>
+
+<a
+href="#courses"
+class="secondary-btn">
+
+Browse Courses
+
+</a>
+
+</div>
+
+<div class="hero-stats">
+
+<div>
+
+<h2>
+
+500+
+
+</h2>
+
+<p>
+
+Students
+
+</p>
+
+</div>
+
+<div>
+
+<h2>
+
+30+
+
+</h2>
+
+<p>
+
+Courses
+
+</p>
+
+</div>
+
+<div>
+
+<h2>
+
+15+
+
+</h2>
+
+<p>
+
+Expert Tutors
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="hero-image">
+
+<img
+src="assets/images/hero-illustration.png"
+alt="Spark Stack Academy Students">
+
+</div>
+
+</section>
+<!-- ==========================================
+     TRUSTED BY
+========================================== -->
+
+<section class="partners">
+
+<p class="section-label">
+
+Trusted Learning Ecosystem
+
+</p>
+
+<div class="partners-grid">
+
+<div class="partner-item">
+
+<i class="fa-solid fa-laptop-code"></i>
+
+<span>
+
+Software Engineering
+
+</span>
+
+</div>
+
+<div class="partner-item">
+
+<i class="fa-solid fa-brain"></i>
+
+<span>
+
+Artificial Intelligence
+
+</span>
+
+</div>
+
+<div class="partner-item">
+
+<i class="fa-solid fa-shield-halved"></i>
+
+<span>
+
+Cyber Security
+
+</span>
+
+</div>
+
+<div class="partner-item">
+
+<i class="fa-solid fa-chart-line"></i>
+
+<span>
+
+Data Science
+
+</span>
+
+</div>
+
+<div class="partner-item">
+
+<i class="fa-solid fa-mobile-screen-button"></i>
+
+<span>
+
+Mobile Development
+
+</span>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ==========================================
+     ABOUT
+========================================== -->
+
+<section
+id="about"
+class="about-section">
+
+<div class="about-image">
+
+<img
+src="assets/images/about-ssa.png"
+alt="Spark Stack Academy">
+
+</div>
+
+<div class="about-content">
+
+<span class="section-tag">
+
+ABOUT US
+
+</span>
+
+<h2>
+
+Empowering Africa's Future Through Technology
+
+</h2>
+
+<p>
+
+Spark Stack Academy is building a new generation of software engineers,
+AI innovators, cybersecurity professionals and digital entrepreneurs.
+Our mission is to make world-class technology education accessible,
+practical and career-focused.
+
+</p>
+
+<div class="about-features">
+
+<div class="feature">
+
+<i class="fa-solid fa-circle-check"></i>
+
+<span>
+
+Hands-on Project Based Learning
+
+</span>
+
+</div>
+
+<div class="feature">
+
+<i class="fa-solid fa-circle-check"></i>
+
+<span>
+
+Industry Expert Instructors
+
+</span>
+
+</div>
+
+<div class="feature">
+
+<i class="fa-solid fa-circle-check"></i>
+
+<span>
+
+Recognized Digital Certificates
+
+</span>
+
+</div>
+
+<div class="feature">
+
+<i class="fa-solid fa-circle-check"></i>
+
+<span>
+
+Career Mentorship & Guidance
+
+</span>
+
+</div>
+
+</div>
+
+<a
+href="signup.html"
+class="primary-btn">
+
+Join Today
+
+</a>
+
+</div>
+
+</section>
+
+<!-- ==========================================
+     FEATURED COURSES
+========================================== -->
+
+<section
+id="courses"
+class="courses-section">
+
+<div class="section-header">
+
+<span>
+
+POPULAR COURSES
+
+</span>
+
+<h2>
+
+Discover Your Future Career
+
+</h2>
+
+<p>
+
+Learn today's most in-demand technology skills through practical,
+industry-focused programs.
+
+</p>
+
+</div>
+
+<div class="courses-grid">
+
+<div class="course-card">
+
+<div class="course-icon">
+
+<i class="fa-solid fa-code"></i>
+
+</div>
+
+<h3>
+
+Full Stack Web Development
+
+</h3>
+
+<p>
+
+HTML, CSS, JavaScript, React, Node.js, Firebase and deployment.
+
+</p>
 
 <a href="signup.html">
 
-<button>
-Join Academy
-</button>
+Enroll Now
 
 </a>
 
+</div>
 
-<a href="login.html">
+<div class="course-card">
 
-<button>
-Enter Portal
-</button>
+<div class="course-icon">
+
+<i class="fa-solid fa-robot"></i>
+
+</div>
+
+<h3>
+
+Artificial Intelligence
+
+</h3>
+
+<p>
+
+Machine Learning, Prompt Engineering and AI application development.
+
+</p>
+
+<a href="signup.html">
+
+Enroll Now
 
 </a>
 
+</div>
+
+<div class="course-card">
+
+<div class="course-icon">
+
+<i class="fa-solid fa-user-shield"></i>
 
 </div>
 
+<h3>
+
+Cyber Security
+
+</h3>
+
+<p>
+
+Ethical Hacking, Digital Security and Penetration Testing.
+
+</p>
+
+<a href="signup.html">
+
+Enroll Now
+
+</a>
 
 </div>
 
+<div class="course-card">
+
+<div class="course-icon">
+
+<i class="fa-solid fa-mobile-screen"></i>
+
+</div>
+
+<h3>
+
+Android App Development
+
+</h3>
+
+<p>
+
+Build modern Android applications using Kotlin and Firebase.
+
+</p>
+
+<a href="signup.html">
+
+Enroll Now
+
+</a>
+
+</div>
+
+<div class="course-card">
+
+<div class="course-icon">
+
+<i class="fa-solid fa-palette"></i>
+
+</div>
+
+<h3>
+
+UI / UX Design
+
+</h3>
+
+<p>
+
+Create beautiful digital experiences using Figma and modern design principles.
+
+</p>
+
+<a href="signup.html">
+
+Enroll Now
+
+</a>
+
+</div>
+
+<div class="course-card">
+
+<div class="course-icon">
+
+<i class="fa-solid fa-cloud"></i>
+
+</div>
+
+<h3>
+
+Cloud Computing
+
+</h3>
+
+<p>
+
+Master cloud platforms, DevOps fundamentals and deployment workflows.
+
+</p>
+
+<a href="signup.html">
+
+Enroll Now
+
+</a>
+
+</div>
+
+</div>
 
 </section>
-<section class="about">
+<!-- ==========================================
+     WHY CHOOSE US
+========================================== -->
+
+<section class="why-us">
+
+<div class="section-header">
+
+<span>
+
+WHY CHOOSE US
+
+</span>
 
 <h2>
-Why Spark Stack Academy?
+
+Building Future Tech Leaders
+
 </h2>
 
-
 <p>
-A technology ecosystem designed to help students learn,
-build real projects, and prepare for the digital future.
+
+Everything you need to become a world-class technology professional.
+
 </p>
 
+</div>
 
+<div class="why-grid">
 
-<div class="cards">
+<div class="why-card">
 
-
-<div class="card">
+<i class="fa-solid fa-laptop-code"></i>
 
 <h3>
-🚀 Learn
+
+Project Based Learning
+
 </h3>
 
 <p>
-Master modern technology skills through structured learning paths.
+
+Every student builds real-world projects and a professional portfolio.
+
 </p>
 
 </div>
 
+<div class="why-card">
 
-
-<div class="card">
+<i class="fa-solid fa-chalkboard-user"></i>
 
 <h3>
-🛠 Build
+
+Expert Mentors
+
 </h3>
 
 <p>
-Create real-world projects and develop practical experience.
+
+Learn from experienced instructors and industry professionals.
+
 </p>
 
 </div>
 
+<div class="why-card">
 
-
-<div class="card">
+<i class="fa-solid fa-certificate"></i>
 
 <h3>
-🌍 Launch
+
+Professional Certificates
+
 </h3>
 
 <p>
-Transform your skills into opportunities and innovation.
+
+Receive certificates that showcase your practical skills.
+
 </p>
 
 </div>
 
+<div class="why-card">
+
+<i class="fa-solid fa-briefcase"></i>
+
+<h3>
+
+Career Ready
+
+</h3>
+
+<p>
+
+Build job-ready skills for freelancing, startups and global careers.
+
+</p>
 
 </div>
 
+</div>
 
 </section>
-<section class="paths">
 
+<!-- ==========================================
+     ACHIEVEMENTS
+========================================== -->
 
-<h2>
-Explore Learning Paths
+<section class="achievement-section">
+
+<div class="achievement-card">
+
+<h2 class="counter" data-target="500">
+
+0
+
 </h2>
 
-
-<div class="path-grid">
-
-
-
-<div class="path-card">
-
-<h3>
-💻 Software Development
-</h3>
-
 <p>
-Build websites, applications and digital products
-using modern technologies.
+
+Active Students
+
 </p>
 
 </div>
 
+<div class="achievement-card">
 
+<h2 class="counter" data-target="30">
 
-<div class="path-card">
+0
 
-<h3>
-🤖 Artificial Intelligence
-</h3>
-
-<p>
-Explore AI tools, automation and intelligent systems.
-</p>
-
-</div>
-
-
-
-<div class="path-card">
-
-<h3>
-🔐 Cyber Security
-</h3>
-
-<p>
-Learn how to protect systems, networks and data.
-</p>
-
-</div>
-
-
-
-<div class="path-card">
-
-<h3>
-☁ Cloud & DevOps
-</h3>
-
-<p>
-Understand modern cloud infrastructure and deployment.
-</p>
-
-</div>
-
-
-
-<div class="path-card">
-
-<h3>
-⚡ Electronics & IoT
-</h3>
-
-<p>
-Connect hardware, software and smart devices.
-</p>
-
-</div>
-
-
-
-</div>
-
-
-</section>
-<section class="stats">
-
-
-<h2>
-Spark Stack Academy Impact
 </h2>
 
-
-<div class="stats-grid">
-
-
-<div class="stat-card">
-
-<h3>
-500+
-</h3>
-
 <p>
-Students Learning
+
+Professional Courses
+
 </p>
 
 </div>
 
+<div class="achievement-card">
 
+<h2 class="counter" data-target="98">
 
-<div class="stat-card">
+0
 
-<h3>
-50+
-</h3>
+</h2>
 
 <p>
-Technology Courses
+
+Success Rate %
+
 </p>
 
 </div>
 
+<div class="achievement-card">
 
+<h2 class="counter" data-target="15">
 
-<div class="stat-card">
+0
 
-<h3>
-25+
-</h3>
+</h2>
 
 <p>
+
 Expert Instructors
+
 </p>
 
 </div>
-
-
-
-<div class="stat-card">
-
-<h3>
-100%
-</h3>
-
-<p>
-Future Focused
-</p>
-
-</div>
-
-
-</div>
-
 
 </section>
-<section class="certificates">
 
+<!-- ==========================================
+     INSTRUCTORS
+========================================== -->
+
+<section
+id="instructors"
+class="instructors-section">
+
+<div class="section-header">
+
+<span>
+
+OUR TEAM
+
+</span>
 
 <h2>
-Earn Your Certificate
+
+Meet Our Expert Instructors
+
 </h2>
 
+</div>
 
-<p>
-Complete courses, build projects, and receive certificates
-that showcase your skills and achievements.
-</p>
+<div class="instructors-grid">
 
+<div class="instructor-card">
 
-
-<div class="certificate-box">
-
-
-<div class="certificate-card">
+<img
+src="assets/images/instructor-placeholder.png"
+alt="Instructor">
 
 <h3>
-🎓 Professional Certificates
+
+Coming Soon
+
 </h3>
 
 <p>
-Validate your skills with achievement-based certificates.
+
+Lead Software Engineer
+
 </p>
+
+<div class="socials">
+
+<i class="fab fa-linkedin"></i>
+
+<i class="fab fa-github"></i>
+
+<i class="fab fa-x-twitter"></i>
 
 </div>
 
+</div>
 
+<div class="instructor-card">
 
-<div class="certificate-card">
+<img
+src="assets/images/instructor-placeholder.png"
+alt="Instructor">
 
 <h3>
-🚀 Project Portfolio
+
+Coming Soon
+
 </h3>
 
 <p>
-Showcase real-world projects created during your journey.
+
+Artificial Intelligence
+
 </p>
+
+<div class="socials">
+
+<i class="fab fa-linkedin"></i>
+
+<i class="fab fa-github"></i>
+
+<i class="fab fa-x-twitter"></i>
 
 </div>
 
+</div>
 
+<div class="instructor-card">
 
-<div class="certificate-card">
+<img
+src="assets/images/instructor-placeholder.png"
+alt="Instructor">
 
 <h3>
-🌍 Career Ready Skills
+
+Coming Soon
+
 </h3>
 
 <p>
-Develop practical abilities for the global technology industry.
+
+Cyber Security
+
 </p>
 
+<div class="socials">
+
+<i class="fab fa-linkedin"></i>
+
+<i class="fab fa-github"></i>
+
+<i class="fab fa-x-twitter"></i>
+
 </div>
 
-
-
 </div>
 
+</div>
 
 </section>
+
+<!-- ==========================================
+     TESTIMONIALS
+========================================== -->
+
+<section class="testimonials">
+
+<div class="section-header">
+
+<span>
+
+TESTIMONIALS
+
+</span>
+
+<h2>
+
+What Our Students Say
+
+</h2>
+
+</div>
+
+<div class="testimonial-grid">
+
+<div class="testimonial-card">
+
+<i class="fa-solid fa-quote-left"></i>
+
+<p>
+
+Spark Stack Academy completely changed how I learn programming.
+The practical projects made all the difference.
+
+</p>
+
+<h4>
+
+— Future Student
+
+</h4>
+
+</div>
+
+<div class="testimonial-card">
+
+<i class="fa-solid fa-quote-left"></i>
+
+<p>
+
+The learning environment is modern, engaging and focused on real-world skills.
+
+</p>
+
+<h4>
+
+— Future Graduate
+
+</h4>
+
+</div>
+
+<div class="testimonial-card">
+
+<i class="fa-solid fa-quote-left"></i>
+
+<p>
+
+I'm excited to be part of a community that's shaping Africa's tech future.
+
+</p>
+
+<h4>
+
+— Early Member
+
+</h4>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ==========================================
+     CALL TO ACTION
+========================================== -->
+
+<section class="cta-section">
+
+<h2>
+
+Your Tech Journey Starts Today
+
+</h2>
+
+<p>
+
+Join Spark Stack Academy and gain practical skills that prepare you for the future of technology.
+
+</p>
+
+<div class="hero-buttons">
+
+<a
+href="signup.html"
+class="primary-btn">
+
+Enroll Now
+
+</a>
+
+<a
+href="login.html"
+class="secondary-btn">
+
+Student Login
+
+</a>
+
+</div>
+
+</section>
+<!-- ==========================================
+     CONTACT SECTION
+========================================== -->
+
+<section
+id="contact"
+class="contact-section">
+
+<div class="section-header">
+
+<span>
+
+CONTACT US
+
+</span>
+
+<h2>
+
+Let's Build Your Future Together
+
+</h2>
+
+<p>
+
+Have questions? Reach out to us and we'll be happy to help.
+
+</p>
+
+</div>
+
+<div class="contact-grid">
+
+<div class="contact-card">
+
+<i class="fa-solid fa-envelope"></i>
+
+<h3>
+
+Email
+
+</h3>
+
+<p>
+
+sparkslovena@gmail.com
+
+</p>
+
+</div>
+
+<div class="contact-card">
+
+<i class="fa-solid fa-phone"></i>
+
+<h3>
+
+Phone
+
+</h3>
+
+<p>
+
+Coming Soon
+
+</p>
+
+</div>
+
+<div class="contact-card">
+
+<i class="fa-solid fa-location-dot"></i>
+
+<h3>
+
+Location
+
+</h3>
+
+<p>
+
+Kenya
+
+</p>
+
+</div>
+
+<div class="contact-card">
+
+<i class="fa-solid fa-clock"></i>
+
+<h3>
+
+Working Hours
+
+</h3>
+
+<p>
+
+Mon - Fri | 8:00 AM - 5:00 PM
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ==========================================
+     NEWSLETTER
+========================================== -->
+
+<section class="newsletter">
+
+<div class="newsletter-content">
+
+<h2>
+
+Stay Updated
+
+</h2>
+
+<p>
+
+Subscribe to receive announcements, new courses and academy updates.
+
+</p>
+
+<form
+id="newsletterForm">
+
+<input
+type="email"
+placeholder="Enter your email address"
+required>
+
+<button
+type="submit"
+class="primary-btn">
+
+Subscribe
+
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+<!-- ==========================================
+     FOOTER
+========================================== -->
+
 <footer class="footer">
 
+<div class="footer-grid">
 
-<div class="footer-brand">
+<div>
 
-<h2>
-⚡ Spark Stack Academy
-</h2>
+<img
+src="assets/images/ssa-logo.png"
+alt="SSA Logo"
+class="footer-logo">
+
+<h3>
+
+Spark Stack Academy
+
+</h3>
 
 <p>
-Building the next generation of developers,
-engineers and innovators.
+
+Empowering Africa's next generation of innovators through practical technology education.
+
 </p>
 
 </div>
 
+<div>
 
+<h4>
 
-<div class="footer-links">
+Quick Links
 
+</h4>
 
-<a href="login.html">
-Student Portal
-</a>
+<ul>
 
+<li><a href="#home">Home</a></li>
 
-<a href="instructors/login.html">
-Instructor Portal
-</a>
+<li><a href="#about">About</a></li>
 
+<li><a href="#courses">Courses</a></li>
 
-<a href="#">
-About SSA
-</a>
+<li><a href="#contact">Contact</a></li>
 
-
-<a href="#">
-Contact
-</a>
-
+</ul>
 
 </div>
 
+<div>
 
+<h4>
+
+Student Portal
+
+</h4>
+
+<ul>
+
+<li><a href="login.html">Login</a></li>
+
+<li><a href="signup.html">Create Account</a></li>
+
+<li><a href="#">Support</a></li>
+
+<li><a href="#">FAQs</a></li>
+
+</ul>
+
+</div>
+
+<div>
+
+<h4>
+
+Follow Us
+
+</h4>
+
+<div class="footer-socials">
+
+<a href="#">
+
+<i class="fab fa-facebook-f"></i>
+
+</a>
+
+<a href="#">
+
+<i class="fab fa-instagram"></i>
+
+</a>
+
+<a href="#">
+
+<i class="fab fa-linkedin-in"></i>
+
+</a>
+
+<a href="#">
+
+<i class="fab fa-x-twitter"></i>
+
+</a>
+
+<a href="#">
+
+<i class="fab fa-github"></i>
+
+</a>
+
+</div>
+
+</div>
+
+</div>
 
 <div class="footer-bottom">
 
 <p>
-© 2026 Spark Stack Academy. All rights reserved.
+
+© 2026 Spark Stack Academy. All Rights Reserved.
+
+</p>
+
+<p>
+
+Powered by
+<strong>SparkStack International</strong>
+
 </p>
 
 </div>
 
-
 </footer>
+
+<!-- ==========================================
+     BACK TO TOP
+========================================== -->
+
+<button
+id="backToTop"
+class="back-to-top"
+aria-label="Back to Top">
+
+<i class="fa-solid fa-arrow-up"></i>
+
+</button>
+
+<!-- ==========================================
+     SCRIPTS
+========================================== -->
+
+<script
+type="module"
+src="js/index.js"></script>
+
+</body>
+
+</html>

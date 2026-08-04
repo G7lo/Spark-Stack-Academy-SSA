@@ -1,23 +1,26 @@
-// ===================================
+// ============================================
 // SPARK STACK ACADEMY
-// THEME ENGINE
-// ===================================
+// theme.js
+// Global Theme Controller
+// ============================================
 
-const THEME_KEY = "spark-theme";
 
-/* ===================================
-   INITIALIZE THEME
-=================================== */
+document.addEventListener("DOMContentLoaded", () => {
 
-document.addEventListener(
-    "DOMContentLoaded",
-    initTheme
-);
 
-function initTheme(){
+    const themeToggle =
+    document.querySelector(".theme-toggle");
+
+
+    const themeIcon =
+    themeToggle?.querySelector("i");
+
+
+    // Load saved theme
 
     const savedTheme =
-        localStorage.getItem(THEME_KEY);
+    localStorage.getItem("ssa-theme");
+
 
     if(savedTheme === "dark"){
 
@@ -25,70 +28,73 @@ function initTheme(){
             "dark-mode"
         );
 
-    }
-
-    updateThemeIcon();
-
-    const themeBtn =
-        document.getElementById("themeBtn");
-
-    if(themeBtn){
-
-        themeBtn.addEventListener(
-            "click",
-            toggleTheme
-        );
+        updateIcon(true);
 
     }
 
-}
 
-/* ===================================
-   TOGGLE THEME
-=================================== */
 
-function toggleTheme(){
+    // Toggle theme
 
-    document.body.classList.toggle(
-        "dark-mode"
-    );
+    if(themeToggle){
 
-    const isDark =
-        document.body.classList.contains(
-            "dark-mode"
-        );
+        themeToggle.addEventListener(
+        "click",
+        ()=>{
 
-    localStorage.setItem(
-        THEME_KEY,
-        isDark ? "dark" : "light"
-    );
 
-    updateThemeIcon();
+            const isDark =
+            document.body.classList.toggle(
+                "dark-mode"
+            );
 
-}
 
-/* ===================================
-   UPDATE ICON
-=================================== */
+            localStorage.setItem(
+                "ssa-theme",
+                isDark ? "dark" : "light"
+            );
 
-function updateThemeIcon(){
 
-    const icon =
-        document.querySelector(
-            "#themeBtn i"
-        );
+            updateIcon(isDark);
 
-    if(!icon || typeof lucide === "undefined"){
-        return;
+
+        });
+
     }
 
-    icon.setAttribute(
-        "data-lucide",
-        document.body.classList.contains("dark-mode")
-            ? "sun"
-            : "moon"
-    );
 
-    lucide.createIcons();
 
-}
+    function updateIcon(isDark){
+
+
+        if(!themeIcon) return;
+
+
+        if(isDark){
+
+            themeIcon.classList.remove(
+                "fa-moon"
+            );
+
+            themeIcon.classList.add(
+                "fa-sun"
+            );
+
+        }
+
+        else{
+
+            themeIcon.classList.remove(
+                "fa-sun"
+            );
+
+            themeIcon.classList.add(
+                "fa-moon"
+            );
+
+        }
+
+    }
+
+
+});
