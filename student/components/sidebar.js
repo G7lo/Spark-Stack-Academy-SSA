@@ -1,26 +1,97 @@
-// =================================
-// SSA STUDENT SIDEBAR COMPONENT
-// =================================
+//
+// =====================================
+// SPARK STACK ACADEMY
+// STUDENT PORTAL V1
+// SIDEBAR CONTROLLER
+// =====================================
 
 
-const sidebarContainer =
-document.getElementById("sidebarContainer");
+console.log(
+"🚀 SSA Sidebar Loaded"
+);
 
 
 
-if(sidebarContainer){
 
 
-fetch("components/sidebar.html?v=1")
-
-.then(response => response.text())
-
-.then(html => {
+// ==============================
+// LOAD SIDEBAR COMPONENT
+// ==============================
 
 
-    sidebarContainer.innerHTML = html;
+async function loadSidebar(){
 
 
+    const container =
+    document.getElementById(
+        "sidebarContainer"
+    );
+
+
+
+    if(!container)
+        return;
+
+
+
+    try{
+
+
+        const response =
+        await fetch(
+            "components/sidebar.html"
+        );
+
+
+
+        const html =
+        await response.text();
+
+
+
+        container.innerHTML =
+        html;
+
+
+
+        initializeSidebar();
+
+
+
+    }
+
+    catch(error){
+
+
+        console.error(
+            "Sidebar loading failed:",
+            error
+        );
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+// ==============================
+// SIDEBAR FUNCTIONS
+// ==============================
+
+
+function initializeSidebar(){
+
+
+
+    // Icons
 
     if(typeof lucide !== "undefined"){
 
@@ -30,10 +101,122 @@ fetch("components/sidebar.html?v=1")
 
 
 
-    initializeSidebar();
 
 
-});
+
+    // MOBILE MENU
+
+
+    const menuBtn =
+    document.getElementById(
+        "mobileMenuBtn"
+    );
+
+
+
+    const sidebar =
+    document.querySelector(
+        ".sidebar"
+    );
+
+
+
+    const overlay =
+    document.getElementById(
+        "sidebarOverlay"
+    );
+
+
+
+
+
+    if(menuBtn){
+
+
+        menuBtn.onclick = ()=>{
+
+
+            sidebar.classList.toggle(
+                "show"
+            );
+
+
+            overlay.classList.toggle(
+                "show"
+            );
+
+
+        };
+
+
+    }
+
+
+
+
+
+    if(overlay){
+
+
+        overlay.onclick = ()=>{
+
+
+            sidebar.classList.remove(
+                "show"
+            );
+
+
+            overlay.classList.remove(
+                "show"
+            );
+
+
+        };
+
+
+    }
+
+
+
+
+
+
+
+    // ACTIVE PAGE
+
+
+    highlightSidebar();
+
+
+
+
+
+
+
+    // LOGOUT
+
+
+    const logoutBtn =
+    document.getElementById(
+        "logoutBtn"
+    );
+
+
+
+    if(logoutBtn){
+
+
+        logoutBtn.onclick = ()=>{
+
+
+            logoutUser();
+
+
+        };
+
+
+    }
+
 
 
 }
@@ -44,50 +227,42 @@ fetch("components/sidebar.html?v=1")
 
 
 
-function initializeSidebar(){
+
+// ==============================
+// ACTIVE LINK
+// ==============================
+
+
+function highlightSidebar(){
 
 
 
-    const sidebar =
-    document.querySelector(".sidebar");
-
-
-
-    const logoutBtn =
-    document.getElementById("logoutBtn");
-
-
-
-    if(!sidebar)
-    return;
-
-
-
-
-
-    // =========================
-    // ACTIVE PAGE
-    // =========================
-
-
-    const currentPage =
+    const page =
     window.location.pathname
     .split("/")
     .pop();
 
 
 
+
+
     document
-    .querySelectorAll(".nav-link")
+    .querySelectorAll(
+        ".sidebar-link"
+    )
     .forEach(link=>{
 
 
         const href =
-        link.getAttribute("href");
+        link.getAttribute(
+            "href"
+        );
 
 
 
-        if(href === currentPage){
+        if(
+            href === page
+        ){
 
 
             link.classList.add(
@@ -96,93 +271,11 @@ function initializeSidebar(){
 
 
         }
-        else{
 
-
-            link.classList.remove(
-                "active"
-            );
-
-
-        }
 
 
     });
 
-
-
-
-
-
-
-    // =========================
-    // LOGOUT
-    // =========================
-
-
-    if(logoutBtn){
-
-
-        logoutBtn.addEventListener(
-        "click",
-        async()=>{
-
-
-            try{
-
-
-                const {
-                    auth
-                } =
-                await import(
-                "../../js/firebase.js"
-                );
-
-
-
-                const {
-                    signOut
-                } =
-                await import(
-                "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
-                );
-
-
-
-                await signOut(auth);
-
-
-
-                window.location.href =
-                "../login.html";
-
-
-
-            }
-            catch(error){
-
-
-                console.error(
-                    "Logout error:",
-                    error
-                );
-
-
-            }
-
-
-        });
-
-
-    }
-
-
-
-
-
-
-
-    loadSidebarUser();
 
 
 }
@@ -194,21 +287,19 @@ function initializeSidebar(){
 
 
 
+// ==============================
+// LOGOUT
+// ==============================
 
-// =========================
-// LOAD STUDENT PROFILE
-// =========================
 
-
-async function loadSidebarUser(){
+async function logoutUser(){
 
 
     try{
 
 
         const {
-            auth,
-            db
+            auth
         } =
         await import(
         "../../js/firebase.js"
@@ -217,108 +308,33 @@ async function loadSidebarUser(){
 
 
         const {
-            onAuthStateChanged
+            signOut
         } =
         await import(
-        "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+        "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js"
         );
 
 
 
-        const {
-            doc,
-            getDoc
-        } =
-        await import(
-        "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+        await signOut(
+            auth
         );
 
 
 
-
-
-        onAuthStateChanged(
-        auth,
-        async(user)=>{
-
-
-            if(!user)
-            return;
-
-
-
-            const ref =
-            doc(
-                db,
-                "students",
-                user.uid
-            );
-
-
-
-            const snap =
-            await getDoc(ref);
-
-
-
-            if(!snap.exists())
-            return;
-
-
-
-            const student =
-            snap.data();
-
-
-
-            const name =
-            student.name || "Student";
-
-
-
-            const initial =
-            name
-            .charAt(0)
-            .toUpperCase();
-
-
-
-
-
-            const nameEl =
-            document.getElementById(
-                "sidebarStudentName"
-            );
-
-
-
-            const avatarEl =
-            document.getElementById(
-                "sidebarAvatar"
-            );
-
-
-
-            if(nameEl)
-            nameEl.textContent = name;
-
-
-
-            if(avatarEl)
-            avatarEl.textContent = initial;
-
-
-
-        });
+        window.location.href =
+        "../login.html";
 
 
 
     }
+
+
     catch(error){
 
 
         console.error(
-            "Sidebar profile error:",
+            "Logout error:",
             error
         );
 
@@ -327,3 +343,19 @@ async function loadSidebarUser(){
 
 
 }
+
+
+
+
+
+
+
+// START
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+    loadSidebar();
+
+});

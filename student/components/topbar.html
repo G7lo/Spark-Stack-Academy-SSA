@@ -1,15 +1,25 @@
-<header class="student-topbar">
+<!-- =====================================
+     SPARK STACK ACADEMY
+     STUDENT TOPBAR V1
+===================================== -->
 
 
-    <!-- MENU -->
+<header class="topbar">
+
+
+
+    <!-- MOBILE MENU -->
 
     <button 
-    id="menuBtn"
-    class="menu-btn">
+class="menu-btn"
+id="mobileMenuBtn">
 
-        <i data-lucide="menu"></i>
+<i data-lucide="menu"></i>
 
-    </button>
+</button>
+
+
+
 
 
 
@@ -17,7 +27,7 @@
 
     <!-- SEARCH -->
 
-    <div class="topbar-search">
+    <div class="top-search">
 
 
         <i data-lucide="search"></i>
@@ -25,8 +35,7 @@
 
         <input 
         type="search"
-        placeholder="Search courses..."
-        id="courseSearch">
+        placeholder="Search courses, lessons...">
 
 
     </div>
@@ -37,19 +46,113 @@
 
 
 
-    <!-- ACTIONS -->
 
-    <div class="topbar-actions">
+    <!-- RIGHT ACTIONS -->
+
+    <div class="top-actions">
 
 
 
-        <button class="notification-btn">
+
+
+
+        <!-- STREAK -->
+
+        <div class="streak-widget">
+
+
+            <i data-lucide="flame"></i>
+
+
+            <div>
+
+
+                <strong id="streakCount">
+
+                    0
+
+                </strong>
+
+
+                <span>
+
+                    Day Streak
+
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+        <!-- XP -->
+
+        <div class="xp-widget">
+
+
+            <i data-lucide="zap"></i>
+
+
+            <div>
+
+
+                <strong>
+
+                    Level 
+                    <span id="topLevel">
+                        1
+                    </span>
+
+                </strong>
+
+
+
+                <small>
+
+
+                    <span id="xpPoints">
+                        0
+                    </span>
+                    XP
+
+
+                </small>
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+        <!-- NOTIFICATIONS -->
+
+        <button 
+        class="icon-btn"
+        id="notificationBtn">
 
 
             <i data-lucide="bell"></i>
 
 
-            <span class="notification-count">
+            <span 
+            class="badge"
+            id="notificationCount">
 
                 0
 
@@ -60,22 +163,47 @@
 
 
 
+<div class="notification-panel"
+id="notificationPanel">
+
+    <h4>
+        Notifications
+    </h4>
+
+    <div id="notificationList">
+
+        <p>
+            No new notifications
+        </p>
+
+    </div>
+
+</div>
 
 
-        <div class="student-profile-menu">
+
+
+        <!-- PROFILE -->
+
+        <div class="profile-menu" id="profileMenu">
+
 
 
             <div 
             class="student-avatar"
-            id="topStudentAvatar">
+            id="topAvatar">
+
 
                 S
+
 
             </div>
 
 
 
-            <div class="student-mini-info">
+
+
+            <div class="profile-info">
 
 
                 <strong id="topStudentName">
@@ -85,11 +213,11 @@
                 </strong>
 
 
-                <small>
+                <span>
 
-                    Student
+                    Learner
 
-                </small>
+                </span>
 
 
             </div>
@@ -97,6 +225,8 @@
 
 
         </div>
+
+
 
 
 

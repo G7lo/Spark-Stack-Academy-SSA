@@ -1,9 +1,23 @@
-<aside class="sidebar">
+<!-- =====================================
+     SPARK STACK ACADEMY
+     STUDENT SIDEBAR V1
+===================================== -->
 
+
+<div class="sidebar">
+
+
+<button 
+class="menu-btn"
+id="mobileMenuBtn">
+
+<i data-lucide="menu"></i>
+
+</button>
 
     <!-- BRAND -->
 
-    <div class="sidebar-brand">
+    <div class="sidebar-logo">
 
 
         <img 
@@ -13,9 +27,9 @@
 
         <div>
 
-            <h2>
+            <h3>
                 Spark Stack
-            </h2>
+            </h3>
 
             <span>
                 Student Portal
@@ -30,7 +44,8 @@
 
 
 
-    <!-- STUDENT PROFILE -->
+
+    <!-- STUDENT PROFILE MINI -->
 
     <div class="sidebar-profile">
 
@@ -45,21 +60,23 @@
 
 
 
-        <div class="sidebar-user">
+        <div>
 
 
-            <h3 id="sidebarStudentName">
+            <h4 id="sidebarName">
 
                 Student
 
-            </h3>
+            </h4>
+
 
 
             <p>
-
-                Learner
-
-            </p>
+    Level 
+    <strong id="sidebarLevel">
+        1
+    </strong>
+</p>
 
 
         </div>
@@ -72,13 +89,15 @@
 
 
 
+
     <!-- NAVIGATION -->
 
-    <nav class="sidebar-nav">
+    <nav class="sidebar-menu">
+
 
 
         <a href="dashboard.html"
-           class="nav-link active">
+        class="sidebar-link">
 
 
             <i data-lucide="layout-dashboard"></i>
@@ -93,8 +112,10 @@
 
 
 
+
+
         <a href="courses.html"
-           class="nav-link">
+        class="sidebar-link">
 
 
             <i data-lucide="book-open"></i>
@@ -110,8 +131,68 @@
 
 
 
+
+
+        <a href="course-library.html"
+        class="sidebar-link">
+
+
+            <i data-lucide="search"></i>
+
+            <span>
+                Course Library
+            </span>
+
+
+        </a>
+
+
+
+
+
+
+
+        <a href="progress.html"
+        class="sidebar-link">
+
+
+            <i data-lucide="chart-line"></i>
+
+            <span>
+                Learning Progress
+            </span>
+
+
+        </a>
+
+
+
+
+
+
+
+
+        <a href="assignments.html"
+        class="sidebar-link">
+
+
+            <i data-lucide="clipboard-check"></i>
+
+            <span>
+                Assignments
+            </span>
+
+
+        </a>
+
+
+
+
+
+
+
         <a href="certificates.html"
-           class="nav-link">
+        class="sidebar-link">
 
 
             <i data-lucide="award"></i>
@@ -127,14 +208,17 @@
 
 
 
-        <a href="course-player.html"
-           class="nav-link">
 
 
-            <i data-lucide="play-circle"></i>
+
+        <a href="achievements.html"
+        class="sidebar-link">
+
+
+            <i data-lucide="trophy"></i>
 
             <span>
-                Learning
+                Rewards & Badges
             </span>
 
 
@@ -144,11 +228,109 @@
 
 
 
+
+
+        <a href="announcements.html"
+        class="sidebar-link">
+
+
+            <i data-lucide="megaphone"></i>
+
+
+            <span>
+                Announcements
+            </span>
+
+
+            <span class="notification-dot">
+
+            </span>
+
+
+        </a>
+
+
+
+
+
+
+
+        <a href="messages.html"
+        class="sidebar-link">
+
+
+            <i data-lucide="message-circle"></i>
+
+
+            <span>
+                Messages
+            </span>
+
+
+            <span 
+            class="message-count"
+            id="messageCount">
+
+                0
+
+            </span>
+
+
+        </a>
+
+
+
+
+
+
+
+
+        <a href="payments.html"
+        class="sidebar-link">
+
+
+            <i data-lucide="credit-card"></i>
+
+
+            <span>
+                Payments
+            </span>
+
+
+        </a>
+
+
+
+
+
+
+
+        <a href="profile.html"
+        class="sidebar-link">
+
+
+            <i data-lucide="user"></i>
+
+
+            <span>
+                Profile
+            </span>
+
+
+        </a>
+
+
+
+
+
+
+
         <a href="settings.html"
-           class="nav-link">
+        class="sidebar-link">
 
 
             <i data-lucide="settings"></i>
+
 
             <span>
                 Settings
@@ -156,6 +338,7 @@
 
 
         </a>
+
 
 
     </nav>
@@ -166,13 +349,15 @@
 
 
 
-    <!-- FOOTER -->
 
+    <!-- LOGOUT -->
 
     <div class="sidebar-footer">
 
 
-        <button id="logoutBtn">
+        <button 
+class="logout-btn"
+id="logoutBtn">
 
 
             <i data-lucide="log-out"></i>
@@ -188,5 +373,4 @@
 
 
 
-
-</aside>
+</div>

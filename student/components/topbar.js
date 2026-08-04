@@ -1,24 +1,91 @@
-// =================================
-// SSA STUDENT TOPBAR COMPONENT
-// =================================
+// =====================================
+// SPARK STACK ACADEMY
+// STUDENT PORTAL V1
+// TOPBAR CONTROLLER
+// =====================================
 
 
-const topbarContainer =
-document.getElementById("topbarContainer");
+console.log(
+"🚀 SSA Topbar Loaded"
+);
 
 
 
-if(topbarContainer){
 
 
-fetch("components/topbar.html?v=1")
-
-.then(response => response.text())
-
-.then(html => {
+// ==============================
+// LOAD TOPBAR
+// ==============================
 
 
-    topbarContainer.innerHTML = html;
+async function loadTopbar(){
+
+
+    const container =
+    document.getElementById(
+        "topbarContainer"
+    );
+
+
+
+    if(!container)
+        return;
+
+
+
+    try{
+
+
+        const response =
+        await fetch(
+            "components/topbar.html"
+        );
+
+
+
+        const html =
+        await response.text();
+
+
+
+        container.innerHTML =
+        html;
+
+
+
+        initializeTopbar();
+
+
+    }
+
+
+    catch(error){
+
+
+        console.error(
+            "Topbar loading failed:",
+            error
+        );
+
+
+    }
+
+
+}
+
+
+
+
+
+
+
+
+// ==============================
+// INITIALIZE
+// ==============================
+
+
+function initializeTopbar(){
 
 
 
@@ -29,103 +96,16 @@ fetch("components/topbar.html?v=1")
     }
 
 
-    initializeTopbar();
-
-
-});
-
-
-
-}
 
 
 
 
-function initializeTopbar(){
-
-
-    const menuBtn =
-    document.getElementById("menuBtn");
-
-
-    const sidebar =
-    document.querySelector(".sidebar");
-
-
-    const overlay =
-    document.getElementById("sidebarOverlay");
+    initializeNotifications();
 
 
 
-    // ==========================
-    // MOBILE MENU
-    // ==========================
+    initializeProfileMenu();
 
-
-    if(menuBtn){
-
-
-        menuBtn.addEventListener(
-        "click",
-        ()=>{
-
-
-            sidebar?.classList.toggle(
-                "active"
-            );
-
-
-            overlay?.classList.toggle(
-                "active"
-            );
-
-
-        });
-
-
-    }
-
-
-
-
-
-
-
-    // ==========================
-    // CLOSE OVERLAY
-    // ==========================
-
-
-    if(overlay){
-
-
-        overlay.addEventListener(
-        "click",
-        ()=>{
-
-
-            sidebar?.classList.remove(
-                "active"
-            );
-
-
-            overlay.classList.remove(
-                "active"
-            );
-
-
-        });
-
-
-    }
-
-
-
-
-
-
-
-    loadTopbarUser();
 
 
 }
@@ -136,113 +116,67 @@ function initializeTopbar(){
 
 
 
-// ==========================
-// LOAD USER DATA
-// ==========================
+
+// ==============================
+// NOTIFICATIONS
+// ==============================
 
 
-async function loadTopbarUser(){
+function initializeNotifications(){
 
 
-    const {
-        auth,
-        db
-    } = await import("../../js/firebase.js");
+    const button =
+    document.getElementById(
+        "notificationBtn"
+    );
 
 
-
-    const {
-        onAuthStateChanged
-    } = await import(
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+    const panel =
+    document.getElementById(
+        "notificationPanel"
     );
 
 
 
-    const {
-        doc,
-        getDoc
-    } = await import(
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
-    );
-
-
-
-
-
-    onAuthStateChanged(
-    auth,
-    async(user)=>{
-
-
-        if(!user) return;
-
-
-
-        const studentRef =
-        doc(
-            db,
-            "students",
-            user.uid
-        );
-
-
-
-        const snapshot =
-        await getDoc(studentRef);
-
-
-
-        if(!snapshot.exists())
+    if(!button || !panel)
         return;
 
 
 
-        const data =
-        snapshot.data();
+
+    button.addEventListener(
+    "click",
+    ()=>{
 
 
-
-        const name =
-        data.name || "Student";
-
-
-
-        const avatar =
-        name
-        .charAt(0)
-        .toUpperCase();
-
-
-
-
-
-        const nameElement =
-        document.getElementById(
-            "topStudentName"
+        panel.classList.toggle(
+            "show"
         );
 
 
-        const avatarElement =
-        document.getElementById(
-            "topStudentAvatar"
-        );
+    });
 
 
 
-        if(nameElement){
-
-            nameElement.textContent =
-            name;
-
-        }
 
 
 
-        if(avatarElement){
+    document.addEventListener(
+    "click",
+    (event)=>{
 
-            avatarElement.textContent =
-            avatar;
+
+        if(
+            !button.contains(event.target)
+            &&
+            !panel.contains(event.target)
+        ){
+
+
+            panel.classList.remove(
+                "show"
+            );
+
 
         }
 
@@ -251,4 +185,183 @@ async function loadTopbarUser(){
     });
 
 
+
 }
+
+
+
+
+
+
+
+
+// ==============================
+// PROFILE MENU
+// ==============================
+
+
+function initializeProfileMenu(){
+
+
+
+    const profile =
+    document.getElementById(
+        "profileMenu"
+    );
+
+
+
+    if(!profile)
+        return;
+
+
+
+    profile.addEventListener(
+    "click",
+    ()=>{
+
+
+        console.log(
+            "Profile clicked"
+        );
+
+
+    });
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==============================
+// UPDATE TOPBAR DATA
+// ==============================
+
+
+export function updateTopbar(student){
+
+
+
+    const name =
+    student.name ||
+    student.fullName ||
+    "Student";
+
+
+
+    const initial =
+    name
+    .charAt(0)
+    .toUpperCase();
+
+
+
+
+
+    const topName =
+    document.getElementById(
+        "topStudentName"
+    );
+
+
+
+    const avatar =
+    document.getElementById(
+        "topAvatar"
+    );
+
+
+
+    const level =
+    document.getElementById(
+        "topLevel"
+    );
+
+
+
+    const xp =
+    document.getElementById(
+        "xpPoints"
+    );
+
+
+
+    const streak =
+    document.getElementById(
+        "streakCount"
+    );
+
+
+
+
+
+
+    if(topName)
+
+        topName.textContent =
+        name;
+
+
+
+
+    if(avatar)
+
+        avatar.textContent =
+        initial;
+
+
+
+
+    if(level)
+
+        level.textContent =
+        student.level || 1;
+
+
+
+
+    if(xp)
+
+        xp.textContent =
+        student.xp || 0;
+
+
+
+
+    if(streak)
+
+        streak.textContent =
+        student.streak || 0;
+
+
+
+}
+
+
+
+
+
+
+
+
+// ==============================
+// START
+// ==============================
+
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+
+    loadTopbar();
+
+
+});

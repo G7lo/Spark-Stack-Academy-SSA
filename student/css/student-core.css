@@ -1,0 +1,318 @@
+/* =====================================
+   SPARK STACK ACADEMY
+   STUDENT PORTAL V1
+   CORE STYLES
+===================================== */
+
+
+/* =========================
+   ROOT VARIABLES
+========================= */
+
+:root{
+
+    --primary:#081C3A;
+
+    --secondary:#2979FF;
+
+    --accent:#FFC107;
+
+    --white:#FFFFFF;
+
+    --background:#F5F7FB;
+
+    --card:#FFFFFF;
+
+    --text:#1F2937;
+
+    --muted:#6B7280;
+
+    --border:#E5E7EB;
+
+    --success:#22C55E;
+
+    --danger:#EF4444;
+
+
+    --shadow:
+    0 10px 30px rgba(0,0,0,0.06);
+
+
+    --radius:18px;
+
+
+    --transition:
+    all .3s ease;
+
+}
+
+
+
+
+
+
+/* =========================
+   GLOBAL RESET
+========================= */
+
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+
+
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+
+
+
+
+body{
+
+    font-family:
+    "Poppins",
+    sans-serif;
+
+
+    background:
+    var(--background);
+
+
+    color:
+    var(--text);
+
+
+    min-height:100vh;
+
+}
+
+
+
+
+
+a{
+
+    text-decoration:none;
+
+    color:inherit;
+
+}
+
+
+
+
+
+button,
+input,
+select,
+textarea{
+
+    font-family:inherit;
+
+}
+
+
+
+
+
+
+
+img{
+
+    max-width:100%;
+
+    display:block;
+
+}
+
+
+
+
+
+
+
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+
+.student-layout{
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+
+
+
+
+
+.student-main{
+
+    flex:1;
+
+    margin-left:270px;
+
+    width:calc(100% - 270px);
+
+    min-height:100vh;
+
+    transition:
+    var(--transition);
+
+}
+
+
+
+
+
+.dashboard-content{
+
+    padding:30px;
+
+}
+
+
+
+
+
+
+
+
+/* =========================
+   COMMON COMPONENTS
+========================= */
+
+
+.dashboard-section{
+
+    margin-top:30px;
+
+}
+
+
+
+
+
+.section-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+
+
+
+
+.section-header h2{
+
+    font-size:22px;
+
+    font-weight:700;
+
+    color:var(--primary);
+
+}
+
+
+
+
+
+.section-header a{
+
+    color:
+    var(--secondary);
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   CARDS
+========================= */
+
+
+.card{
+
+    background:
+    var(--card);
+
+
+    border-radius:
+    var(--radius);
+
+
+    box-shadow:
+    var(--shadow);
+
+
+    border:
+    1px solid var(--border);
+
+}
+
+
+
+
+
+
+
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+
+
+::-webkit-scrollbar-track{
+
+    background:#eee;
+
+}
+
+
+
+::-webkit-scrollbar-thumb{
+
+    background:
+    var(--secondary);
+
+    border-radius:20px;
+
+}
