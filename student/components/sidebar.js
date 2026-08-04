@@ -1,4 +1,3 @@
-//
 // =====================================
 // SPARK STACK ACADEMY
 // STUDENT PORTAL V1
@@ -6,27 +5,19 @@
 // =====================================
 
 
-console.log(
-"🚀 SSA Sidebar Loaded"
-);
+console.log("🚀 SSA Sidebar Loaded");
 
 
 
+// LOAD SIDEBAR
 
-
-// ==============================
-// LOAD SIDEBAR COMPONENT
-// ==============================
-
-
-async function loadSidebar(){
+export async function loadSidebar(){
 
 
     const container =
     document.getElementById(
         "sidebarContainer"
     );
-
 
 
     if(!container)
@@ -43,7 +34,6 @@ async function loadSidebar(){
         );
 
 
-
         const html =
         await response.text();
 
@@ -57,20 +47,23 @@ async function loadSidebar(){
         initializeSidebar();
 
 
+        if(typeof lucide !== "undefined"){
+
+            lucide.createIcons();
+
+        }
+
+
 
     }
-
     catch(error){
-
 
         console.error(
             "Sidebar loading failed:",
             error
         );
 
-
     }
-
 
 
 }
@@ -80,120 +73,9 @@ async function loadSidebar(){
 
 
 
-
-
-// ==============================
-// SIDEBAR FUNCTIONS
-// ==============================
-
+// INIT SIDEBAR
 
 function initializeSidebar(){
-
-
-
-    // Icons
-
-    if(typeof lucide !== "undefined"){
-
-        lucide.createIcons();
-
-    }
-
-
-
-
-
-
-    // MOBILE MENU
-
-
-    const menuBtn =
-    document.getElementById(
-        "mobileMenuBtn"
-    );
-
-
-
-    const sidebar =
-    document.querySelector(
-        ".sidebar"
-    );
-
-
-
-    const overlay =
-    document.getElementById(
-        "sidebarOverlay"
-    );
-
-
-
-
-
-    if(menuBtn){
-
-
-        menuBtn.onclick = ()=>{
-
-
-            sidebar.classList.toggle(
-                "show"
-            );
-
-
-            overlay.classList.toggle(
-                "show"
-            );
-
-
-        };
-
-
-    }
-
-
-
-
-
-    if(overlay){
-
-
-        overlay.onclick = ()=>{
-
-
-            sidebar.classList.remove(
-                "show"
-            );
-
-
-            overlay.classList.remove(
-                "show"
-            );
-
-
-        };
-
-
-    }
-
-
-
-
-
-
-
-    // ACTIVE PAGE
-
-
-    highlightSidebar();
-
-
-
-
-
-
-
-    // LOGOUT
 
 
     const logoutBtn =
@@ -202,14 +84,31 @@ function initializeSidebar(){
     );
 
 
-
     if(logoutBtn){
 
 
-        logoutBtn.onclick = ()=>{
+        logoutBtn.onclick=()=>{
 
 
-            logoutUser();
+            import("../../js/firebase.js")
+            .then(async(module)=>{
+
+
+                const {auth}=module;
+
+
+                const {signOut}=await import(
+                "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+                );
+
+
+                await signOut(auth);
+
+
+                window.location.href="../login.html";
+
+
+            });
 
 
         };
@@ -227,135 +126,55 @@ function initializeSidebar(){
 
 
 
+// UPDATE SIDEBAR DATA
 
-// ==============================
-// ACTIVE LINK
-// ==============================
-
-
-function highlightSidebar(){
+export function updateSidebar(student){
 
 
+    const name =
+    student.name ||
+    student.fullName ||
+    "Student";
 
-    const page =
-    window.location.pathname
-    .split("/")
-    .pop();
 
-
+    const initial =
+    name.charAt(0)
+    .toUpperCase();
 
 
 
-    document
-    .querySelectorAll(
-        ".sidebar-link"
-    )
-    .forEach(link=>{
+    const sidebarName =
+    document.getElementById(
+        "sidebarName"
+    );
 
 
-        const href =
-        link.getAttribute(
-            "href"
-        );
+    const avatar =
+    document.getElementById(
+        "sidebarAvatar"
+    );
 
 
-
-        if(
-            href === page
-        ){
-
-
-            link.classList.add(
-                "active"
-            );
-
-
-        }
+    const level =
+    document.getElementById(
+        "sidebarLevel"
+    );
 
 
 
-    });
+    if(sidebarName)
+        sidebarName.textContent=name;
 
 
 
-}
+    if(avatar)
+        avatar.textContent=initial;
 
 
 
-
-
-
-
-
-// ==============================
-// LOGOUT
-// ==============================
-
-
-async function logoutUser(){
-
-
-    try{
-
-
-        const {
-            auth
-        } =
-        await import(
-        "../../js/firebase.js"
-        );
-
-
-
-        const {
-            signOut
-        } =
-        await import(
-        "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
-        );
-
-
-
-        await signOut(
-            auth
-        );
-
-
-
-        window.location.href =
-        "../login.html";
-
-
-
-    }
-
-
-    catch(error){
-
-
-        console.error(
-            "Logout error:",
-            error
-        );
-
-
-    }
+    if(level)
+        level.textContent=
+        student.level || 1;
 
 
 }
-
-
-
-
-
-
-
-// START
-
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
-
-    loadSidebar();
-
-});

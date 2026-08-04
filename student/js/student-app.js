@@ -17,6 +17,13 @@ import {
 } from "../../js/firebase.js";
 
 import {
+    loadSidebar,
+    updateSidebar
+} from "../components/sidebar.js";
+
+
+import {
+    loadTopbar,
     updateTopbar
 } from "../components/topbar.js";
 
@@ -85,6 +92,11 @@ function initializeStudentPortal(){
 
 
     lucide.createIcons();
+
+
+    loadSidebar();
+
+    loadTopbar();
 
 
     updateDate();
@@ -620,7 +632,11 @@ if(xpPoints)
 
 if(streakCount)
     streakCount.textContent = streak;
-    updateTopbar(student);
+
+
+updateSidebar(student);
+
+updateTopbar(student);
 
 }
 // =====================================

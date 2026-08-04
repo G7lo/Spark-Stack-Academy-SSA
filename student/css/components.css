@@ -1,20 +1,40 @@
 /* =====================================
    SPARK STACK ACADEMY
    STUDENT PORTAL V1
-   COMPONENTS CSS
+   COMPONENTS CSS PART 1
 ===================================== */
 
 
-/* =========================
+/* ===============================
+   GLOBAL STUDENT LAYOUT
+================================ */
+
+.student-layout{
+
+    display:flex;
+
+    min-height:100vh;
+
+    background:#f6f8fc;
+
+}
+
+
+
+
+/* ===============================
    SIDEBAR
-========================= */
+================================ */
 
 
 .sidebar-container{
 
     width:280px;
 
+    flex-shrink:0;
+
 }
+
 
 
 
@@ -22,38 +42,39 @@
 
     position:fixed;
 
-    left:0;
-
     top:0;
+
+    left:0;
 
     width:280px;
 
     height:100vh;
 
-    background:
-    linear-gradient(
-        180deg,
-        #081C3A,
-        #0B2D5C
-    );
+    background:#081C3A;
 
     color:white;
-
-    padding:25px 20px;
-
-    z-index:1000;
 
     display:flex;
 
     flex-direction:column;
+
+    padding:25px 18px;
+
+    overflow-y:auto;
+
+    z-index:1000;
 
 }
 
 
 
 
+/* ===============================
+   SIDEBAR BRAND
+================================ */
 
-.sidebar-logo{
+
+.sidebar-brand{
 
     display:flex;
 
@@ -61,13 +82,13 @@
 
     gap:12px;
 
-    margin-bottom:35px;
+    margin-bottom:30px;
 
 }
 
 
 
-.sidebar-logo img{
+.sidebar-brand img{
 
     width:45px;
 
@@ -79,7 +100,9 @@
 
 
 
-.sidebar-logo h2{
+.sidebar-brand h3{
+
+    margin:0;
 
     font-size:18px;
 
@@ -89,27 +112,36 @@
 
 
 
+.sidebar-brand span{
+
+    font-size:12px;
+
+    color:#b8c7e6;
+
+}
 
 
-/* =========================
+
+
+
+/* ===============================
    SIDEBAR PROFILE
-========================= */
+================================ */
 
 
 .sidebar-profile{
-
-    background:
-    rgba(255,255,255,.08);
-
-    border-radius:20px;
-
-    padding:15px;
 
     display:flex;
 
     align-items:center;
 
     gap:12px;
+
+    background:rgba(255,255,255,0.08);
+
+    padding:15px;
+
+    border-radius:16px;
 
     margin-bottom:25px;
 
@@ -125,25 +157,25 @@
 
     border-radius:50%;
 
-    background:#FFC107;
-
-    color:#081C3A;
+    background:#2979FF;
 
     display:flex;
 
-    align-items:center;
-
     justify-content:center;
 
-    font-weight:800;
+    align-items:center;
+
+    font-weight:700;
+
+    font-size:18px;
 
 }
 
 
 
-.sidebar-profile strong{
+.sidebar-profile h4{
 
-    display:block;
+    margin:0;
 
     font-size:14px;
 
@@ -151,11 +183,13 @@
 
 
 
-.sidebar-profile span{
+.sidebar-profile p{
+
+    margin:5px 0 0;
 
     font-size:12px;
 
-    opacity:.7;
+    color:#b8c7e6;
 
 }
 
@@ -163,17 +197,23 @@
 
 
 
-
-/* =========================
-   NAVIGATION
-========================= */
+/* ===============================
+   SIDEBAR MENU
+================================ */
 
 
 .sidebar-menu{
 
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
     flex:1;
 
 }
+
 
 
 
@@ -185,36 +225,36 @@
 
     gap:14px;
 
-    padding:13px 15px;
+    padding:12px 14px;
 
-    color:#dbeafe;
+    border-radius:12px;
+
+    color:#dbe5ff;
 
     text-decoration:none;
 
-    border-radius:14px;
-
-    margin-bottom:8px;
+    font-size:14px;
 
     transition:.3s;
 
-}
-
-
-
-.sidebar-link svg{
-
-    width:20px;
+    position:relative;
 
 }
 
 
 
-.sidebar-link:hover,
+.sidebar-link i{
 
-.sidebar-link.active{
+    width:18px;
 
-    background:
-    rgba(255,255,255,.15);
+}
+
+
+
+
+.sidebar-link:hover{
+
+    background:rgba(255,255,255,.08);
 
     color:white;
 
@@ -224,7 +264,47 @@
 
 .sidebar-link.active{
 
-    border-left:4px solid #FFC107;
+    background:#2979FF;
+
+    color:white;
+
+}
+
+
+
+
+
+.notification-dot{
+
+    width:8px;
+
+    height:8px;
+
+    background:#ffcc00;
+
+    border-radius:50%;
+
+    margin-left:auto;
+
+}
+
+
+
+
+
+.message-count{
+
+    margin-left:auto;
+
+    background:#2979FF;
+
+    color:white;
+
+    font-size:11px;
+
+    padding:3px 7px;
+
+    border-radius:20px;
 
 }
 
@@ -233,36 +313,32 @@
 
 
 
-
-/* =========================
+/* ===============================
    SIDEBAR FOOTER
-========================= */
+================================ */
 
 
 .sidebar-footer{
 
-    padding-top:20px;
+    margin-top:auto;
 
 }
 
 
 
-.logout-btn{
+.sidebar-footer button{
 
     width:100%;
 
     border:none;
 
-    background:
-    rgba(255,255,255,.1);
+    background:rgba(255,255,255,.08);
 
     color:white;
 
-    padding:13px;
+    padding:12px;
 
-    border-radius:14px;
-
-    cursor:pointer;
+    border-radius:12px;
 
     display:flex;
 
@@ -272,6 +348,28 @@
 
     gap:10px;
 
+    cursor:pointer;
+
+}
+
+
+
+
+
+
+/* ===============================
+   MAIN AREA
+================================ */
+
+
+.student-main{
+
+    flex:1;
+
+    margin-left:0;
+
+    min-width:0;
+
 }
 
 
@@ -280,14 +378,18 @@
 
 
 
-/* =========================
+/* ===============================
    TOPBAR
-========================= */
+================================ */
 
 
 .topbar-container{
 
-    width:100%;
+    position:sticky;
+
+    top:0;
+
+    z-index:900;
 
 }
 
@@ -307,13 +409,7 @@
 
     padding:0 30px;
 
-    border-bottom:1px solid #eee;
-
-    position:sticky;
-
-    top:0;
-
-    z-index:900;
+    border-bottom:1px solid #e8edf5;
 
 }
 
@@ -321,9 +417,7 @@
 
 
 
-
-
-/* MENU BUTTON */
+/* MOBILE MENU BUTTON */
 
 
 .menu-btn{
@@ -340,34 +434,28 @@
 
 
 
-.menu-btn svg{
-
-    width:25px;
-
-}
 
 
-
-
-
-/* SEARCH */
+/* ===============================
+   SEARCH
+================================ */
 
 
 .top-search{
+
+    width:350px;
+
+    background:#f3f6fb;
 
     display:flex;
 
     align-items:center;
 
-    gap:12px;
+    gap:10px;
 
-    background:#f5f7fb;
+    padding:12px 16px;
 
-    padding:12px 18px;
-
-    border-radius:15px;
-
-    width:350px;
+    border-radius:14px;
 
 }
 
@@ -379,9 +467,11 @@
 
     outline:none;
 
-    background:transparent;
+    background:none;
 
     width:100%;
+
+    font-family:inherit;
 
 }
 
@@ -390,8 +480,9 @@
 
 
 
-
-/* TOP ACTIONS */
+/* ===============================
+   TOP ACTIONS
+================================ */
 
 
 .top-actions{
@@ -400,28 +491,194 @@
 
     align-items:center;
 
-    gap:15px;
+    gap:18px;
+
+}
+
+
+
+.streak-widget,
+.xp-widget{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:10px 14px;
+
+    background:#f7f9fd;
+
+    border-radius:14px;
+
+}
+
+
+
+.streak-widget i{
+
+    color:#ff9800;
+
+}
+
+
+
+.xp-widget i{
+
+    color:#2979FF;
+
+}
+/* =====================================
+   COMPONENTS CSS PART 2
+   TOPBAR ELEMENTS + WIDGETS
+===================================== */
+
+
+/* ===============================
+   STREAK WIDGET
+================================ */
+
+
+.streak-widget{
+
+    min-width:120px;
+
+}
+
+
+.streak-widget strong{
+
+    display:block;
+
+    font-size:16px;
+
+    color:#081C3A;
+
+}
+
+
+
+.streak-widget span{
+
+    display:block;
+
+    font-size:11px;
+
+    color:#7b879d;
 
 }
 
 
 
 
+
+/* GLOWING STREAK */
+
+.streak-widget i{
+
+    animation:streakGlow 1.8s infinite;
+
+}
+
+
+
+@keyframes streakGlow{
+
+
+    0%{
+
+        filter:drop-shadow(0 0 0px #ff9800);
+
+    }
+
+
+    50%{
+
+        filter:drop-shadow(0 0 10px #ff9800);
+
+    }
+
+
+    100%{
+
+        filter:drop-shadow(0 0 0px #ff9800);
+
+    }
+
+}
+
+
+
+
+
+
+/* ===============================
+   XP WIDGET
+================================ */
+
+
+.xp-widget strong{
+
+    display:block;
+
+    font-size:14px;
+
+    color:#081C3A;
+
+}
+
+
+
+.xp-widget small{
+
+    color:#7b879d;
+
+    font-size:12px;
+
+}
+
+
+
+
+
+
+/* ===============================
+   ICON BUTTONS
+================================ */
+
+
 .icon-btn{
 
     position:relative;
 
-    border:none;
+    width:42px;
 
-    background:#f5f7fb;
-
-    width:45px;
-
-    height:45px;
+    height:42px;
 
     border-radius:50%;
 
+    border:none;
+
+    background:#f4f7fc;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
     cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+
+.icon-btn:hover{
+
+    background:#e8f0ff;
 
 }
 
@@ -436,124 +693,17 @@
 
     right:-3px;
 
-    background:#ef4444;
-
-    color:white;
-
-    width:18px;
+    min-width:18px;
 
     height:18px;
 
-    border-radius:50%;
-
-    font-size:11px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-}
-
-
-
-
-
-
-
-/* STREAK */
-
-
-.streak-widget,
-
-.xp-widget{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    background:#f8fafc;
-
-    padding:10px 15px;
-
-    border-radius:18px;
-
-}
-
-
-
-.streak-widget svg{
-
-    color:#ff7a00;
-
-    animation:pulseFire 2s infinite;
-
-}
-
-
-
-.streak-widget span,
-
-.xp-widget small{
-
-    display:block;
-
-    font-size:11px;
-
-    color:#64748b;
-
-}
-
-
-
-
-
-@keyframes pulseFire{
-
-
-    50%{
-
-        transform:scale(1.15);
-
-    }
-
-}
-
-
-
-
-
-
-
-/* PROFILE */
-
-
-.profile-menu{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-}
-
-
-
-.student-avatar{
-
-    width:45px;
-
-    height:45px;
-
-    border-radius:50%;
-
-    background:#2979ff;
+    background:#2979FF;
 
     color:white;
+
+    border-radius:50%;
+
+    font-size:10px;
 
     display:flex;
 
@@ -567,34 +717,28 @@
 
 
 
-.profile-info span{
-
-    display:block;
-
-    font-size:12px;
-
-    color:#64748b;
-
-}
 
 
 
 
+/* ===============================
+   PROFILE MENU
+================================ */
 
 
+.profile-menu{
 
+    display:flex;
 
-/* =========================
-   MOBILE
-========================= */
+    align-items:center;
 
+    gap:12px;
 
-@media(max-width:900px){
+    cursor:pointer;
 
+    padding:8px 12px;
 
-.sidebar{
-
-    transform:translateX(-100%);
+    border-radius:14px;
 
     transition:.3s;
 
@@ -602,96 +746,94 @@
 
 
 
-.sidebar.show{
+.profile-menu:hover{
 
-    transform:translateX(0);
+    background:#f4f7fc;
 
 }
 
 
 
-.menu-btn{
+
+
+.student-avatar{
+
+    width:42px;
+
+    height:42px;
+
+    background:#2979FF;
+
+    color:white;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+
+}
+
+
+
+
+
+.profile-info strong{
 
     display:block;
 
-}
+    font-size:14px;
 
-
-
-.topbar{
-
-    padding:0 15px;
+    color:#081C3A;
 
 }
 
 
 
-.top-search{
+.profile-info span{
 
-    display:none;
+    font-size:12px;
 
-}
-
-
-
-.profile-info{
-
-    display:none;
+    color:#7b879d;
 
 }
 
 
 
-.streak-widget,
-
-.xp-widget{
-
-    display:none;
-
-}
 
 
-}
-.sidebar-overlay{
-
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,.45);
-
-    z-index:999;
-
-    display:none;
-
-}
 
 
-.sidebar-overlay.show{
+/* ===============================
+   NOTIFICATION PANEL
+================================ */
 
-    display:block;
 
-}
 .notification-panel{
 
     position:absolute;
 
-    right:90px;
+    right:30px;
 
     top:70px;
 
-    width:300px;
+    width:320px;
 
     background:white;
 
     border-radius:18px;
 
+    box-shadow:0 20px 50px rgba(0,0,0,.12);
+
     padding:20px;
 
-    box-shadow:
-    0 15px 40px rgba(0,0,0,.12);
-
     display:none;
+
+    z-index:1200;
 
 }
 
@@ -705,10 +847,155 @@
 
 
 
-.profile-menu{
 
-    cursor:pointer;
 
-    position:relative;
+
+
+/* ===============================
+   MOBILE OVERLAY
+================================ */
+
+
+.sidebar-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    display:none;
+
+    z-index:950;
+
+}
+
+
+
+.sidebar-overlay.show{
+
+    display:block;
+
+}
+
+
+
+
+
+
+
+
+/* ===============================
+   SCROLLBAR
+================================ */
+
+
+.sidebar::-webkit-scrollbar{
+
+    width:5px;
+
+}
+
+
+.sidebar::-webkit-scrollbar-thumb{
+
+    background:rgba(255,255,255,.2);
+
+    border-radius:10px;
+
+}
+
+
+
+
+
+
+/* ===============================
+   DESKTOP CONTENT SPACING
+================================ */
+
+
+.dashboard-content{
+
+    padding:30px;
+
+}
+
+
+
+
+
+
+
+/* ===============================
+   RESPONSIVE FOUNDATION
+================================ */
+
+
+@media(max-width:900px){
+
+
+    .sidebar-container{
+
+        width:0;
+
+    }
+
+
+
+    .sidebar{
+
+        transform:translateX(-100%);
+
+        transition:.3s;
+
+    }
+
+
+
+    .sidebar.open{
+
+        transform:translateX(0);
+
+    }
+
+
+
+
+    .menu-btn{
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:center;
+
+    }
+
+
+
+
+    .topbar{
+
+        padding:0 15px;
+
+    }
+
+
+
+    .top-search{
+
+        display:none;
+
+    }
+
+
+
+    .profile-info{
+
+        display:none;
+
+    }
+
 
 }

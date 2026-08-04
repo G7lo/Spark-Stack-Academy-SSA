@@ -1,31 +1,22 @@
 // =====================================
 // SPARK STACK ACADEMY
-// STUDENT PORTAL V1
-// TOPBAR CONTROLLER
+// TOPBAR CONTROLLER V1
 // =====================================
 
 
-console.log(
-"🚀 SSA Topbar Loaded"
-);
+console.log("🚀 SSA Topbar Loaded");
 
 
 
 
 
-// ==============================
-// LOAD TOPBAR
-// ==============================
-
-
-async function loadTopbar(){
+export async function loadTopbar(){
 
 
     const container =
     document.getElementById(
         "topbarContainer"
     );
-
 
 
     if(!container)
@@ -42,14 +33,8 @@ async function loadTopbar(){
         );
 
 
-
-        const html =
-        await response.text();
-
-
-
         container.innerHTML =
-        html;
+        await response.text();
 
 
 
@@ -57,16 +42,12 @@ async function loadTopbar(){
 
 
     }
-
-
     catch(error){
 
-
         console.error(
-            "Topbar loading failed:",
+            "Topbar error:",
             error
         );
-
 
     }
 
@@ -77,16 +58,7 @@ async function loadTopbar(){
 
 
 
-
-
-
-// ==============================
-// INITIALIZE
-// ==============================
-
-
 function initializeTopbar(){
-
 
 
     if(typeof lucide !== "undefined"){
@@ -96,157 +68,15 @@ function initializeTopbar(){
     }
 
 
-
-
-
-
-    initializeNotifications();
-
-
-
-    initializeProfileMenu();
-
-
-
 }
 
 
 
 
 
-
-
-
-// ==============================
-// NOTIFICATIONS
-// ==============================
-
-
-function initializeNotifications(){
-
-
-    const button =
-    document.getElementById(
-        "notificationBtn"
-    );
-
-
-    const panel =
-    document.getElementById(
-        "notificationPanel"
-    );
-
-
-
-    if(!button || !panel)
-        return;
-
-
-
-
-    button.addEventListener(
-    "click",
-    ()=>{
-
-
-        panel.classList.toggle(
-            "show"
-        );
-
-
-    });
-
-
-
-
-
-
-    document.addEventListener(
-    "click",
-    (event)=>{
-
-
-        if(
-            !button.contains(event.target)
-            &&
-            !panel.contains(event.target)
-        ){
-
-
-            panel.classList.remove(
-                "show"
-            );
-
-
-        }
-
-
-
-    });
-
-
-
-}
-
-
-
-
-
-
-
-
-// ==============================
-// PROFILE MENU
-// ==============================
-
-
-function initializeProfileMenu(){
-
-
-
-    const profile =
-    document.getElementById(
-        "profileMenu"
-    );
-
-
-
-    if(!profile)
-        return;
-
-
-
-    profile.addEventListener(
-    "click",
-    ()=>{
-
-
-        console.log(
-            "Profile clicked"
-        );
-
-
-    });
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ==============================
-// UPDATE TOPBAR DATA
-// ==============================
 
 
 export function updateTopbar(student){
-
 
 
     const name =
@@ -257,11 +87,8 @@ export function updateTopbar(student){
 
 
     const initial =
-    name
-    .charAt(0)
+    name.charAt(0)
     .toUpperCase();
-
-
 
 
 
@@ -271,12 +98,10 @@ export function updateTopbar(student){
     );
 
 
-
     const avatar =
     document.getElementById(
         "topAvatar"
     );
-
 
 
     const level =
@@ -285,12 +110,10 @@ export function updateTopbar(student){
     );
 
 
-
     const xp =
     document.getElementById(
         "xpPoints"
     );
-
 
 
     const streak =
@@ -300,68 +123,27 @@ export function updateTopbar(student){
 
 
 
-
-
-
     if(topName)
-
-        topName.textContent =
-        name;
-
-
+        topName.textContent=name;
 
 
     if(avatar)
-
-        avatar.textContent =
-        initial;
-
-
+        avatar.textContent=initial;
 
 
     if(level)
-
-        level.textContent =
+        level.textContent=
         student.level || 1;
 
 
-
-
     if(xp)
-
-        xp.textContent =
+        xp.textContent=
         student.xp || 0;
 
 
-
-
     if(streak)
-
-        streak.textContent =
+        streak.textContent=
         student.streak || 0;
 
 
-
 }
-
-
-
-
-
-
-
-
-// ==============================
-// START
-// ==============================
-
-
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
-
-
-    loadTopbar();
-
-
-});

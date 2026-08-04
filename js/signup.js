@@ -684,6 +684,50 @@ googleSignupBtn.addEventListener("click", async () => {
         await setDoc(
             doc(db, "users", user.uid),
             {
+            // ==========================
+// CREATE STUDENT PROFILE
+// ==========================
+
+if(role === "student"){
+
+    await setDoc(
+        doc(db, "students", user.uid),
+        {
+
+            uid: user.uid,
+
+            name: fullName,
+
+            email,
+
+            level: 1,
+
+            xp: 0,
+
+            streak: 0,
+
+            badges: [],
+
+            stats: {
+
+                coursesEnrolled: 0,
+
+                lessonsCompleted: 0,
+
+                progress: 0,
+
+                certificates: 0
+
+            },
+
+            admissionNumber: "Pending",
+
+            createdAt: serverTimestamp()
+
+        }
+    );
+
+}
 
                 uid: user.uid,
 
