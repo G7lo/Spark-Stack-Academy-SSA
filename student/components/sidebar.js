@@ -311,7 +311,7 @@ async function logoutUser(){
             signOut
         } =
         await import(
-        "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js"
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
         );
 
 

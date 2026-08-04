@@ -91,13 +91,13 @@ provider.setCustomParameters({
 
 const DASHBOARDS = {
 
-    founder: "./founder/dashboard.html",
+    founder: "../founder/dashboard.html",
 
-    admin: "./admin/dashboard.html",
+    admin: "../admin/dashboard.html",
 
-    instructor: "./instructor/dashboard.html",
+    instructor: "../instructor/dashboard.html",
 
-    student: "./student/dashboard.html"
+    student: "../student/dashboard.html"
 
 };
 
