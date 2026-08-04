@@ -1,32 +1,19 @@
-// ===========================
-// SSA SIDEBAR COMPONENT
-// ===========================
+// =================================
+// SSA STUDENT SIDEBAR COMPONENT
+// =================================
 
 
-const sidebarContainer = 
+const sidebarContainer =
 document.getElementById("sidebarContainer");
 
 
 
-// Load sidebar CSS
-
-const sidebarCSS = document.createElement("link");
-
-sidebarCSS.rel = "stylesheet";
-
-sidebarCSS.href = "components/sidebar.css?v=3";
-
-document.head.appendChild(sidebarCSS);
+if(sidebarContainer){
 
 
+fetch("components/sidebar.html?v=1")
 
-
-
-// Load sidebar HTML
-
-fetch("components/sidebar.html?v=3")
-
-.then(res => res.text())
+.then(response => response.text())
 
 .then(html => {
 
@@ -43,89 +30,78 @@ fetch("components/sidebar.html?v=3")
 
 
 
-    setupSidebarMenu();
+    initializeSidebar();
 
 
 });
 
 
+}
 
 
 
 
 
-function setupSidebarMenu(){
 
 
-    const menuBtn = 
-    document.getElementById("menuBtn");
+function initializeSidebar(){
+
 
 
     const sidebar =
     document.querySelector(".sidebar");
 
 
-    const overlay =
-    document.getElementById("sidebarOverlay");
+
+    const logoutBtn =
+    document.getElementById("logoutBtn");
 
 
 
-    if(!sidebar) return;
-
-
-
-    // ===========================
-    // MOBILE MENU
-    // ===========================
-
-
-    if(menuBtn){
-
-        menuBtn.addEventListener("click",()=>{
-
-
-            sidebar.classList.toggle("active");
-
-
-            if(overlay){
-
-                overlay.classList.toggle("active");
-
-            }
-
-
-        });
-
-    }
+    if(!sidebar)
+    return;
 
 
 
 
 
-    // ===========================
-    // CLOSE OUTSIDE TAP
-    // ===========================
+    // =========================
+    // ACTIVE PAGE
+    // =========================
 
 
-    document.addEventListener("click",(e)=>{
+    const currentPage =
+    window.location.pathname
+    .split("/")
+    .pop();
 
 
-        if(
-            window.innerWidth <= 768 &&
-            !sidebar.contains(e.target) &&
-            menuBtn &&
-            !menuBtn.contains(e.target)
 
-        ){
-
-            sidebar.classList.remove("active");
+    document
+    .querySelectorAll(".nav-link")
+    .forEach(link=>{
 
 
-            if(overlay){
+        const href =
+        link.getAttribute("href");
 
-                overlay.classList.remove("active");
 
-            }
+
+        if(href === currentPage){
+
+
+            link.classList.add(
+                "active"
+            );
+
+
+        }
+        else{
+
+
+            link.classList.remove(
+                "active"
+            );
 
 
         }
@@ -137,21 +113,62 @@ function setupSidebarMenu(){
 
 
 
-    // ===========================
-    // OVERLAY CLOSE
-    // ===========================
 
 
-    if(overlay){
+    // =========================
+    // LOGOUT
+    // =========================
 
 
-        overlay.addEventListener("click",()=>{
+    if(logoutBtn){
 
 
-            sidebar.classList.remove("active");
+        logoutBtn.addEventListener(
+        "click",
+        async()=>{
 
 
-            overlay.classList.remove("active");
+            try{
+
+
+                const {
+                    auth
+                } =
+                await import(
+                "../../js/firebase.js"
+                );
+
+
+
+                const {
+                    signOut
+                } =
+                await import(
+                "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js"
+                );
+
+
+
+                await signOut(auth);
+
+
+
+                window.location.href =
+                "../login.html";
+
+
+
+            }
+            catch(error){
+
+
+                console.error(
+                    "Logout error:",
+                    error
+                );
+
+
+            }
 
 
         });
@@ -164,66 +181,146 @@ function setupSidebarMenu(){
 
 
 
-    // ===========================
-    // LOGOUT
-    // ===========================
+
+    loadSidebarUser();
 
 
-    const logoutBtn =
-    document.getElementById("logoutBtn");
-
-
-
-    if(logoutBtn){
-
-
-        logoutBtn.addEventListener(
-        "click",
-        async(e)=>{
-
-
-            e.preventDefault();
-
-
-            try{
-
-
-                const { auth } =
-                await import("../../js/firebase.js");
-
-
-                const { signOut } =
-                await import(
-                "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
-                );
-
-
-                await signOut(auth);
+}
 
 
 
-                window.location.href =
-                "../login.html";
 
 
-            }
 
 
-            catch(error){
 
 
-                console.error(error);
+// =========================
+// LOAD STUDENT PROFILE
+// =========================
 
 
-                alert(
-                "Logout failed"
-                );
+async function loadSidebarUser(){
 
 
-            }
+    try{
+
+
+        const {
+            auth,
+            db
+        } =
+        await import(
+        "../../js/firebase.js"
+        );
+
+
+
+        const {
+            onAuthStateChanged
+        } =
+        await import(
+        "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js"
+        );
+
+
+
+        const {
+            doc,
+            getDoc
+        } =
+        await import(
+        "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js"
+        );
+
+
+
+
+
+        onAuthStateChanged(
+        auth,
+        async(user)=>{
+
+
+            if(!user)
+            return;
+
+
+
+            const ref =
+            doc(
+                db,
+                "students",
+                user.uid
+            );
+
+
+
+            const snap =
+            await getDoc(ref);
+
+
+
+            if(!snap.exists())
+            return;
+
+
+
+            const student =
+            snap.data();
+
+
+
+            const name =
+            student.name || "Student";
+
+
+
+            const initial =
+            name
+            .charAt(0)
+            .toUpperCase();
+
+
+
+
+
+            const nameEl =
+            document.getElementById(
+                "sidebarStudentName"
+            );
+
+
+
+            const avatarEl =
+            document.getElementById(
+                "sidebarAvatar"
+            );
+
+
+
+            if(nameEl)
+            nameEl.textContent = name;
+
+
+
+            if(avatarEl)
+            avatarEl.textContent = initial;
+
 
 
         });
+
+
+
+    }
+    catch(error){
+
+
+        console.error(
+            "Sidebar profile error:",
+            error
+        );
 
 
     }

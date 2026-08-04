@@ -1,16 +1,28 @@
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
-<div class="sidebar">
+<aside class="sidebar">
 
 
-    <div class="sidebar-logo">
+    <!-- BRAND -->
 
-        <h2>
-            SSA
-        </h2>
+    <div class="sidebar-brand">
 
-        <span>
-            Student Portal
-        </span>
+
+        <img 
+        src="../assets/images/ssa-logo.png"
+        alt="SSA Logo">
+
+
+        <div>
+
+            <h2>
+                Spark Stack
+            </h2>
+
+            <span>
+                Student Portal
+            </span>
+
+        </div>
+
 
     </div>
 
@@ -18,54 +30,130 @@
 
 
 
-    <nav class="sidebar-menu">
+    <!-- STUDENT PROFILE -->
+
+    <div class="sidebar-profile">
 
 
-        <a href="dashboard.html" class="active">
+        <div 
+        class="sidebar-avatar"
+        id="sidebarAvatar">
+
+            S
+
+        </div>
+
+
+
+        <div class="sidebar-user">
+
+
+            <h3 id="sidebarStudentName">
+
+                Student
+
+            </h3>
+
+
+            <p>
+
+                Learner
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="sidebar-nav">
+
+
+        <a href="dashboard.html"
+           class="nav-link active">
+
 
             <i data-lucide="layout-dashboard"></i>
 
-            Dashboard
+            <span>
+                Dashboard
+            </span>
+
 
         </a>
 
 
 
-        <a href="courses.html">
+
+        <a href="courses.html"
+           class="nav-link">
+
 
             <i data-lucide="book-open"></i>
 
-            Browse Courses
+            <span>
+                My Courses
+            </span>
+
 
         </a>
 
 
 
-        <a href="my-courses.html">
 
-            <i data-lucide="graduation-cap"></i>
 
-            My Courses
+        <a href="certificates.html"
+           class="nav-link">
+
+
+            <i data-lucide="award"></i>
+
+            <span>
+                Certificates
+            </span>
+
 
         </a>
 
 
 
-        <a href="progress.html">
 
-            <i data-lucide="chart-line"></i>
 
-            Progress
+        <a href="course-player.html"
+           class="nav-link">
+
+
+            <i data-lucide="play-circle"></i>
+
+            <span>
+                Learning
+            </span>
+
 
         </a>
 
 
 
-        <a href="settings.html">
+
+
+        <a href="settings.html"
+           class="nav-link">
+
 
             <i data-lucide="settings"></i>
 
-            Settings
+            <span>
+                Settings
+            </span>
+
 
         </a>
 
@@ -77,19 +165,28 @@
 
 
 
+
+    <!-- FOOTER -->
+
+
     <div class="sidebar-footer">
 
 
-        <a href="#" id="logoutBtn">
+        <button id="logoutBtn">
 
-    <i data-lucide="log-out"></i>
 
-    Logout
+            <i data-lucide="log-out"></i>
 
-</a>
+
+            Logout
+
+
+        </button>
 
 
     </div>
 
 
-</div>
+
+
+</aside>

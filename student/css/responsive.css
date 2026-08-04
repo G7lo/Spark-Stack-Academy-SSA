@@ -1,16 +1,56 @@
-/* ===========================
-   SSA RESPONSIVE SYSTEM
-=========================== */
+/* =====================================
+   SSA STUDENT PORTAL RESPONSIVE
+===================================== */
 
 
-@media(max-width:992px){
+/* TABLETS */
+
+@media (max-width: 1024px){
 
 
-    .student-main{
+    .student-main {
 
         margin-left:0;
 
-        padding:15px;
+        width:100%;
+
+    }
+
+
+
+    .dashboard-content {
+
+        padding:25px;
+
+    }
+
+
+
+    .stats-grid {
+
+        grid-template-columns:
+
+        repeat(2,1fr);
+
+    }
+
+
+
+    .course-grid {
+
+        grid-template-columns:
+
+        1fr;
+
+    }
+
+
+
+    .quick-actions {
+
+        grid-template-columns:
+
+        1fr;
 
     }
 
@@ -19,23 +59,248 @@
 
 
 
-@media(max-width:600px){
 
 
-    .dashboard-content{
 
-        padding:20px;
 
-        border-radius:18px;
+/* MOBILE */
+
+@media (max-width:768px){
+
+
+    body {
+
+        overflow-x:hidden;
 
     }
 
 
-    .dashboard-content h1{
+
+    .student-main {
+
+        width:100%;
+
+    }
+
+
+
+
+
+    .dashboard-content {
+
+        padding:15px;
+
+    }
+
+
+
+
+
+    /* HERO */
+
+
+    .welcome-card {
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        padding:25px;
+
+        gap:25px;
+
+    }
+
+
+
+    .welcome-content h1 {
 
         font-size:24px;
 
     }
+
+
+
+    .welcome-illustration {
+
+        width:90px;
+
+        height:90px;
+
+        align-self:flex-end;
+
+    }
+
+
+
+
+
+
+    .learning-meta {
+
+        flex-direction:column;
+
+        gap:12px;
+
+    }
+
+
+
+
+
+    /* STATS */
+
+
+    .stats-grid {
+
+        grid-template-columns:
+
+        1fr;
+
+    }
+
+
+
+
+
+    .stat-card {
+
+        padding:18px;
+
+    }
+
+
+
+
+
+    .stat-card strong {
+
+        font-size:22px;
+
+    }
+
+
+
+
+
+
+    /* SECTIONS */
+
+
+    .section-header h2 {
+
+        font-size:18px;
+
+    }
+
+
+
+
+
+    .course-card {
+
+        padding:15px;
+
+    }
+
+
+
+
+
+
+
+    /* PROFILE */
+
+
+    .profile-card {
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+
+
+    .profile-avatar {
+
+        width:70px;
+
+        height:70px;
+
+    }
+
+
+
+
+
+
+
+    /* PROGRESS */
+
+
+    .progress-header {
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:10px;
+
+    }
+
+
+
+
+
+    /* QUICK ACTIONS */
+
+
+    .quick-actions {
+
+        grid-template-columns:
+
+        1fr;
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+/* SMALL PHONES */
+
+@media(max-width:400px){
+
+
+    .dashboard-content {
+
+        padding:12px;
+
+    }
+
+
+
+    .welcome-content h1 {
+
+        font-size:21px;
+
+    }
+
+
+
+    .welcome-card {
+
+        border-radius:14px;
+
+    }
+
 
 
 }

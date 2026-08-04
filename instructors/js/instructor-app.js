@@ -7,7 +7,7 @@ import { auth, db } from "../../js/firebase.js";
 import {
 onAuthStateChanged,
 signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
 import {
 doc,
@@ -16,7 +16,7 @@ collection,
 query,
 where,
 getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 import "../../js/theme.js";
 

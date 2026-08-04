@@ -1,35 +1,29 @@
-/* ===========================
-   SSA TOPBAR - CREAM GLASS
-=========================== */
+/* =================================
+   SSA STUDENT TOPBAR
+================================= */
 
 
-.topbar{
+.student-topbar{
 
-    width:100%;
+    height:75px;
+
+    background:#ffffff;
+
+    border-bottom:1px solid #e8edf5;
 
     display:flex;
 
     align-items:center;
 
-    gap:15px;
+    justify-content:space-between;
 
-    padding:15px 20px;
+    padding:0 30px;
 
-    border-radius:20px;
+    position:sticky;
 
-    background:
+    top:0;
 
-    rgba(255,250,240,.75);
-
-    border:
-
-    1px solid rgba(255,255,255,.9);
-
-    backdrop-filter:blur(20px);
-
-    box-shadow:
-
-    0 15px 40px rgba(120,90,40,.12);
+    z-index:900;
 
 }
 
@@ -39,10 +33,7 @@
 
 /* MENU BUTTON */
 
-
 .menu-btn{
-
-    display:none;
 
     width:42px;
 
@@ -50,25 +41,33 @@
 
     border:none;
 
-    border-radius:14px;
+    background:#f1f5ff;
+
+    color:#0b2d5c;
+
+    border-radius:12px;
+
+    display:flex;
 
     align-items:center;
 
     justify-content:center;
 
-    background:
-
-    linear-gradient(
-        135deg,
-        #2563eb,
-        #9333ea
-    );
-
-    color:white;
-
     cursor:pointer;
 
 }
+
+
+
+
+
+.menu-btn svg{
+
+    width:22px;
+
+}
+
+
 
 
 
@@ -76,124 +75,13 @@
 
 /* SEARCH */
 
+.topbar-search{
 
-.topbar-left{
+    width:420px;
 
-    flex:1;
+    height:44px;
 
-    position:relative;
-
-}
-
-
-
-#courseSearch{
-
-    width:100%;
-
-    padding:13px 18px;
-
-    border-radius:15px;
-
-    outline:none;
-
-    color:#1e293b;
-
-    background:#fffaf0;
-
-    border:
-
-    1px solid #e2e8f0;
-
-}
-
-
-
-#courseSearch::placeholder{
-
-    color:#64748b;
-
-}
-
-
-
-#courseSearch:focus{
-
-    border-color:#2563eb;
-
-    box-shadow:
-
-    0 0 20px rgba(37,99,235,.15);
-
-}
-
-
-
-
-
-/* SEARCH RESULTS */
-
-
-.search-results{
-
-    position:absolute;
-
-    top:60px;
-
-    left:0;
-
-    width:100%;
-
-    display:none;
-
-    background:white;
-
-    border-radius:15px;
-
-    overflow:hidden;
-
-    z-index:100;
-
-    box-shadow:
-
-    0 20px 50px rgba(15,23,42,.15);
-
-}
-
-
-
-.search-results.show{
-
-    display:block;
-
-}
-
-
-
-
-
-/* RIGHT SIDE */
-
-
-.topbar-right{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-}
-
-
-
-.icon-btn{
-
-    width:45px;
-
-    height:45px;
-
-    border:none;
+    background:#f6f8fc;
 
     border-radius:14px;
 
@@ -201,21 +89,93 @@
 
     align-items:center;
 
-    justify-content:center;
+    gap:12px;
 
-    color:white;
+    padding:0 16px;
 
-    background:
+}
 
-    linear-gradient(
-        135deg,
-        #2563eb,
-        #9333ea
-    );
+
+
+.topbar-search svg{
+
+    color:#64748b;
+
+    width:20px;
+
+}
+
+
+
+.topbar-search input{
+
+    width:100%;
+
+    border:none;
+
+    outline:none;
+
+    background:transparent;
+
+    font-family:Poppins;
+
+    font-size:14px;
+
+}
+
+
+
+
+
+
+
+/* ACTIONS */
+
+.topbar-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+
+
+
+
+.notification-btn{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    border:none;
+
+    background:#f6f8fc;
+
+    cursor:pointer;
 
     position:relative;
 
-    cursor:pointer;
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+
+.notification-btn svg{
+
+    width:21px;
+
+    color:#0b2d5c;
 
 }
 
@@ -227,9 +187,15 @@
 
     position:absolute;
 
-    top:4px;
+    top:-4px;
 
-    right:4px;
+    right:-2px;
+
+    background:#2979ff;
+
+    color:white;
+
+    font-size:11px;
 
     width:18px;
 
@@ -243,70 +209,43 @@
 
     justify-content:center;
 
-    font-size:11px;
-
-    background:#ef4444;
-
-    color:white;
-
 }
 
 
 
 
 
-.notification-dropdown{
 
-    position:absolute;
 
-    top:75px;
+/* PROFILE */
 
-    right:20px;
+.student-profile-menu{
 
-    width:320px;
+    display:flex;
 
-    padding:20px;
+    align-items:center;
 
-    border-radius:18px;
+    gap:12px;
 
-    display:none;
-
-    background:white;
-
-    border:
-
-    1px solid #e2e8f0;
-
-    box-shadow:
-
-    0 20px 50px rgba(15,23,42,.15);
-
-    z-index:200;
+    cursor:pointer;
 
 }
 
 
 
-.notification-dropdown.show{
-
-    display:block;
-
-}
-
-
-
-
-
-/* AVATAR */
 
 
 .student-avatar{
 
-    width:45px;
+    width:44px;
 
-    height:45px;
+    height:44px;
 
     border-radius:50%;
+
+    background:#0b2d5c;
+
+    color:white;
 
     display:flex;
 
@@ -316,17 +255,43 @@
 
     font-weight:700;
 
-    color:white;
-
-    background:
-
-    linear-gradient(
-        135deg,
-        #2563eb,
-        #9333ea
-    );
+    font-size:17px;
 
 }
+
+
+
+
+
+.student-mini-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+
+.student-mini-info strong{
+
+    font-size:14px;
+
+    color:#0f172a;
+
+}
+
+
+
+.student-mini-info small{
+
+    font-size:12px;
+
+    color:#64748b;
+
+}
+
+
 
 
 
@@ -334,132 +299,30 @@
 
 /* MOBILE */
 
-
 @media(max-width:768px){
 
 
-    .topbar{
+.student-topbar{
 
-        padding:12px;
-
-        gap:10px;
-
-    }
-
-
-
-    .menu-btn{
-
-        display:flex;
-
-        flex-shrink:0;
-
-    }
-
-
-
-    .topbar-right{
-
-        gap:8px;
-
-    }
-
-
-
-    .icon-btn,
-    .student-avatar{
-
-        width:40px;
-
-        height:40px;
-
-    }
-
-
-
-    #courseSearch{
-
-        padding:11px 12px;
-
-    }
-
+    padding:0 15px;
 
 }
 
-.notification-item{
 
-display:flex;
 
-gap:12px;
+.topbar-search{
 
-padding:14px;
-
-border-bottom:1px solid #eef2f7;
-
-cursor:pointer;
-
-transition:.25s;
+    display:none;
 
 }
 
-.notification-item:hover{
 
-background:#f8fafc;
 
-}
+.student-mini-info{
 
-.notification-dot{
-
-width:22px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:flex-start;
-
-font-size:12px;
-
-flex-shrink:0;
+    display:none;
 
 }
 
-.notification-body{
-
-flex:1;
-
-}
-
-.notification-body h4{
-
-margin:0 0 6px;
-
-font-size:14px;
-
-font-weight:600;
-
-color:#0f172a;
-
-}
-
-.notification-body p{
-
-margin:0;
-
-font-size:13px;
-
-color:#64748b;
-
-line-height:1.5;
-
-}
-
-.notification-empty{
-
-padding:18px;
-
-text-align:center;
-
-color:#94a3b8;
 
 }

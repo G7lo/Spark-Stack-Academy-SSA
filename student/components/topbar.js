@@ -1,134 +1,254 @@
-import { auth, db } from "../js/firebase.js";
+// =================================
+// SSA STUDENT TOPBAR COMPONENT
+// =================================
 
-import {
-onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import {
-collection,
-query,
-where,
-getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-window.addEventListener("DOMContentLoaded",()=>{
-
-const css=document.createElement("link");
-
-css.rel="stylesheet";
-
-css.href="components/topbar.css";
-
-document.head.appendChild(css);
-
-const container=
+const topbarContainer =
 document.getElementById("topbarContainer");
 
-if(!container) return;
 
-fetch("components/topbar.html")
 
-.then(res=>res.text())
+if(topbarContainer){
 
-.then(html=>{
 
-container.innerHTML=html;
+fetch("components/topbar.html?v=1")
 
-if(typeof lucide!=="undefined"){
+.then(response => response.text())
 
-lucide.createIcons();
+.then(html => {
 
-}
 
-setupMenu();
+    topbarContainer.innerHTML = html;
 
-loadNotificationBadge();
 
-});
 
-});
+    if(typeof lucide !== "undefined"){
 
-function setupMenu(){
+        lucide.createIcons();
 
-const menuBtn=
-document.getElementById("menuBtn");
+    }
 
-const sidebar=
-document.querySelector(".sidebar");
 
-if(!menuBtn||!sidebar) return;
+    initializeTopbar();
 
-menuBtn.addEventListener("click",()=>{
-
-const overlay=
-document.getElementById("sidebarOverlay");
-
-sidebar.classList.toggle("active");
-
-if(overlay){
-
-overlay.classList.toggle("active");
-
-}
 
 });
 
-const overlay=
-document.getElementById("sidebarOverlay");
 
-if(overlay){
-
-overlay.addEventListener("click",()=>{
-
-sidebar.classList.remove("active");
-
-overlay.classList.remove("active");
-
-});
 
 }
 
+
+
+
+function initializeTopbar(){
+
+
+    const menuBtn =
+    document.getElementById("menuBtn");
+
+
+    const sidebar =
+    document.querySelector(".sidebar");
+
+
+    const overlay =
+    document.getElementById("sidebarOverlay");
+
+
+
+    // ==========================
+    // MOBILE MENU
+    // ==========================
+
+
+    if(menuBtn){
+
+
+        menuBtn.addEventListener(
+        "click",
+        ()=>{
+
+
+            sidebar?.classList.toggle(
+                "active"
+            );
+
+
+            overlay?.classList.toggle(
+                "active"
+            );
+
+
+        });
+
+
+    }
+
+
+
+
+
+
+
+    // ==========================
+    // CLOSE OVERLAY
+    // ==========================
+
+
+    if(overlay){
+
+
+        overlay.addEventListener(
+        "click",
+        ()=>{
+
+
+            sidebar?.classList.remove(
+                "active"
+            );
+
+
+            overlay.classList.remove(
+                "active"
+            );
+
+
+        });
+
+
+    }
+
+
+
+
+
+
+
+    loadTopbarUser();
+
+
 }
 
-async function loadNotificationBadge(){
 
-const badge=
-document.getElementById("notificationCount");
 
-if(!badge) return;
 
-onAuthStateChanged(auth,async(user)=>{
 
-if(!user){
 
-badge.style.display="none";
 
-return;
+// ==========================
+// LOAD USER DATA
+// ==========================
 
-}
 
-const q=query(
+async function loadTopbarUser(){
 
-collection(db,"notifications"),
 
-where("userId","==",user.uid)
+    const {
+        auth,
+        db
+    } = await import("../../js/firebase.js");
 
-);
 
-const snap=await getDocs(q);
 
-if(snap.empty){
+    const {
+        onAuthStateChanged
+    } = await import(
+    "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js"
+    );
 
-badge.style.display="none";
 
-}else{
 
-badge.style.display="flex";
+    const {
+        doc,
+        getDoc
+    } = await import(
+    "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js"
+    );
 
-badge.textContent=snap.size;
 
-}
 
-});
+
+
+    onAuthStateChanged(
+    auth,
+    async(user)=>{
+
+
+        if(!user) return;
+
+
+
+        const studentRef =
+        doc(
+            db,
+            "students",
+            user.uid
+        );
+
+
+
+        const snapshot =
+        await getDoc(studentRef);
+
+
+
+        if(!snapshot.exists())
+        return;
+
+
+
+        const data =
+        snapshot.data();
+
+
+
+        const name =
+        data.name || "Student";
+
+
+
+        const avatar =
+        name
+        .charAt(0)
+        .toUpperCase();
+
+
+
+
+
+        const nameElement =
+        document.getElementById(
+            "topStudentName"
+        );
+
+
+        const avatarElement =
+        document.getElementById(
+            "topStudentAvatar"
+        );
+
+
+
+        if(nameElement){
+
+            nameElement.textContent =
+            name;
+
+        }
+
+
+
+        if(avatarElement){
+
+            avatarElement.textContent =
+            avatar;
+
+        }
+
+
+
+    });
+
 
 }

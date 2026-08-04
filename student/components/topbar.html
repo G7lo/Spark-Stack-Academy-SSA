@@ -1,9 +1,11 @@
-<div class="topbar">
+<header class="student-topbar">
 
 
-    <!-- MOBILE MENU -->
+    <!-- MENU -->
 
-    <button class="menu-btn" id="menuBtn">
+    <button 
+    id="menuBtn"
+    class="menu-btn">
 
         <i data-lucide="menu"></i>
 
@@ -15,16 +17,16 @@
 
     <!-- SEARCH -->
 
-    <div class="topbar-left">
+    <div class="topbar-search">
 
 
-        <input
+        <i data-lucide="search"></i>
+
+
+        <input 
         type="search"
-        id="courseSearch"
-        placeholder="Search courses...">
-
-
-        <div class="search-results" id="searchResults"></div>
+        placeholder="Search courses..."
+        id="courseSearch">
 
 
     </div>
@@ -34,23 +36,24 @@
 
 
 
-    <!-- RIGHT ACTIONS -->
 
-    <div class="topbar-right">
+    <!-- ACTIONS -->
+
+    <div class="topbar-actions">
 
 
-        <button class="icon-btn" id="notificationBtn">
+
+        <button class="notification-btn">
+
 
             <i data-lucide="bell"></i>
 
 
-            <span 
-id="notificationCount"
-class="notification-count">
+            <span class="notification-count">
 
-    0
+                0
 
-</span>
+            </span>
 
 
         </button>
@@ -59,29 +62,38 @@ class="notification-count">
 
 
 
-        <div class="notification-dropdown" id="notificationDropdown">
+        <div class="student-profile-menu">
 
 
-            <h3>
-                Notifications
-            </h3>
+            <div 
+            class="student-avatar"
+            id="topStudentAvatar">
 
+                S
 
-            <p>
-                No new notifications
-            </p>
-
-
-        </div>
+            </div>
 
 
 
+            <div class="student-mini-info">
 
 
-        <div class="student-avatar" id="studentAvatar">
+                <strong id="topStudentName">
+
+                    Student
+
+                </strong>
 
 
-            S
+                <small>
+
+                    Student
+
+                </small>
+
+
+            </div>
+
 
 
         </div>
@@ -91,4 +103,5 @@ class="notification-count">
     </div>
 
 
-</div>
+
+</header>

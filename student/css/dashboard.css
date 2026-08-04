@@ -1,189 +1,141 @@
-/* ===========================
-   SSA DASHBOARD CONTENT
-=========================== */
+/* =====================================
+   SSA STUDENT DASHBOARD STYLES
+===================================== */
 
 
-.hero-card{
+/* =====================================
+   WELCOME HERO
+===================================== */
 
-display:flex;
+.welcome-card {
 
-justify-content:space-between;
+    background:
 
-align-items:center;
+    linear-gradient(
+        135deg,
+        #081C3A,
+        #2979FF
+    );
 
-padding:30px;
+    color:white;
 
-border-radius:28px;
+    border-radius:
 
-background:
+    var(--radius);
 
-linear-gradient(
-135deg,
-#2563eb,
-#9333ea
-);
+    padding:35px;
 
-color:white;
+    display:flex;
 
-margin-bottom:25px;
+    justify-content:space-between;
 
-}
+    align-items:center;
 
+    margin-bottom:30px;
 
-
-.hero-card p{
-
-opacity:.9;
-
-margin-top:10px;
+    overflow:hidden;
 
 }
 
 
 
-.hero-icon{
+.welcome-label {
 
-font-size:70px;
+    display:inline-block;
 
-}
+    background:
 
+    rgba(255,255,255,.15);
 
+    padding:
 
+    6px 14px;
 
-.hero-meta{
+    border-radius:20px;
 
-display:flex;
+    font-size:13px;
 
-gap:20px;
-
-margin-top:20px;
-
-font-size:14px;
-
-}
-
-
-
-
-
-.profile-card{
-
-display:flex;
-
-align-items:center;
-
-gap:20px;
-
-padding:25px;
-
-background:white;
-
-border-radius:24px;
-
-margin-bottom:25px;
-
-box-shadow:
-
-0 20px 40px rgba(0,0,0,.06);
+    margin-bottom:15px;
 
 }
 
 
 
-.profile-avatar{
+.welcome-content h1 {
 
-width:70px;
+    font-size:32px;
 
-height:70px;
+    font-weight:800;
 
-border-radius:50%;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:30px;
-
-font-weight:800;
-
-color:white;
-
-background:
-
-linear-gradient(
-135deg,
-#2563eb,
-#9333ea
-);
+    margin-bottom:10px;
 
 }
 
 
 
-.student-badge{
+.welcome-content p {
 
-display:inline-block;
+    opacity:.9;
 
-margin-top:8px;
-
-padding:6px 12px;
-
-border-radius:20px;
-
-background:#dcfce7;
-
-color:#166534;
-
-font-size:13px;
+    max-width:500px;
 
 }
 
 
 
+.learning-meta {
 
-.stats-grid{
+    display:flex;
 
-display:grid;
+    gap:25px;
 
-grid-template-columns:
-
-repeat(4,1fr);
-
-gap:20px;
-
-margin-bottom:25px;
+    margin-top:25px;
 
 }
 
 
 
-.stat-card{
+.learning-meta div {
 
-background:white;
+    display:flex;
 
-padding:22px;
+    align-items:center;
 
-border-radius:22px;
+    gap:8px;
 
-display:flex;
-
-align-items:center;
-
-gap:15px;
-
-box-shadow:
-
-0 15px 35px rgba(0,0,0,.05);
+    font-size:14px;
 
 }
 
 
 
-.stat-card span{
+.welcome-illustration {
 
-font-size:30px;
+    width:120px;
+
+    height:120px;
+
+    background:
+
+    rgba(255,255,255,.15);
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+
+.welcome-illustration svg {
+
+    width:60px;
+
+    height:60px;
 
 }
 
@@ -191,71 +143,117 @@ font-size:30px;
 
 
 
-.section-card{
 
-background:white;
-
-padding:25px;
-
-border-radius:24px;
-
-margin-bottom:25px;
-
-}
+/* =====================================
+   STATS GRID
+===================================== */
 
 
+.stats-grid {
 
-.section-header{
+    display:grid;
 
-display:flex;
+    grid-template-columns:
 
-justify-content:space-between;
+    repeat(4,1fr);
 
-margin-bottom:20px;
+    gap:20px;
+
+    margin-bottom:30px;
 
 }
 
 
 
-.section-header a{
+.stat-card {
 
-color:#2563eb;
+    background:white;
 
-text-decoration:none;
+    padding:22px;
 
-}
+    border-radius:
 
+    var(--radius);
 
+    box-shadow:
 
-.continue-card{
+    var(--shadow);
 
-display:flex;
+    display:flex;
 
-justify-content:space-between;
+    align-items:center;
 
-align-items:center;
+    gap:18px;
 
-padding:20px;
-
-border-radius:18px;
-
-background:#f8fafc;
+    transition:.3s;
 
 }
 
 
 
-.continue-card a{
+.stat-card:hover {
 
-padding:12px 18px;
+    transform:
 
-border-radius:14px;
+    translateY(-5px);
 
-background:#2563eb;
+}
 
-color:white;
 
-text-decoration:none;
+
+.stat-icon {
+
+    width:50px;
+
+    height:50px;
+
+    border-radius:14px;
+
+    background:
+
+    #EFF6FF;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:
+
+    var(--secondary);
+
+}
+
+
+
+.stat-icon svg {
+
+    width:25px;
+
+}
+
+
+
+.stat-card h3 {
+
+    font-size:14px;
+
+    color:
+
+    var(--text-light);
+
+    font-weight:500;
+
+}
+
+
+
+.stat-card strong {
+
+    font-size:26px;
+
+    font-weight:800;
 
 }
 
@@ -263,45 +261,570 @@ text-decoration:none;
 
 
 
-@media(max-width:900px){
 
-.stats-grid{
-
-grid-template-columns:repeat(2,1fr);
-
-}
+/* =====================================
+   COURSE CARDS
+===================================== */
 
 
-}
+.course-grid {
 
+    display:grid;
 
+    grid-template-columns:
 
-@media(max-width:600px){
+    repeat(2,1fr);
 
-.hero-card{
-
-flex-direction:column;
-
-align-items:flex-start;
+    gap:20px;
 
 }
 
 
-.stats-grid{
 
-grid-template-columns:1fr;
+.course-card {
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:
+
+    var(--radius);
+
+    box-shadow:
+
+    var(--shadow);
 
 }
 
 
-.continue-card{
 
-flex-direction:column;
+.course-image {
 
-gap:15px;
+    height:120px;
 
-align-items:flex-start;
+    background:
+
+    linear-gradient(
+    135deg,
+    #081C3A,
+    #2979FF
+    );
+
+    border-radius:15px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:white;
+
+    margin-bottom:15px;
 
 }
+
+
+
+.course-image svg {
+
+    width:45px;
+
+}
+
+
+
+
+
+.course-info h3 {
+
+    margin-bottom:8px;
+
+}
+
+
+
+.course-info p {
+
+    color:
+
+    var(--text-light);
+
+    font-size:14px;
+
+}
+/* =====================================
+   PROGRESS CARD
+===================================== */
+
+
+.progress-card {
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:
+
+    var(--radius);
+
+    box-shadow:
+
+    var(--shadow);
+
+}
+
+
+
+.progress-header {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.progress-header h3 {
+
+    font-size:18px;
+
+}
+
+
+
+.progress-header p {
+
+    color:
+
+    var(--text-light);
+
+    font-size:14px;
+
+}
+
+
+
+.progress-header strong {
+
+    font-size:28px;
+
+    color:
+
+    var(--secondary);
+
+}
+
+
+
+
+
+.progress-bar {
+
+    height:12px;
+
+    background:
+
+    #E2E8F0;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+
+
+.progress-bar span {
+
+    display:block;
+
+    height:100%;
+
+    background:
+
+    linear-gradient(
+        90deg,
+        #2979FF,
+        #FFC107
+    );
+
+    border-radius:20px;
+
+    transition:.5s;
+
+}
+
+
+
+
+
+
+/* =====================================
+   ACTIVITY LIST
+===================================== */
+
+
+.activity-list {
+
+    background:white;
+
+    border-radius:
+
+    var(--radius);
+
+    box-shadow:
+
+    var(--shadow);
+
+    padding:20px;
+
+}
+
+
+
+.activity-item {
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
+
+    padding:15px 0;
+
+    border-bottom:
+
+    1px solid var(--border);
+
+}
+
+
+
+.activity-item:last-child {
+
+    border-bottom:none;
+
+}
+
+
+
+.activity-icon {
+
+    width:45px;
+
+    height:45px;
+
+    background:
+
+    #EFF6FF;
+
+    color:
+
+    var(--secondary);
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+
+.activity-item h4 {
+
+    font-size:15px;
+
+    margin-bottom:4px;
+
+}
+
+
+
+.activity-item p {
+
+    color:
+
+    var(--text-light);
+
+    font-size:13px;
+
+}
+
+
+
+
+
+
+/* =====================================
+   PROFILE CARD
+===================================== */
+
+
+.profile-card {
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:
+
+    var(--radius);
+
+    box-shadow:
+
+    var(--shadow);
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+
+
+.profile-avatar {
+
+    width:80px;
+
+    height:80px;
+
+    border-radius:50%;
+
+    background:
+
+    var(--primary);
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:30px;
+
+    font-weight:700;
+
+}
+
+
+
+.profile-details h3 {
+
+    font-size:20px;
+
+    margin-bottom:5px;
+
+}
+
+
+
+.profile-details p {
+
+    color:
+
+    var(--text-light);
+
+    font-size:14px;
+
+}
+
+
+
+.student-status {
+
+    display:inline-block;
+
+    margin:10px 0;
+
+    padding:
+
+    6px 14px;
+
+    border-radius:20px;
+
+    background:
+
+    #DCFCE7;
+
+    color:
+
+    #15803D;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+
+
+
+
+
+/* =====================================
+   TASKS
+===================================== */
+
+
+.tasks-card {
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:
+
+    var(--radius);
+
+    box-shadow:
+
+    var(--shadow);
+
+}
+
+
+
+.task-item {
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
+
+}
+
+
+
+.task-icon {
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:12px;
+
+    background:
+
+    #FEF3C7;
+
+    color:
+
+    #D97706;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+
+.task-item h4 {
+
+    margin-bottom:5px;
+
+}
+
+
+
+.task-item p {
+
+    color:
+
+    var(--text-light);
+
+    font-size:14px;
+
+}
+
+
+
+
+
+
+/* =====================================
+   QUICK ACTIONS
+===================================== */
+
+
+.quick-actions {
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+    gap:20px;
+
+    margin-bottom:30px;
+
+}
+
+
+
+.action-card {
+
+    background:white;
+
+    padding:22px;
+
+    border-radius:
+
+    var(--radius);
+
+    box-shadow:
+
+    var(--shadow);
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+
+
+.action-card:hover {
+
+    transform:
+
+    translateY(-4px);
+
+    color:
+
+    var(--secondary);
+
+}
+
+
+
+.action-card svg {
+
+    width:25px;
 
 }

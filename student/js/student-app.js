@@ -6,7 +6,7 @@ import { auth, db } from "../../js/firebase.js";
 
 import {
     onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
 import {
     doc,
@@ -15,7 +15,7 @@ import {
     query,
     where,
     getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 
 console.log("SSA STUDENT APP CONNECTED");
@@ -38,9 +38,6 @@ window.addEventListener(
         lucide.createIcons();
 
     }
-
-
-    setupSidebar();
 
 
     loadStudentData();
@@ -130,10 +127,9 @@ function loadStudentData(){
 
 
 }
-// ===========================
+// =====================================
 // UPDATE STUDENT UI
-// ===========================
-
+// =====================================
 
 function updateStudentUI(student){
 
@@ -156,187 +152,105 @@ function updateStudentUI(student){
 
 
 
-    const elements = {
-
-
-        studentName:
-        document.getElementById(
-            "studentName"
-        ),
-
-
-        fullName:
-        document.getElementById(
-            "studentFullName"
-        ),
-
-
-        email:
-        document.getElementById(
-            "studentEmail"
-        ),
-
-admission:
-document.getElementById(
-    "studentAdmission"
-),
-
-        profileAvatar:
-        document.getElementById(
-            "profileAvatar"
-        ),
-
-
-        topAvatar:
-        document.querySelector(
-            ".student-avatar"
-        )
-
-    };
-
-
-
-
-
-    if(elements.studentName){
-
-        elements.studentName.textContent =
-        name;
-
-    }
-
-
-
-    if(elements.fullName){
-
-        elements.fullName.textContent =
-        name;
-
-    }
-
-
-
-    if(elements.email){
-
-        elements.email.textContent =
-        email;
-
-    }
-
-if(elements.admission){
-
-    elements.admission.textContent =
-    "Admission: " +
-    (student.admissionNumber || "Pending");
-
-}
-
-    if(elements.profileAvatar){
-
-        elements.profileAvatar.textContent =
-        initial;
-
-    }
-
-
-
-    if(elements.topAvatar){
-
-        elements.topAvatar.textContent =
-        initial;
-
-    }
-
-
-}
-// ===========================
-// SIDEBAR CONTROL
-// ===========================
-
-function setupSidebar(){
-
-    const menuBtn =
-    document.getElementById("menuBtn");
-
-    const sidebar =
-    document.querySelector(".sidebar");
-
-    const overlay =
-    document.getElementById("sidebarOverlay");
-
-
-    console.log("Menu:", menuBtn);
-    console.log("Sidebar:", sidebar);
-    console.log("Overlay:", overlay);
-
-
-    if(!menuBtn || !sidebar || !overlay){
-
-        console.warn(
-            "Sidebar elements missing"
-        );
-
-        return;
-
-    }
-
-
-
-    menuBtn.onclick = ()=>{
-
-        console.log("Menu clicked");
-
-
-        sidebar.classList.toggle("active");
-
-        overlay.classList.toggle("active");
-
-        document.body.classList.toggle(
-            "menu-open"
-        );
-
-
-    };
-
-
-
-    overlay.onclick = ()=>{
-
-
-        sidebar.classList.remove(
-            "active"
-        );
-
-
-        overlay.classList.remove(
-            "active"
-        );
-
-
-        document.body.classList.remove(
-            "menu-open"
-        );
-
-
-    };
-
-
-
-    document.addEventListener(
-        "keydown",
-        (e)=>{
-
-            if(e.key === "Escape"){
-
-                overlay.click();
-
-            }
-
-        }
+    // DASHBOARD
+
+    const studentName =
+    document.getElementById(
+        "studentName"
     );
 
 
+    const fullName =
+    document.getElementById(
+        "studentFullName"
+    );
+
+
+    const studentEmail =
+    document.getElementById(
+        "studentEmail"
+    );
+
+
+    const profileAvatar =
+    document.getElementById(
+        "profileAvatar"
+    );
+
+
+
+
+
+    if(studentName)
+        studentName.textContent = name;
+
+
+
+    if(fullName)
+        fullName.textContent = name;
+
+
+
+    if(studentEmail)
+        studentEmail.textContent = email;
+
+
+
+    if(profileAvatar)
+        profileAvatar.textContent = initial;
+
+
+
+
+
+
+
+    // SIDEBAR
+
+    const sidebarName =
+    document.getElementById(
+        "sidebarName"
+    );
+
+
+    const sidebarAvatar =
+    document.getElementById(
+        "sidebarAvatar"
+    );
+
+
+
+    if(sidebarName)
+        sidebarName.textContent = name;
+
+
+
+    if(sidebarAvatar)
+        sidebarAvatar.textContent = initial;
+
+
+
+
+
+
+
+
+    // TOPBAR
+
+    const topAvatar =
+    document.getElementById(
+        "topAvatar"
+    );
+
+
+
+    if(topAvatar)
+        topAvatar.textContent = initial;
+
+
+
 }
+
 async function loadContinueCourses(uid){
 
     const container =

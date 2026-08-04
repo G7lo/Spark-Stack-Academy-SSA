@@ -1,0 +1,560 @@
+ /* =====================================
+   SSA STUDENT SIDEBAR
+===================================== */
+
+
+.sidebar {
+
+    width:260px;
+
+    height:100vh;
+
+    position:fixed;
+
+    left:0;
+
+    top:0;
+
+    background:
+
+    var(--primary);
+
+    color:white;
+
+    padding:25px 18px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    z-index:1000;
+
+    transition:.3s ease;
+
+}
+
+
+
+
+
+
+/* BRAND */
+
+.sidebar-brand {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:30px;
+
+}
+
+
+
+.sidebar-brand img {
+
+    width:45px;
+
+    height:45px;
+
+    object-fit:contain;
+
+}
+
+
+
+.sidebar-brand h2 {
+
+    font-size:22px;
+
+    font-weight:800;
+
+}
+
+
+
+.sidebar-brand span {
+
+    font-size:12px;
+
+    opacity:.7;
+
+}
+
+
+
+
+
+
+
+/* PROFILE */
+
+.sidebar-profile {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    background:
+
+    rgba(255,255,255,.08);
+
+    padding:15px;
+
+    border-radius:16px;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.sidebar-avatar {
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    background:
+
+    var(--accent);
+
+    color:
+
+    var(--primary);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:800;
+
+}
+
+
+
+.sidebar-profile h3 {
+
+    font-size:14px;
+
+}
+
+
+
+.sidebar-profile p {
+
+    font-size:12px;
+
+    opacity:.7;
+
+}
+
+
+
+
+
+
+
+/* NAVIGATION */
+
+.sidebar-nav {
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    flex:1;
+
+}
+
+
+
+.nav-link {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:
+
+    13px 15px;
+
+    border-radius:14px;
+
+    color:
+
+    rgba(255,255,255,.75);
+
+    transition:.3s;
+
+    font-size:14px;
+
+}
+
+
+
+.nav-link svg {
+
+    width:20px;
+
+}
+
+
+
+.nav-link:hover {
+
+    background:
+
+    rgba(255,255,255,.1);
+
+    color:white;
+
+}
+
+
+
+.nav-link.active {
+
+    background:
+
+    var(--secondary);
+
+    color:white;
+
+}
+
+
+
+
+
+/* FOOTER */
+
+.sidebar-footer {
+
+    padding-top:20px;
+
+}
+
+
+
+.sidebar-footer button {
+
+    width:100%;
+
+    border:none;
+
+    background:
+
+    rgba(255,255,255,.1);
+
+    color:white;
+
+    padding:
+
+    13px;
+
+    border-radius:14px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+
+.sidebar-footer button:hover {
+
+    background:
+
+    #DC2626;
+
+}
+/* =====================================
+   SIDEBAR MOBILE BEHAVIOR
+===================================== */
+
+
+#sidebarOverlay {
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+
+    rgba(0,0,0,.45);
+
+    z-index:900;
+
+}
+
+
+
+
+
+
+@media(max-width:768px){
+
+
+    .sidebar {
+
+        transform:
+
+        translateX(-100%);
+
+    }
+
+
+
+    .sidebar.active {
+
+        transform:
+
+        translateX(0);
+
+    }
+
+
+
+
+
+    #sidebarOverlay.active {
+
+        display:block;
+
+    }
+
+
+
+}
+
+
+
+
+
+
+/* =====================================
+   TOPBAR
+===================================== */
+
+
+.topbar {
+
+    height:75px;
+
+    background:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:
+
+    0 30px;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:800;
+
+    border-bottom:
+
+    1px solid var(--border);
+
+}
+
+
+
+
+
+
+
+.menu-btn {
+
+    display:none;
+
+    border:none;
+
+    background:
+
+    transparent;
+
+    cursor:pointer;
+
+    font-size:26px;
+
+}
+
+
+
+
+
+/* SEARCH */
+
+.search-box {
+
+    position:relative;
+
+    width:400px;
+
+}
+
+
+
+.search-box input {
+
+    width:100%;
+
+    padding:
+
+    12px 18px;
+
+    border:
+
+    1px solid var(--border);
+
+    border-radius:14px;
+
+    outline:none;
+
+}
+
+
+
+.search-box input:focus {
+
+    border-color:
+
+    var(--secondary);
+
+}
+
+
+
+
+
+
+
+/* TOP ACTIONS */
+
+.topbar-actions {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+
+
+.icon-btn {
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    border:none;
+
+    background:
+
+    #F1F5F9;
+
+    cursor:pointer;
+
+}
+
+
+
+
+
+.student-avatar {
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:
+
+    var(--primary);
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+
+}
+
+
+
+
+
+
+
+@media(max-width:768px){
+
+
+    .menu-btn {
+
+        display:block;
+
+    }
+
+
+
+    .topbar {
+
+        padding:
+
+        0 15px;
+
+    }
+
+
+
+    .search-box {
+
+        display:none;
+
+    }
+
+
+
+}

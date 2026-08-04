@@ -1,4 +1,5 @@
 .
+├── .gitignore
 ├── admin
 │   ├── Settings.html
 │   ├── admissions.css
@@ -36,11 +37,15 @@
 │       ├── ssa-badge.png
 │       └── ssa-logo.png
 ├── css
-│   └── auth.css
+│   ├── auth.css
+│   └── index.css
 ├── founder
 │   ├── academy-profile.css
 │   ├── academy-profile.html
 │   ├── academy-profile.js
+│   ├── admissions.css
+│   ├── admissions.html
+│   ├── admissions.js
 │   ├── announcements.css
 │   ├── announcements.html
 │   ├── announcements.js
@@ -58,16 +63,27 @@
 │   ├── dashboard.css
 │   ├── dashboard.html
 │   ├── dashboard.js
+│   ├── instructors-profile.css
+│   ├── instructors-profile.html
+│   ├── instructors-profile.js
+│   ├── instructors.css
+│   ├── instructors.html
+│   ├── instructors.js
 │   ├── js
 │   │   ├── auth.js
 │   │   ├── component-loader.js
 │   │   ├── dashboard.js
-│   │   ├── founder-app-old.js
 │   │   ├── founder-app.js
-│   │   └── sidebar.js
+│   │   ├── notification-service.js
+│   │   └── payment-notifications.js
 │   ├── monetization.css
 │   ├── monetization.html
 │   ├── monetization.js
+│   ├── notifications.css
+│   ├── notifications.html
+│   ├── payments.css
+│   ├── payments.html
+│   ├── payments.js
 │   ├── platform-settings.css
 │   ├── platform-settings.html
 │   ├── platform-settings.js
@@ -88,7 +104,11 @@
 │   ├── spark-ai.js
 │   ├── students.css
 │   ├── students.html
-│   └── students.js
+│   ├── students.js
+│   └── wallets
+│       ├── wallets.css
+│       ├── wallets.html
+│       └── wallets.js
 ├── index.html
 ├── instructors
 │   ├── add-lesson.css
@@ -128,9 +148,12 @@
 │   ├── students.html
 │   └── students.js
 ├── js
+│   ├── auth-guard.js
 │   ├── firebase.js
+│   ├── index.js
 │   ├── login.js
-│   └── signup.js
+│   ├── signup.js
+│   └── theme.js
 ├── login.html
 ├── project-tree.txt
 ├── signup.html
@@ -177,4 +200,4 @@
     ├── settings.html
     └── settings.js
 
-18 directories, 160 files
+19 directories, 182 files

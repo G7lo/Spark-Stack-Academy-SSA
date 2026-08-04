@@ -7,7 +7,7 @@ import {
   updateDoc,
   addDoc,
   deleteDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const tableBody =
   document.getElementById("coursesTableBody");
