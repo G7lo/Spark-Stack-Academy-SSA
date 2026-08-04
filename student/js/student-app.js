@@ -88,25 +88,19 @@ document.addEventListener(
 // START APPLICATION
 // =========================
 
-function initializeStudentPortal(){
+async function initializeStudentPortal(){
 
+    await loadSidebar();
+
+highlightActivePage();
+
+    await loadTopbar();
 
     lucide.createIcons();
 
-
-    loadSidebar();
-
-    loadTopbar();
-
-
     updateDate();
 
-
-    highlightActivePage();
-
-
     checkAuthentication();
-
 
 }
 
@@ -269,22 +263,13 @@ async function loadStudentProfile(uid){
 
 
 
-        loadContinueCourses(
-            uid
-        );
+await Promise.all([
+    loadContinueCourses(uid),
+    loadAnnouncements(),
+    loadMessagesPreview(uid)
+]);
 
-loadGamification(
-    student
-);
-
-
-loadAnnouncements();
-
-
-loadMessagesPreview(
-    uid
-);
-
+loadGamification(student);
 
     }
 
@@ -521,118 +506,6 @@ function updateDashboardUI(student){
 // =========================
 // TOPBAR + SIDEBAR DATA
 // =========================
-
-
-const topName =
-document.getElementById(
-    "topStudentName"
-);
-
-
-const topAvatar =
-document.getElementById(
-    "topAvatar"
-);
-
-
-const sidebarName =
-document.getElementById(
-    "sidebarName"
-);
-
-
-const sidebarAvatar =
-document.getElementById(
-    "sidebarAvatar"
-);
-
-
-const topLevel =
-document.getElementById(
-    "topLevel"
-);
-
-
-const sidebarLevel =
-document.getElementById(
-    "sidebarLevel"
-);
-
-
-const streakCount =
-document.getElementById(
-    "streakCount"
-);
-
-
-const xpPoints =
-document.getElementById(
-    "xpPoints"
-);
-
-
-
-
-// Name
-
-if(topName)
-    topName.textContent = name;
-
-
-
-if(sidebarName)
-    sidebarName.textContent = name;
-
-
-
-
-// Avatar
-
-if(topAvatar)
-    topAvatar.textContent = initial;
-
-
-
-if(sidebarAvatar)
-    sidebarAvatar.textContent = initial;
-
-
-
-
-
-// XP SYSTEM
-
-const level =
-student.level || 1;
-
-
-const xp =
-student.xp || 0;
-
-
-const streak =
-student.streak || 0;
-
-
-
-if(topLevel)
-    topLevel.textContent = level;
-
-
-
-if(sidebarLevel)
-    sidebarLevel.textContent = level;
-
-
-
-if(xpPoints)
-    xpPoints.textContent = xp;
-
-
-
-if(streakCount)
-    streakCount.textContent = streak;
-
 
 updateSidebar(student);
 
