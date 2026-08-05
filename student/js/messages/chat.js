@@ -1,57 +1,49 @@
 // =====================================
 // SPARK STACK ACADEMY
-// CHAT ENGINE V1
+// REAL TIME MESSAGING ENGINE V1
+// chat.js
+// CHAT WINDOW ENGINE
 // =====================================
 
 
 import {
 
+auth,
 db
 
-} from "../../js/firebase.js";
+} from "../../../js/firebase.js";
 
+
+import {
+
+onAuthStateChanged
+
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 import {
 
 collection,
-doc,
-onSnapshot,
 query,
 orderBy,
+onSnapshot,
 addDoc,
+doc,
 updateDoc,
-serverTimestamp
+serverTimestamp,
+getDoc
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-
 import {
 
-setTypingChat
-
-} from "./typing.js";
-
-
-import {
-
-listenUserPresence
+watchPresence
 
 } from "./presence.js";
 
-
-import {
-
-getSelectedFile,
-getFileData
-
-} from "./uploads.js";
-
-
 console.log(
-"💬 Chat Module Loaded"
+"💬 Chat Engine Loaded"
 );
-
 
 
 
@@ -66,23 +58,11 @@ let activeChatId = null;
 
 let unsubscribeMessages = null;
 
-let conversations = [];
-
-
-
 
 
 // =====================================
 // DOM
 // =====================================
-
-
-const conversationList =
-
-document.getElementById(
-"conversationList"
-);
-
 
 
 const chatMessages =
@@ -109,352 +89,134 @@ document.getElementById(
 
 
 
+const chatName =
+
+document.getElementById(
+"chatName"
+);
+
+
+
+const chatAvatar =
+
+document.getElementById(
+"chatAvatar"
+);
 
 
 
 
 // =====================================
-// SET USER
+// AUTH CHECK
 // =====================================
 
 
-export function setCurrentUser(user){
+onAuthStateChanged(
+
+auth,
+
+(user)=>{
+
+
+if(!user)
+
+return;
+
 
 
 currentUser = user;
-
-
-}
-
-
-
-
-
-
-
-// =====================================
-// LOAD CONVERSATIONS
-// =====================================
-
-
-export function loadConversations(){
-
-
-
-if(!currentUser)
-
-return;
-
-
-
-const chatsRef =
-
-collection(
-
-db,
-
-"chats"
-
-);
-
-
-
-
-const q =
-
-query(
-
-chatsRef,
-
-orderBy(
-
-"updatedAt",
-
-"desc"
-
-)
-
-);
-
-
-
-
-
-onSnapshot(
-
-q,
-
-(snapshot)=>{
-
-
-if(!conversationList)
-
-return;
-
-
-
-conversationList.innerHTML = "";
-
-
-
-conversations = [];
-
-
-
-snapshot.forEach(
-
-(docSnap)=>{
-
-
-const chat = {
-
-
-id:
-
-docSnap.id,
-
-
-...docSnap.data()
-
-
-};
-
-
-
-
-if(
-
-chat.participants?.includes(
-
-currentUser.uid
-
-)
-
-){
-
-
-conversations.push(chat);
-
-
-
-renderConversation(
-
-chat
-
-);
-
-
-
-}
 
 
 
 });
 
 
-}
 
-);
-
-
-}
 
 // =====================================
-// RENDER CONVERSATION
+// RECEIVE CHAT EVENT
 // =====================================
 
 
-function renderConversation(chat){
+window.addEventListener(
+
+"openChat",
+
+(e)=>{
 
 
-const div = document.createElement(
-"div"
+const chat = e.detail;
+
+
+
+activeChatId = chat.id;
+
+
+
+updateHeader(chat);
+
+watchPresence(
+
+chat.uid,
+
+(status)=>{
+
+
+const chatStatus =
+
+document.getElementById(
+"chatStatus"
 );
 
 
 
-div.className =
-"conversation-card";
+if(status.online){
 
+chatStatus.textContent="Online";
 
+}
 
-if(chat.id === activeChatId){
+else{
 
-div.classList.add(
-"active"
-);
+chatStatus.textContent="Offline";
 
 }
 
 
+});
+
+loadMessages();
 
 
-const user =
-getOtherParticipant(chat);
-
-
-
-
-
-div.innerHTML = `
-
-<div class="conversation-avatar">
-
-<img
-
-src="${
-user.photo ||
-"../assets/images/default-avatar.png"
-}"
-
->
-
-</div>
-
-
-
-<div class="conversation-info">
-
-<h4>
-
-${
-
-user.name ||
-
-"Spark Stack User"
 
 }
-
-</h4>
-
-
-<p>
-
-${
-
-chat.lastMessage ||
-
-"No messages yet"
-
-}
-
-</p>
-
-
-</div>
-
-
-${
-chat.unread
-
-?
-
-`
-
-<div class="unread-count">
-
-${chat.unread}
-
-</div>
-
-`
-
-:
-
-""
-
-}
-
-`;
-
-
-
-
-
-div.onclick = ()=>{
-
-
-openChat(
-
-chat.id,
-
-chat
 
 );
-
-
-};
-
-
-
-
-
-conversationList.appendChild(
-div
-);
-
-
-
-}
-
-
-
-
 
 
 
 
 // =====================================
-// GET OTHER USER
+// UPDATE HEADER
 // =====================================
 
 
-function getOtherParticipant(chat){
+function updateHeader(chat){
+
+
+chatName.textContent =
+
+chat.name ||
+
+"Spark Stack User";
 
 
 
-let user = {
+chatAvatar.src =
 
-name:
-"Unknown",
+chat.avatar ||
 
-photo:
-""
-
-};
-
-
-
-
-
-if(chat.members){
-
-
-
-const found =
-
-chat.members.find(
-
-member =>
-
-member.uid !== currentUser.uid
-
-);
-
-
-
-if(found){
-
-user = found;
-
-}
-
-
-}
-
-
-
-return user;
+"../assets/images/ssa-logo.png";
 
 
 }
@@ -462,43 +224,26 @@ return user;
 
 
 
-
-
-
 // =====================================
-// OPEN CHAT
+// LOAD MESSAGES REALTIME
 // =====================================
 
 
-function openChat(chatId, chat){
+function loadMessages(){
 
 
 
-activeChatId = chatId;
+if(!activeChatId)
+
+return;
 
 
-setTypingChat(chatId);
-
-
-
-updateChatHeader(
-chat
-);
-
-const user = getOtherParticipant(chat);
-
-listenUserPresence(
-user.uid
-);
 
 if(unsubscribeMessages){
 
 unsubscribeMessages();
 
 }
-
-
-
 
 
 
@@ -511,7 +256,7 @@ db,
 
 "chats",
 
-chatId,
+activeChatId,
 
 "messages"
 
@@ -519,9 +264,7 @@ chatId,
 
 
 
-
-
-const q =
+const messagesQuery =
 
 query(
 
@@ -529,7 +272,7 @@ messagesRef,
 
 orderBy(
 
-"timestamp",
+"createdAt",
 
 "asc"
 
@@ -539,53 +282,69 @@ orderBy(
 
 
 
-
-
 unsubscribeMessages =
 
 onSnapshot(
 
-q,
+messagesQuery,
 
 (snapshot)=>{
 
 
-chatMessages.innerHTML = "";
-
+chatMessages.innerHTML="";
 
 
 
 snapshot.forEach(
 
-(messageDoc)=>{
+(docSnap)=>{
 
 
 const message = {
 
 
-id:
+id:docSnap.id,
 
-messageDoc.id,
-
-
-...messageDoc.data()
-
+...docSnap.data()
 
 };
 
 
 
-renderMessage(
-message
+renderMessage(message);
+
+if(
+message.senderId !== currentUser.uid &&
+!message.read
+){
+
+updateDoc(
+
+doc(
+db,
+"chats",
+activeChatId,
+"messages",
+message.id
+),
+
+{
+
+read:true,
+
+status:"read"
+
+}
+
 );
 
+}
 
 });
 
 
 
-
-scrollToBottom();
+scrollBottom();
 
 
 
@@ -594,8 +353,9 @@ scrollToBottom();
 );
 
 
-
 }
+
+
 
 
 // =====================================
@@ -610,18 +370,23 @@ function renderMessage(message){
 const div =
 
 document.createElement(
+
 "div"
+
 );
 
 
 
-div.className = "message";
+div.className="message";
 
 
 
+if(
 
+message.senderId === currentUser.uid
 
-if(message.senderId === currentUser.uid){
+){
+
 
 div.classList.add(
 "sent"
@@ -643,101 +408,45 @@ div.classList.add(
 
 
 
-
-
-let attachmentHTML = "";
-
-
-
-
-
-if(message.attachment){
-
-
-
-if(
-
-message.attachment.category === "image"
-
-){
-
-
-attachmentHTML = `
-
-
-<img
-
-src="${message.attachment.url || ''}"
-
-class="chat-image"
-
-alt="image"
-
->
-
-
-`;
-
-
-
-}
-
-
-
-else{
-
-
-attachmentHTML = `
-
-
-<div class="file-card">
-
-
-📎
-
-${message.attachment.name}
-
-
-</div>
-
-
-`;
-
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
 div.innerHTML = `
 
 
-<div class="message-content">
+<div>
 
+${
 
-${message.text || ""}
+message.text ||
 
+""
 
-${attachmentHTML}
-
+}
 
 </div>
-
 
 
 <span class="message-time">
 
+${formatTime(message.createdAt)}
 
-${formatTime(message.timestamp)}
+${
 
+message.senderId === currentUser.uid
+
+?
+
+message.status === "read"
+
+?
+
+" 🔵✓✓"
+
+:
+
+" ✓✓"
+
+:""
+
+}
 
 </span>
 
@@ -746,67 +455,11 @@ ${formatTime(message.timestamp)}
 
 
 
-
-
 chatMessages.appendChild(div);
 
 
-
 }
 
-
-// =====================================
-// SCROLL
-// =====================================
-
-
-function scrollToBottom(){
-
-
-chatMessages.scrollTop =
-
-chatMessages.scrollHeight;
-
-
-}
-
-
-
-
-
-
-// =====================================
-// FORMAT TIME
-// =====================================
-
-
-function formatTime(timestamp){
-
-
-if(!timestamp)
-
-return "Sending...";
-
-
-
-return timestamp
-.toDate()
-.toLocaleTimeString(
-
-[],
-
-{
-
-hour:"2-digit",
-
-minute:"2-digit"
-
-}
-
-);
-
-
-}
 
 
 
@@ -825,9 +478,6 @@ sendMessage
 
 
 
-
-
-
 messageInput?.addEventListener(
 
 "keydown",
@@ -837,7 +487,7 @@ messageInput?.addEventListener(
 
 if(
 
-e.key === "Enter"
+e.key==="Enter"
 
 &&
 
@@ -848,17 +498,12 @@ e.key === "Enter"
 
 e.preventDefault();
 
-
 sendMessage();
 
-
 }
 
 
-}
-
-);
-
+});
 
 
 
@@ -867,9 +512,6 @@ sendMessage();
 
 async function sendMessage(){
 
-
-
-async function sendMessage(){
 
 
 const text =
@@ -878,59 +520,13 @@ messageInput.value.trim();
 
 
 
-const file =
-
-getSelectedFile();
-
-
-
-if(!text && !file)
+if(!text || !activeChatId)
 
 return;
 
 
 
-if(!activeChatId)
-
-return;
-
-
-
-
-
-if(!text)
-
-return;
-
-
-
-
-if(!activeChatId){
-
-
-console.log(
-
-"No active conversation"
-
-);
-
-
-return;
-
-
-}
-
-
-
-
-
-
-
-try{
-
-
-
-const messagesRef =
+await addDoc(
 
 collection(
 
@@ -942,72 +538,28 @@ activeChatId,
 
 "messages"
 
-);
+),
 
 
 
+{
+    senderId: currentUser.uid,
 
+    text:text,
 
+    createdAt:serverTimestamp(),
 
-// Add message
+    status:"sent",
 
-const messageData = {
-
-
-senderId:
-
-currentUser.uid,
-
-
-text:text || "",
-
-
-timestamp:
-
-serverTimestamp(),
-
-
-read:false
-
-
-
-};
-
-
-
-
-
-if(file){
-
-
-
-messageData.attachment =
-
-getFileData(file);
-
-
-
+    read:false
 }
 
 
-
-
-
-await addDoc(
-
-messagesRef,
-
-messageData
-
 );
 
 
 
 
-
-
-
-// Update conversation preview
 
 await updateDoc(
 
@@ -1032,44 +584,62 @@ updatedAt:
 serverTimestamp()
 
 
-
 }
 
 );
 
 
 
-
-
-
-// Clear input
-
-messageInput.value = "";
-
-
-
+messageInput.value="";
 
 
 }
 
 
 
-catch(error){
+
+// =====================================
+// SCROLL
+// =====================================
 
 
+function scrollBottom(){
 
-console.error(
 
-"Send message failed:",
+chatMessages.scrollTop =
 
-error
-
-);
-
+chatMessages.scrollHeight;
 
 
 }
 
+
+
+
+
+// =====================================
+// TIME FORMAT
+// =====================================
+
+
+function formatTime(timestamp){
+
+
+if(!timestamp)
+
+return "";
+
+
+
+return timestamp
+.toDate()
+.toLocaleTimeString([],{
+
+hour:"2-digit",
+
+minute:"2-digit"
+
+});
 
 
 }

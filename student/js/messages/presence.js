@@ -1,21 +1,31 @@
 // =====================================
 // SPARK STACK ACADEMY
-// ONLINE PRESENCE ENGINE V1
+// REAL TIME MESSAGING ENGINE V1
+// presence.js
+// ONLINE STATUS SYSTEM
 // =====================================
 
 
 import {
 
+auth,
 db
 
-} from "../../js/firebase.js";
+} from "../../../js/firebase.js";
 
+
+import {
+
+onAuthStateChanged
+
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 import {
 
 doc,
 setDoc,
+updateDoc,
 serverTimestamp,
 onSnapshot
 
@@ -24,9 +34,8 @@ onSnapshot
 
 
 console.log(
-"🟢 Presence Module Loaded"
+"🟢 Presence Engine Loaded"
 );
-
 
 
 
@@ -38,71 +47,54 @@ console.log(
 
 let currentUser = null;
 
+let heartbeat = null;
 
 
 
 
 // =====================================
-// INITIALIZE
+// AUTH
 // =====================================
 
 
-export function initPresence(){
+onAuthStateChanged(
+
+auth,
+
+(user)=>{
 
 
-console.log(
-
-"Presence system ready"
-
-);
-
-
-
-startPresence();
-
-
-}
-
-
-
-
-
-
-
-// =====================================
-// SET USER
-// =====================================
-
-
-export function setPresenceUser(user){
-
-
-currentUser = user;
-
-
-}
-
-
-
-
-
-
-
-// =====================================
-// START PRESENCE
-// =====================================
-
-
-function startPresence(){
-
-
-if(!currentUser)
+if(!user)
 
 return;
 
 
 
-const userRef =
+currentUser=user;
+
+
+setOnline();
+
+
+startHeartbeat();
+
+
+
+});
+
+
+
+
+
+// =====================================
+// SET USER ONLINE
+// =====================================
+
+
+async function setOnline(){
+
+
+const userStatusRef =
 
 doc(
 
@@ -116,13 +108,9 @@ currentUser.uid
 
 
 
+await updateDoc(
 
-
-// Online
-
-setDoc(
-
-userRef,
+userStatusRef,
 
 {
 
@@ -135,22 +123,47 @@ lastSeen:
 serverTimestamp()
 
 
-
-},
-
-{
-
-merge:true
-
 }
 
 );
 
 
 
+}
 
 
-// Offline
+
+
+// =====================================
+// HEARTBEAT
+// =====================================
+
+
+function startHeartbeat(){
+
+
+
+heartbeat = setInterval(()=>{
+
+
+setOnline();
+
+
+
+},30000);
+
+
+
+}
+
+
+
+
+
+// =====================================
+// SET OFFLINE
+// =====================================
+
 
 window.addEventListener(
 
@@ -159,9 +172,29 @@ window.addEventListener(
 ()=>{
 
 
-setDoc(
+if(!currentUser)
 
-userRef,
+return;
+
+
+
+const userStatusRef =
+
+doc(
+
+db,
+
+"users",
+
+currentUser.uid
+
+);
+
+
+
+updateDoc(
+
+userStatusRef,
 
 {
 
@@ -174,17 +207,9 @@ lastSeen:
 serverTimestamp()
 
 
-
-},
-
-{
-
-merge:true
-
 }
 
 );
-
 
 
 }
@@ -193,15 +218,14 @@ merge:true
 
 
 
-}
 
 
 // =====================================
-// LISTEN USER PRESENCE
+// WATCH USER STATUS
 // =====================================
 
 
-export function listenUserPresence(uid){
+export function watchPresence(uid, callback){
 
 
 
@@ -219,8 +243,6 @@ uid
 
 
 
-
-
 return onSnapshot(
 
 userRef,
@@ -228,208 +250,21 @@ userRef,
 (snapshot)=>{
 
 
-if(!snapshot.exists())
-
-return;
+if(snapshot.exists()){
 
 
+callback(
 
-const data =
-
-snapshot.data();
-
-
-
-
-
-updatePresenceUI(
-
-data
+snapshot.data()
 
 );
-
-
-
-}
-
-);
-
 
 
 }
 
 
 
-
-
-
-
-// =====================================
-// UPDATE HEADER UI
-// =====================================
-
-
-function updatePresenceUI(data){
-
-
-
-const statusText =
-
-document.getElementById(
-
-"chatStatus"
-
-);
-
-
-
-const indicator =
-
-document.getElementById(
-
-"onlineIndicator"
-
-);
-
-
-
-
-
-if(!statusText || !indicator)
-
-return;
-
-
-
-
-
-
-
-if(data.online){
-
-
-
-statusText.textContent =
-
-"Online";
-
-
-
-indicator.style.background =
-
-"#22c55e";
-
-
-
-}
-
-else{
-
-
-
-statusText.textContent =
-
-getLastSeen(
-
-data.lastSeen
-
-);
-
-
-
-indicator.style.background =
-
-"#94a3b8";
-
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-// =====================================
-// LAST SEEN FORMAT
-// =====================================
-
-
-function getLastSeen(timestamp){
-
-
-
-if(!timestamp)
-
-return "Offline";
-
-
-
-const date =
-
-timestamp.toDate();
-
-
-
-const diff =
-
-Date.now()
-
--
-
-date.getTime();
-
-
-
-
-
-const minutes =
-
-Math.floor(
-
-diff / 60000
-
-);
-
-
-
-
-
-if(minutes < 1)
-
-return "Last seen just now";
-
-
-
-
-
-if(minutes < 60)
-
-return `Last seen ${minutes}m ago`;
-
-
-
-
-
-const hours =
-
-Math.floor(
-
-minutes / 60
-
-);
-
-
-
-
-
-return `Last seen ${hours}h ago`;
-
+});
 
 
 }

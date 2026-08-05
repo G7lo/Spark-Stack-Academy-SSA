@@ -1,24 +1,33 @@
 // =====================================
 // SPARK STACK ACADEMY
-// TYPING ENGINE V1
+// REAL TIME MESSAGING ENGINE V1
+// typing.js
+// TYPING INDICATOR SYSTEM
 // =====================================
 
 
 import {
 
+auth,
 db
 
-} from "../../js/firebase.js";
-
+} from "../../../js/firebase.js";
 
 
 import {
 
-collection,
+onAuthStateChanged
+
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+import {
+
 doc,
-onSnapshot,
 setDoc,
 deleteDoc,
+collection,
+onSnapshot,
 serverTimestamp
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -26,9 +35,8 @@ serverTimestamp
 
 
 console.log(
-"✍️ Typing Module Loaded"
+"⌨️ Typing Engine Loaded"
 );
-
 
 
 
@@ -42,13 +50,9 @@ let currentUser = null;
 
 let activeChatId = null;
 
-let typingTimeout = null;
+let typingTimer = null;
 
-let isTyping = false;
-
-let unsubscribeTyping = null;
-
-
+let typing = false;
 
 
 
@@ -64,6 +68,7 @@ document.getElementById(
 );
 
 
+
 const typingIndicator =
 
 document.getElementById(
@@ -73,23 +78,62 @@ document.getElementById(
 
 
 
-
-
 // =====================================
-// INITIALIZE
+// AUTH
 // =====================================
 
 
-export function initTyping(){
+onAuthStateChanged(
+
+auth,
+
+(user)=>{
+
+
+if(user){
+
+currentUser=user;
+
+}
+
+
+});
 
 
 
-console.log(
 
-"Typing system ready"
 
-);
+// =====================================
+// RECEIVE ACTIVE CHAT
+// =====================================
 
+
+window.addEventListener(
+
+"openChat",
+
+(e)=>{
+
+
+activeChatId =
+
+e.detail.id;
+
+
+
+listenTyping();
+
+
+
+});
+
+
+
+
+
+// =====================================
+// INPUT LISTENER
+// =====================================
 
 
 messageInput?.addEventListener(
@@ -109,72 +153,25 @@ startTyping();
 
 
 
-clearTimeout(
-
-typingTimeout
-
-);
+clearTimeout(typingTimer);
 
 
 
-typingTimeout =
-
-setTimeout(()=>{
+typingTimer = setTimeout(()=>{
 
 
 stopTyping();
 
 
-
-},2000);
-
+},2500);
 
 
-}
 
-);
-
-
-}
+});
 
 
 
 
-
-
-// =====================================
-// SET USER
-// =====================================
-
-
-export function setTypingUser(user){
-
-
-currentUser = user;
-
-
-}
-
-
-
-
-
-
-// =====================================
-// SET ACTIVE CHAT
-// =====================================
-
-
-export function setTypingChat(chatId){
-
-
-activeChatId = chatId;
-
-
-listenTyping();
-
-
-}
 
 
 // =====================================
@@ -185,21 +182,14 @@ listenTyping();
 async function startTyping(){
 
 
-if(
 
-isTyping ||
-
-!currentUser ||
-
-!activeChatId
-
-)
+if(typing)
 
 return;
 
 
 
-isTyping = true;
+typing=true;
 
 
 
@@ -237,14 +227,12 @@ updatedAt:
 serverTimestamp()
 
 
-
 }
 
 );
 
 
 }
-
 
 
 
@@ -259,22 +247,13 @@ async function stopTyping(){
 
 
 
-if(
-
-!isTyping ||
-
-!currentUser ||
-
-!activeChatId
-
-)
+if(!typing)
 
 return;
 
 
 
-
-isTyping = false;
+typing=false;
 
 
 
@@ -297,37 +276,18 @@ currentUser.uid
 );
 
 
-
 }
 
 
 
 
 
-
-
 // =====================================
-// LISTEN FOR OTHER USER
+// LISTEN TYPING
 // =====================================
 
 
 function listenTyping(){
-
-
-
-if(unsubscribeTyping){
-
-unsubscribeTyping();
-
-}
-
-
-
-if(!activeChatId)
-
-return;
-
-
 
 
 
@@ -347,10 +307,6 @@ activeChatId,
 
 
 
-
-
-unsubscribeTyping =
-
 onSnapshot(
 
 typingRef,
@@ -358,9 +314,7 @@ typingRef,
 (snapshot)=>{
 
 
-let someoneTyping = false;
-
-
+let someoneTyping=false;
 
 
 
@@ -376,11 +330,10 @@ docSnap.id !== currentUser.uid
 ){
 
 
-someoneTyping = true;
+someoneTyping=true;
 
 
 }
-
 
 
 });
@@ -389,9 +342,7 @@ someoneTyping = true;
 
 
 
-
 if(typingIndicator){
-
 
 
 typingIndicator.style.display =
@@ -407,15 +358,11 @@ someoneTyping
 "none";
 
 
-
 }
 
 
 
-}
-
-);
-
+});
 
 
 }

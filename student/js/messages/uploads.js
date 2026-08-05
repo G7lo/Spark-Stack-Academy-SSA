@@ -1,13 +1,63 @@
 // =====================================
 // SPARK STACK ACADEMY
-// MESSAGE UPLOAD ENGINE V1
+// REAL TIME MESSAGING ENGINE V1
+// uploads.js
+// FILE UPLOAD SYSTEM
 // =====================================
 
 
+import {
+
+auth,
+db,
+storage
+
+} from "../../../js/firebase.js";
+
+
+import {
+
+onAuthStateChanged
+
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+import {
+
+ref,
+uploadBytes,
+getDownloadURL
+
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+
+import {
+
+collection,
+addDoc,
+serverTimestamp
+
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+
 console.log(
-"📎 Upload Module Loaded"
+"📎 Upload Engine Loaded"
 );
 
+
+
+
+// =====================================
+// STATE
+// =====================================
+
+
+let currentUser=null;
+
+let activeChatId=null;
+
+let selectedFile=null;
 
 
 
@@ -17,20 +67,18 @@ console.log(
 // =====================================
 
 
-const attachBtn =
-
-document.getElementById(
-"attachBtn"
-);
-
-
-
 const fileInput =
 
 document.getElementById(
 "fileInput"
 );
 
+
+const attachBtn =
+
+document.getElementById(
+"attachBtn"
+);
 
 
 const uploadPreview =
@@ -40,13 +88,11 @@ document.getElementById(
 );
 
 
-
 const fileName =
 
 document.getElementById(
 "fileName"
 );
-
 
 
 const removeFileBtn =
@@ -58,30 +104,55 @@ document.getElementById(
 
 
 
+// =====================================
+// AUTH
+// =====================================
 
 
-let selectedFile = null;
+onAuthStateChanged(
+
+auth,
+
+(user)=>{
+
+
+if(user){
+
+currentUser=user;
+
+}
+
+
+});
 
 
 
 
 
 // =====================================
-// INITIALIZE
+// ACTIVE CHAT
 // =====================================
 
 
-export function initUploads(){
+window.addEventListener(
+
+"openChat",
+
+(e)=>{
+
+
+activeChatId=e.detail.id;
+
+
+});
 
 
 
-console.log(
-
-"Upload system ready"
-
-);
 
 
+// =====================================
+// OPEN FILE PICKER
+// =====================================
 
 
 attachBtn?.addEventListener(
@@ -94,129 +165,47 @@ attachBtn?.addEventListener(
 fileInput.click();
 
 
-
-}
-
-);
+});
 
 
 
+
+
+// =====================================
+// SELECT FILE
+// =====================================
 
 
 fileInput?.addEventListener(
 
 "change",
 
-handleFileSelect
-
-);
+()=>{
 
 
+selectedFile =
 
-
-
-removeFileBtn?.addEventListener(
-
-"click",
-
-clearFile
-
-);
+fileInput.files[0];
 
 
 
-}
-
-
-
-
-
-
-
-
-// =====================================
-// FILE SELECT
-// =====================================
-
-
-function handleFileSelect(event){
-
-
-
-const file =
-
-event.target.files[0];
-
-
-
-
-
-if(!file)
+if(!selectedFile)
 
 return;
-
-
-
-
-if(!validateFile(file))
-
-return;
-
-
-
-selectedFile = file;
-
-
-
-showPreview(
-
-file
-
-);
-
-
-
-}
-
-
-
-
-
-
-
-// =====================================
-// SHOW PREVIEW
-// =====================================
-
-
-function showPreview(file){
-
-
-
-if(!uploadPreview)
-
-return;
-
-
-
-
-
-uploadPreview.style.display =
-
-"flex";
-
-
 
 
 
 fileName.textContent =
 
-file.name;
+selectedFile.name;
 
 
 
-}
+uploadPreview.style.display="flex";
 
+
+
+});
 
 
 
@@ -228,32 +217,23 @@ file.name;
 // =====================================
 
 
-function clearFile(){
+removeFileBtn?.addEventListener(
+
+"click",
+
+()=>{
 
 
-
-selectedFile = null;
-
+selectedFile=null;
 
 
-if(fileInput)
-
-fileInput.value = "";
+fileInput.value="";
 
 
+uploadPreview.style.display="none";
 
 
-
-if(uploadPreview)
-
-uploadPreview.style.display =
-
-"none";
-
-
-
-}
-
+});
 
 
 
@@ -261,194 +241,137 @@ uploadPreview.style.display =
 
 
 // =====================================
-// GET FILE
+// UPLOAD FILE
 // =====================================
 
 
-export function getSelectedFile(){
+export async function uploadFile(){
 
 
 
-return selectedFile;
-
-
-
-}
-
-
-
-// =====================================
-// FILE VALIDATION
-// =====================================
-
-
-export function validateFile(file){
-
-
-
-if(!file)
-
-return false;
-
-
-
-
-
-const allowedTypes = [
-
-
-"image/jpeg",
-
-"image/png",
-
-"image/webp",
-
-"application/pdf",
-
-"application/msword",
-
-"application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-
-
-];
-
-
-
-
-
-
-if(!allowedTypes.includes(file.type)){
-
-
-alert(
-
-"File type not supported"
-
-);
-
-
-return false;
-
-
-}
-
-
-
-
-
-
-// 10MB LIMIT
-
-const maxSize =
-
-10 * 1024 * 1024;
-
-
-
-
-
-
-if(file.size > maxSize){
-
-
-alert(
-
-"File too large. Maximum 10MB"
-
-);
-
-
-return false;
-
-
-}
-
-
-
-
-
-
-return true;
-
-
-
-}
-
-
-
-
-
-
-
-
-// =====================================
-// FILE INFORMATION
-// =====================================
-
-
-export function getFileData(file){
-
-
-
-if(!file)
+if(!selectedFile || !activeChatId)
 
 return null;
 
 
 
+const filePath =
+
+`chatUploads/${
+
+activeChatId
+
+}/${
+
+Date.now()
+
+}_${
+
+selectedFile.name
+
+}`;
 
 
 
-return {
 
 
-name:file.name,
+const storageRef =
+
+ref(
+
+storage,
+
+filePath
+
+);
 
 
-type:file.type,
-
-
-size:file.size,
-
-
-category:getFileCategory(file.type)
 
 
 
-};
+await uploadBytes(
+
+storageRef,
+
+selectedFile
+
+);
+
+
+
+
+
+const url =
+
+await getDownloadURL(
+
+storageRef
+
+);
+
+
+
+
+
+await addDoc(
+
+collection(
+
+db,
+
+"chats",
+
+activeChatId,
+
+"messages"
+
+),
+
+{
+
+
+senderId:
+
+currentUser.uid,
+
+
+fileUrl:url,
+
+
+fileName:
+
+selectedFile.name,
+
+
+fileType:
+
+selectedFile.type,
+
+
+createdAt:
+
+serverTimestamp()
 
 
 
 }
 
+);
 
 
 
 
 
-
-// =====================================
-// FILE CATEGORY
-// =====================================
+selectedFile=null;
 
 
-function getFileCategory(type){
+fileInput.value="";
 
 
-
-if(type.startsWith("image"))
-
-return "image";
+uploadPreview.style.display="none";
 
 
-
-if(type === "application/pdf")
-
-return "pdf";
-
-
-
-return "document";
+return url;
 
 
 
