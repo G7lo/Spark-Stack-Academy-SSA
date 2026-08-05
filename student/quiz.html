@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Quiz Arena | Spark Stack Academy
+</title>
+
+
+
+<!-- CORE -->
+
+<link rel="stylesheet"
+href="css/student-core.css">
+
+<link rel="stylesheet"
+href="css/components.css">
+
+<link rel="stylesheet"
+href="css/quiz.css">
+
+<link rel="stylesheet"
+href="css/responsive.css">
+
+
+
+<!-- GOOGLE FONT -->
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+
+
+<!-- LUCIDE -->
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body>
+
+<div class="student-layout">
+
+
+
+<!-- SIDEBAR -->
+
+<aside
+
+id="sidebarContainer"
+
+class="sidebar-container">
+
+</aside>
+
+
+
+<div
+
+id="sidebarOverlay"
+
+class="sidebar-overlay">
+
+</div>
+
+
+
+<!-- MAIN -->
+
+<main class="student-main">
+
+
+
+<!-- TOPBAR -->
+
+<div
+
+id="topbarContainer"
+
+class="topbar-container">
+
+</div>
+
+
+
+<section class="dashboard-content quiz-page">
+
+
+
+<!-- HERO -->
+
+<div class="quiz-hero">
+
+<div>
+
+<span class="page-badge">
+
+<i data-lucide="brain-circuit"></i>
+
+Quiz Arena
+
+</span>
+
+<h1 id="quizTitle">
+
+HTML Fundamentals Quiz
+
+</h1>
+
+<p id="quizDescription">
+
+Test your knowledge, earn XP and unlock achievements.
+
+</p>
+
+</div>
+
+
+
+<div class="quiz-timer">
+
+<i data-lucide="timer-reset"></i>
+
+<span id="timer">
+
+20:00
+
+</span>
+
+</div>
+
+</div>
+
+
+
+<!-- PROGRESS -->
+
+<div class="quiz-progress">
+
+<div
+
+id="quizProgress"
+
+class="quiz-progress-fill">
+
+</div>
+
+</div>
+
+
+
+<!-- QUIZ STATS -->
+
+<div class="quiz-dashboard">
+
+
+
+<div class="quiz-stat">
+
+<i data-lucide="star"></i>
+
+<div>
+
+<strong id="earnedXP">
+
+0 XP
+
+</strong>
+
+<span>
+
+Earned XP
+
+</span>
+
+</div>
+
+</div>
+
+
+
+<div class="quiz-stat">
+
+<i data-lucide="check-circle-2"></i>
+
+<div>
+
+<strong id="correctCount">
+
+0
+
+</strong>
+
+<span>
+
+Correct
+
+</span>
+
+</div>
+
+</div>
+
+
+
+<div class="quiz-stat">
+
+<i data-lucide="zap"></i>
+
+<div>
+
+<strong id="comboCount">
+
+x0
+
+</strong>
+
+<span>
+
+Combo
+
+</span>
+
+</div>
+
+</div>
+
+
+
+<div class="quiz-stat boss">
+
+<i data-lucide="swords"></i>
+
+<div>
+
+<strong>
+
+Boss Challenge
+
+</strong>
+
+<span>
+
+Final Exam
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- QUESTION NAVIGATOR -->
+
+<section class="question-palette">
+
+<div class="section-header">
+
+<h2>
+
+Question Navigator
+
+</h2>
+
+<span id="answeredCounter">
+
+0 / 20 Answered
+
+</span>
+
+</div>
+
+
+
+<div
+
+id="questionPalette"
+
+class="palette-grid">
+
+<!-- JS Loads Buttons -->
+
+</div>
+
+</section>
+<!-- =====================================
+     QUESTION AREA
+===================================== -->
+
+<section class="question-section">
+
+<div class="question-card">
+
+<div class="question-top">
+
+<div>
+
+<span class="question-tag">
+
+Question
+
+<span id="currentQuestion">
+
+1
+
+</span>
+
+of
+
+<span id="totalQuestions">
+
+20
+
+</span>
+
+</span>
+
+<h2
+id="questionText">
+
+Loading question...
+
+</h2>
+
+</div>
+
+
+
+<div class="question-score">
+
++10 XP
+
+</div>
+
+</div>
+
+
+
+
+
+<!-- ANSWERS -->
+
+<div
+
+id="answersContainer"
+
+class="answers-grid">
+
+
+
+<!-- JS Loads Options -->
+
+
+
+</div>
+
+
+
+
+
+<!-- CODE EDITOR (Hidden Unless Needed) -->
+
+<div
+
+id="codeEditorCard"
+
+class="code-editor-card"
+
+style="display:none;">
+
+<label>
+
+Your Code
+
+</label>
+
+<textarea
+
+id="codeAnswer"
+
+placeholder="Write your solution here...">
+
+</textarea>
+
+</div>
+
+
+
+
+
+<!-- SHORT ANSWER -->
+
+<div
+
+id="textAnswerCard"
+
+class="text-answer-card"
+
+style="display:none;">
+
+<label>
+
+Your Answer
+
+</label>
+
+<textarea
+
+id="textAnswer"
+
+placeholder="Type your answer here...">
+
+</textarea>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+
+
+<!-- =====================================
+     ACTION BAR
+===================================== -->
+
+<section class="quiz-actions">
+
+
+
+<button
+
+id="previousBtn"
+
+class="secondary-btn">
+
+<i data-lucide="arrow-left"></i>
+
+Previous
+
+</button>
+
+
+
+
+
+<button
+
+id="flagBtn"
+
+class="warning-btn">
+
+<i data-lucide="flag"></i>
+
+Flag Question
+
+</button>
+
+
+
+
+
+<button
+
+id="nextBtn"
+
+class="primary-btn">
+
+Next
+
+<i data-lucide="arrow-right"></i>
+
+</button>
+
+
+
+
+
+<button
+
+id="submitQuizBtn"
+
+class="success-btn">
+
+<i data-lucide="trophy"></i>
+
+Finish Quiz
+
+</button>
+
+
+
+</section>
+
+
+
+
+
+<!-- =====================================
+     FLOATING XP
+===================================== -->
+
+<div
+
+id="xpToast"
+
+class="xp-toast">
+
+⭐ +10 XP
+
+</div>
+
+
+
+
+
+<!-- =====================================
+     COMBO ALERT
+===================================== -->
+
+<div
+
+id="comboToast"
+
+class="combo-toast">
+
+🔥 Combo x3
+
+</div>
+
+
+
+
+
+<!-- =====================================
+     STREAK ALERT
+===================================== -->
+
+<div
+
+id="streakToast"
+
+class="streak-toast">
+
+🎯 Perfect Streak!
+
+</div>
+<!-- =====================================
+     QUIZ RESULTS MODAL
+===================================== -->
+
+<div
+
+id="quizResultModal"
+
+class="quiz-result-modal">
+
+
+
+<div class="quiz-result-card">
+
+
+
+<div class="result-header">
+
+<div class="result-trophy">
+
+🏆
+
+</div>
+
+<h1>
+
+Mission Complete!
+
+</h1>
+
+<p>
+
+Here's how you performed.
+
+</p>
+
+</div>
+
+
+
+
+
+<!-- SCORE -->
+
+<div class="score-ring">
+
+<div class="score-circle">
+
+<strong
+id="finalScore">
+
+92%
+
+</strong>
+
+<span>
+
+Final Score
+
+</span>
+
+</div>
+
+</div>
+
+
+
+
+
+<!-- SUMMARY -->
+
+<div class="result-summary">
+
+
+
+<div class="summary-card">
+
+<i data-lucide="brain"></i>
+
+<strong
+id="correctAnswers">
+
+18/20
+
+</strong>
+
+<span>
+
+Correct
+
+</span>
+
+</div>
+
+
+
+<div class="summary-card">
+
+<i data-lucide="star"></i>
+
+<strong
+id="earnedXpResult">
+
+250 XP
+
+</strong>
+
+<span>
+
+Earned
+
+</span>
+
+</div>
+
+
+
+<div class="summary-card">
+
+<i data-lucide="flame"></i>
+
+<strong
+id="bestCombo">
+
+x6
+
+</strong>
+
+<span>
+
+Best Combo
+
+</span>
+
+</div>
+
+
+
+<div class="summary-card">
+
+<i data-lucide="clock-3"></i>
+
+<strong
+id="timeTaken">
+
+14m
+
+</strong>
+
+<span>
+
+Time
+
+</span>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<!-- BADGES -->
+
+<div class="new-badge-box">
+
+<h3>
+
+🎖 Rewards Earned
+
+</h3>
+
+
+
+<div
+
+id="earnedBadges"
+
+class="earned-badges">
+
+
+
+<div class="earned-badge">
+
+🏅 Quiz Warrior
+
+</div>
+
+
+
+</div>
+
+</div>
+
+
+
+
+
+<!-- PERFORMANCE -->
+
+<div class="performance-card">
+
+<h3>
+
+Performance Analysis
+
+</h3>
+
+<ul>
+
+<li>
+
+✅ Excellent understanding of the course.
+
+</li>
+
+<li>
+
+📚 Review CSS Selectors for mastery.
+
+</li>
+
+<li>
+
+🚀 Ready for the next lesson.
+
+</li>
+
+</ul>
+
+</div>
+
+
+
+
+
+<!-- ACTIONS -->
+
+<div class="result-actions">
+
+<button
+
+id="retryQuizBtn"
+
+class="secondary-btn">
+
+<i data-lucide="rotate-ccw"></i>
+
+Retry
+
+</button>
+
+
+
+<button
+
+id="continueBtn"
+
+class="primary-btn">
+
+<i data-lucide="arrow-right"></i>
+
+Continue Learning
+
+</button>
+
+</div>
+
+
+
+</div>
+
+</div>
+
+
+
+
+
+<!-- =====================================
+     PERFECT SCORE MODAL
+===================================== -->
+
+<div
+
+id="perfectModal"
+
+class="perfect-modal">
+
+<div class="perfect-card">
+
+<div class="perfect-icon">
+
+👑
+
+</div>
+
+<h1>
+
+PERFECT SCORE!
+
+</h1>
+
+<p>
+
+100%
+
+Outstanding performance!
+
+</p>
+
+<h3>
+
+🏅 Quiz Master Badge Unlocked
+
+</h3>
+
+<p>
+
++100 Bonus XP
+
+</p>
+
+<button
+
+id="perfectContinue"
+
+class="primary-btn">
+
+Awesome!
+
+</button>
+
+</div>
+
+</div>
+</section>
+
+</main>
+
+</div>
+
+<script
+type="module"
+src="js/student-app.js">
+
+</script>
+
+<script
+type="module"
+src="js/quiz.js">
+
+</script>
+
+<script>
+
+lucide.createIcons();
+
+</script>
+
+</body>
+
+</html>

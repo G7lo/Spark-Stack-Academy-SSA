@@ -1,0 +1,482 @@
+/* =====================================
+   SPARK STACK ACADEMY
+   COURSE LIBRARY CSS
+===================================== */
+
+
+.course-library-page{
+
+    width:100%;
+
+    animation:pageLoad .4s ease;
+
+}
+
+
+
+@keyframes pageLoad{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(10px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+
+
+/* =========================
+   HERO
+========================= */
+
+
+.library-hero{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:26px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:25px;
+
+    border:1px solid #e8edf5;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.library-hero h1{
+
+    color:#081C3A;
+
+    font-size:34px;
+
+    margin:15px 0 8px;
+
+}
+
+
+
+.library-hero p{
+
+    color:#64748b;
+
+}
+
+
+
+
+
+/* SEARCH */
+
+
+.library-search{
+
+    width:330px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    background:#f5f8ff;
+
+    padding:14px 18px;
+
+    border-radius:16px;
+
+}
+
+
+
+.library-search input{
+
+    border:none;
+
+    outline:none;
+
+    background:none;
+
+    width:100%;
+
+    font-family:Poppins;
+
+}
+
+
+
+
+
+
+
+
+/* =========================
+   FILTERS
+========================= */
+
+
+.course-filters{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.filter-btn{
+
+    border:none;
+
+    padding:10px 22px;
+
+    border-radius:30px;
+
+    background:white;
+
+    color:#64748b;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+
+
+.filter-btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+
+
+.filter-btn.active{
+
+    background:#2979FF;
+
+    color:white;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   COURSE GRID
+========================= */
+
+
+.library-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+
+
+
+
+
+
+/* COURSE CARD */
+
+
+.library-course-card{
+
+    background:white;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    border:1px solid #e8edf5;
+
+    transition:.3s;
+
+}
+
+
+
+.library-course-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 18px 45px rgba(8,28,58,.12);
+
+}
+
+
+
+
+
+
+/* IMAGE AREA */
+
+
+.course-cover{
+
+    height:170px;
+
+    background:#081C3A;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+}
+
+
+
+.course-cover svg{
+
+    width:55px;
+
+    height:55px;
+
+}
+
+
+
+
+
+
+
+
+/* CARD BODY */
+
+
+.course-card-body{
+
+    padding:22px;
+
+}
+
+
+
+.course-card-body h3{
+
+    color:#081C3A;
+
+    margin:0 0 10px;
+
+}
+
+
+
+.course-card-body p{
+
+    color:#64748b;
+
+    font-size:14px;
+
+    line-height:1.6;
+
+}
+
+
+
+
+
+
+
+/* META */
+
+
+.course-meta{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin:18px 0;
+
+}
+
+
+
+.course-price{
+
+    font-weight:700;
+
+    color:#2979FF;
+
+}
+
+
+
+.free-tag{
+
+    color:#16a34a;
+
+    font-weight:700;
+
+}
+
+
+
+.lock-tag{
+
+    color:#ef4444;
+
+    display:flex;
+
+    gap:5px;
+
+    align-items:center;
+
+    font-weight:600;
+
+}
+
+
+
+
+
+
+/* BUTTON */
+
+
+.course-action{
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#2979FF;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+
+
+.course-action:hover{
+
+    transform:translateY(-2px);
+
+}
+
+
+
+
+
+
+/* LOADING */
+
+
+.loading-card{
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    color:#64748b;
+
+}
+
+
+
+
+
+
+/* RESPONSIVE */
+
+
+@media(max-width:1100px){
+
+
+.library-grid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+
+}
+
+
+
+@media(max-width:700px){
+
+
+.library-hero{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+
+
+.library-search{
+
+width:100%;
+
+}
+
+
+
+.library-grid{
+
+grid-template-columns:1fr;
+
+}
+
+
+
+}

@@ -27,16 +27,22 @@ export async function loadTopbar(){
     try{
 
 
-        const response =
-        await fetch(
-            "components/topbar.html"
-        );
+        const response = await fetch(
+    new URL("./topbar.html", import.meta.url)
+);
+
+console.log(response.url);
+console.log(response.status);
+
+if (!response.ok) {
+    throw new Error(`Failed to load topbar: ${response.status}`);
+}
 
 
         container.innerHTML =
         await response.text();
 
-
+console.log("Topbar inserted:", container.innerHTML.length);
 
         initializeTopbar();
 
@@ -64,6 +70,27 @@ function initializeTopbar(){
     if(typeof lucide !== "undefined"){
 
         lucide.createIcons();
+        const menuBtn = document.getElementById("mobileMenuBtn");
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("sidebarOverlay");
+
+if (menuBtn && sidebar && overlay) {
+
+    menuBtn.addEventListener("click", () => {
+
+        sidebar.classList.toggle("open");
+        overlay.classList.toggle("show");
+
+    });
+
+    overlay.addEventListener("click", () => {
+
+        sidebar.classList.remove("open");
+        overlay.classList.remove("show");
+
+    });
+
+}
 
     }
 

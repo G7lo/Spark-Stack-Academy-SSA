@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Classroom | Spark Stack Academy
+</title>
+
+
+
+<link rel="stylesheet" href="css/student-core.css">
+
+<link rel="stylesheet" href="css/components.css">
+
+<link rel="stylesheet" href="css/course-player.css">
+
+<link rel="stylesheet" href="css/responsive.css">
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+</head>
+
+
+<body>
+
+
+
+<div class="student-layout">
+
+
+
+<!-- SIDEBAR -->
+
+<aside 
+id="sidebarContainer"
+class="sidebar-container">
+
+</aside>
+
+
+
+
+<div 
+id="sidebarOverlay"
+class="sidebar-overlay">
+
+</div>
+
+
+
+
+
+
+
+<main class="student-main">
+
+
+
+<!-- TOPBAR -->
+
+<div 
+id="topbarContainer"
+class="topbar-container">
+
+</div>
+
+
+
+
+
+
+
+
+<section class="dashboard-content course-player-page">
+
+
+
+
+
+<!-- LOCK STATE -->
+
+<div 
+id="courseLocked"
+class="course-lock-card"
+style="display:none;">
+
+
+
+<i data-lucide="lock"></i>
+
+
+<h2>
+Course Locked
+</h2>
+
+
+
+<p>
+
+This course requires payment before you can join the classroom.
+
+</p>
+
+
+
+
+<button 
+class="primary-btn"
+id="unlockCourseBtn">
+
+Pay & Unlock
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- CLASSROOM -->
+
+<div 
+id="courseContent"
+class="course-content">
+
+
+
+
+
+<!-- COURSE HEADER -->
+
+<div class="class-header">
+
+
+
+<div>
+
+
+<span class="page-badge">
+
+<i data-lucide="graduation-cap"></i>
+
+Classroom
+
+</span>
+
+
+
+<h1 id="courseTitle">
+
+Course Title
+
+</h1>
+
+
+
+<p id="courseDescription">
+
+Course description goes here.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+<!-- INSTRUCTOR -->
+
+
+<div class="instructor-card">
+
+
+
+<div class="instructor-avatar"
+id="instructorAvatar">
+
+I
+
+</div>
+
+
+
+
+<div>
+
+
+<h4 id="instructorName">
+
+Instructor Name
+
+</h4>
+
+
+<span>
+
+Course Instructor
+
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- PROGRESS -->
+
+
+<div class="class-progress-box">
+
+
+<div class="progress-header">
+
+
+<span>
+Your Progress
+</span>
+
+
+
+<strong id="courseProgressText">
+
+0%
+
+</strong>
+
+
+</div>
+
+
+
+
+<div class="class-progress">
+
+
+<span id="courseProgressBar">
+
+</span>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- MAIN CLASS AREA -->
+
+
+<div class="learning-layout">
+
+
+
+
+
+
+
+
+<!-- LESSONS -->
+
+
+<aside class="lesson-sidebar">
+
+
+
+<h3>
+
+Course Lessons
+
+</h3>
+
+
+
+<div id="lessonList">
+
+
+
+<!-- LESSONS FROM JS -->
+
+
+
+</div>
+
+
+
+
+
+</aside>
+
+
+
+
+
+
+
+
+
+<!-- LESSON CONTENT -->
+
+
+<div class="lesson-view">
+
+
+
+
+
+<!-- VIDEO -->
+
+
+<div class="video-box">
+
+
+<i data-lucide="play-circle"></i>
+
+
+<h3>
+
+Video Lesson
+
+</h3>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="lesson-info">
+
+
+
+<h2 id="lessonTitle">
+
+Select Lesson
+
+</h2>
+
+
+
+
+<p id="lessonDescription">
+
+Your lesson content will appear here.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- ACTIONS -->
+
+
+<div class="lesson-actions">
+
+
+
+<button 
+class="secondary-btn"
+id="previousLessonBtn">
+
+
+<i data-lucide="arrow-left"></i>
+
+Previous
+
+
+</button>
+
+
+
+
+
+<button 
+class="primary-btn"
+id="completeLessonBtn">
+
+
+Mark Complete
+
+<i data-lucide="check"></i>
+
+
+</button>
+
+
+
+
+
+<button 
+class="secondary-btn"
+id="nextLessonBtn">
+
+
+Next
+
+<i data-lucide="arrow-right"></i>
+
+
+</button>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- RESOURCES -->
+
+
+<div class="class-section">
+
+
+<h3>
+
+Resources
+
+</h3>
+
+
+
+<div id="courseResources">
+
+
+<p>
+No resources available.
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- NOTES -->
+
+
+<div class="class-section">
+
+
+
+<h3>
+
+My Notes
+
+</h3>
+
+
+
+<textarea 
+id="lessonNotes"
+placeholder="Write your lesson notes here...">
+
+</textarea>
+
+
+
+<button 
+class="primary-btn"
+id="saveNotesBtn">
+
+Save Notes
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- DISCUSSION -->
+
+
+<div class="class-section">
+
+
+<h3>
+
+Class Discussion
+
+</h3>
+
+
+
+<div id="discussionBox">
+
+
+<p>
+
+Ask questions and interact with classmates.
+
+</p>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- CLASS ANNOUNCEMENTS -->
+
+
+<div class="class-announcement">
+
+
+<i data-lucide="megaphone"></i>
+
+
+<div>
+
+
+<h4>
+
+Instructor Announcement
+
+</h4>
+
+
+<p id="classAnnouncement">
+
+No announcements yet.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+</main>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<script type="module" src="js/student-app.js"></script>
+
+<script type="module" src="js/course-player.js"></script>
+
+
+
+<script>
+
+lucide.createIcons();
+
+</script>
+
+
+</body>
+
+</html>

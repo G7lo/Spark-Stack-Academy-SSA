@@ -88,19 +88,34 @@ document.addEventListener(
 // START APPLICATION
 // =========================
 
-async function initializeStudentPortal(){
+async function initializeStudentPortal() {
 
-    await loadSidebar();
+    console.log("1. Starting...");
 
-highlightActivePage();
+    try {
 
-    await loadTopbar();
+        console.log("2. Loading sidebar...");
+        await loadSidebar();
+        console.log("3. Sidebar loaded");
 
-    lucide.createIcons();
+        console.log("4. Loading topbar...");
+        await loadTopbar();
+        console.log("5. Topbar loaded");
 
-    updateDate();
+        highlightActivePage();
 
-    checkAuthentication();
+        lucide.createIcons();
+
+        updateDate();
+
+        console.log("6. Checking auth...");
+        checkAuthentication();
+
+    } catch (err) {
+
+        console.error("Initialization failed:", err);
+
+    }
 
 }
 

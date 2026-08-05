@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Rewards & Badges | Spark Stack Academy
+</title>
+
+<link rel="stylesheet"
+href="css/student-core.css">
+
+<link rel="stylesheet"
+href="css/components.css">
+
+<link rel="stylesheet"
+href="css/rewards.css">
+
+<link rel="stylesheet"
+href="css/responsive.css">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body>
+
+<div class="student-layout">
+
+<!-- SIDEBAR -->
+
+<aside
+id="sidebarContainer"
+class="sidebar-container">
+
+</aside>
+
+<div
+id="sidebarOverlay"
+class="sidebar-overlay">
+
+</div>
+
+<main class="student-main">
+
+<!-- TOPBAR -->
+
+<div
+id="topbarContainer"
+class="topbar-container">
+
+</div>
+
+<section class="dashboard-content rewards-page">
+
+<!-- HERO -->
+
+<div class="rewards-hero">
+
+<div>
+
+<span class="page-badge">
+
+<i data-lucide="award"></i>
+
+Achievements
+
+</span>
+
+<h1>
+
+Rewards & Badges
+
+</h1>
+
+<p>
+
+Every lesson completed brings you closer to new achievements and rewards.
+
+</p>
+
+</div>
+
+<div class="level-card">
+
+<div class="level-circle">
+
+<span id="studentLevel">
+
+1
+
+</span>
+
+</div>
+
+<h3>
+
+Level
+
+</h3>
+
+</div>
+
+</div>
+
+<!-- XP -->
+
+<div class="xp-card">
+
+<div class="xp-header">
+
+<strong>
+
+Experience Points
+
+</strong>
+
+<span id="xpText">
+
+0 / 500 XP
+
+</span>
+
+</div>
+
+<div class="xp-bar">
+
+<div
+id="xpProgress"
+class="xp-progress">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- QUICK STATS -->
+
+<div class="reward-stats">
+
+<div class="reward-stat">
+
+<i data-lucide="flame"></i>
+
+<strong id="streakDays">
+
+0
+
+</strong>
+
+<span>
+
+Day Streak
+
+</span>
+
+</div>
+
+<div class="reward-stat">
+
+<i data-lucide="award"></i>
+
+<strong id="badgeCount">
+
+0
+
+</strong>
+
+<span>
+
+Badges
+
+</span>
+
+</div>
+
+<div class="reward-stat">
+
+<i data-lucide="graduation-cap"></i>
+
+<strong id="certificateCount">
+
+0
+
+</strong>
+
+<span>
+
+Certificates
+
+</span>
+
+</div>
+
+<div class="reward-stat">
+
+<i data-lucide="star"></i>
+
+<strong id="totalXP">
+
+0
+
+</strong>
+
+<span>
+
+Total XP
+
+</span>
+
+</div>
+
+</div>
+
+<!-- BADGES -->
+
+<div class="section-header">
+
+<h2>
+
+Badge Collection
+
+</h2>
+
+</div>
+
+<div
+id="badgesGrid"
+class="badges-grid">
+
+<!-- JS -->
+
+</div>
+
+<!-- =====================================
+     NEXT ACHIEVEMENT
+===================================== -->
+
+<section class="achievement-section">
+
+
+<div class="achievement-card">
+
+
+<div class="achievement-left">
+
+
+<span class="page-badge">
+
+<i data-lucide="rocket"></i>
+
+Next Achievement
+
+</span>
+
+
+<h2 id="nextBadgeName">
+
+Full Stack Explorer
+
+</h2>
+
+
+<p id="nextBadgeDescription">
+
+Complete 3 more lessons to unlock this exclusive badge.
+
+</p>
+
+
+
+
+
+<div class="achievement-progress">
+
+
+<div class="achievement-progress-bar">
+
+
+<div
+id="achievementProgress"
+class="achievement-progress-fill">
+
+</div>
+
+
+</div>
+
+
+<span id="achievementPercent">
+
+82%
+
+</span>
+
+
+</div>
+
+
+
+
+
+<div class="achievement-reward">
+
+
+<i data-lucide="gift"></i>
+
+
+<div>
+
+
+<strong>
+
+Reward
+
+</strong>
+
+
+<p>
+
++500 XP • Exclusive Gold Badge
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="achievement-right">
+
+
+<div class="achievement-icon">
+
+
+🏆
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- =====================================
+     RECENT ACHIEVEMENTS
+===================================== -->
+
+<section>
+
+
+<div class="section-header">
+
+
+<h2>
+
+Recent Achievements
+
+</h2>
+
+
+</div>
+
+
+
+
+<div
+id="achievementTimeline"
+class="achievement-timeline">
+
+
+
+<!-- Loaded by JS -->
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- =====================================
+     LEADERBOARD
+===================================== -->
+
+<section>
+
+
+<div class="section-header">
+
+
+<h2>
+
+Top Learners
+
+</h2>
+
+
+</div>
+
+
+
+
+<div
+id="leaderboard"
+class="leaderboard-grid">
+
+
+
+<!-- Loaded by JS -->
+
+
+
+</div>
+
+
+</section>
+
+</section>
+
+
+<!-- =====================================
+     LEVEL UP MODAL
+===================================== -->
+
+<div
+id="levelUpModal"
+class="levelup-modal">
+
+<div class="levelup-card">
+
+<div class="levelup-glow"></div>
+
+<div class="levelup-icon">
+
+🏆
+
+</div>
+
+<h1>
+
+LEVEL UP!
+
+</h1>
+
+<h2
+id="newLevelText">
+
+Level 2 Unlocked
+
+</h2>
+
+<p
+id="rewardMessage">
+
+You earned +500 XP and unlocked a new badge!
+
+</p>
+
+<button
+id="closeLevelUp"
+class="primary-btn">
+
+Continue Learning
+
+</button>
+
+</div>
+
+</div>
+
+
+</main>
+
+</div>
+
+<script type="module"
+src="js/student-app.js"></script>
+
+<script type="module"
+src="js/rewards.js"></script>
+
+<script>
+
+lucide.createIcons();
+
+</script>
+
+</body>
+
+</html>

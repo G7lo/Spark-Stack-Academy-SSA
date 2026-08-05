@@ -18,11 +18,15 @@ export async function loadSidebar() {
 
     try {
 
-        const response =
-            await fetch("components/sidebar.html");
+        const response = await fetch(new URL("./sidebar.html", import.meta.url));
+
+console.log(response.url);
+console.log(response.status);
 
         container.innerHTML =
             await response.text();
+
+console.log("Sidebar inserted:", container.innerHTML.length);
 
         initializeSidebar();
 
@@ -49,53 +53,7 @@ function initializeSidebar() {
     const sidebar =
         document.getElementById("sidebar");
 
-    const menuBtn =
-        document.getElementById("mobileMenuBtn");
 
-    const overlay =
-        document.getElementById("sidebarOverlay");
-
-    const logoutBtn =
-        document.getElementById("logoutBtn");
-
-    // =========================
-    // MOBILE MENU
-    // =========================
-
-    if (menuBtn && sidebar && overlay) {
-
-        menuBtn.addEventListener("click", () => {
-
-            sidebar.classList.toggle("open");
-            overlay.classList.toggle("show");
-
-        });
-
-        overlay.addEventListener("click", () => {
-
-            sidebar.classList.remove("open");
-            overlay.classList.remove("show");
-
-        });
-
-        document
-            .querySelectorAll(".sidebar-link")
-            .forEach(link => {
-
-                link.addEventListener("click", () => {
-
-                    if (window.innerWidth <= 900) {
-
-                        sidebar.classList.remove("open");
-                        overlay.classList.remove("show");
-
-                    }
-
-                });
-
-            });
-
-    }
 
     // =========================
     // LOGOUT
@@ -115,10 +73,30 @@ function initializeSidebar() {
 
             await signOut(auth);
 
-            window.location.href = "../login.html";
+            window.location.href = "/login.html";
 
         });
 
     }
 
+}
+// =====================================
+// UPDATE SIDEBAR
+// =====================================
+
+export function updateSidebar(student) {
+
+    const name = student.name || student.fullName || "Student";
+
+    const initial = name.charAt(0).toUpperCase();
+
+    const sidebarName = document.getElementById("sidebarName");
+    const sidebarAvatar = document.getElementById("sidebarAvatar");
+    const sidebarLevel = document.getElementById("sidebarLevel");
+
+    if (sidebarName) sidebarName.textContent = name;
+
+    if (sidebarAvatar) sidebarAvatar.textContent = initial;
+
+    if (sidebarLevel) sidebarLevel.textContent = student.level || 1;
 }

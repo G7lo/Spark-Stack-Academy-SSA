@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Assignments | Spark Stack Academy
+</title>
+
+<link rel="stylesheet"
+href="css/student-core.css">
+
+<link rel="stylesheet"
+href="css/components.css">
+
+<link rel="stylesheet"
+href="css/assignments.css">
+
+<link rel="stylesheet"
+href="css/responsive.css">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body>
+
+<div class="student-layout">
+
+<!-- SIDEBAR -->
+
+<aside
+id="sidebarContainer"
+class="sidebar-container">
+
+</aside>
+
+<div
+id="sidebarOverlay"
+class="sidebar-overlay">
+
+</div>
+
+<main class="student-main">
+
+<!-- TOPBAR -->
+
+<div
+id="topbarContainer"
+class="topbar-container">
+
+</div>
+
+<section class="dashboard-content assignments-page">
+
+<!-- HERO -->
+
+<div class="assignments-header">
+
+<div>
+
+<span class="page-badge">
+
+<i data-lucide="clipboard-list"></i>
+
+Assignments
+
+</span>
+
+<h1>
+
+Course Assignments
+
+</h1>
+
+<p>
+
+Complete and submit your assignments before the deadline.
+
+</p>
+
+</div>
+
+<div class="assignment-summary">
+
+<div class="summary-card">
+
+<strong id="pendingAssignments">
+
+0
+
+</strong>
+
+<span>
+
+Pending
+
+</span>
+
+</div>
+
+<div class="summary-card">
+
+<strong id="submittedAssignments">
+
+0
+
+</strong>
+
+<span>
+
+Submitted
+
+</span>
+
+</div>
+
+<div class="summary-card">
+
+<strong id="gradedAssignments">
+
+0
+
+</strong>
+
+<span>
+
+Graded
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FILTER -->
+
+<div class="assignment-filter">
+
+<input
+type="search"
+id="assignmentSearch"
+placeholder="Search assignments...">
+
+<select id="statusFilter">
+
+<option value="all">
+All
+</option>
+
+<option value="pending">
+Pending
+</option>
+
+<option value="submitted">
+Submitted
+</option>
+
+<option value="graded">
+Graded
+</option>
+
+</select>
+
+</div>
+
+<!-- ASSIGNMENTS -->
+
+<div
+class="assignment-grid"
+id="assignmentContainer">
+
+<!-- Loaded by JS -->
+
+<div class="empty-state">
+
+<i data-lucide="clipboard-list"></i>
+
+<h3>
+
+No Assignments Yet
+
+</h3>
+
+<p>
+
+Assignments from your instructors will appear here.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+<script type="module"
+src="js/student-app.js"></script>
+
+<script type="module"
+src="js/assignments.js"></script>
+
+<script>
+
+lucide.createIcons();
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,450 @@
+/* =====================================
+   SPARK STACK ACADEMY
+   COURSE DETAILS CSS
+===================================== */
+
+
+.course-details-page{
+
+    width:100%;
+
+    animation:pageEnter .4s ease;
+
+}
+
+
+
+@keyframes pageEnter{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(10px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+
+
+
+/* ===============================
+   COURSE HERO
+================================ */
+
+
+.course-hero{
+
+    background:#081C3A;
+
+    color:white;
+
+    padding:40px;
+
+    border-radius:28px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:30px;
+
+    margin-bottom:30px;
+
+}
+
+
+
+.course-hero h1{
+
+    font-size:38px;
+
+    margin:18px 0 12px;
+
+}
+
+
+
+.course-hero p{
+
+    color:#dbe5ff;
+
+    max-width:650px;
+
+    line-height:1.7;
+
+}
+
+
+
+
+
+/* TAGS */
+
+
+.course-tags{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:25px;
+
+}
+
+
+
+.course-tags span{
+
+    background:rgba(255,255,255,.12);
+
+    padding:8px 16px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+}
+
+
+
+
+
+
+
+
+/* ===============================
+   ACTION CARD
+================================ */
+
+
+.course-action-card{
+
+    background:white;
+
+    color:#081C3A;
+
+    padding:28px;
+
+    border-radius:24px;
+
+    min-width:260px;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.15);
+
+    text-align:center;
+
+}
+
+
+
+.course-action-card h2{
+
+    font-size:32px;
+
+    margin:0 0 10px;
+
+}
+
+
+
+.course-action-card p{
+
+    color:#64748b;
+
+    margin-bottom:25px;
+
+}
+
+
+
+
+
+.course-action-card button{
+
+    width:100%;
+
+}
+
+
+
+
+
+
+
+/* ===============================
+   DETAILS GRID
+================================ */
+
+
+.details-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    2fr 1fr;
+
+    gap:25px;
+
+}
+
+
+
+
+
+
+/* CARDS */
+
+
+.details-card{
+
+    background:white;
+
+    padding:28px;
+
+    border-radius:24px;
+
+    border:1px solid #e8edf5;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.details-card h2{
+
+    color:#081C3A;
+
+    margin-top:0;
+
+}
+
+
+
+
+
+
+/* ===============================
+   CURRICULUM
+================================ */
+
+
+.lesson-preview{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:15px;
+
+    background:#f7f9fd;
+
+    border-radius:15px;
+
+    margin-bottom:12px;
+
+    transition:.25s;
+
+}
+
+
+
+.lesson-preview:hover{
+
+    transform:translateX(5px);
+
+}
+
+
+
+.lesson-preview i{
+
+    color:#2979FF;
+
+}
+
+
+
+
+
+
+
+/* ===============================
+   INSTRUCTOR
+================================ */
+
+
+.instructor-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.instructor-avatar{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    background:#2979FF;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+
+}
+
+
+
+
+
+
+
+/* LEARNING LIST */
+
+
+#learningList{
+
+    padding-left:20px;
+
+}
+
+
+
+#learningList li{
+
+    margin-bottom:12px;
+
+    color:#64748b;
+
+}
+
+
+
+
+
+
+
+
+/* ===============================
+   REVIEWS
+================================ */
+
+
+.review-item{
+
+    background:#f7f9fd;
+
+    padding:18px;
+
+    border-radius:16px;
+
+    margin-bottom:12px;
+
+}
+
+
+
+
+
+
+
+/* BUTTON ANIMATION */
+
+
+.primary-btn{
+
+    transition:.25s ease;
+
+}
+
+
+
+.primary-btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+
+
+
+
+
+
+/* ===============================
+   MOBILE
+================================ */
+
+
+@media(max-width:900px){
+
+
+.course-hero{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+}
+
+
+
+.course-action-card{
+
+    width:100%;
+
+}
+
+
+
+.details-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+.course-hero h1{
+
+    font-size:30px;
+
+}
+
+
+}

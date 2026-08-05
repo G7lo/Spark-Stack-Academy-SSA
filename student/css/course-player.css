@@ -1,0 +1,667 @@
+/* =====================================
+   SPARK STACK ACADEMY
+   CLASSROOM EXPERIENCE CSS
+===================================== */
+
+
+
+.course-player-page{
+
+    width:100%;
+
+    animation:pageEnter .45s ease;
+
+}
+
+
+
+@keyframes pageEnter{
+
+    from{
+
+        opacity:0;
+        transform:translateY(8px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+
+
+/* ==========================
+   CLASS HEADER
+========================== */
+
+
+.class-header{
+
+    background:white;
+
+    padding:28px;
+
+    border-radius:24px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    border:1px solid #e8edf5;
+
+    margin-bottom:25px;
+
+}
+
+
+
+
+
+.class-header h1{
+
+    color:#081C3A;
+
+    font-size:32px;
+
+    margin:15px 0 8px;
+
+}
+
+
+
+.class-header p{
+
+    color:#64748b;
+
+    max-width:650px;
+
+}
+
+
+
+
+
+
+
+/* ==========================
+   INSTRUCTOR
+========================== */
+
+
+.instructor-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    background:#f6f8fc;
+
+    padding:14px 18px;
+
+    border-radius:18px;
+
+}
+
+
+
+.instructor-avatar{
+
+    width:50px;
+
+    height:50px;
+
+    background:#2979FF;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    font-weight:700;
+
+}
+
+
+
+.instructor-card h4{
+
+    margin:0;
+
+    color:#081C3A;
+
+}
+
+
+
+.instructor-card span{
+
+    color:#64748b;
+
+    font-size:13px;
+
+}
+
+
+
+
+
+
+
+/* ==========================
+   PROGRESS
+========================== */
+
+
+.class-progress-box{
+
+    background:white;
+
+    padding:22px;
+
+    border-radius:22px;
+
+    border:1px solid #e8edf5;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.progress-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:#081C3A;
+
+    font-weight:600;
+
+    margin-bottom:12px;
+
+}
+
+
+
+
+
+.class-progress{
+
+    height:10px;
+
+    background:#edf2ff;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+
+
+.class-progress span{
+
+    display:block;
+
+    height:100%;
+
+    width:0;
+
+    background:#2979FF;
+
+    border-radius:20px;
+
+    transition:width .8s ease;
+
+}
+
+
+
+
+
+
+
+
+/* ==========================
+   CLASSROOM GRID
+========================== */
+
+
+.learning-layout{
+
+    display:grid;
+
+    grid-template-columns:300px 1fr;
+
+    gap:25px;
+
+}
+
+
+
+
+
+
+/* ==========================
+   LESSON SIDEBAR
+========================== */
+
+
+.lesson-sidebar{
+
+    background:#081C3A;
+
+    padding:22px;
+
+    border-radius:24px;
+
+    color:white;
+
+    height:max-content;
+
+}
+
+
+
+.lesson-sidebar h3{
+
+    margin-top:0;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.lesson-item{
+
+    padding:14px;
+
+    background:rgba(255,255,255,.08);
+
+    border-radius:14px;
+
+    margin-bottom:10px;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+}
+
+
+
+.lesson-item:hover{
+
+    transform:translateX(5px);
+
+    background:rgba(255,255,255,.15);
+
+}
+
+
+
+.lesson-item.active{
+
+    background:#2979FF;
+
+}
+
+
+
+
+
+
+/* ==========================
+   LESSON VIEW
+========================== */
+
+
+.lesson-view{
+
+    background:white;
+
+    padding:28px;
+
+    border-radius:24px;
+
+    border:1px solid #e8edf5;
+
+}
+
+
+
+
+
+/* VIDEO */
+
+
+.video-box{
+
+    height:420px;
+
+    border-radius:24px;
+
+    background:#081C3A;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-direction:column;
+
+    margin-bottom:25px;
+
+    transition:.3s;
+
+}
+
+
+
+.video-box:hover{
+
+    transform:scale(1.01);
+
+}
+
+
+
+.video-box svg{
+
+    width:70px;
+
+    height:70px;
+
+    margin-bottom:15px;
+
+}
+
+
+
+
+
+.lesson-info h2{
+
+    color:#081C3A;
+
+}
+
+
+
+.lesson-info p{
+
+    color:#64748b;
+
+    line-height:1.8;
+
+}
+
+
+
+
+
+
+
+
+/* ==========================
+   BUTTONS
+========================== */
+
+
+.lesson-actions{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    margin-top:25px;
+
+}
+
+
+
+.secondary-btn{
+
+    border:none;
+
+    background:#eef3ff;
+
+    color:#081C3A;
+
+    padding:12px 20px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+
+
+
+
+.primary-btn{
+
+    transition:.25s ease;
+
+}
+
+
+
+.primary-btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+
+
+
+
+
+
+
+/* ==========================
+   SECTIONS
+========================== */
+
+
+.class-section{
+
+    margin-top:30px;
+
+    background:#f8faff;
+
+    padding:22px;
+
+    border-radius:20px;
+
+}
+
+
+
+.class-section h3{
+
+    color:#081C3A;
+
+}
+
+
+
+#lessonNotes{
+
+    width:100%;
+
+    min-height:120px;
+
+    border:none;
+
+    outline:none;
+
+    resize:none;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    font-family:inherit;
+
+}
+
+
+
+
+
+
+/* ==========================
+   ANNOUNCEMENT
+========================== */
+
+
+.class-announcement{
+
+    margin-top:25px;
+
+    background:#081C3A;
+
+    color:white;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
+
+}
+
+
+
+
+/* ==========================
+   LOCK SCREEN
+========================== */
+
+
+.course-lock-card{
+
+    max-width:600px;
+
+    margin:80px auto;
+
+    background:white;
+
+    padding:45px;
+
+    border-radius:25px;
+
+    text-align:center;
+
+    animation:fadeUp .5s ease;
+
+}
+
+
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+
+
+
+/* ==========================
+   MOBILE
+========================== */
+
+
+@media(max-width:900px){
+
+
+.class-header{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+}
+
+
+
+.learning-layout{
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+.video-box{
+
+    height:230px;
+
+}
+
+
+
+.lesson-actions{
+
+    flex-direction:column;
+
+}
+
+
+}

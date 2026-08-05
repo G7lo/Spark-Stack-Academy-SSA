@@ -366,8 +366,6 @@
 
     flex:1;
 
-    margin-left:0;
-
     min-width:0;
 
 }
@@ -997,5 +995,256 @@
 
     }
 
+
+}
+.sidebar-container{
+    position:relative;
+    z-index:1001;
+}
+
+
+.topbar{
+    position:relative;
+    z-index:900;
+}
+/* =====================================
+   PREMIUM COMPONENT POLISH
+===================================== */
+
+
+/* ===============================
+   SIDEBAR ENHANCEMENTS
+================================ */
+
+
+.sidebar{
+
+    box-shadow:
+    8px 0 30px rgba(0,0,0,.12);
+
+}
+
+
+
+.sidebar-logo,
+.sidebar-brand{
+
+    padding-bottom:10px;
+
+}
+
+
+
+.sidebar-link{
+
+    overflow:hidden;
+
+}
+
+
+
+.sidebar-link::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    height:100%;
+
+    width:3px;
+
+    background:#FFC107;
+
+    transform:scaleY(0);
+
+    transition:.25s;
+
+}
+
+
+
+.sidebar-link:hover::before,
+.sidebar-link.active::before{
+
+    transform:scaleY(1);
+
+}
+
+
+
+.sidebar-link.active{
+
+    box-shadow:
+
+    0 8px 20px rgba(41,121,255,.35);
+
+}
+
+
+
+
+
+.sidebar-footer button{
+
+    transition:.3s ease;
+
+}
+
+
+
+.sidebar-footer button:hover{
+
+    background:#2979FF;
+
+    transform:translateY(-2px);
+
+}
+
+
+
+
+
+
+
+/* ===============================
+   TOPBAR PREMIUM LOOK
+================================ */
+
+
+.topbar{
+
+    backdrop-filter:blur(12px);
+
+    background:rgba(255,255,255,.88);
+
+}
+
+
+
+
+
+.top-search{
+
+    border:1px solid #e8edf5;
+
+    transition:.3s;
+
+}
+
+
+
+.top-search:focus-within{
+
+    border-color:#2979FF;
+
+    box-shadow:
+
+    0 0 0 4px rgba(41,121,255,.12);
+
+}
+
+
+
+.top-search svg{
+
+    color:#64748B;
+
+}
+
+
+
+
+
+
+/* ===============================
+   WIDGET HOVER
+================================ */
+
+
+.streak-widget,
+.xp-widget{
+
+    transition:.25s ease;
+
+}
+
+
+
+.streak-widget:hover,
+.xp-widget:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+    0 10px 25px rgba(0,0,0,.08);
+
+}
+
+
+
+
+
+
+/* ===============================
+   PROFILE CHIP
+================================ */
+
+
+.profile-menu{
+
+    border:1px solid transparent;
+
+}
+
+
+
+.profile-menu:hover{
+
+    border-color:#e2e8f0;
+
+}
+
+
+
+
+
+.student-avatar{
+
+    box-shadow:
+
+    0 5px 15px rgba(41,121,255,.3);
+
+}
+
+
+
+
+
+
+/* ===============================
+   NOTIFICATION PANEL
+================================ */
+
+
+.notification-panel{
+
+    border:
+
+    1px solid #e2e8f0;
+
+}
+
+
+
+.notification-panel h4{
+
+    color:#081C3A;
+
+    margin-bottom:15px;
 
 }

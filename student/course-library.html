@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Course Library | Spark Stack Academy
+</title>
+
+
+
+<link rel="stylesheet" href="css/student-core.css">
+
+<link rel="stylesheet" href="css/components.css">
+
+<link rel="stylesheet" href="css/course-library.css">
+
+<link rel="stylesheet" href="css/responsive.css">
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+</head>
+
+
+
+<body>
+
+
+<div class="student-layout">
+
+
+
+<!-- SIDEBAR -->
+
+<aside 
+id="sidebarContainer"
+class="sidebar-container">
+
+</aside>
+
+
+
+<div 
+id="sidebarOverlay"
+class="sidebar-overlay">
+
+</div>
+
+
+
+
+
+
+<main class="student-main">
+
+
+
+<!-- TOPBAR -->
+
+<div 
+id="topbarContainer"
+class="topbar-container">
+
+</div>
+
+
+
+
+
+
+
+
+<section class="dashboard-content course-library-page">
+
+
+
+
+
+<!-- HERO -->
+
+
+<div class="library-hero">
+
+
+
+<div>
+
+
+<span class="page-badge">
+
+<i data-lucide="library"></i>
+
+Learning Library
+
+</span>
+
+
+
+
+<h1>
+
+Explore Courses
+
+</h1>
+
+
+
+
+<p>
+
+Build future-ready skills with premium technology courses.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="library-search">
+
+
+<i data-lucide="search"></i>
+
+
+<input 
+id="courseSearch"
+type="search"
+placeholder="Search courses...">
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- FILTERS -->
+
+
+<div class="course-filters">
+
+
+<button class="filter-btn active"
+data-filter="all">
+
+All
+
+</button>
+
+
+
+<button class="filter-btn"
+data-filter="free">
+
+Free
+
+</button>
+
+
+
+
+<button class="filter-btn"
+data-filter="paid">
+
+Premium
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- COURSE GRID -->
+
+
+<div 
+class="library-grid"
+id="libraryCourses">
+
+
+
+<!-- JS LOADS COURSES -->
+
+
+
+<div class="loading-card">
+
+<i data-lucide="loader"></i>
+
+
+<p>
+
+Loading courses...
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+</section>
+
+
+
+</main>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<script type="module" src="js/student-app.js"></script>
+
+<script type="module" src="js/course-library.js"></script>
+
+
+<script>
+
+lucide.createIcons();
+
+</script>
+
+
+</body>
+
+</html>

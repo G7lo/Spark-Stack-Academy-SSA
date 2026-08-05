@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Assignment Details | Spark Stack Academy
+</title>
+
+<link rel="stylesheet"
+href="css/student-core.css">
+
+<link rel="stylesheet"
+href="css/components.css">
+
+<link rel="stylesheet"
+href="css/assignment-details.css">
+
+<link rel="stylesheet"
+href="css/responsive.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body>
+
+<div class="student-layout">
+
+<!-- SIDEBAR -->
+
+<aside
+id="sidebarContainer"
+class="sidebar-container">
+
+</aside>
+
+<div
+id="sidebarOverlay"
+class="sidebar-overlay">
+
+</div>
+
+<main class="student-main">
+
+<!-- TOPBAR -->
+
+<div
+id="topbarContainer"
+class="topbar-container">
+
+</div>
+
+<section class="dashboard-content assignment-details-page">
+
+<!-- HERO -->
+
+<div class="assignment-hero">
+
+<div>
+
+<span class="page-badge">
+
+<i data-lucide="clipboard-check"></i>
+
+Assignment
+
+</span>
+
+<h1 id="assignmentTitle">
+
+Assignment Title
+
+</h1>
+
+<p id="assignmentCourse">
+
+Course Name
+
+</p>
+
+</div>
+
+<div class="assignment-status">
+
+<span
+id="assignmentStatus"
+class="status pending">
+
+Pending
+
+</span>
+
+</div>
+
+</div>
+
+<!-- MAIN GRID -->
+
+<div class="assignment-layout">
+
+<!-- LEFT -->
+
+<div>
+
+<div class="details-card">
+
+<h2>
+
+Instructions
+
+</h2>
+
+<p id="assignmentInstructions">
+
+Assignment instructions will appear here.
+
+</p>
+
+</div>
+
+<div class="details-card">
+
+<h2>
+
+Resources
+
+</h2>
+
+<div id="assignmentResources">
+
+<p>
+
+No resources attached.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RIGHT -->
+
+<div>
+
+<div class="details-card">
+
+<h2>
+
+Submission
+
+</h2>
+
+<input
+type="file"
+id="submissionFile"
+accept=".pdf,.doc,.docx,.zip">
+
+<textarea
+id="submissionNotes"
+placeholder="Write a short note for your instructor..."
+rows="6">
+
+</textarea>
+
+<button
+id="submitAssignmentBtn"
+class="primary-btn">
+
+Submit Assignment
+
+</button>
+
+</div>
+
+<div class="details-card">
+
+<h2>
+
+Results
+
+</h2>
+
+<div id="gradeBox">
+
+<p>
+
+Not graded yet.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+<script type="module"
+src="js/student-app.js"></script>
+
+<script type="module"
+src="js/assignment-details.js"></script>
+
+<script>
+
+lucide.createIcons();
+
+</script>
+
+</body>
+
+</html>

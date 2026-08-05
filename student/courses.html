@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+My Courses | Spark Stack Academy
+</title>
+
+
+
+<!-- CORE -->
+
+<link rel="stylesheet" href="css/student-core.css">
+
+<link rel="stylesheet" href="css/components.css">
+
+<link rel="stylesheet" href="css/courses.css">
+
+<link rel="stylesheet" href="css/responsive.css">
+
+<!-- FONT -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+
+<!-- ICONS -->
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+</head>
+
+
+
+<body>
+
+
+<div class="student-layout">
+
+
+
+<!-- SIDEBAR -->
+
+<aside 
+id="sidebarContainer"
+class="sidebar-container">
+
+</aside>
+
+
+
+
+<div 
+id="sidebarOverlay"
+class="sidebar-overlay">
+
+</div>
+
+
+
+
+
+<!-- MAIN -->
+
+<main class="student-main">
+
+
+
+<!-- TOPBAR -->
+
+<div 
+id="topbarContainer"
+class="topbar-container">
+
+</div>
+
+
+
+
+
+
+
+<section class="dashboard-content courses-page">
+
+
+
+<!-- PAGE HEADER -->
+
+
+<div class="page-header">
+
+
+<div>
+
+<span class="page-badge">
+
+<i data-lucide="book-open"></i>
+
+Learning Hub
+
+</span>
+
+
+
+<h1>
+My Courses
+</h1>
+
+
+
+<p>
+Continue your learning journey and build your technology skills.
+</p>
+
+
+</div>
+
+
+
+
+
+<button class="primary-btn" id="exploreCoursesBtn">
+
+<i data-lucide="search"></i>
+
+Explore Courses
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- COURSE STATS -->
+
+
+<section class="course-stats">
+
+
+
+<div class="course-stat-card">
+
+
+<i data-lucide="book-open"></i>
+
+
+<div>
+
+<span>
+Enrolled
+</span>
+
+
+<strong id="enrolledCount">
+0
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="course-stat-card">
+
+
+<i data-lucide="play-circle"></i>
+
+
+<div>
+
+<span>
+In Progress
+</span>
+
+
+<strong id="progressCount">
+0
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="course-stat-card">
+
+
+<i data-lucide="check-circle"></i>
+
+
+<div>
+
+<span>
+Completed
+</span>
+
+
+<strong id="completedCount">
+0
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="course-stat-card">
+
+
+<i data-lucide="clock"></i>
+
+
+<div>
+
+<span>
+Learning Hours
+</span>
+
+
+<strong id="hoursCount">
+0
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- COURSES -->
+
+<section>
+
+
+<div class="section-header">
+
+
+<h2>
+Your Courses
+</h2>
+
+
+</div>
+
+
+
+
+
+<div 
+class="courses-grid"
+id="coursesContainer">
+
+
+
+<!-- JS LOADS COURSES HERE -->
+
+
+
+<div class="empty-state">
+
+
+<i data-lucide="book-open"></i>
+
+
+<h3>
+No Courses Yet
+</h3>
+
+
+<p>
+Start learning by enrolling into a course.
+</p>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+</section>
+
+
+
+</main>
+
+
+</div>
+
+<script type="module" src="js/student-app.js"></script>
+
+<script type="module" src="js/courses.js"></script>
+
+<script>
+
+lucide.createIcons();
+
+</script>
+
+
+
+</body>
+
+</html>
