@@ -9,6 +9,11 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
+import {
+    getStorage
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+
 const firebaseConfig = {
 
     apiKey: "AIzaSyBlPs-9EU_YYiP4qZ6gFF9ZorJbbktXqC4",
@@ -30,12 +35,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-
 const db = getFirestore(app);
-
 
 const auth = getAuth(app);
 
+const storage = getStorage(app);
 
 // Keep users logged in after refresh
 setPersistence(
@@ -46,5 +50,6 @@ setPersistence(
 
 export {
     auth,
-    db
+    db,
+    storage
 };
