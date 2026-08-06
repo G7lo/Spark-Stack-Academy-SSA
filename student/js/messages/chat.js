@@ -1,10 +1,8 @@
 // =====================================
 // SPARK STACK ACADEMY
-// REAL TIME MESSAGING ENGINE V1
+// CHAT
 // chat.js
-// CHAT WINDOW ENGINE
 // =====================================
-
 
 import {
 
@@ -23,40 +21,33 @@ onAuthStateChanged
 
 import {
 
+doc,
+getDoc,
 collection,
 query,
 orderBy,
 onSnapshot,
 addDoc,
-doc,
-updateDoc,
-serverTimestamp,
-getDoc
+serverTimestamp
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
+uploadFile
+} from "./uploads.js";
 
-watchPresence
-
-} from "./presence.js";
-
-console.log(
-"💬 Chat Engine Loaded"
-);
-
+console.log("💬 Chat Loaded");
 
 
 // =====================================
 // STATE
 // =====================================
 
-
 let currentUser = null;
 
-let activeChatId = null;
+let chatId = null;
 
-let unsubscribeMessages = null;
+let unsubscribe = null;
 
 
 
@@ -64,187 +55,224 @@ let unsubscribeMessages = null;
 // DOM
 // =====================================
 
-
-const chatMessages =
-
-document.getElementById(
-"chatMessages"
-);
-
-
-
-const messageInput =
-
-document.getElementById(
-"messageInput"
-);
-
-
-
-const sendButton =
-
-document.getElementById(
-"sendMessageBtn"
-);
-
-
-
 const chatName =
-
-document.getElementById(
-"chatName"
-);
-
+document.getElementById("chatName");
 
 
 const chatAvatar =
+document.getElementById("chatAvatar");
 
-document.getElementById(
-"chatAvatar"
+
+const chatStatus =
+document.getElementById("chatStatus");
+
+
+const chatMessages =
+document.getElementById("chatMessages");
+
+
+const messageInput =
+document.getElementById("messageInput");
+
+
+const sendButton =
+document.getElementById("sendBtn");
+
+
+
+// =====================================
+// GET CHAT ID
+// =====================================
+
+const params =
+new URLSearchParams(
+window.location.search
 );
 
 
+chatId =
+params.get("chatId");
+
+
+if(!chatId){
+
+console.error(
+"No chat ID provided"
+);
+
+window.location.href =
+"messages.html";
+
+}
+
 
 
 // =====================================
-// AUTH CHECK
+// AUTH
 // =====================================
-
 
 onAuthStateChanged(
 
 auth,
 
-(user)=>{
+async(user)=>{
 
 
-if(!user)
+if(!user){
+
+window.location.href =
+"../login.html";
 
 return;
 
+}
 
 
 currentUser = user;
 
 
+await loadChat();
 
-});
-
-
-
-
-// =====================================
-// RECEIVE CHAT EVENT
-// =====================================
-
-
-window.addEventListener(
-
-"openChat",
-
-(e)=>{
-
-
-const chat = e.detail;
-
-
-
-activeChatId = chat.id;
-
-
-
-updateHeader(chat);
-
-watchPresence(
-
-chat.uid,
-
-(status)=>{
-
-
-const chatStatus =
-
-document.getElementById(
-"chatStatus"
-);
-
-
-
-if(status.online){
-
-chatStatus.textContent="Online";
-
-}
-
-else{
-
-chatStatus.textContent="Offline";
-
-}
-
-
-});
 
 loadMessages();
 
 
-
 }
 
 );
 
 
 
-
 // =====================================
-// UPDATE HEADER
+// LOAD CHAT INFO
 // =====================================
 
+async function loadChat(){
 
-function updateHeader(chat){
 
+try{
+
+
+const chatRef =
+doc(
+
+db,
+
+"chats",
+
+chatId
+
+);
+
+
+
+const snap =
+await getDoc(chatRef);
+
+
+
+if(!snap.exists()){
+
+alert(
+"This chat no longer exists"
+);
+
+window.location.href =
+"messages.html";
+
+return;
+
+}
+
+
+
+const chatData =
+snap.data();
+
+
+
+const otherUser =
+
+chatData.members?.find(
+
+member =>
+member.uid !== currentUser.uid
+
+) || {};
+
+
+
+if(chatName){
 
 chatName.textContent =
 
-chat.name ||
+otherUser.name ||
 
 "Spark Stack User";
 
+}
 
+
+
+if(chatAvatar){
 
 chatAvatar.src =
 
-chat.avatar ||
+otherUser.photo ||
 
-"../assets/images/ssa-logo.png";
+"../assets/images/default-avatar.png";
+
+}
+
+
+
+if(chatStatus){
+
+chatStatus.textContent =
+
+otherUser.online
+
+?
+
+"Online"
+
+:
+
+"Offline";
+
+}
+
+
+
+}
+
+
+catch(error){
+
+console.error(
+"Loading chat failed:",
+error
+);
+
+}
 
 
 }
 
 
 
-
 // =====================================
-// LOAD MESSAGES REALTIME
+// LOAD MESSAGES
 // =====================================
-
 
 function loadMessages(){
 
 
+if(unsubscribe){
 
-if(!activeChatId)
-
-return;
-
-
-
-if(unsubscribeMessages){
-
-unsubscribeMessages();
+unsubscribe();
 
 }
-
 
 
 
@@ -256,7 +284,7 @@ db,
 
 "chats",
 
-activeChatId,
+chatId,
 
 "messages"
 
@@ -272,7 +300,7 @@ messagesRef,
 
 orderBy(
 
-"createdAt",
+"timestamp",
 
 "asc"
 
@@ -282,7 +310,7 @@ orderBy(
 
 
 
-unsubscribeMessages =
+unsubscribe =
 
 onSnapshot(
 
@@ -291,61 +319,50 @@ messagesQuery,
 (snapshot)=>{
 
 
-chatMessages.innerHTML="";
+if(!chatMessages)
+return;
+
+
+
+chatMessages.innerHTML = "";
 
 
 
 snapshot.forEach(
 
-(docSnap)=>{
+(doc)=>{
 
 
-const message = {
+renderMessage(
+doc.data()
+);
 
-
-id:docSnap.id,
-
-...docSnap.data()
-
-};
-
-
-
-renderMessage(message);
-
-if(
-message.senderId !== currentUser.uid &&
-!message.read
-){
-
-updateDoc(
-
-doc(
-db,
-"chats",
-activeChatId,
-"messages",
-message.id
-),
-
-{
-
-read:true,
-
-status:"read"
 
 }
 
 );
 
-}
-
-});
 
 
+chatMessages.scrollTop =
 
-scrollBottom();
+chatMessages.scrollHeight;
 
+
+
+},
+
+
+(error)=>{
+
+
+console.error(
+
+"Message listener error:",
+
+error
+
+);
 
 
 }
@@ -354,7 +371,6 @@ scrollBottom();
 
 
 }
-
 
 
 
@@ -362,94 +378,124 @@ scrollBottom();
 // RENDER MESSAGE
 // =====================================
 
-
 function renderMessage(message){
 
 
-
-const div =
-
-document.createElement(
-
+const div = document.createElement(
 "div"
-
 );
 
 
+const isMine =
 
-div.className="message";
+message.senderId === currentUser.uid;
 
 
+
+div.className =
+
+isMine
+
+?
+
+"message sent"
+
+:
+
+"message received";
+
+
+
+let content = "";
+
+
+
+// TEXT MESSAGE
+
+if(message.text){
+
+content += `
+
+<div class="message-text">
+
+${message.text}
+
+</div>
+
+`;
+
+}
+
+
+
+// IMAGE MESSAGE
 
 if(
 
-message.senderId === currentUser.uid
+message.fileUrl &&
+
+message.fileType?.startsWith("image")
 
 ){
 
+content += `
 
-div.classList.add(
-"sent"
-);
+<img
 
+src="${message.fileUrl}"
 
-}
+class="chat-image"
 
-else{
+alt="image"
 
+/>
 
-div.classList.add(
-"received"
-);
-
+`;
 
 }
 
+
+
+// FILE MESSAGE
+
+if(
+
+message.fileUrl &&
+
+!message.fileType?.startsWith("image")
+
+){
+
+content += `
+
+<a
+
+href="${message.fileUrl}"
+
+target="_blank"
+
+class="chat-file">
+
+📎 ${message.fileName}
+
+</a>
+
+`;
+
+}
 
 
 
 div.innerHTML = `
 
+${content}
 
-<div>
 
-${
+<div class="message-time">
 
-message.text ||
-
-""
-
-}
+${formatTime(message.timestamp)}
 
 </div>
-
-
-<span class="message-time">
-
-${formatTime(message.createdAt)}
-
-${
-
-message.senderId === currentUser.uid
-
-?
-
-message.status === "read"
-
-?
-
-" 🔵✓✓"
-
-:
-
-" ✓✓"
-
-:""
-
-}
-
-</span>
-
 
 `;
 
@@ -461,18 +507,72 @@ chatMessages.appendChild(div);
 }
 
 
+// =====================================
+// FORMAT TIME
+// =====================================
+
+function formatTime(timestamp){
+
+
+if(!timestamp){
+
+return "";
+
+}
+
+
+
+const date =
+
+timestamp.toDate
+
+?
+
+timestamp.toDate()
+
+:
+
+new Date(timestamp);
+
+
+
+return date.toLocaleTimeString(
+
+[],
+
+{
+
+hour:"2-digit",
+
+minute:"2-digit"
+
+}
+
+);
+
+
+}
+
 
 
 // =====================================
 // SEND MESSAGE
 // =====================================
 
-
 sendButton?.addEventListener(
 
 "click",
 
-sendMessage
+async()=>{
+
+
+await sendMessage();
+
+
+await uploadFile();
+
+
+}
 
 );
 
@@ -482,36 +582,26 @@ messageInput?.addEventListener(
 
 "keydown",
 
-(e)=>{
+(event)=>{
 
 
-if(
+if(event.key === "Enter"){
 
-e.key==="Enter"
-
-&&
-
-!e.shiftKey
-
-){
-
-
-e.preventDefault();
+event.preventDefault();
 
 sendMessage();
 
 }
 
 
-});
+}
 
-
+);
 
 
 
 
 async function sendMessage(){
-
 
 
 const text =
@@ -520,10 +610,17 @@ messageInput.value.trim();
 
 
 
-if(!text || !activeChatId)
+
+if(!currentUser || !chatId){
 
 return;
 
+}
+
+
+
+
+try{
 
 
 await addDoc(
@@ -534,54 +631,28 @@ db,
 
 "chats",
 
-activeChatId,
+chatId,
 
 "messages"
 
 ),
 
-
-
-{
-    senderId: currentUser.uid,
-
-    text:text,
-
-    createdAt:serverTimestamp(),
-
-    status:"sent",
-
-    read:false
-}
-
-
-);
-
-
-
-
-
-await updateDoc(
-
-doc(
-
-db,
-
-"chats",
-
-activeChatId
-
-),
-
 {
 
+senderId:
 
-lastMessage:text,
+currentUser.uid,
 
 
-updatedAt:
+text,
 
-serverTimestamp()
+
+timestamp:
+
+serverTimestamp(),
+
+
+seen:false
 
 
 }
@@ -590,56 +661,26 @@ serverTimestamp()
 
 
 
-messageInput.value="";
+messageInput.value = "";
+
 
 
 }
 
 
+catch(error){
 
 
-// =====================================
-// SCROLL
-// =====================================
+console.error(
 
+"Send message failed:",
 
-function scrollBottom(){
+error
 
-
-chatMessages.scrollTop =
-
-chatMessages.scrollHeight;
+);
 
 
 }
-
-
-
-
-
-// =====================================
-// TIME FORMAT
-// =====================================
-
-
-function formatTime(timestamp){
-
-
-if(!timestamp)
-
-return "";
-
-
-
-return timestamp
-.toDate()
-.toLocaleTimeString([],{
-
-hour:"2-digit",
-
-minute:"2-digit"
-
-});
 
 
 }

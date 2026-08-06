@@ -1,10 +1,8 @@
 // =====================================
 // SPARK STACK ACADEMY
-// REAL TIME MESSAGING ENGINE V1
+// PRESENCE SYSTEM
 // presence.js
-// ONLINE STATUS SYSTEM
 // =====================================
-
 
 import {
 
@@ -25,18 +23,13 @@ import {
 
 doc,
 setDoc,
-updateDoc,
-serverTimestamp,
-onSnapshot
+onSnapshot,
+serverTimestamp
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-
-console.log(
-"🟢 Presence Engine Loaded"
-);
-
+console.log("🟢 Presence Loaded");
 
 
 
@@ -44,11 +37,47 @@ console.log(
 // STATE
 // =====================================
 
-
 let currentUser = null;
 
-let heartbeat = null;
+let chatId = null;
 
+let otherUserId = null;
+
+
+
+// =====================================
+// DOM
+// =====================================
+
+const chatStatus =
+
+document.getElementById(
+"chatStatus"
+);
+
+
+const onlineDot =
+
+document.getElementById(
+"onlineDot"
+);
+
+
+
+// =====================================
+// GET CHAT ID
+// =====================================
+
+const params =
+
+new URLSearchParams(
+window.location.search
+);
+
+
+chatId =
+
+params.get("chatId");
 
 
 
@@ -56,71 +85,27 @@ let heartbeat = null;
 // AUTH
 // =====================================
 
-
 onAuthStateChanged(
 
 auth,
 
-(user)=>{
+async(user)=>{
 
 
-if(!user)
+if(!user){
 
 return;
 
+}
 
 
-currentUser=user;
+currentUser = user;
 
 
-setOnline();
+await updateMyPresence();
 
 
-startHeartbeat();
-
-
-
-});
-
-
-
-
-
-// =====================================
-// SET USER ONLINE
-// =====================================
-
-
-async function setOnline(){
-
-
-const userStatusRef =
-
-doc(
-
-db,
-
-"users",
-
-currentUser.uid
-
-);
-
-
-
-await updateDoc(
-
-userStatusRef,
-
-{
-
-
-online:true,
-
-
-lastSeen:
-
-serverTimestamp()
+listenPresence();
 
 
 }
@@ -129,104 +114,11 @@ serverTimestamp()
 
 
 
-}
-
-
-
-
 // =====================================
-// HEARTBEAT
+// UPDATE MY STATUS
 // =====================================
 
-
-function startHeartbeat(){
-
-
-
-heartbeat = setInterval(()=>{
-
-
-setOnline();
-
-
-
-},30000);
-
-
-
-}
-
-
-
-
-
-// =====================================
-// SET OFFLINE
-// =====================================
-
-
-window.addEventListener(
-
-"beforeunload",
-
-()=>{
-
-
-if(!currentUser)
-
-return;
-
-
-
-const userStatusRef =
-
-doc(
-
-db,
-
-"users",
-
-currentUser.uid
-
-);
-
-
-
-updateDoc(
-
-userStatusRef,
-
-{
-
-
-online:false,
-
-
-lastSeen:
-
-serverTimestamp()
-
-
-}
-
-);
-
-
-}
-
-);
-
-
-
-
-
-// =====================================
-// WATCH USER STATUS
-// =====================================
-
-
-export function watchPresence(uid, callback){
-
+async function updateMyPresence(){
 
 
 const userRef =
@@ -237,25 +129,31 @@ db,
 
 "users",
 
-uid
+currentUser.uid
 
 );
 
 
 
-return onSnapshot(
+await setDoc(
 
 userRef,
 
-(snapshot)=>{
+{
 
+online:true,
 
-if(snapshot.exists()){
+lastSeen:
 
+serverTimestamp()
 
-callback(
+},
 
-snapshot.data()
+{
+
+merge:true
+
+}
 
 );
 
@@ -264,7 +162,260 @@ snapshot.data()
 
 
 
-});
+// =====================================
+// SET OFFLINE WHEN EXIT
+// =====================================
+
+window.addEventListener(
+
+"beforeunload",
+
+()=>{
+
+
+setDoc(
+
+doc(
+
+db,
+
+"users",
+
+currentUser.uid
+
+),
+
+{
+
+online:false,
+
+lastSeen:
+
+serverTimestamp()
+
+},
+
+{
+
+merge:true
+
+}
+
+);
+
+
+}
+
+);
+
+
+
+// =====================================
+// LISTEN OTHER USER STATUS
+// =====================================
+
+function listenPresence(){
+
+
+// temporary:
+// gets other user from chat document
+
+onSnapshot(
+
+doc(
+
+db,
+
+"chats",
+
+chatId
+
+),
+
+(chatSnap)=>{
+
+
+const data =
+
+chatSnap.data();
+
+
+if(!data)
+return;
+
+
+
+const otherUser =
+
+data.members?.find(
+
+member =>
+
+member.uid !== currentUser.uid
+
+);
+
+
+
+if(!otherUser)
+return;
+
+
+
+otherUserId =
+
+otherUser.uid;
+
+
+
+onSnapshot(
+
+doc(
+
+db,
+
+"users",
+
+otherUserId
+
+),
+
+(userSnap)=>{
+
+
+const userData =
+
+userSnap.data();
+
+
+
+if(!userData)
+return;
+
+
+
+updateUI(
+userData
+);
+
+
+
+}
+
+);
+
+
+}
+
+);
+
+
+}
+
+
+
+// =====================================
+// UPDATE UI
+// =====================================
+
+function updateUI(data){
+
+
+if(data.online){
+
+
+if(chatStatus){
+
+chatStatus.textContent =
+"Online";
+
+}
+
+
+
+if(onlineDot){
+
+onlineDot.classList.add(
+"active"
+);
+
+}
+
+
+
+}
+
+else{
+
+
+if(chatStatus){
+
+chatStatus.textContent =
+
+formatLastSeen(
+data.lastSeen
+);
+
+}
+
+
+
+if(onlineDot){
+
+onlineDot.classList.remove(
+"active"
+);
+
+}
+
+
+
+}
+
+
+}
+
+
+
+// =====================================
+// LAST SEEN FORMAT
+// =====================================
+
+function formatLastSeen(timestamp){
+
+
+if(!timestamp){
+
+return "Offline";
+
+}
+
+
+
+const date =
+
+timestamp.toDate();
+
+
+return (
+
+"Last seen " +
+
+date.toLocaleTimeString(
+
+[],
+
+{
+
+hour:"2-digit",
+
+minute:"2-digit"
+
+}
+
+)
+
+);
 
 
 }

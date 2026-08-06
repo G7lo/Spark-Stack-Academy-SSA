@@ -1,8 +1,7 @@
 // =====================================
 // SPARK STACK ACADEMY
-// REAL TIME MESSAGING ENGINE V1
+// CHAT UPLOADS
 // uploads.js
-// FILE UPLOAD SYSTEM
 // =====================================
 
 
@@ -24,15 +23,7 @@ onAuthStateChanged
 
 import {
 
-ref,
-uploadBytes,
-getDownloadURL
-
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
-
-import {
-
+doc,
 collection,
 addDoc,
 serverTimestamp
@@ -40,11 +31,16 @@ serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+import {
 
-console.log(
-"📎 Upload Engine Loaded"
-);
+ref,
+uploadBytes,
+getDownloadURL
 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+
+console.log("📎 Uploads Loaded");
 
 
 
@@ -52,13 +48,11 @@ console.log(
 // STATE
 // =====================================
 
+let currentUser = null;
 
-let currentUser=null;
+let chatId = null;
 
-let activeChatId=null;
-
-let selectedFile=null;
-
+let selectedFile = null;
 
 
 
@@ -66,18 +60,17 @@ let selectedFile=null;
 // DOM
 // =====================================
 
+const attachBtn =
+
+document.getElementById(
+"attachBtn"
+);
+
 
 const fileInput =
 
 document.getElementById(
 "fileInput"
-);
-
-
-const attachBtn =
-
-document.getElementById(
-"attachBtn"
 );
 
 
@@ -103,11 +96,26 @@ document.getElementById(
 
 
 
+// =====================================
+// CHAT ID
+// =====================================
+
+const params =
+
+new URLSearchParams(
+window.location.search
+);
+
+
+chatId =
+
+params.get("chatId");
+
+
 
 // =====================================
 // AUTH
 // =====================================
-
 
 onAuthStateChanged(
 
@@ -116,44 +124,22 @@ auth,
 (user)=>{
 
 
-if(user){
+if(!user)
+return;
 
-currentUser=user;
+
+currentUser = user;
+
 
 }
 
-
-});
-
-
-
-
-
-// =====================================
-// ACTIVE CHAT
-// =====================================
-
-
-window.addEventListener(
-
-"openChat",
-
-(e)=>{
-
-
-activeChatId=e.detail.id;
-
-
-});
-
-
+);
 
 
 
 // =====================================
 // OPEN FILE PICKER
 // =====================================
-
 
 attachBtn?.addEventListener(
 
@@ -165,34 +151,52 @@ attachBtn?.addEventListener(
 fileInput.click();
 
 
-});
+}
 
-
+);
 
 
 
 // =====================================
-// SELECT FILE
+// FILE SELECTED
 // =====================================
-
 
 fileInput?.addEventListener(
 
 "change",
 
-()=>{
+(event)=>{
 
 
 selectedFile =
 
-fileInput.files[0];
+event.target.files[0];
 
 
 
 if(!selectedFile)
-
 return;
 
+
+
+showPreview();
+
+
+}
+
+);
+
+
+
+// =====================================
+// PREVIEW
+// =====================================
+
+function showPreview(){
+
+
+uploadPreview.style.display =
+"flex";
 
 
 fileName.textContent =
@@ -200,22 +204,13 @@ fileName.textContent =
 selectedFile.name;
 
 
-
-uploadPreview.style.display="flex";
-
-
-
-});
-
-
-
+}
 
 
 
 // =====================================
 // REMOVE FILE
 // =====================================
-
 
 removeFileBtn?.addEventListener(
 
@@ -224,19 +219,19 @@ removeFileBtn?.addEventListener(
 ()=>{
 
 
-selectedFile=null;
+selectedFile = null;
 
 
-fileInput.value="";
+fileInput.value = "";
 
 
-uploadPreview.style.display="none";
+uploadPreview.style.display =
+"none";
 
 
-});
+}
 
-
-
+);
 
 
 
@@ -244,54 +239,43 @@ uploadPreview.style.display="none";
 // UPLOAD FILE
 // =====================================
 
-
 export async function uploadFile(){
 
 
+if(
 
-if(!selectedFile || !activeChatId)
+!selectedFile ||
 
-return null;
+!currentUser ||
 
+!chatId
 
+){
 
-const filePath =
+return;
 
-`chatUploads/${
-
-activeChatId
-
-}/${
-
-Date.now()
-
-}_${
-
-selectedFile.name
-
-}`;
+}
 
 
 
+try{
 
 
-const storageRef =
+const fileRef =
 
 ref(
 
 storage,
 
-filePath
+`chatFiles/${chatId}/${Date.now()}_${selectedFile.name}`
 
 );
 
 
 
-
-
 await uploadBytes(
 
-storageRef,
+fileRef,
 
 selectedFile
 
@@ -299,17 +283,11 @@ selectedFile
 
 
 
-
-
 const url =
 
 await getDownloadURL(
-
-storageRef
-
+fileRef
 );
-
-
 
 
 
@@ -321,7 +299,7 @@ db,
 
 "chats",
 
-activeChatId,
+chatId,
 
 "messages"
 
@@ -335,7 +313,9 @@ senderId:
 currentUser.uid,
 
 
-fileUrl:url,
+fileUrl:
+
+url,
 
 
 fileName:
@@ -348,10 +328,12 @@ fileType:
 selectedFile.type,
 
 
-createdAt:
+timestamp:
 
-serverTimestamp()
+serverTimestamp(),
 
+
+seen:false
 
 
 }
@@ -360,19 +342,32 @@ serverTimestamp()
 
 
 
+selectedFile = null;
 
 
-selectedFile=null;
+fileInput.value = "";
 
 
-fileInput.value="";
+uploadPreview.style.display =
+"none";
 
 
-uploadPreview.style.display="none";
+}
 
 
-return url;
+catch(error){
 
+
+console.error(
+
+"Upload failed:",
+
+error
+
+);
+
+
+}
 
 
 }

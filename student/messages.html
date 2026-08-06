@@ -8,25 +8,29 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
+
 <title>
 Messages | Spark Stack Academy
 </title>
 
 
+<!-- =========================
+     PAGE CSS
+========================= -->
 
-<link rel="stylesheet"
-href="css/student-core.css">
+<link rel="stylesheet" href="css/student-core.css">
 
-<link rel="stylesheet"
-href="css/components.css">
+<link rel="stylesheet" href="css/components.css">
 
-<link rel="stylesheet"
-href="css/messages.css">
+<link rel="stylesheet" href="css/messages.css">
 
-<link rel="stylesheet"
-href="css/responsive.css">
+<link rel="stylesheet" href="css/responsive.css">
 
 
+
+<!-- =========================
+     FONTS
+========================= -->
 
 <link rel="preconnect"
 href="https://fonts.googleapis.com">
@@ -38,71 +42,43 @@ crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
 rel="stylesheet">
 
+
+
 <script src="https://unpkg.com/lucide@latest"></script>
+
 
 </head>
 
+
+
 <body>
 
-<div class="student-layout">
+
+
+<!-- =================================
+     APP OVERLAY COMPONENTS
+     Injected by student-app.js
+================================= -->
 
 
 
-<!-- SIDEBAR -->
 
-<aside
+<!-- =================================
+     FULL SCREEN MESSAGE PAGE
+================================= -->
 
-id="sidebarContainer"
 
-class="sidebar-container">
-
-</aside>
+<div class="messages-page">
 
 
 
-<div
+<!-- HEADER -->
 
-id="sidebarOverlay"
-
-class="sidebar-overlay">
-
-</div>
+<header class="messages-header">
 
 
+<div class="messages-title">
 
-<main class="student-main">
-
-
-
-<!-- TOPBAR -->
-
-<div
-
-id="topbarContainer"
-
-class="topbar-container">
-
-</div>
-
-
-
-<section class="dashboard-content messages-page">
-
-
-
-<!-- PAGE HEADER -->
-
-<div class="messages-header">
-
-<div>
-
-<span class="page-badge">
-
-<i data-lucide="messages-square"></i>
-
-Messages
-
-</span>
 
 <h1>
 
@@ -110,483 +86,207 @@ Messages
 
 </h1>
 
+
 <p>
 
-Stay connected with instructors, classmates, academy support and Spark AI.
+Stay connected with Spark Stack Academy
 
 </p>
 
-</div>
 
 </div>
 
 
 
-<!-- CHAT LAYOUT -->
-
-<div class="chat-layout">
-
+<a href="new-chat.html"
+class="new-chat-btn">
 
 
-<!-- =====================================
-     CONVERSATIONS
-===================================== -->
-
-<aside class="chat-sidebar">
+<i data-lucide="square-pen"></i>
 
 
+<span>
 
-<div class="chat-search">
+New Chat
+
+</span>
+
+
+</a>
+
+
+
+</header>
+
+
+
+
+
+<!-- SEARCH -->
+
+<section class="search-section">
+
+
+<div class="search-box">
+
 
 <i data-lucide="search"></i>
 
+
 <input
 
-type="text"
+type="search"
 
-id="chatSearch"
+id="searchChats"
 
 placeholder="Search conversations...">
+
 
 </div>
 
 
+</section>
 
-<div class="chat-filter">
 
-<button class="active">
+
+
+
+<!-- FILTERS -->
+
+
+<section class="chat-filters">
+
+
+<button class="filter active">
 
 All
 
 </button>
 
-<button>
+
+<button class="filter">
 
 Unread
 
 </button>
 
-<button>
+
+<button class="filter">
 
 Groups
 
 </button>
 
-</div>
+
+</section>
 
 
 
-<div
+
+
+<!-- CONVERSATIONS -->
+
+
+<section
 
 id="conversationList"
 
 class="conversation-list">
 
-<!-- Firebase loads conversations -->
 
-</div>
+</section>
 
-</aside>
 
 
 
-<!-- =====================================
-     CHAT WINDOW
-===================================== -->
 
-<section class="chat-window">
-  <!-- =====================================
-     CHAT HEADER
-===================================== -->
+<!-- EMPTY STATE -->
 
-<div class="chat-header">
 
-<div class="chat-user">
+<section
 
-<div class="chat-avatar">
+id="emptyState"
 
-<img
+class="empty-state">
 
-id="chatAvatar"
 
-src="../assets/images/default-avatar.png"
 
-alt="User">
-
-</div>
-
-
-
-<div class="chat-user-info">
-
-<h3
-
-id="chatName">
-
-Select a Conversation
-
-</h3>
-
-
-
-<div class="chat-status">
-
-<span
-
-id="onlineIndicator"
-
-class="online-dot">
-
-</span>
-
-
-
-<span
-
-id="chatStatus">
-
-Offline
-
-</span>
-
-
-
-<span
-
-id="premiumBadge"
-
-class="premium-badge"
-
-style="display:none;">
-
-🔵 Premium
-
-</span>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-
-
-<div class="chat-actions">
-
-<button
-
-id="voiceCallBtn"
-
-title="Voice Call">
-
-<i data-lucide="phone"></i>
-
-</button>
-
-
-
-<button
-
-id="videoCallBtn"
-
-title="Video Call">
-
-<i data-lucide="video"></i>
-
-</button>
-
-
-
-<button
-
-id="chatInfoBtn"
-
-title="Chat Info">
-
-<i data-lucide="info"></i>
-
-</button>
-
-</div>
-
-</div>
-
-
-
-
-
-<!-- =====================================
-     CHAT BODY
-===================================== -->
-
-<div
-
-id="chatMessages"
-
-class="chat-messages">
-
-<!-- Messages loaded by Firebase -->
-
-
-
-<div class="empty-chat">
+<div class="empty-icon">
 
 <i data-lucide="messages-square"></i>
 
+</div>
+
+
+
 <h2>
 
-Welcome to Spark Stack Messages
+No conversations yet
 
 </h2>
 
-<p>
 
-Choose a conversation to start chatting.
-
-</p>
-
-</div>
-
-</div>
-
-
-
-
-
-<!-- =====================================
-     TYPING INDICATOR
-===================================== -->
-
-<div
-
-id="typingIndicator"
-
-class="typing-indicator"
-
-style="display:none;">
-
-<div class="typing-dots">
-
-<span></span>
-
-<span></span>
-
-<span></span>
-
-</div>
 
 <p>
 
-Typing...
+Start a conversation with students,
+instructors or academy staff.
 
 </p>
 
-</div>
-<!-- =====================================
-     MESSAGE COMPOSER
-===================================== -->
 
-<div class="message-composer">
 
+<a href="new-chat.html"
+class="start-chat-btn">
 
 
-<button
+<i data-lucide="plus"></i>
 
-id="emojiBtn"
 
-class="composer-btn"
+Start Chatting
 
-title="Emoji">
 
-<i data-lucide="smile"></i>
-
-</button>
-
-
-
-<button
-
-id="attachBtn"
-
-class="composer-btn"
-
-title="Attach File">
-
-<i data-lucide="paperclip"></i>
-
-</button>
-
-
-
-<input
-
-type="file"
-
-id="fileInput"
-
-hidden>
-
-
-
-<textarea
-
-id="messageInput"
-
-placeholder="Type your message..."
-
-rows="1">
-
-</textarea>
-
-
-
-<button
-
-id="voiceBtn"
-
-class="composer-btn"
-
-title="Voice Message">
-
-<i data-lucide="mic"></i>
-
-</button>
-
-
-
-<button
-
-id="sendMessageBtn"
-
-class="send-btn"
-
-title="Send">
-
-<i data-lucide="send-horizontal"></i>
-
-</button>
-
-</div>
-
-
-
-
-
-<!-- =====================================
-     UPLOAD PREVIEW
-===================================== -->
-
-<div
-
-id="uploadPreview"
-
-class="upload-preview"
-
-style="display:none;">
-
-<div class="preview-info">
-
-<i data-lucide="file"></i>
-
-<span id="fileName">
-
-No file selected
-
-</span>
-
-</div>
-
-
-
-<button
-
-id="removeFileBtn"
-
-class="remove-file-btn">
-
-<i data-lucide="x"></i>
-
-</button>
-
-</div>
-
-
+</a>
 
 
 
 </section>
 
-</div>
 
-</section>
 
-</main>
 
 </div>
 
 
-<!-- ==============================
-     STUDENT CORE
-============================== -->
 
-<script 
+
+
+
+
+<!-- =================================
+     SCRIPTS
+================================= -->
+
+
+<script
 type="module"
 src="js/student-app.js">
 </script>
 
 
-
-<!-- ==============================
-     MESSAGING SYSTEM
-============================== -->
-
-
-<script 
+<script
 type="module"
 src="js/messages/messages.js">
 </script>
 
 
-<script 
-type="module"
-src="js/messages/chat.js">
-</script>
-
-
-<script 
-type="module"
-src="js/messages/typing.js">
-</script>
-
-
-<script 
-type="module"
-src="js/messages/presence.js">
-</script>
-
-
-<script 
-type="module"
-src="js/messages/uploads.js">
-</script>
-
-
-<script 
-type="module"
-src="js/messages/notifications.js">
-</script>
-
-
-
-<!-- ICONS -->
 
 <script>
 
 lucide.createIcons();
 
 </script>
+
 
 
 </body>

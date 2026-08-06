@@ -1,8 +1,7 @@
 // =====================================
 // SPARK STACK ACADEMY
-// REAL TIME MESSAGING ENGINE V1
+// TYPING INDICATOR
 // typing.js
-// TYPING INDICATOR SYSTEM
 // =====================================
 
 
@@ -25,19 +24,13 @@ import {
 
 doc,
 setDoc,
-deleteDoc,
-collection,
 onSnapshot,
 serverTimestamp
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-
-console.log(
-"⌨️ Typing Engine Loaded"
-);
-
+console.log("✍️ Typing Loaded");
 
 
 
@@ -45,14 +38,11 @@ console.log(
 // STATE
 // =====================================
 
-
 let currentUser = null;
 
-let activeChatId = null;
+let chatId = null;
 
 let typingTimer = null;
-
-let typing = false;
 
 
 
@@ -60,13 +50,11 @@ let typing = false;
 // DOM
 // =====================================
 
-
 const messageInput =
 
 document.getElementById(
 "messageInput"
 );
-
 
 
 const typingIndicator =
@@ -77,11 +65,26 @@ document.getElementById(
 
 
 
+// =====================================
+// GET CHAT ID
+// =====================================
+
+const params =
+
+new URLSearchParams(
+window.location.search
+);
+
+
+chatId =
+
+params.get("chatId");
+
+
 
 // =====================================
 // AUTH
 // =====================================
-
 
 onAuthStateChanged(
 
@@ -90,51 +93,25 @@ auth,
 (user)=>{
 
 
-if(user){
+if(!user)
+return;
 
-currentUser=user;
+
+currentUser = user;
+
+
+startTypingListener();
+
 
 }
 
-
-});
-
-
-
-
-
-// =====================================
-// RECEIVE ACTIVE CHAT
-// =====================================
-
-
-window.addEventListener(
-
-"openChat",
-
-(e)=>{
-
-
-activeChatId =
-
-e.detail.id;
-
-
-
-listenTyping();
-
-
-
-});
-
-
+);
 
 
 
 // =====================================
-// INPUT LISTENER
+// DETECT TYPING
 // =====================================
-
 
 messageInput?.addEventListener(
 
@@ -143,53 +120,47 @@ messageInput?.addEventListener(
 ()=>{
 
 
-if(!activeChatId)
-
-return;
+setTyping(true);
 
 
 
-startTyping();
+clearTimeout(
+typingTimer
+);
 
 
 
-clearTimeout(typingTimer);
+typingTimer = setTimeout(
+
+()=>{
+
+setTyping(false);
+
+},
+
+1000
+
+);
 
 
+}
 
-typingTimer = setTimeout(()=>{
-
-
-stopTyping();
-
-
-},2500);
-
-
-
-});
-
-
-
+);
 
 
 
 // =====================================
-// START TYPING
+// UPDATE TYPING STATE
 // =====================================
 
-
-async function startTyping(){
-
+async function setTyping(status){
 
 
-if(typing)
+if(!currentUser || !chatId){
 
 return;
 
-
-
-typing=true;
+}
 
 
 
@@ -201,31 +172,33 @@ db,
 
 "chats",
 
-activeChatId,
-
-"typing",
-
-currentUser.uid
+chatId
 
 ),
 
 {
 
+typing:{
 
-name:
+uid:
 
-currentUser.displayName ||
-
-"Student",
+currentUser.uid,
 
 
-typing:true,
+status,
 
 
 updatedAt:
 
 serverTimestamp()
 
+}
+
+},
+
+{
+
+merge:true
 
 }
 
@@ -236,28 +209,14 @@ serverTimestamp()
 
 
 
-
-
 // =====================================
-// STOP TYPING
+// LISTEN OTHER USER TYPING
 // =====================================
 
-
-async function stopTyping(){
-
+function startTypingListener(){
 
 
-if(!typing)
-
-return;
-
-
-
-typing=false;
-
-
-
-await deleteDoc(
+onSnapshot(
 
 doc(
 
@@ -265,104 +224,90 @@ db,
 
 "chats",
 
-activeChatId,
+chatId
 
-"typing",
-
-currentUser.uid
-
-)
-
-);
-
-
-}
-
-
-
-
-
-// =====================================
-// LISTEN TYPING
-// =====================================
-
-
-function listenTyping(){
-
-
-
-const typingRef =
-
-collection(
-
-db,
-
-"chats",
-
-activeChatId,
-
-"typing"
-
-);
-
-
-
-onSnapshot(
-
-typingRef,
+),
 
 (snapshot)=>{
 
 
-let someoneTyping=false;
+const data =
+
+snapshot.data();
 
 
 
-snapshot.forEach(
+if(!data?.typing){
 
-(docSnap)=>{
+hideTyping();
+
+return;
+
+}
+
 
 
 if(
 
-docSnap.id !== currentUser.uid
+data.typing.uid !== currentUser.uid &&
+
+data.typing.status
 
 ){
 
 
-someoneTyping=true;
+showTyping();
+
+
+}
+
+else{
+
+
+hideTyping();
 
 
 }
 
 
-});
+
+}
+
+);
+
+
+}
 
 
 
+// =====================================
+// UI
+// =====================================
+
+function showTyping(){
 
 
-if(typingIndicator){
+if(!typingIndicator)
+return;
 
 
 typingIndicator.style.display =
-
-someoneTyping
-
-?
-
-"flex"
-
-:
-
-"none";
+"flex";
 
 
 }
 
 
 
-});
+function hideTyping(){
+
+
+if(!typingIndicator)
+return;
+
+
+typingIndicator.style.display =
+"none";
 
 
 }

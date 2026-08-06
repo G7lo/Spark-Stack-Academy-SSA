@@ -1,8 +1,7 @@
 // =====================================
 // SPARK STACK ACADEMY
-// REAL TIME MESSAGING ENGINE V1
+// MESSAGES
 // messages.js
-// MAIN CONTROLLER
 // =====================================
 
 
@@ -25,16 +24,14 @@ import {
 
 collection,
 query,
-orderBy,
-onSnapshot
+where,
+onSnapshot,
+orderBy
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-
-console.log(
-"💬 Messages Controller Loaded"
-);
+console.log("💬 Messages Loaded");
 
 
 
@@ -42,20 +39,13 @@ console.log(
 // STATE
 // =====================================
 
-
 let currentUser = null;
-
-let conversations = [];
-
-let activeChat = null;
-
 
 
 
 // =====================================
 // DOM
 // =====================================
-
 
 const conversationList =
 
@@ -64,20 +54,17 @@ document.getElementById(
 );
 
 
+const emptyState =
 
-const emptyChat =
-
-document.querySelector(
-".empty-chat"
+document.getElementById(
+"emptyState"
 );
-
 
 
 
 // =====================================
 // AUTH
 // =====================================
-
 
 onAuthStateChanged(
 
@@ -88,36 +75,23 @@ auth,
 
 if(!user){
 
-console.log(
-"No logged in user"
-);
+window.location.href =
+"../login.html";
 
 return;
 
 }
 
 
-
 currentUser = user;
 
 
-console.log(
+loadChats();
 
-"Messaging user:",
 
-user.uid
+}
 
 );
-
-
-
-loadConversations();
-
-
-
-});
-
-
 
 
 
@@ -125,8 +99,7 @@ loadConversations();
 // LOAD USER CHATS
 // =====================================
 
-
-function loadConversations(){
+function loadChats(){
 
 
 const chatsRef =
@@ -147,11 +120,13 @@ query(
 
 chatsRef,
 
-orderBy(
+where(
 
-"updatedAt",
+"members",
 
-"desc"
+"array-contains",
+
+currentUser.uid
 
 )
 
@@ -169,7 +144,21 @@ chatsQuery,
 conversationList.innerHTML = "";
 
 
-conversations = [];
+
+if(snapshot.empty){
+
+
+emptyState.style.display =
+"flex";
+
+
+return;
+
+}
+
+
+emptyState.style.display =
+"none";
 
 
 
@@ -178,50 +167,33 @@ snapshot.forEach(
 (doc)=>{
 
 
-const chat = {
+renderConversation(
 
+doc.id,
 
-id:doc.id,
+doc.data()
 
-...doc.data()
-
-};
-
-
-
-if(
-
-chat.participants?.includes(
-
-currentUser.uid
-
-)
-
-){
-
-
-conversations.push(chat);
-
-
-renderConversation(chat);
+);
 
 
 }
 
-
-
-});
-
-
-
-console.log(
-
-"Chats loaded:",
-
-conversations.length
-
 );
 
+
+
+},
+
+(error)=>{
+
+
+console.error(
+
+"Chats loading failed:",
+
+error
+
+);
 
 
 }
@@ -238,37 +210,60 @@ conversations.length
 // RENDER CHAT CARD
 // =====================================
 
+function renderConversation(
 
-function renderConversation(chat){
+chatId,
+
+chatData
+
+){
+
+
+const otherUser =
+
+chatData.members?.find(
+
+member =>
+
+member.uid !== currentUser.uid
+
+) || {};
 
 
 
-const div =
+const card =
 
 document.createElement(
-
 "div"
-
 );
 
 
 
-div.className =
+card.className =
 
 "conversation-card";
 
 
 
-div.innerHTML = `
-
+card.innerHTML = `
 
 <div class="conversation-avatar">
 
-<img src="${
-chat.avatar ||
-"../assets/images/ssa-logo.png"
+<img
 
-}">
+src="${
+
+otherUser.photo ||
+
+'../assets/images/default-avatar.png'
+
+}"
+
+>
+
+
+<span class="online-dot"></span>
+
 
 </div>
 
@@ -276,26 +271,26 @@ chat.avatar ||
 
 <div class="conversation-info">
 
-<h4>
+<h3>
 
 ${
 
-chat.name ||
+otherUser.name ||
 
 "Spark Stack User"
 
 }
 
-</h4>
+</h3>
 
 
 <p>
 
 ${
 
-chat.lastMessage ||
+chatData.lastMessage ||
 
-"Start conversation"
+"No messages yet"
 
 }
 
@@ -305,24 +300,45 @@ chat.lastMessage ||
 </div>
 
 
+
+<div class="conversation-meta">
+
+
+<span class="message-time">
+
+${
+
+formatTime(
+
+chatData.updatedAt
+
+)
+
+}
+
+</span>
+
+
+</div>
+
+
 `;
 
 
 
+card.onclick = ()=>{
 
-div.onclick = ()=>{
 
+window.location.href =
 
-openConversation(chat);
-
+`chat.html?chatId=${chatId}`;
 
 
 };
 
 
 
-conversationList.appendChild(div);
-
+conversationList.appendChild(card);
 
 
 }
@@ -330,42 +346,40 @@ conversationList.appendChild(div);
 
 
 
+
 // =====================================
-// OPEN CHAT
+// FORMAT TIME
 // =====================================
 
-
-function openConversation(chat){
-
-
-activeChat = chat;
+function formatTime(timestamp){
 
 
+if(!timestamp){
 
-if(emptyChat){
-
-emptyChat.style.display="none";
+return "";
 
 }
 
 
+const date =
 
-window.dispatchEvent(
+timestamp.toDate();
 
-new CustomEvent(
 
-"openChat",
+
+return date.toLocaleDateString(
+
+[],
 
 {
 
-detail:chat
+month:"short",
+
+day:"numeric"
 
 }
 
-)
-
 );
-
 
 
 }
