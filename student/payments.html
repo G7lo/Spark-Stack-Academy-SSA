@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Payments | Spark Stack Academy
+</title>
+
+
+<link rel="stylesheet"
+href="css/student-core.css">
+
+<link rel="stylesheet"
+href="css/components.css">
+
+<link rel="stylesheet"
+href="css/payments.css">
+
+<link rel="stylesheet"
+href="css/responsive.css">
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+</head>
+
+
+<body>
+
+
+<div class="payments-page">
+
+
+
+<!-- ===============================
+ HEADER
+================================ -->
+
+
+<section class="payments-header">
+
+
+<button id="backBtn"
+class="header-btn">
+
+<i data-lucide="arrow-left"></i>
+
+</button>
+
+
+<div>
+
+<h1>
+
+Payments 💳
+
+</h1>
+
+
+<p>
+
+Manage your academy fees
+
+</p>
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- ===============================
+ SUMMARY
+================================ -->
+
+
+<section class="payment-summary">
+
+
+<div class="summary-card">
+
+<span>
+
+Total Paid
+
+</span>
+
+
+<h2 id="totalPaid">
+
+KSh 0
+
+</h2>
+
+
+</div>
+
+
+
+
+<div class="summary-card">
+
+<span>
+
+Balance
+
+</span>
+
+
+<h2 id="balance">
+
+KSh 0
+
+</h2>
+
+
+</div>
+
+
+
+
+<div class="summary-card">
+
+<span>
+
+Status
+
+</span>
+
+
+<h2 id="paymentStatus">
+
+Pending
+
+</h2>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ===============================
+ COURSE FEES
+================================ -->
+
+
+<section class="course-payments">
+
+
+<h2>
+
+My Courses
+
+</h2>
+
+
+
+<div id="courseList">
+
+<div class="empty-payment">
+Loading courses...
+</div>
+
+</div>
+
+
+<!-- PAYMENT REQUEST MODAL -->
+
+<div id="paymentModal" class="receipt-modal hidden">
+
+<div class="receipt-box">
+
+<button id="closePayment">
+✕
+</button>
+
+<h2>
+Make Payment
+</h2>
+
+<p id="selectedCourse">
+Course
+</p>
+
+<input id="phoneNumber"
+type="tel"
+placeholder="M-PESA Number">
+
+
+<input id="paymentAmount"
+type="number"
+readonly>
+
+
+<button id="confirmPayment">
+Request Payment
+</button>
+
+</div>
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- ===============================
+ HISTORY
+================================ -->
+
+
+<section class="payment-history">
+
+
+<h2>
+
+Transaction History
+
+</h2>
+
+
+
+<div id="transactionList">
+
+
+<div class="empty-payment">
+
+
+No transactions yet
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ===============================
+ RECEIPT MODAL
+================================ -->
+
+
+<div id="receiptModal"
+class="receipt-modal hidden">
+
+
+<div class="receipt-box">
+
+
+<button id="closeReceipt">
+
+<i data-lucide="x"></i>
+
+</button>
+
+
+
+<h2>
+
+Spark Stack Academy
+
+</h2>
+
+
+<p>
+
+Payment Receipt
+
+</p>
+
+
+
+<div id="receiptContent">
+
+
+</div>
+
+
+
+<button>
+
+Print Receipt
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+<script
+type="module"
+src="js/student-app.js">
+
+</script>
+
+
+<script
+type="module"
+src="js/payments.js">
+
+</script>
+
+
+<script>
+
+lucide.createIcons();
+
+</script>
+
+
+
+</body>
+
+</html>

@@ -778,54 +778,12 @@ error
 }
 
 
-
-
-
-
-
-
-
-// ===============================
-// PAYMENT START
-// ===============================
-
-
 function startPayment(){
 
 
+window.location.href =
 
-alert(
-
-"Payment request coming soon. Complete M-Pesa payment to unlock."
-
-);
-
-
-
-/*
-
-Later:
-
-Firebase Function
-
-        ↓
-
-Daraja STK Push
-
-        ↓
-
-Callback
-
-        ↓
-
-paymentStatus = paid
-
-        ↓
-
-Classroom unlock
-
-*/
-
+`payments.html?courseId=${courseId}`;
 
 
 }

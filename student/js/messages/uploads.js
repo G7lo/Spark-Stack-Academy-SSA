@@ -243,27 +243,20 @@ export async function uploadFile(){
 
 
 if(
-
 !selectedFile ||
-
 !currentUser ||
-
 !chatId
-
 ){
 
-return;
+return null;
 
 }
-
 
 
 try{
 
 
-const fileRef =
-
-ref(
+const fileRef = ref(
 
 storage,
 
@@ -283,91 +276,45 @@ selectedFile
 
 
 
-const url =
-
-await getDownloadURL(
+const url = await getDownloadURL(
 fileRef
 );
 
 
 
-await addDoc(
+const fileData = {
 
-collection(
+url:url,
 
-db,
+name:selectedFile.name,
 
-"chats",
+type:selectedFile.type
 
-chatId,
-
-"messages"
-
-),
-
-{
-
-
-senderId:
-
-currentUser.uid,
-
-
-fileUrl:
-
-url,
-
-
-fileName:
-
-selectedFile.name,
-
-
-fileType:
-
-selectedFile.type,
-
-
-timestamp:
-
-serverTimestamp(),
-
-
-seen:false
-
-
-}
-
-);
+};
 
 
 
 selectedFile = null;
 
-
 fileInput.value = "";
 
+uploadPreview.style.display="none";
 
-uploadPreview.style.display =
-"none";
+
+return fileData;
 
 
 }
-
 
 catch(error){
 
-
 console.error(
-
 "Upload failed:",
-
 error
-
 );
 
+return null;
 
 }
-
 
 }

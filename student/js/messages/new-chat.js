@@ -552,9 +552,7 @@ db,
 
 {
 
-
 members:[
-
 
 {
 
@@ -571,7 +569,6 @@ photo:
 currentUser.photoURL || ""
 
 },
-
 
 {
 
@@ -591,6 +588,14 @@ user.photo ||
 
 }
 
+],
+
+
+memberIds:[
+
+currentUser.uid,
+
+user.id
 
 ],
 

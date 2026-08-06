@@ -28,7 +28,8 @@ query,
 orderBy,
 onSnapshot,
 addDoc,
-serverTimestamp
+serverTimestamp,
+updateDoc
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -333,9 +334,33 @@ snapshot.forEach(
 (doc)=>{
 
 
+const data = doc.data();
+
+
 renderMessage(
-doc.data()
+{
+id:doc.id,
+...data
+}
 );
+
+
+if(
+data.senderId !== currentUser.uid &&
+!data.seen
+){
+
+updateDoc(
+
+doc.ref,
+
+{
+seen:true
+}
+
+);
+
+}
 
 
 }
@@ -495,6 +520,28 @@ ${content}
 
 ${formatTime(message.timestamp)}
 
+${
+
+isMine
+
+?
+
+`
+
+<span class="message-status">
+
+${message.seen ? "✓✓" : "✓"}
+
+</span>
+
+`
+
+:
+
+""
+
+}
+
 </div>
 
 `;
@@ -585,7 +632,10 @@ messageInput?.addEventListener(
 (event)=>{
 
 
-if(event.key === "Enter"){
+if(
+event.key === "Enter" &&
+!event.shiftKey
+){
 
 event.preventDefault();
 
@@ -659,7 +709,27 @@ seen:false
 
 );
 
+await updateDoc(
 
+doc(
+
+db,
+
+"chats",
+
+chatId
+
+),
+
+{
+
+lastMessage:text,
+
+updatedAt:serverTimestamp()
+
+}
+
+);
 
 messageInput.value = "";
 

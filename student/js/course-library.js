@@ -11,14 +11,14 @@ import {
 
 } from "../../js/firebase.js";
 
-
-
 import {
 
     collection,
     getDocs,
     query,
-    orderBy
+    orderBy,
+    doc,
+    getDoc
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -423,23 +423,6 @@ openCourse(id);
 }
 
 
-
-
-
-
-
-
-function openCourse(id){
-
-
-
-window.location.href =
-
-`course-details.html?id=${id}`;
-
-
-
-}
 // =====================================
 // SEARCH SYSTEM
 // =====================================

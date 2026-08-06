@@ -121,12 +121,16 @@ query(
 chatsRef,
 
 where(
-
-"members",
-
+"memberIds",
 "array-contains",
-
 currentUser.uid
+),
+
+orderBy(
+
+"updatedAt",
+
+"desc"
 
 )
 
@@ -290,7 +294,7 @@ ${
 
 chatData.lastMessage ||
 
-"No messages yet"
+"Start a conversation"
 
 }
 
