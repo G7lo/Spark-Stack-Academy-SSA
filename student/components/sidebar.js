@@ -94,7 +94,19 @@ export function updateSidebar(student) {
     const sidebarAvatar = document.getElementById("sidebarAvatar");
     const sidebarLevel = document.getElementById("sidebarLevel");
 
-    if (sidebarName) sidebarName.textContent = name;
+    if (sidebarName) {
+
+    sidebarName.innerHTML = `
+        ${name}
+
+        ${
+            student.premium === true
+                ? `<span class="premium-badge" title="SSA Premium Verified">✓</span>`
+                : ""
+        }
+    `;
+
+}
 
     if (sidebarAvatar) sidebarAvatar.textContent = initial;
 

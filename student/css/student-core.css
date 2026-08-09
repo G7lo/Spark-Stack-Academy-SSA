@@ -1,318 +1,494 @@
 /* =====================================
    SPARK STACK ACADEMY
-   STUDENT PORTAL V1
-   CORE STYLES
+   STUDENT PORTAL
+   STUDENT CORE CSS V2
 ===================================== */
 
 
-/* =========================
-   ROOT VARIABLES
-========================= */
+/* =====================================
+   RESET
+===================================== */
 
-:root{
+*,
+*::before,
+*::after {
 
-    --primary:#081C3A;
+    box-sizing: border-box;
 
-    --secondary:#2979FF;
+    margin: 0;
 
-    --accent:#FFC107;
-
-    --white:#FFFFFF;
-
-    --background:#F5F7FB;
-
-    --card:#FFFFFF;
-
-    --text:#1F2937;
-
-    --muted:#6B7280;
-
-    --border:#E5E7EB;
-
-    --success:#22C55E;
-
-    --danger:#EF4444;
-
-
-    --shadow:
-    0 10px 30px rgba(0,0,0,0.06);
-
-
-    --radius:18px;
-
-
-    --transition:
-    all .3s ease;
+    padding: 0;
 
 }
 
 
+html {
 
-
-
-
-/* =========================
-   GLOBAL RESET
-========================= */
-
-
-*{
-
-    margin:0;
-
-    padding:0;
-
-    box-sizing:border-box;
+    scroll-behavior: smooth;
 
 }
 
 
+body {
 
-
-html{
-
-    scroll-behavior:smooth;
-
-}
-
-
-
-
-
-body{
+    min-height: 100vh;
 
     font-family:
-    "Poppins",
-    sans-serif;
+        "Poppins",
+        Arial,
+        sans-serif;
 
+    background: #f6f8fc;
 
-    background:
-    var(--background);
+    color: #081C3A;
 
-
-    color:
-    var(--text);
-
-
-    min-height:100vh;
+    overflow-x: hidden;
 
 }
 
 
+/* =====================================
+   STUDENT LAYOUT
+===================================== */
 
+.student-layout {
 
+    min-height: 100vh;
 
-a{
+    width: 100%;
 
-    text-decoration:none;
+    display: flex;
 
-    color:inherit;
+    background: #f6f8fc;
 
 }
 
 
+/* =====================================
+   SIDEBAR SPACE
+===================================== */
+
+.sidebar-container {
+
+    width: 280px;
+
+    min-width: 280px;
+
+    flex-shrink: 0;
+
+}
 
 
+/* =====================================
+   MAIN CONTENT
+===================================== */
+
+.student-main {
+
+    flex: 1;
+
+    min-width: 0;
+
+    width: calc(100% - 280px);
+
+}
+
+
+/* =====================================
+   TOPBAR CONTAINER
+===================================== */
+
+.topbar-container {
+
+    width: 100%;
+
+}
+
+
+/* =====================================
+   PAGE CONTENT
+===================================== */
+
+.dashboard-content {
+
+    width: 100%;
+
+    padding: 30px;
+
+}
+
+
+/* =====================================
+   LINKS
+===================================== */
+
+a {
+
+    color: inherit;
+
+}
+
+
+/* =====================================
+   BUTTONS
+===================================== */
 
 button,
 input,
-select,
-textarea{
+textarea,
+select {
 
-    font-family:inherit;
-
-}
-
-
-
-
-
-
-
-img{
-
-    max-width:100%;
-
-    display:block;
+    font: inherit;
 
 }
 
 
+/* =====================================
+   IMAGES
+===================================== */
+
+img {
+
+    max-width: 100%;
+
+    display: block;
+
+}
 
 
+/* =====================================
+   SCROLLBAR
+===================================== */
+
+::-webkit-scrollbar {
+
+    width: 7px;
+
+    height: 7px;
+
+}
 
 
+::-webkit-scrollbar-track {
+
+    background: #f1f4f9;
+
+}
 
 
-/* =========================
+::-webkit-scrollbar-thumb {
+
+    background: #cbd5e1;
+
+    border-radius: 20px;
+
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+
+    background: #94a3b8;
+
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 900px) {
+
+    .sidebar-container {
+
+        width: 0;
+
+        min-width: 0;
+
+    }
+
+
+    .student-main {
+
+        width: 100%;
+
+        min-width: 0;
+
+    }
+
+
+    .dashboard-content {
+
+        padding: 20px 15px;
+
+    }
+
+}
+
+
+/* =====================================
+   SMALL PHONES
+===================================== */
+
+@media (max-width: 480px) {
+
+    .dashboard-content {
+
+        padding: 16px 12px;
+
+    }
+
+}
+/* =====================================
+   SPARK STACK ACADEMY
+   THEME FOUNDATION
+===================================== */
+
+
+/* =====================================
+   LIGHT THEME
+===================================== */
+
+:root {
+
+    --bg-main: #f6f8fc;
+
+    --bg-card: #ffffff;
+
+    --bg-soft: #f4f7fc;
+
+    --text-main: #081C3A;
+
+    --text-muted: #64748b;
+
+    --border: #e5eaf2;
+
+    --primary: #2979FF;
+
+}
+
+
+/* =====================================
+   DARK THEME
+===================================== */
+
+html[data-theme="dark"] {
+
+    --bg-main: #071426;
+
+    --bg-card: #0d1d33;
+
+    --bg-soft: #12243d;
+
+    --text-main: #f1f5f9;
+
+    --text-muted: #94a3b8;
+
+    --border: #1e3552;
+
+    --primary: #4d8dff;
+
+}
+
+
+/* =====================================
+   BODY
+===================================== */
+
+html[data-theme="dark"] body {
+
+    background: var(--bg-main);
+
+    color: var(--text-main);
+
+}
+
+
+/* =====================================
    MAIN LAYOUT
-========================= */
+===================================== */
 
+html[data-theme="dark"] .student-layout {
 
-.student-layout{
-
-    display:flex;
-
-    min-height:100vh;
+    background: var(--bg-main);
 
 }
 
 
+/* =====================================
+   COMMON CONTENT
+===================================== */
+
+html[data-theme="dark"] .dashboard-content {
+
+    color: var(--text-main);
+
+}
 
 
+/* =====================================
+   COMMON CARDS
+===================================== */
+
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .course-card,
+html[data-theme="dark"] .announcement-card,
+html[data-theme="dark"] .transaction-card,
+html[data-theme="dark"] .settings-card,
+html[data-theme="dark"] .profile-card {
+
+    background: var(--bg-card);
+
+    border-color: var(--border);
+
+    color: var(--text-main);
+
+}
 
 
-.student-main{
+/* =====================================
+   HEADINGS
+===================================== */
 
-    flex:1;
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4 {
 
-    margin-left:270px;
+    color: var(--text-main);
 
-    width:calc(100% - 270px);
+}
 
-    min-height:100vh;
+
+/* =====================================
+   MUTED TEXT
+===================================== */
+
+html[data-theme="dark"] p {
+
+    color: var(--text-muted);
+
+}
+
+
+/* =====================================
+   TOPBAR
+===================================== */
+
+html[data-theme="dark"] .topbar {
+
+    background:
+        rgba(13,29,51,.94);
+
+    border-color: var(--border);
+
+}
+
+
+/* =====================================
+   SEARCH
+===================================== */
+
+html[data-theme="dark"] .top-search {
+
+    background: var(--bg-soft);
+
+    border-color: var(--border);
+
+}
+
+
+html[data-theme="dark"] .top-search input {
+
+    color: var(--text-main);
+
+}
+
+
+html[data-theme="dark"] .top-search input::placeholder {
+
+    color: #64748b;
+
+}
+
+
+/* =====================================
+   TOPBAR BUTTONS
+===================================== */
+
+html[data-theme="dark"] .icon-btn,
+html[data-theme="dark"] .theme-btn,
+html[data-theme="dark"] .menu-btn {
+
+    background: var(--bg-soft);
+
+    color: var(--text-main);
+
+}
+
+
+/* =====================================
+   PROFILE
+===================================== */
+
+html[data-theme="dark"] .profile-menu:hover {
+
+    background: var(--bg-soft);
+
+}
+
+
+html[data-theme="dark"] .profile-info strong {
+
+    color: var(--text-main);
+
+}
+
+
+/* =====================================
+   NOTIFICATIONS
+===================================== */
+
+html[data-theme="dark"] .notification-panel {
+
+    background: var(--bg-card);
+
+    border-color: var(--border);
+
+}
+
+
+html[data-theme="dark"] .notification-panel h4 {
+
+    color: var(--text-main);
+
+}
+
+
+/* =====================================
+   INPUTS
+===================================== */
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+
+    background: var(--bg-soft);
+
+    color: var(--text-main);
+
+    border-color: var(--border);
+
+}
+
+
+/* =====================================
+   PAGE TRANSITION
+===================================== */
+
+body {
 
     transition:
-    var(--transition);
-
-}
-
-
-
-
-
-.dashboard-content{
-
-    padding:30px;
-
-}
-
-
-
-
-
-
-
-
-/* =========================
-   COMMON COMPONENTS
-========================= */
-
-
-.dashboard-section{
-
-    margin-top:30px;
-
-}
-
-
-
-
-
-.section-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:20px;
-
-}
-
-
-
-
-
-.section-header h2{
-
-    font-size:22px;
-
-    font-weight:700;
-
-    color:var(--primary);
-
-}
-
-
-
-
-
-.section-header a{
-
-    color:
-    var(--secondary);
-
-    font-size:14px;
-
-    font-weight:600;
-
-}
-
-
-
-
-
-
-
-/* =========================
-   CARDS
-========================= */
-
-
-.card{
-
-    background:
-    var(--card);
-
-
-    border-radius:
-    var(--radius);
-
-
-    box-shadow:
-    var(--shadow);
-
-
-    border:
-    1px solid var(--border);
-
-}
-
-
-
-
-
-
-
-
-/* =========================
-   SCROLLBAR
-========================= */
-
-
-::-webkit-scrollbar{
-
-    width:8px;
-
-}
-
-
-
-::-webkit-scrollbar-track{
-
-    background:#eee;
-
-}
-
-
-
-::-webkit-scrollbar-thumb{
-
-    background:
-    var(--secondary);
-
-    border-radius:20px;
+        background .25s ease,
+        color .25s ease;
 
 }

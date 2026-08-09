@@ -1,50 +1,39 @@
 <!-- =====================================
      SPARK STACK ACADEMY
-     STUDENT TOPBAR V1
+     STUDENT TOPBAR V2
 ===================================== -->
-
 
 <header class="topbar">
 
 
-
     <!-- MOBILE MENU -->
 
-    <button 
-class="menu-btn"
-id="mobileMenuBtn">
+    <button
+        class="menu-btn"
+        id="mobileMenuBtn"
+        type="button"
+        aria-label="Open menu"
+    >
 
-<i data-lucide="menu"></i>
+        <i data-lucide="menu"></i>
 
-</button>
-
-
-
-
-
-
+    </button>
 
 
     <!-- SEARCH -->
 
     <div class="top-search">
 
-
         <i data-lucide="search"></i>
 
-
-        <input 
-        type="search"
-        placeholder="Search courses, lessons...">
-
+        <input
+            id="studentSearch"
+            type="search"
+            placeholder="Search courses, lessons..."
+            autocomplete="off"
+        >
 
     </div>
-
-
-
-
-
-
 
 
     <!-- RIGHT ACTIONS -->
@@ -52,186 +41,131 @@ id="mobileMenuBtn">
     <div class="top-actions">
 
 
-
-
-
-
-        <!-- STREAK -->
-
-        <div class="streak-widget">
-
-
-            <i data-lucide="flame"></i>
-
-
-            <div>
-
-
-                <strong id="streakCount">
-
-                    0
-
-                </strong>
-
-
-                <span>
-
-                    Day Streak
-
-                </span>
-
-
-            </div>
-
-
-        </div>
-
-
-
-
-
-
-
-
-        <!-- XP -->
-
-        <div class="xp-widget">
-
-
-            <i data-lucide="zap"></i>
-
-
-            <div>
-
-
-                <strong>
-
-                    Level 
-                    <span id="topLevel">
-                        1
-                    </span>
-
-                </strong>
-
-
-
-                <small>
-
-
-                    <span id="xpPoints">
-                        0
-                    </span>
-                    XP
-
-
-                </small>
-
-
-            </div>
-
-
-
-        </div>
-
-
-
-
-
-
-
-
-        <!-- NOTIFICATIONS -->
-
-        <button 
-        class="icon-btn"
-        id="notificationBtn">
-
-
-            <i data-lucide="bell"></i>
-
-
-            <span 
-            class="badge"
-            id="notificationCount">
-
-                0
-
-            </span>
-
+        <!-- THEME -->
+
+        <button
+            class="theme-btn"
+            id="themeToggle"
+            type="button"
+            aria-label="Toggle theme"
+        >
+
+            <i
+                data-lucide="moon"
+                id="themeIcon"
+            ></i>
 
         </button>
 
 
+        <!-- NOTIFICATIONS -->
 
-<div class="notification-panel"
-id="notificationPanel">
+        <div class="notification-wrapper">
 
-    <h4>
-        Notifications
-    </h4>
+            <button
+                class="icon-btn"
+                id="notificationBtn"
+                type="button"
+                aria-label="Notifications"
+            >
 
-    <div id="notificationList">
+                <i data-lucide="bell"></i>
 
-        <p>
-            No new notifications
-        </p>
-
-    </div>
-
-</div>
-
-
-
-
-        <!-- PROFILE -->
-
-        <div class="profile-menu" id="profileMenu">
-
-
-
-            <div 
-            class="student-avatar"
-            id="topAvatar">
-
-
-                S
-
-
-            </div>
-
-
-
-
-
-            <div class="profile-info">
-
-
-                <strong id="topStudentName">
-
-                    Student
-
-                </strong>
-
-
-                <span>
-
-                    Learner
-
+                <span
+                    class="badge"
+                    id="notificationCount"
+                >
+                    0
                 </span>
 
+            </button>
+
+
+            <!-- NOTIFICATION PANEL -->
+
+            <div
+                class="notification-panel"
+                id="notificationPanel"
+            >
+
+                <div class="notification-header">
+
+                    <div>
+
+                        <span>
+                            Student Center
+                        </span>
+
+                        <h4>
+                            Notifications
+                        </h4>
+
+                    </div>
+
+                    <button
+                        id="markNotificationsRead"
+                        type="button"
+                    >
+                        Mark all read
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="notificationList"
+                    class="notification-list"
+                >
+
+                    <div class="notification-empty">
+
+                        <i data-lucide="bell-off"></i>
+
+                        <p>
+                            No new notifications
+                        </p>
+
+                    </div>
+
+                </div>
 
             </div>
-
-
 
         </div>
 
 
+        <!-- PROFILE -->
 
+        <div
+            class="profile-menu"
+            id="profileMenu"
+            role="button"
+            tabindex="0"
+        >
+
+            <div
+                class="student-avatar"
+                id="topAvatar"
+            >
+                S
+            </div>
+
+
+            <div class="profile-info">
+
+                <strong id="topStudentName">
+                    Student
+                </strong>
+
+                <span>
+                    Learner
+                </span>
+
+            </div>
+
+        </div>
 
 
     </div>
-
-
 
 </header>

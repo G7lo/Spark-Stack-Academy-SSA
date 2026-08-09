@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        My Profile | Spark Stack Academy
+    </title>
+
+
+    <link
+        rel="stylesheet"
+        href="css/student-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/profile.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <script
+        src="https://unpkg.com/lucide@latest">
+    </script>
+
+</head>
+
+
+<body>
+
+
+<div class="student-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside
+        id="sidebarContainer"
+        class="sidebar-container">
+    </aside>
+
+
+    <!-- OVERLAY -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay">
+    </div>
+
+
+    <!-- MAIN -->
+
+    <main class="student-main">
+
+
+        <!-- TOPBAR -->
+
+        <div
+            id="topbarContainer"
+            class="topbar-container">
+        </div>
+
+
+        <!-- PAGE -->
+
+        <section
+            class="dashboard-content profile-page"
+        >
+
+
+            <!-- HEADER -->
+
+            <div class="profile-header">
+
+                <div>
+
+                    <span class="page-badge">
+
+                        <i data-lucide="user"></i>
+
+                        Student Profile
+
+                    </span>
+
+
+                    <h1>
+                        My Profile
+                    </h1>
+
+
+                    <p>
+                        Manage your student identity
+                        and academy information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROFILE CARD -->
+
+            <div class="profile-grid">
+
+
+                <!-- PERSONAL INFO -->
+
+                <div class="profile-card profile-main-card">
+
+
+                    <div class="profile-avatar-section">
+
+                        <div
+                            class="profile-avatar"
+                            id="profileAvatar"
+                        >
+                            S
+                        </div>
+
+
+                        <div>
+
+                            <h2 id="profileName">
+                                Student
+                            </h2>
+
+                            <p id="profileEmail">
+                                Loading email...
+                            </p>
+
+
+                            <span
+                                class="student-badge"
+                                id="studentBadge"
+                            >
+                                Student
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-divider"></div>
+
+
+                    <div class="profile-info-grid">
+
+
+                        <div class="profile-info">
+
+                            <span>
+                                Full Name
+                            </span>
+
+                            <strong id="fullName">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-info">
+
+                            <span>
+                                Email
+                            </span>
+
+                            <strong id="email">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-info">
+
+                            <span>
+                                Admission Number
+                            </span>
+
+                            <strong id="admissionNumber">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-info">
+
+                            <span>
+                                Phone
+                            </span>
+
+                            <strong id="phone">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-info">
+
+                            <span>
+                                Joined
+                            </span>
+
+                            <strong id="joinedDate">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-info">
+
+                            <span>
+                                Account Status
+                            </span>
+
+                            <strong class="status-active">
+                                Active
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUICK STATS -->
+
+                <div class="profile-card">
+
+
+                    <div class="card-heading">
+
+                        <i data-lucide="bar-chart-3"></i>
+
+                        <h3>
+                            Learning Overview
+                        </h3>
+
+                    </div>
+
+
+                    <div class="profile-stats">
+
+
+                        <div class="profile-stat">
+
+                            <strong id="coursesCount">
+                                0
+                            </strong>
+
+                            <span>
+                                Courses
+                            </span>
+
+                        </div>
+
+
+                        <div class="profile-stat">
+
+                            <strong id="completedCount">
+                                0
+                            </strong>
+
+                            <span>
+                                Completed
+                            </span>
+
+                        </div>
+
+
+                        <div class="profile-stat">
+
+                            <strong id="xpCount">
+                                0
+                            </strong>
+
+                            <span>
+                                XP
+                            </span>
+
+                        </div>
+
+
+                        <div class="profile-stat">
+
+                            <strong id="levelCount">
+                                1
+                            </strong>
+
+                            <span>
+                                Level
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+<script
+    type="module"
+    src="js/student-app.js">
+</script>
+
+
+<script
+    type="module"
+    src="js/profile.js">
+</script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

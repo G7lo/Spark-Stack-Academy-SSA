@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Announcements | Spark Stack Academy
+    </title>
+
+
+    <!-- CORE -->
+
+    <link
+        rel="stylesheet"
+        href="css/student-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/announcements.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script
+        src="https://unpkg.com/lucide@latest"
+    ></script>
+
+</head>
+
+
+<body>
+
+
+<div class="student-layout">
+
+
+    <!-- =================================
+         SIDEBAR
+    ================================== -->
+
+    <aside
+        id="sidebarContainer"
+        class="sidebar-container">
+    </aside>
+
+
+    <!-- =================================
+         MOBILE OVERLAY
+    ================================== -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay">
+    </div>
+
+
+    <!-- =================================
+         MAIN
+    ================================== -->
+
+    <main class="student-main">
+
+
+        <!-- TOPBAR -->
+
+        <div
+            id="topbarContainer"
+            class="topbar-container">
+        </div>
+
+
+        <!-- =================================
+             PAGE
+        ================================== -->
+
+        <section
+            class="dashboard-content announcements-page"
+        >
+
+
+            <!-- HEADER -->
+
+            <div class="announcements-hero">
+
+
+                <div class="hero-content">
+
+                    <span class="page-badge">
+
+                        <i data-lucide="megaphone"></i>
+
+                        Academy Updates
+
+                    </span>
+
+
+                    <h1>
+                        Announcements
+                    </h1>
+
+
+                    <p>
+                        Stay updated with the latest
+                        academy news, notices and
+                        important updates.
+                    </p>
+
+                </div>
+
+
+                <div class="hero-icon">
+
+                    <i data-lucide="bell-ring"></i>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================
+                 ANNOUNCEMENTS
+            ================================== -->
+
+            <div
+                class="announcements-container"
+                id="announcementsContainer"
+            >
+
+
+                <!-- LOADING -->
+
+                <div class="announcement-loading">
+
+                    <div class="loading-icon">
+
+                        <i data-lucide="loader"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Loading announcements...
+                    </h3>
+
+
+                    <p>
+                        Fetching the latest academy
+                        updates.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =====================================
+     APP
+====================================== -->
+
+<script
+    type="module"
+    src="js/student-app.js">
+</script>
+
+
+<script
+    type="module"
+    src="js/announcements.js">
+</script>
+
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

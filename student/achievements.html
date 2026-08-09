@@ -6,736 +6,915 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+      content="width=device-width, initial-scale=1.0">
 
+<title>Achievement OS | Spark Stack Academy</title>
 
-<title>
-Achievements | Spark Stack Academy
-</title>
+<link rel="stylesheet" href="css/student-core.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/achievements.css">
+<link rel="stylesheet" href="css/responsive.css">
 
-
-<link rel="stylesheet"
-href="css/student-core.css">
-
-<link rel="stylesheet"
-href="css/components.css">
-
-<link rel="stylesheet"
-href="css/achievements.css">
-
-<link rel="stylesheet"
-href="css/responsive.css">
-
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect"
-href="https://fonts.googleapis.com">
-
-<link rel="preconnect"
-href="https://fonts.gstatic.com"
-crossorigin>
+      href="https://fonts.gstatic.com"
+      crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-rel="stylesheet">
-
+      rel="stylesheet">
 
 <script src="https://unpkg.com/lucide@latest"></script>
-
 
 </head>
 
 
 <body>
 
-
 <div class="achievements-page">
 
 
+<!-- =====================================================
+     COMMAND HEADER
+===================================================== -->
 
-<!-- ===============================
-     HERO WALL
-================================ -->
+<header class="achievement-command">
 
+    <div class="command-brand">
+
+        <div class="brand-mark">
+            ⚡
+        </div>
+
+        <div>
+            <strong>SPARK OS</strong>
+            <span>Student Achievement System</span>
+        </div>
+
+    </div>
+
+
+    <div class="command-status">
+
+        <span class="status-dot"></span>
+
+        <span>LIVE PROFILE</span>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO / IDENTITY
+===================================================== -->
 
 <section class="achievement-hero">
 
+    <div class="hero-grid"></div>
 
-<div class="magic-particles"></div>
-
-
-
-<div class="achievement-header">
+    <div class="hero-glow glow-one"></div>
+    <div class="hero-glow glow-two"></div>
 
 
-<h1>
-
-🏆 Achievement Wall
-
-</h1>
+    <div class="hero-content">
 
 
-<p>
+        <div class="identity-line">
 
-Your journey. Your milestones. Your legacy.
+            <span class="identity-badge">
+                STUDENT IDENTITY
+            </span>
 
-</p>
+            <span class="verified-indicator">
+                ✓ VERIFIED
+            </span>
 
-
-</div>
-
-
-
-<!-- LEVEL CARD -->
-
-
-<div class="level-card">
+        </div>
 
 
-<div class="level-icon">
+        <div class="hero-title-row">
 
-⚡
+            <div class="student-orbit">
 
-</div>
+                <div class="orbit-ring ring-one"></div>
+                <div class="orbit-ring ring-two"></div>
 
+                <div class="student-avatar">
+                    S
+                </div>
 
-<div class="level-info">
-
-
-<h2 id="studentLevel">
-
-Level 1 Builder
-
-</h2>
+            </div>
 
 
-<p>
+            <div class="hero-title">
 
-XP
+                <p class="eyebrow">
+                    SPARK STACK ACADEMY
+                </p>
 
-<span id="studentXP">
+                <h1>
+                    Achievement
+                    <span>OS</span>
+                </h1>
 
-0
+                <p>
+                    Your skills. Your streak. Your evolution.
+                </p>
 
-</span>
+            </div>
 
-/
-
-<span id="nextXP">
-
-1000
-
-</span>
-
-</p>
-
+        </div>
 
 
-<div class="xp-bar">
+        <!-- LEVEL CORE -->
+
+        <div class="level-core">
+
+            <div class="level-number">
+                <span>LEVEL</span>
+                <strong id="studentLevel">
+                    1
+                </strong>
+            </div>
 
 
-<div
-id="xpProgress"
-class="xp-progress">
+            <div class="level-progress">
 
-</div>
+                <div class="level-meta">
+
+                    <span>
+                        Builder Progress
+                    </span>
+
+                    <strong>
+                        <span id="studentXP">0</span>
+                        /
+                        <span id="nextXP">1000</span>
+                        XP
+                    </strong>
+
+                </div>
 
 
-</div>
+                <div class="xp-bar">
+
+                    <div
+                        id="xpProgress"
+                        class="xp-progress">
+                    </div>
+
+                </div>
 
 
-</div>
+                <small>
+                    Keep building. Your next level is closer than you think.
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 
-</div>
+
+<!-- =====================================================
+     LIVE STATS
+===================================================== -->
+
+<section class="achievement-stats">
+
+    <article class="stat-tile streak-stat">
+
+        <span class="stat-icon">
+            🔥
+        </span>
+
+        <div>
+            <small>STREAK</small>
+
+            <strong>
+                <span id="streakDays">0</span>
+                <small> DAYS</small>
+            </strong>
+
+            <p>
+                Consistency is power.
+            </p>
+        </div>
+
+    </article>
+
+
+    <article class="stat-tile">
+
+        <span class="stat-icon">
+            ⚡
+        </span>
+
+        <div>
+            <small>TOTAL XP</small>
+
+            <strong id="statXP">
+                0
+            </strong>
+
+            <p>
+                Experience earned.
+            </p>
+        </div>
+
+    </article>
+
+
+    <article class="stat-tile">
+
+        <span class="stat-icon">
+            🏆
+        </span>
+
+        <div>
+            <small>BADGES</small>
+
+            <strong id="statBadges">
+                0
+            </strong>
+
+            <p>
+                Achievements unlocked.
+            </p>
+        </div>
+
+    </article>
+
+
+    <article class="stat-tile">
+
+        <span class="stat-icon">
+            👑
+        </span>
+
+        <div>
+            <small>RANK</small>
+
+            <strong id="rankPosition">
+                #0
+            </strong>
+
+            <p>
+                Among builders.
+            </p>
+        </div>
+
+    </article>
+
+</section>
+
+
+
+<!-- =====================================================
+     PREMIUM IDENTITY
+===================================================== -->
+
+<section class="premium-identity">
+
+    <div class="premium-symbol">
+        ✓
+    </div>
+
+    <div class="premium-copy">
+
+        <span>
+            PREMIUM VERIFIED
+        </span>
+
+        <h2>
+            You're building at another level.
+        </h2>
+
+        <p>
+            Premium students receive the official
+            Spark Stack Verified identity.
+        </p>
+
+    </div>
+
+    <div class="premium-badge">
+        ✓
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     RANK + FEATURED ACHIEVEMENT
+===================================================== -->
+
+<section class="flagship-grid">
+
+
+    <article class="rank-card">
+
+        <div class="section-label">
+            CURRENT RANK
+        </div>
+
+
+        <div class="rank-visual">
+            👑
+        </div>
+
+
+        <h2 id="studentRank">
+            Builder
+        </h2>
+
+
+        <p>
+            Academy Rank
+        </p>
+
+
+        <strong id="rankPosition">
+            #0
+        </strong>
+
+
+        <div class="rank-line"></div>
+
+
+        <small>
+            Keep earning XP to rise through the academy.
+        </small>
+
+    </article>
+
+
+
+    <article class="featured-badge">
+
+        <div class="section-label">
+            SIGNATURE ACHIEVEMENT
+        </div>
+
+
+        <div class="featured-box">
+
+            <div class="featured-icon">
+                🏆
+            </div>
+
+
+            <div>
+
+                <span>
+                    FEATURED BADGE
+                </span>
+
+                <h3 id="featuredBadgeName">
+                    No Badge Yet
+                </h3>
+
+                <p>
+                    Your signature achievement will appear here.
+                </p>
+
+            </div>
+
+        </div>
+
+    </article>
 
 
 </section>
 
 
 
-<!-- ===============================
-     RANK CARD
-================================ -->
+<!-- =====================================================
+     SKILL DNA
+===================================================== -->
 
-<section class="rank-card">
+<section class="skill-dna">
 
-<div class="rank-icon">
+    <div class="section-heading">
 
-👑
+        <div>
+            <span>01 / SKILL DNA</span>
 
-</div>
+            <h2>
+                Your Builder Profile
+            </h2>
+        </div>
 
+        <p>
+            Your learning activity shapes your technical identity.
+        </p>
 
-<div>
-
-<h2 id="studentRank">
-
-Builder
-
-</h2>
-
-
-<p>
-
-Academy Rank
-
-<span id="rankPosition">
-
-#0
-
-</span>
-
-</p>
-
-</div>
+    </div>
 
 
-</section>
+    <div class="skills-wall">
 
 
+        <div class="skill">
+
+            <div class="skill-head">
+
+                <span>CODING</span>
+
+                <strong>80%</strong>
+
+            </div>
+
+            <div class="skill-bar">
+                <div class="skill-fill coding"></div>
+            </div>
+
+        </div>
 
 
+        <div class="skill">
 
-<!-- ===============================
-     FEATURED BADGE
-================================ -->
+            <div class="skill-head">
 
-<section class="featured-badge">
+                <span>DESIGN</span>
 
+                <strong>60%</strong>
 
-<h2>
+            </div>
 
-Featured Achievement
+            <div class="skill-bar">
+                <div class="skill-fill design"></div>
+            </div>
 
-</h2>
-
-
-<div class="featured-box">
-
-
-<div class="featured-icon">
-
-🏆
-
-</div>
+        </div>
 
 
-<div>
+        <div class="skill">
 
-<h3 id="featuredBadgeName">
+            <div class="skill-head">
 
-No Badge Yet
+                <span>INNOVATION</span>
 
-</h3>
+                <strong>40%</strong>
+
+            </div>
+
+            <div class="skill-bar">
+                <div class="skill-fill innovation"></div>
+            </div>
+
+        </div>
 
 
-<p>
-
-Your signature achievement
-
-</p>
-
-</div>
-
-
-</div>
-
+    </div>
 
 </section>
 
 
 
+<!-- =====================================================
+     DAILY QUESTS
+===================================================== -->
 
+<section class="quests-section">
 
+    <div class="section-heading">
 
-<!-- ===============================
-     SKILLS WALL
-================================ -->
+        <div>
+            <span>02 / DAILY QUESTS</span>
 
+            <h2>
+                Today's Missions
+            </h2>
+        </div>
 
-<section class="skills-wall">
+        <span class="quest-status">
+            LIVE
+        </span>
 
+    </div>
 
-<h2>
 
-Skill Progress
+    <div class="missions">
 
-</h2>
 
+        <article class="mission-card">
 
+            <div class="mission-number">
+                01
+            </div>
 
-<div class="skill">
+            <div class="mission-icon">
+                📚
+            </div>
 
+            <div class="mission-info">
 
-<div>
+                <h3>
+                    Watch a lesson
+                </h3>
 
-<span>
+                <p>
+                    Learn something new today.
+                </p>
 
-Coding
+            </div>
 
-</span>
+            <strong>
+                +20 XP
+            </strong>
 
-<span>
+        </article>
 
-80%
 
-</span>
 
-</div>
+        <article class="mission-card">
 
+            <div class="mission-number">
+                02
+            </div>
 
-<div class="skill-bar">
+            <div class="mission-icon">
+                📝
+            </div>
 
-<div class="skill-fill coding">
+            <div class="mission-info">
 
-</div>
+                <h3>
+                    Complete a quiz
+                </h3>
 
-</div>
+                <p>
+                    Prove what you've learned.
+                </p>
 
+            </div>
 
-</div>
+            <strong>
+                +50 XP
+            </strong>
 
+        </article>
 
 
 
+        <article class="mission-card">
 
-<div class="skill">
+            <div class="mission-number">
+                03
+            </div>
 
+            <div class="mission-icon">
+                🚀
+            </div>
 
-<div>
+            <div class="mission-info">
 
-<span>
+                <h3>
+                    Submit a project
+                </h3>
 
-Design
+                <p>
+                    Turn knowledge into something real.
+                </p>
 
-</span>
+            </div>
 
-<span>
+            <strong>
+                +100 XP
+            </strong>
 
-60%
+        </article>
 
-</span>
 
-</div>
-
-
-<div class="skill-bar">
-
-<div class="skill-fill design">
-
-</div>
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="skill">
-
-
-<div>
-
-<span>
-
-Innovation
-
-</span>
-
-<span>
-
-40%
-
-</span>
-
-</div>
-
-
-<div class="skill-bar">
-
-<div class="skill-fill innovation">
-
-</div>
-
-</div>
-
-
-</div>
-
+    </div>
 
 </section>
 
 
 
+<!-- =====================================================
+     BADGE VAULT
+===================================================== -->
+
+<section class="badge-vault">
+
+    <div class="section-heading">
+
+        <div>
+            <span>03 / ACHIEVEMENT VAULT</span>
+
+            <h2>
+                Your Badges
+            </h2>
+        </div>
+
+        <p>
+            Collect them all.
+        </p>
+
+    </div>
 
 
+    <div
+        id="badgeContainer"
+        class="badge-grid">
 
+        <!-- Firebase badges load here -->
 
-<!-- ===============================
-     DAILY MISSIONS
-================================ -->
-
-
-<section class="missions">
-
-
-<h2>
-
-Daily Missions 🎯
-
-</h2>
-
-
-
-<div class="mission-card">
-
-
-<span>
-
-📚 Watch one lesson
-
-</span>
-
-
-<b>
-
-+20 XP
-
-</b>
-
-
-</div>
-
-
-
-
-<div class="mission-card">
-
-
-<span>
-
-📝 Complete quiz
-
-</span>
-
-
-<b>
-
-+50 XP
-
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="mission-card">
-
-
-<span>
-
-🚀 Submit project
-
-</span>
-
-
-<b>
-
-+100 XP
-
-</b>
-
-
-</div>
-
-
+    </div>
 
 </section>
 
 
 
+<!-- =====================================================
+     JOURNEY
+===================================================== -->
+
+<section class="journey-section">
+
+    <div class="section-heading">
+
+        <div>
+            <span>04 / EVOLUTION LOG</span>
+
+            <h2>
+                Your Journey
+            </h2>
+        </div>
+
+    </div>
 
 
+    <div class="timeline">
 
 
+        <div class="timeline-item">
 
-<!-- ===============================
-     JOURNEY TIMELINE
-================================ -->
+            <span class="timeline-node">
+                🌱
+            </span>
 
+            <div>
+                <strong>
+                    Joined Spark Stack Academy
+                </strong>
 
-<section class="timeline">
+                <p>
+                    The beginning of your builder journey.
+                </p>
+            </div>
 
-
-<h2>
-
-Your Journey ✨
-
-</h2>
-
-
-<div class="timeline-item">
-
-🌱 Joined Spark Stack Academy
-
-</div>
+        </div>
 
 
-<div class="timeline-item">
+        <div class="timeline-item">
 
-🏅 First Course Completed
+            <span class="timeline-node">
+                🏅
+            </span>
 
-</div>
+            <div>
+                <strong>
+                    First Course Completed
+                </strong>
 
+                <p>
+                    Knowledge converted into progress.
+                </p>
+            </div>
 
-<div class="timeline-item">
-
-🔥 Learning Streak Started
-
-</div>
-
-
-<div class="timeline-item">
-
-🚀 First Project Submitted
-
-</div>
+        </div>
 
 
+        <div class="timeline-item">
+
+            <span class="timeline-node">
+                🔥
+            </span>
+
+            <div>
+                <strong>
+                    Learning Streak Started
+                </strong>
+
+                <p>
+                    Consistency became part of the journey.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="timeline-item">
+
+            <span class="timeline-node">
+                🚀
+            </span>
+
+            <div>
+                <strong>
+                    First Project Submitted
+                </strong>
+
+                <p>
+                    From learner to builder.
+                </p>
+            </div>
+
+        </div>
+
+
+    </div>
 
 </section>
 
 
 
-
-
-
-
-<!-- ===============================
+<!-- =====================================================
      LEADERBOARD
-================================ -->
+===================================================== -->
+
+<section class="leaderboard-section">
+
+    <div class="section-heading">
+
+        <div>
+            <span>05 / GLOBAL RANKINGS</span>
+
+            <h2>
+                Top Builders
+            </h2>
+        </div>
+
+        <p>
+            Compete. Build. Rise.
+        </p>
+
+    </div>
 
 
-<section class="leaderboard">
+    <div class="leaderboard">
 
 
-<h2>
+        <div class="leader-card first">
 
-Top Builders 🥇
+            <span class="leader-rank">
+                01
+            </span>
 
-</h2>
+            <div class="leader-avatar">
+                👑
+            </div>
 
+            <span>
+                Student Name
+            </span>
 
+            <strong>
+                ⚡ 1200 XP
+            </strong>
 
-<div class="leader-card">
-
-<span>
-
-1. Student Name
-
-</span>
-
-
-<b>
-
-⚡ 1200 XP
-
-</b>
-
-</div>
+        </div>
 
 
+        <div class="leader-card">
 
-<div class="leader-card">
+            <span class="leader-rank">
+                02
+            </span>
 
-<span>
+            <div class="leader-avatar">
+                🔥
+            </div>
 
-2. Student Name
+            <span>
+                Student Name
+            </span>
 
-</span>
+            <strong>
+                ⚡ 950 XP
+            </strong>
 
-
-<b>
-
-🔥 950 XP
-
-</b>
-
-</div>
-
-
-
-
-<div class="leader-card">
-
-<span>
-
-3. Student Name
-
-</span>
+        </div>
 
 
-<b>
+        <div class="leader-card">
 
-🚀 700 XP
+            <span class="leader-rank">
+                03
+            </span>
 
-</b>
+            <div class="leader-avatar">
+                🚀
+            </div>
 
-</div>
+            <span>
+                Student Name
+            </span>
 
+            <strong>
+                ⚡ 700 XP
+            </strong>
 
-</section>
-
-
-<!-- ===============================
-     BADGE WALL
-================================ -->
-
-
-<section class="badge-wall">
-
-
-<h2>
-
-Your Badges
-
-</h2>
+        </div>
 
 
-
-<div
-id="badgeContainer"
-class="badge-grid">
-
-
-
-<!-- BADGES LOAD HERE -->
-
-
-
-</div>
-
+    </div>
 
 </section>
 
 
 
-
-
-
-<!-- ===============================
-     STREAK
-================================ -->
-
-
-<section class="streak-card">
-
-
-<div class="streak-icon">
-
-🔥
-
-</div>
-
-
-<div>
-
-
-<h3>
-
-Learning Streak
-
-</h3>
-
-
-<p>
-
-<span id="streakDays">
-
-0
-
-</span>
-
-Days
-
-</p>
-
-
-</div>
-
-
-</section>
-
-
-
-
-
-
-<!-- ===============================
+<!-- =====================================================
      RECENT UNLOCKS
-================================ -->
-
+===================================================== -->
 
 <section class="recent-section">
 
+    <div class="section-heading">
 
-<h2>
+        <div>
+            <span>06 / ACTIVITY</span>
 
-Recent Unlocks ✨
+            <h2>
+                Recent Unlocks
+            </h2>
+        </div>
 
-</h2>
-
-
-<div
-id="recentUnlocks"
-class="recent-list">
+    </div>
 
 
-<!-- Firebase loads -->
+    <div
+        id="recentUnlocks"
+        class="recent-list">
 
-</div>
+        <!-- Firebase loads activity -->
 
+    </div>
 
 </section>
 
 
 
+<!-- =====================================================
+     FINAL MOTIVATION
+===================================================== -->
+
+<section class="final-cta">
+
+    <div class="cta-glow"></div>
+
+    <span>
+        THE BUILDER'S CODE
+    </span>
+
+    <h2>
+        Don't chase badges.
+        <br>
+        <em>Become the person who earns them.</em>
+    </h2>
+
+    <p>
+        Every lesson completed. Every project shipped.
+        Every day you show up.
+    </p>
+
+    <div class="cta-symbol">
+        ⚡
+    </div>
+
+</section>
 
 
 </div>
 
 
 
-
-
-<!-- APP INJECTION -->
-
-
-<script
-type="module"
-src="js/student-app.js">
-</script>
-
-
+<!-- =====================================================
+     SSA APPLICATION ENGINE
+===================================================== -->
 
 <script
-type="module"
-src="js/achievements.js">
+    type="module"
+    src="js/student-app.js">
 </script>
 
+<script
+    type="module"
+    src="js/achievements.js">
+</script>
 
 
 <script>
-
-lucide.createIcons();
-
+    lucide.createIcons();
 </script>
-
 
 
 </body>

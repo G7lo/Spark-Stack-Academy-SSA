@@ -37,7 +37,7 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 console.log("💳 Payments Loaded");
 
-
+console.time("Payments Page");
 
 
 // =====================================
@@ -47,6 +47,8 @@ console.log("💳 Payments Loaded");
 
 let currentUser = null;
 
+const API_BASE_URL =
+    "http://localhost:3000";
 
 const urlParams =
 new URLSearchParams(
@@ -86,32 +88,7 @@ const courseList =
 document.getElementById("courseList");
 
 
-const paymentModal =
-document.getElementById("paymentModal");
 
-
-const closePayment =
-document.getElementById("closePayment");
-
-
-const phoneNumber =
-document.getElementById("phoneNumber");
-
-
-const paymentAmount =
-document.getElementById("paymentAmount");
-
-
-const selectedCourse =
-document.getElementById("selectedCourse");
-
-
-const confirmPayment =
-document.getElementById("confirmPayment");
-
-console.log("Modal:", paymentModal);
-console.log("Selected Course:", selectedCourse);
-console.log("Amount Input:", paymentAmount);
 
 // =====================================
 // BACK BUTTON
@@ -162,7 +139,7 @@ loadPayments();
 
 loadCourses();
 
-
+console.timeEnd("Payments Page");
 }
 
 );
@@ -299,6 +276,8 @@ error
 
 async function loadCheckoutCourse(){
 
+console.time("Checkout Course");
+
 
 const courseRef =
 doc(
@@ -339,54 +318,61 @@ snap.data();
 
 courseList.innerHTML = `
 
-
 <div class="course-card">
-
 
 <h3>
 ${course.title}
 </h3>
 
-
 <p>
 Fee: KSh ${course.price}
 </p>
-
 
 <p>
 Pay to unlock this course
 </p>
 
-
 <button
-
 class="pay-btn"
-
 data-course="${course.title}"
-
 data-amount="${course.price}"
-
 >
-
 Pay Now
-
 </button>
 
-
 </div>
-
 
 `;
 
 
+const payButton =
+    courseList.querySelector(".pay-btn");
 
-setupPayButtons();
+if(payButton){
+
+    payButton.addEventListener(
+        "click",
+        ()=>{
+
+            initializePayment(
+                course.title,
+                course.price
+            );
+
+        }
+    );
+
+}
+
+console.timeEnd("Load Courses");
+
 
 
 }
 
 async function loadCourses(){
 
+console.time("Load Courses");
 
 try{
 
@@ -548,8 +534,6 @@ courseList.appendChild(card);
 }
 
 
-setupPayButtons();
-
 
 }
 
@@ -645,219 +629,70 @@ transactionList.appendChild(card);
 
 
 }
-// =====================================
-// PAY BUTTONS
-// =====================================
-
-function setupPayButtons(){
-
-console.log("Pay buttons found:", document.querySelectorAll(".pay-btn").length);
-
-const buttons =
-document.querySelectorAll(".pay-btn");
 
 
+async function initializePayment(course, amount){
 
-buttons.forEach(button=>{
+    try{
 
+        const response = await fetch(
+            `${API_BASE_URL}/api/payments/initialize`,
+            {
+                method: "POST",
 
-button.addEventListener(
-"click",
-()=>{
+                headers:{
+                    "Content-Type":"application/json"
+                },
 
-console.log("Pay clicked", button.dataset);
+                body: JSON.stringify({
 
+                    email: currentUser.email,
 
-const course =
-button.dataset.course;
+                    amount: Number(amount),
 
+                    courseId: selectedCourseId,
 
-const amount =
-button.dataset.amount;
+                    course: course,
 
+                    userId: currentUser.uid
 
+                })
 
-selectedCourse.textContent =
-course;
-
-
-paymentAmount.value =
-amount;
-
-
-
-paymentModal.classList.remove(
-"hidden"
-);
-
-console.log(
-"Modal classes:",
-paymentModal.className
-);
-
-}
-
-);
+            }
+        );
 
 
-});
+        const data =
+            await response.json();
 
 
-}
-closePayment?.addEventListener(
+        if(!data.success){
 
-"click",
+            throw new Error(
+                data.message ||
+                "Payment initialization failed"
+            );
 
-()=>{
+        }
 
-paymentModal.classList.add(
-"hidden"
-);
+
+        window.location.href =
+            data.authorization_url;
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Payment error:",
+            error
+        );
+
+        alert(
+            "Unable to start payment. Please try again."
+        );
+
+    }
 
 }
-
-);
-
-
-confirmPayment?.addEventListener(
-
-"click",
-
-async()=>{
-
-
-if(!phoneNumber.value){
-
-alert(
-"Enter M-PESA number"
-);
-
-return;
-
-}
-
-
-
-try{
-
-
-const token =
-await currentUser.getIdToken();
-
-
-
-const response =
-await fetch(
-
-"https://spark-stack-academy-backend-production.up.railway.app/api/payments/stkpush",
-
-{
-
-
-method:"POST",
-
-
-headers:{
-
-
-"Content-Type":"application/json",
-
-
-"Authorization":
-`Bearer ${token}`
-
-
-},
-
-
-body:JSON.stringify({
-
-phone:
-phoneNumber.value,
-
-amount:
-Number(paymentAmount.value),
-
-course:
-selectedCourse.textContent,
-
-courseId:
-selectedCourseId
-
-})
-
-
-}
-
-);
-
-
-
-const data =
-await response.json();
-
-
-
-console.log(
-"Payment response:",
-data
-);
-
-
-
-if(data.success){
-
-
-alert(
-"M-PESA prompt sent 📱"
-);
-
-
-paymentModal.classList.add(
-"hidden"
-);
-
-
-phoneNumber.value="";
-
-
-}
-
-else{
-
-
-alert(
-"Payment failed"
-);
-
-
-}
-
-
-
-}
-
-
-catch(error){
-
-
-console.error(
-"Payment error:",
-error
-);
-
-
-alert(
-"Something went wrong"
-);
-
-
-}
-
-
-}
-
-);
-
-
-

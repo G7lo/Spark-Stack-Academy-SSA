@@ -13,6 +13,12 @@ import {
 
 import {
 
+    onAuthStateChanged
+
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+
     collection,
     getDocs,
     query,
@@ -35,7 +41,24 @@ console.log(
 
 let allCourses = [];
 
+let currentUser = null;
 
+onAuthStateChanged(auth, async (user) => {
+
+    currentUser = user;
+
+    console.log(
+        "🔐 Library Auth:",
+        user?.uid || "Not logged in"
+    );
+
+    if (user) {
+
+        await loadLibraryPremiumBadge();
+
+    }
+
+});
 
 
 
@@ -617,7 +640,7 @@ courseId
 
 
 const user =
-auth.currentUser;
+currentUser;
 
 
 
@@ -733,5 +756,51 @@ window.location.href =
 `course-details.html?id=${id}`;
 
 
+
+}
+
+async function loadLibraryPremiumBadge() {
+
+    if (!currentUser) return;
+
+    try {
+
+        const studentSnap = await getDoc(
+            doc(
+                db,
+                "students",
+                currentUser.uid
+            )
+        );
+
+        if (!studentSnap.exists()) return;
+
+        const student = studentSnap.data();
+
+        const badge =
+            document.getElementById(
+                "libraryPremiumBadge"
+            );
+
+        if (
+            badge &&
+            student.premium === true
+        ) {
+
+            badge.style.display =
+                "inline-flex";
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Premium badge error:",
+            error
+        );
+
+    }
 
 }

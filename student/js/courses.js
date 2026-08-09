@@ -150,7 +150,7 @@ async function loadCourses(uid){
 query(
     collection(db,"enrollments"),
     where(
-        "studentId",
+        "userId",
         "==",
         uid
     )
@@ -318,9 +318,18 @@ query(
 
 
 
-        renderCourses(
-            courses
-        );
+        const studentSnap = await getDoc(
+    doc(db, "students", uid)
+);
+
+const student = studentSnap.exists()
+    ? studentSnap.data()
+    : {};
+
+renderCourses(
+    courses,
+    student
+);
 
 
 
@@ -355,7 +364,7 @@ query(
 // =====================================
 
 
-function renderCourses(courses){
+function renderCourses(courses, student){
 
 
     const container =
@@ -448,12 +457,18 @@ function renderCourses(courses){
 
                 <h3>
 
-                    ${
-                    course.title ||
-                    "Untitled Course"
-                    }
+    ${
+        course.title ||
+        "Untitled Course"
+    }
 
-                </h3>
+    ${
+        student?.premium === true
+            ? `<span class="premium-badge" title="SSA Premium Verified">✓</span>`
+            : ""
+    }
+
+</h3>
 
 
 

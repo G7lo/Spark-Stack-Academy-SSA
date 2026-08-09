@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+Learning Progress | Spark Stack Academy
+</title>
+
+
+<link
+    rel="stylesheet"
+    href="css/student-core.css"
+>
+
+<link
+    rel="stylesheet"
+    href="css/components.css"
+>
+
+<link
+    rel="stylesheet"
+    href="css/learning-progress.css"
+>
+
+<link
+    rel="stylesheet"
+    href="css/responsive.css"
+>
+
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
+
+
+<script
+    src="https://unpkg.com/lucide@latest">
+</script>
+
+</head>
+
+
+<body>
+
+
+<div class="student-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside
+        id="sidebarContainer"
+        class="sidebar-container">
+    </aside>
+
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay">
+    </div>
+
+
+    <!-- MAIN -->
+
+    <main class="student-main">
+
+
+        <!-- TOPBAR -->
+
+        <div
+            id="topbarContainer"
+            class="topbar-container">
+        </div>
+
+
+        <!-- PAGE -->
+
+        <section class="dashboard-content learning-progress-page">
+
+
+            <!-- HERO -->
+
+            <div class="progress-hero">
+
+                <div class="progress-hero-content">
+
+                    <span class="page-badge">
+
+                        <i data-lucide="trending-up"></i>
+
+                        Learning Progress
+
+                    </span>
+
+
+                    <h1>
+                        Track Your Growth
+                    </h1>
+
+
+                    <p>
+                        See how far you've come,
+                        monitor your courses and
+                        keep building your skills.
+                    </p>
+
+                </div>
+
+
+                <div class="progress-hero-icon">
+
+                    <i data-lucide="bar-chart-3"></i>
+
+                </div>
+
+            </div>
+
+
+            <!-- OVERVIEW -->
+
+            <div class="section-heading">
+
+                <span>
+                    YOUR OVERVIEW
+                </span>
+
+                <h2>
+                    Learning Statistics
+                </h2>
+
+            </div>
+
+
+            <div class="progress-stats">
+
+
+                <div class="progress-stat-card">
+
+                    <div class="stat-icon">
+
+                        <i data-lucide="book-open"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Enrolled Courses
+                        </span>
+
+                        <h3 id="totalCourses">
+                            0
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="progress-stat-card">
+
+                    <div class="stat-icon">
+
+                        <i data-lucide="play-circle"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Courses In Progress
+                        </span>
+
+                        <h3 id="activeCourses">
+                            0
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="progress-stat-card">
+
+                    <div class="stat-icon">
+
+                        <i data-lucide="check-circle"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Completed Courses
+                        </span>
+
+                        <h3 id="completedCourses">
+                            0
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="progress-stat-card">
+
+                    <div class="stat-icon">
+
+                        <i data-lucide="percent"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Overall Progress
+                        </span>
+
+                        <h3 id="overallProgress">
+                            0%
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- COURSE PROGRESS -->
+
+            <div class="section-heading courses-heading">
+
+                <span>
+                    COURSE PROGRESS
+                </span>
+
+                <h2>
+                    Keep Learning
+                </h2>
+
+                <p>
+                    Continue where you left off.
+                </p>
+
+            </div>
+
+
+            <div
+                id="courseProgressList"
+                class="course-progress-list"
+            >
+
+
+                <!-- JS LOADS COURSES -->
+
+                <div class="progress-loading">
+
+                    <i data-lucide="loader"></i>
+
+                    <p>
+                        Loading your learning progress...
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ACHIEVEMENT SUMMARY -->
+
+            <div class="section-heading achievements-heading">
+
+                <span>
+                    YOUR ACHIEVEMENTS
+                </span>
+
+                <h2>
+                    Keep Pushing
+                </h2>
+
+            </div>
+
+
+            <div class="achievement-summary">
+
+
+                <div class="achievement-summary-card">
+
+                    <div class="achievement-icon">
+
+                        <i data-lucide="trophy"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Lessons Completed
+                        </span>
+
+                        <h3 id="completedLessons">
+                            0
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="achievement-summary-card">
+
+                    <div class="achievement-icon">
+
+                        <i data-lucide="award"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Certificates Earned
+                        </span>
+
+                        <h3 id="certificatesEarned">
+                            0
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="achievement-summary-card">
+
+                    <div class="achievement-icon">
+
+                        <i data-lucide="flame"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Learning Streak
+                        </span>
+
+                        <h3 id="learningStreak">
+                            0 days
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- EMPTY / ERROR STATE -->
+
+            <div
+                id="progressMessage"
+                class="progress-message"
+                style="display:none;"
+            >
+
+                <i data-lucide="info"></i>
+
+                <span>
+                    No learning progress available yet.
+                </span>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- STUDENT APP -->
+
+<script
+    type="module"
+    src="js/student-app.js">
+</script>
+
+
+<!-- LEARNING PROGRESS -->
+
+<script
+    type="module"
+    src="js/learning-progress.js">
+</script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (window.lucide) {
+
+            lucide.createIcons();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

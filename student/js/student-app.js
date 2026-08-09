@@ -27,6 +27,13 @@ import {
     updateTopbar
 } from "../components/topbar.js";
 
+
+import "./notifications.js";
+
+import {
+    updateStudentStreak
+} from "./streak.js";
+
 import {
 
     onAuthStateChanged
@@ -198,11 +205,38 @@ function checkAuthentication(){
                 "Logged in:",
                 user.email
             );
+// =========================
+// UPDATE DAILY STREAK
+// =========================
 
+await updateStudentStreak(user.uid);
 
-            await loadStudentProfile(
-                user.uid
-            );
+            const page =
+window.location.pathname.split("/").pop();
+
+if(page === "dashboard.html"){
+
+    await loadStudentProfile(user.uid);
+
+}else{
+
+    const studentRef =
+    doc(db,"students",user.uid);
+
+    const studentSnap =
+    await getDoc(studentRef);
+
+    if(studentSnap.exists()){
+
+        const student =
+        studentSnap.data();
+
+        updateSidebar(student);
+        updateTopbar(student);
+
+    }
+
+}
 
 
 
@@ -278,13 +312,20 @@ async function loadStudentProfile(uid){
 
 
 
-await Promise.all([
-    loadContinueCourses(uid),
-    loadAnnouncements(),
-    loadMessagesPreview(uid)
-]);
+const page =
+window.location.pathname.split("/").pop();
 
-loadGamification(student);
+if(page === "dashboard.html"){
+
+    await Promise.all([
+        loadContinueCourses(uid),
+        loadAnnouncements(),
+        loadMessagesPreview(uid)
+    ]);
+
+    loadGamification(student);
+
+}
 
     }
 
@@ -391,8 +432,19 @@ function updateDashboardUI(student){
 
 
 
-    if(fullName)
-        fullName.textContent = name;
+    if (fullName) {
+
+    fullName.innerHTML = `
+        ${name}
+
+        ${
+            student.premium === true
+                ? `<span class="premium-badge" title="SSA Premium Verified">✓</span>`
+                : ""
+        }
+    `;
+
+}
 
 
 

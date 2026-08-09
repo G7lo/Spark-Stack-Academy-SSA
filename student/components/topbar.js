@@ -1,54 +1,47 @@
 // =====================================
 // SPARK STACK ACADEMY
-// TOPBAR CONTROLLER V1
+// STUDENT TOPBAR CONTROLLER V2
 // =====================================
-
 
 console.log("🚀 SSA Topbar Loaded");
 
 
+// =====================================
+// LOAD TOPBAR
+// =====================================
 
-
-
-export async function loadTopbar(){
-
+export async function loadTopbar() {
 
     const container =
-    document.getElementById(
-        "topbarContainer"
-    );
+        document.getElementById("topbarContainer");
+
+    if (!container) return;
 
 
-    if(!container)
-        return;
-
-
-
-    try{
-
+    try {
 
         const response = await fetch(
-    new URL("./topbar.html", import.meta.url)
-);
+            new URL("./topbar.html", import.meta.url)
+        );
 
-console.log(response.url);
-console.log(response.status);
 
-if (!response.ok) {
-    throw new Error(`Failed to load topbar: ${response.status}`);
-}
+        if (!response.ok) {
+
+            throw new Error(
+                `Failed to load topbar: ${response.status}`
+            );
+
+        }
 
 
         container.innerHTML =
-        await response.text();
+            await response.text();
 
-console.log("Topbar inserted:", container.innerHTML.length);
 
         initializeTopbar();
 
 
-    }
-    catch(error){
+    } catch (error) {
 
         console.error(
             "Topbar error:",
@@ -57,120 +50,341 @@ console.log("Topbar inserted:", container.innerHTML.length);
 
     }
 
-
 }
 
 
+// =====================================
+// INITIALIZE
+// =====================================
+
+function initializeTopbar() {
 
 
+    // =================================
+    // LUCIDE
+    // =================================
 
-function initializeTopbar(){
-
-
-    if(typeof lucide !== "undefined"){
+    if (typeof lucide !== "undefined") {
 
         lucide.createIcons();
-        const menuBtn = document.getElementById("mobileMenuBtn");
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("sidebarOverlay");
-
-if (menuBtn && sidebar && overlay) {
-
-    menuBtn.addEventListener("click", () => {
-
-        sidebar.classList.toggle("open");
-        overlay.classList.toggle("show");
-
-    });
-
-    overlay.addEventListener("click", () => {
-
-        sidebar.classList.remove("open");
-        overlay.classList.remove("show");
-
-    });
-
-}
 
     }
 
 
+    // =================================
+    // MOBILE MENU
+    // =================================
+
+    const menuBtn =
+        document.getElementById("mobileMenuBtn");
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    const overlay =
+        document.getElementById("sidebarOverlay");
+
+
+    if (menuBtn && sidebar) {
+
+        menuBtn.addEventListener(
+            "click",
+            () => {
+
+                sidebar.classList.toggle("open");
+
+                overlay?.classList.toggle("show");
+
+            }
+        );
+
+    }
+
+
+    overlay?.addEventListener(
+        "click",
+        closeSidebar
+    );
+
+
+    function closeSidebar() {
+
+        sidebar?.classList.remove("open");
+
+        overlay?.classList.remove("show");
+
+    }
+
+
+    // =================================
+    // THEME
+    // =================================
+
+    const themeBtn =
+        document.getElementById("themeToggle");
+
+    const themeIcon =
+        document.getElementById("themeIcon");
+
+
+    let savedTheme =
+        localStorage.getItem("ssa-theme");
+
+
+    if (!savedTheme) {
+
+        savedTheme = "light";
+
+    }
+
+
+    applyTheme(savedTheme);
+
+
+    themeBtn?.addEventListener(
+        "click",
+        () => {
+
+            const current =
+                document.documentElement
+                    .getAttribute("data-theme");
+
+            const next =
+                current === "dark"
+                    ? "light"
+                    : "dark";
+
+
+            applyTheme(next);
+
+        }
+    );
+
+
+    function applyTheme(theme) {
+
+        document.documentElement
+            .setAttribute(
+                "data-theme",
+                theme
+            );
+
+
+        localStorage.setItem(
+            "ssa-theme",
+            theme
+        );
+
+
+        if (themeIcon) {
+
+            themeIcon.setAttribute(
+                "data-lucide",
+                theme === "dark"
+                    ? "sun"
+                    : "moon"
+            );
+
+
+            if (typeof lucide !== "undefined") {
+
+                lucide.createIcons();
+
+            }
+
+        }
+
+    }
+
+
+// =================================
+// NOTIFICATIONS
+// =================================
+
+const notificationBtn =
+    document.getElementById("notificationBtn");
+
+const notificationPanel =
+    document.getElementById("notificationPanel");
+
+
+notificationBtn?.addEventListener(
+    "click",
+    (event) => {
+
+        event.stopPropagation();
+
+        notificationPanel?.classList.toggle("show");
+
+    }
+);
+
+
+notificationPanel?.addEventListener(
+    "click",
+    (event) => {
+
+        event.stopPropagation();
+
+    }
+);
+
+
+document.addEventListener(
+    "click",
+    () => {
+
+        notificationPanel?.classList.remove("show");
+
+    }
+);
+
+
+    // =================================
+    // PROFILE
+    // =================================
+
+    const profileMenu =
+        document.getElementById(
+            "profileMenu"
+        );
+
+
+    profileMenu?.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "profile.html";
+
+        }
+    );
+
+
+    // Keyboard accessibility
+
+    profileMenu?.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Enter" ||
+                event.key === " "
+            ) {
+
+                event.preventDefault();
+
+                window.location.href =
+                    "profile.html";
+
+            }
+
+        }
+    );
+
+
+    // =================================
+    // SEARCH
+    // =================================
+
+    const searchInput =
+        document.getElementById(
+            "studentSearch"
+        );
+
+
+    searchInput?.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Enter" &&
+                searchInput.value.trim()
+            ) {
+
+                const query =
+                    encodeURIComponent(
+                        searchInput.value.trim()
+                    );
+
+
+                window.location.href =
+                    `courses.html?search=${query}`;
+
+            }
+
+        }
+    );
+
 }
 
 
+// =====================================
+// UPDATE TOPBAR
+// =====================================
 
+export function updateTopbar(student) {
 
-
-
-
-export function updateTopbar(student){
+    if (!student) return;
 
 
     const name =
-    student.name ||
-    student.fullName ||
-    "Student";
-
+        student.name ||
+        student.fullName ||
+        "Student";
 
 
     const initial =
-    name.charAt(0)
-    .toUpperCase();
-
+        name.charAt(0).toUpperCase();
 
 
     const topName =
-    document.getElementById(
-        "topStudentName"
-    );
+        document.getElementById(
+            "topStudentName"
+        );
 
 
     const avatar =
-    document.getElementById(
-        "topAvatar"
-    );
+        document.getElementById(
+            "topAvatar"
+        );
 
 
-    const level =
-    document.getElementById(
-        "topLevel"
-    );
+    if (topName) {
+
+    topName.textContent = "";
+
+    const nameNode =
+        document.createTextNode(name);
+
+    topName.appendChild(nameNode);
 
 
-    const xp =
-    document.getElementById(
-        "xpPoints"
-    );
+    if (student.premium === true) {
+
+        const badge =
+            document.createElement("span");
+
+        badge.className =
+            "premium-badge";
+
+        badge.textContent = "✓";
+
+        badge.title =
+            "SSA Premium Verified";
+
+        topName.appendChild(badge);
+
+    }
+
+}
 
 
-    const streak =
-    document.getElementById(
-        "streakCount"
-    );
+    if (avatar) {
 
+        avatar.textContent =
+            initial;
 
-
-    if(topName)
-        topName.textContent=name;
-
-
-    if(avatar)
-        avatar.textContent=initial;
-
-
-    if(level)
-        level.textContent=
-        student.level || 1;
-
-
-    if(xp)
-        xp.textContent=
-        student.xp || 0;
-
-
-    if(streak)
-        streak.textContent=
-        student.streak || 0;
-
+    }
 
 }

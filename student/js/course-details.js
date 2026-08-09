@@ -50,7 +50,8 @@ const courseId =
 params.get("id");
 
 
-
+console.log("Course ID:", courseId);
+console.log("User:", auth.currentUser?.uid);
 
 
 let courseData = null;
@@ -67,19 +68,6 @@ document.addEventListener(
 ()=>{
 
     loadCourse();
-
-    const enrollBtn =
-    document.getElementById(
-    "enrollBtn"
-    );
-
-
-    if(enrollBtn){
-
-        enrollBtn.onclick =
-        handleEnrollment;
-
-    }
 
 });
 
@@ -367,9 +355,14 @@ course.instructor ||
 // ===============================
 
 
-function loadCurriculum(
-lessons=[]
-){
+function loadCurriculum(lessons = []){
+
+
+if(!Array.isArray(lessons)){
+
+    lessons = [];
+
+}
 
 
 
@@ -508,103 +501,87 @@ ${point}
 
 async function checkEnrollment(){
 
+    const user = auth.currentUser;
 
+    if(!user){
 
-const user =
-auth.currentUser;
+        console.log("❌ No user");
 
+        return false;
 
+    }
 
-if(!user)
+    const ref = doc(
+        db,
+        "students",
+        user.uid,
+        "enrollments",
+        courseId
+    );
 
-return false;
+    console.log("🔎 Checking enrollment:", ref.path);
 
+    const snap = await getDoc(ref);
 
+    console.log(
+        "📦 Enrollment exists:",
+        snap.exists()
+    );
 
+    if(snap.exists()){
 
+        console.log(
+            "✅ Enrollment:",
+            snap.data()
+        );
 
-const ref =
-doc(
+        return snap.data();
 
-db,
+    }
 
-"students",
-
-user.uid,
-
-"enrollments",
-
-courseId
-
-);
-
-
-
-
-
-const snap =
-await getDoc(
-ref
-);
-
-
-
-
-
-if(!snap.exists())
-
-return false;
-
-
-
-
-
-return snap.data();
-
-
+    return false;
 }
 
 // ===============================
 // BUTTON STATE
 // ===============================
 
-onAuthStateChanged(
+onAuthStateChanged(auth, async (user) => {
 
-    auth,
+    if (!user) return;
 
-    async(user)=>{
+    const enrollBtn =
+        document.getElementById("enrollBtn");
 
-        if(!user)
-        return;
+    if (!enrollBtn) return;
+
+    try {
 
         const enrollment =
-        await checkEnrollment();
+            await checkEnrollment();
 
-        const enrollBtn =
-        document.getElementById(
-        "enrollBtn"
-        );
+        if (!enrollment) return;
 
-        if(!enrollBtn)
-        return;
-
-        if(enrollment){
-
-            enrollBtn.textContent =
+        enrollBtn.textContent =
             "Start Learning";
 
-            enrollBtn.onclick = ()=>{
+        enrollBtn.onclick = () => {
 
-                window.location.href =
+            window.location.href =
                 `course-player.html?id=${courseId}`;
 
-            };
+        };
 
-        }
+    } catch (error) {
+
+        console.error(
+            "Enrollment check failed:",
+            error
+        );
 
     }
 
-);
+});
 
 // ===============================
 // HANDLE CLICK
@@ -698,48 +675,28 @@ async function enrollFreeCourse(uid){
 try{
 
 
+
+
 await setDoc(
-
-doc(
-
-db,
-
-"students",
-
-uid,
-
-"enrollments",
-
-courseId
-
-),
-
-
-{
-
-
-courseId:courseId,
-
-
-paymentStatus:"free",
-
-
-progress:0,
-
-
-completedLessons:[],
-
-
-joinedAt:new Date()
-
-
-}
-
-
-
+    doc(
+        db,
+        "students",
+        uid,
+        "enrollments",
+        courseId
+    ),
+    {
+        courseId,
+        paymentStatus: "free",
+        status: "active",
+        progress: 0,
+        completedLessons: [],
+        joinedAt: new Date()
+    },
+    {
+        merge: true
+    }
 );
-
-
 
 
 
@@ -787,3 +744,21 @@ window.location.href =
 
 
 }
+
+// =====================================
+// ENROLL BUTTON
+// =====================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const enrollBtn =
+        document.getElementById("enrollBtn");
+
+    if (!enrollBtn) return;
+
+    enrollBtn.addEventListener(
+        "click",
+        handleEnrollment
+    );
+
+});

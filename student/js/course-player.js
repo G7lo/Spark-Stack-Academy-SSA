@@ -1,1679 +1,1407 @@
-// =====================================
+// ============================================
 // SPARK STACK ACADEMY
-// COURSE PLAYER CONTROLLER V1
-// =====================================
-
+// MASTERCLASS COURSE PLAYER
+// course-player.js
+// ============================================
 
 import {
-
     auth,
     db
-
 } from "../../js/firebase.js";
 
-
-
 import {
-
     onAuthStateChanged
-
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
-
 import {
-
     doc,
     getDoc,
+    setDoc,
     updateDoc,
-    setDoc
-
+    collection,
+    query,
+    where,
+    getDocs,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+// ============================================
+// STATE
+// ============================================
+
+let currentUser = null;
+let course = null;
+let lessons = [];
+
+let currentLessonIndex = 0;
+let completedLessons = [];
 
 
-
-console.log(
-    "🚀 Course Player Loaded"
-);
-
-
-
-
-
-// ===============================
-// GET COURSE ID
-// ===============================
-
+// ============================================
+// COURSE ID
+// ============================================
 
 const params =
-new URLSearchParams(
-    window.location.search
-);
-
-
+    new URLSearchParams(window.location.search);
 
 const courseId =
-params.get("id");
+    params.get("id");
 
 
+// ============================================
+// DOM
+// ============================================
+
+const courseLocked =
+    document.getElementById("courseLocked");
+
+const courseContent =
+    document.getElementById("courseContent");
+
+const unlockCourseBtn =
+    document.getElementById("unlockCourseBtn");
+
+const courseTitle =
+    document.getElementById("courseTitle");
+
+const courseDescription =
+    document.getElementById("courseDescription");
+
+const instructorName =
+    document.getElementById("instructorName");
+
+const instructorAvatar =
+    document.getElementById("instructorAvatar");
+
+const lessonList =
+    document.getElementById("lessonList");
+
+const lessonTitle =
+    document.getElementById("lessonTitle");
+
+const lessonDescription =
+    document.getElementById("lessonDescription");
+
+const courseProgressText =
+    document.getElementById("courseProgressText");
+
+const courseProgressBar =
+    document.getElementById("courseProgressBar");
+
+const previousLessonBtn =
+    document.getElementById("previousLessonBtn");
+
+const nextLessonBtn =
+    document.getElementById("nextLessonBtn");
+
+const completeLessonBtn =
+    document.getElementById("completeLessonBtn");
+
+const lessonNotes =
+    document.getElementById("lessonNotes");
+
+const saveNotesBtn =
+    document.getElementById("saveNotesBtn");
+
+const courseResources =
+    document.getElementById("courseResources");
+
+const classAnnouncement =
+    document.getElementById("classAnnouncement");
 
 
-if(!courseId){
+// ============================================
+// START
+// ============================================
 
-    console.error(
-        "No course ID found"
+console.log("🎓 Masterclass Classroom Loaded");
+
+
+// ============================================
+// AUTH
+// ============================================
+
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+
+        window.location.href = "../login.html";
+
+        return;
+    }
+
+    currentUser = user;
+
+    console.log(
+        "👨‍🎓 Student:",
+        user.email
+    );
+
+    await initializeClassroom();
+
+});
+
+
+// ============================================
+// INITIALIZE
+// ============================================
+
+async function initializeClassroom() {
+
+    try {
+
+        if (!courseId) {
+
+            showError(
+                "No course selected."
+            );
+
+            return;
+        }
+
+
+        // Load course
+        await loadCourse();
+
+
+        // Check access
+        const hasAccess =
+            await checkCourseAccess();
+
+
+        if (!hasAccess) {
+
+            showLockedState();
+
+            return;
+        }
+
+
+        // Student has access
+        showClassroom();
+
+
+        // Load classroom data
+        await loadLessons();
+
+        await loadStudentProgress();
+
+        renderLessons();
+
+        if (lessons.length > 0) {
+
+            showLesson(
+                currentLessonIndex
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "❌ Classroom initialization failed:",
+            error
+        );
+
+        showError(
+            "Unable to load this classroom."
+        );
+
+    }
+
+}
+
+
+// ============================================
+// LOAD COURSE
+// ============================================
+
+async function loadCourse() {
+
+    const courseRef =
+        doc(
+            db,
+            "courses",
+            courseId
+        );
+
+    const snapshot =
+        await getDoc(courseRef);
+
+
+    if (!snapshot.exists()) {
+
+        throw new Error(
+            "Course not found"
+        );
+
+    }
+
+
+    course = {
+
+        id: snapshot.id,
+
+        ...snapshot.data()
+
+    };
+
+
+    console.log(
+        "📚 Course:",
+        course.title
+    );
+
+
+    // Header
+    if (courseTitle) {
+
+        courseTitle.textContent =
+            course.title || "Course";
+
+    }
+
+
+    if (courseDescription) {
+
+        courseDescription.textContent =
+            course.description ||
+            "Welcome to your classroom.";
+
+    }
+
+
+    // Instructor
+    if (instructorName) {
+
+        instructorName.textContent =
+            course.instructorName ||
+            "SSA Instructor";
+
+    }
+
+
+    if (instructorAvatar) {
+
+        const name =
+            course.instructorName ||
+            "I";
+
+        instructorAvatar.textContent =
+            name.charAt(0).toUpperCase();
+
+    }
+
+
+    // Announcement
+    if (classAnnouncement) {
+
+        classAnnouncement.textContent =
+            course.announcement ||
+            "No announcements yet.";
+
+    }
+
+}
+
+
+// ============================================
+// CHECK COURSE ACCESS
+// ============================================
+
+async function checkCourseAccess() {
+
+    const price =
+        Number(course.price || 0);
+
+
+    // ========================================
+    // FREE COURSE
+    // ========================================
+
+    if (price <= 0) {
+
+        console.log("🆓 Free course");
+
+        return true;
+
+    }
+
+
+    // ========================================
+    // CHECK STUDENT ENROLLMENT
+    // ========================================
+
+    const enrollmentRef =
+        doc(
+            db,
+            "students",
+            currentUser.uid,
+            "enrollments",
+            courseId
+        );
+
+
+    const enrollmentSnapshot =
+        await getDoc(
+            enrollmentRef
+        );
+
+
+    console.log(
+        "🔎 Checking enrollment:",
+        `students/${currentUser.uid}/enrollments/${courseId}`
+    );
+
+
+    if (!enrollmentSnapshot.exists()) {
+
+        console.log(
+            "❌ Enrollment does not exist"
+        );
+
+        return false;
+
+    }
+
+
+    const enrollment =
+        enrollmentSnapshot.data();
+
+
+    console.log(
+        "📦 Enrollment found:",
+        enrollment
+    );
+
+
+    // ========================================
+    // VERIFY PAYMENT
+    // ========================================
+
+    if (
+
+        enrollment.paymentStatus === "paid"
+
+        ||
+
+        enrollment.status === "active"
+
+        ||
+
+        enrollment.status === "approved"
+
+        ||
+
+        enrollment.status === "paid"
+
+    ) {
+
+        console.log(
+            "✅ Course access granted"
+        );
+
+        return true;
+
+    }
+
+
+    console.log(
+        "❌ Enrollment exists but payment not confirmed"
+    );
+
+
+    return false;
+
+}
+
+
+// ============================================
+// LOCKED STATE
+// ============================================
+
+function showLockedState() {
+
+    if (courseLocked) {
+
+        courseLocked.style.display =
+            "block";
+
+    }
+
+
+    if (courseContent) {
+
+        courseContent.style.display =
+            "none";
+
+    }
+
+
+    if (unlockCourseBtn) {
+
+        unlockCourseBtn.onclick = () => {
+
+            window.location.href =
+                `payments.html?courseId=${courseId}`;
+
+        };
+
+    }
+
+
+    console.log(
+        "🔒 Course locked"
     );
 
 }
 
 
+// ============================================
+// UNLOCK CLASSROOM
+// ============================================
+
+function showClassroom() {
+
+    if (courseLocked) {
+
+        courseLocked.style.display =
+            "none";
+
+    }
 
 
+    if (courseContent) {
+
+        courseContent.style.display =
+            "block";
+
+    }
 
 
+    console.log(
+        "🔓 Classroom unlocked"
+    );
 
-// ===============================
-// INITIALIZE
-// ===============================
-
-
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
+}
 
 
-    startClassroom();
+// ============================================
+// LOAD LESSONS
+// ============================================
+
+async function loadLessons() {
+
+    lessonList.innerHTML = "";
 
 
-});
+    // ----------------------------------------
+    // Expected Firestore structure:
+    //
+    // courses
+    //   └── courseId
+    //       └── lessons[]
+    //
+    // ----------------------------------------
+
+    if (
+        Array.isArray(
+            course.lessons
+        )
+    ) {
+
+        lessons =
+            course.lessons;
+
+    }
+
+    else {
+
+        lessons = [];
+
+    }
 
 
+    console.log(
+        "🎥 Lessons:",
+        lessons.length
+    );
+
+}
 
 
+// ============================================
+// RENDER LESSONS
+// ============================================
+
+function renderLessons() {
+
+    lessonList.innerHTML = "";
 
 
+    if (!lessons.length) {
 
-async function startClassroom(){
+        lessonList.innerHTML = `
 
+            <div class="empty-state">
 
-    if(!courseId)
+                <p>
+                    No lessons available yet.
+                </p>
+
+            </div>
+
+        `;
+
         return;
+    }
 
 
+    lessons.forEach(
+        (lesson, index) => {
 
-    onAuthStateChanged(
-
-        auth,
-
-        async(student)=>{
-
-
-            if(!student){
+            const button =
+                document.createElement(
+                    "button"
+                );
 
 
-                window.location.href =
-                "../login.html";
+            button.className =
+                "lesson-item";
 
 
-                return;
+            if (
+                index ===
+                currentLessonIndex
+            ) {
+
+                button.classList.add(
+                    "active"
+                );
 
             }
 
 
+            if (
+                completedLessons.includes(
+                    index
+                )
+            ) {
 
-            console.log(
-                "Student:",
-                student.uid
+                button.classList.add(
+                    "completed"
+                );
+
+            }
+
+
+            button.innerHTML = `
+
+                <i data-lucide="${
+                    completedLessons.includes(index)
+                        ? "check-circle"
+                        : "play-circle"
+                }"></i>
+
+                <span>
+                    ${index + 1}.
+                    ${lesson.title || "Lesson"}
+                </span>
+
+            `;
+
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    showLesson(index);
+
+                }
             );
 
 
-
-            await loadClassroom(
-
-                student.uid
-
+            lessonList.appendChild(
+                button
             );
 
+        }
+    );
 
+
+    if (
+        window.lucide
+    ) {
+
+        lucide.createIcons();
+
+    }
+
+}
+
+
+// ============================================
+// SHOW LESSON
+// ============================================
+
+function showLesson(index) {
+
+    if (
+        index < 0 ||
+        index >= lessons.length
+    ) {
+
+        return;
+    }
+
+
+    currentLessonIndex =
+        index;
+
+
+    const lesson =
+        lessons[index];
+
+
+    lessonTitle.textContent =
+        lesson.title ||
+        `Lesson ${index + 1}`;
+
+
+    lessonDescription.textContent =
+        lesson.description ||
+        "";
+
+
+    // ----------------------------------------
+    // VIDEO
+    // ----------------------------------------
+
+    renderVideo(lesson);
+
+
+    // ----------------------------------------
+    // RESOURCES
+    // ----------------------------------------
+
+    renderResources(lesson);
+
+
+    // ----------------------------------------
+    // NOTES
+    // ----------------------------------------
+
+    loadNotes(lesson);
+
+
+    // ----------------------------------------
+    // BUTTONS
+    // ----------------------------------------
+
+    previousLessonBtn.disabled =
+        index === 0;
+
+
+    nextLessonBtn.disabled =
+        index === lessons.length - 1;
+
+
+    completeLessonBtn.disabled =
+        completedLessons.includes(index);
+
+
+    completeLessonBtn.innerHTML =
+        completedLessons.includes(index)
+
+            ? `Completed ✓`
+
+            : `Mark Complete <i data-lucide="check"></i>`;
+
+
+    updateProgress();
+
+
+    renderLessons();
+
+
+    if (
+        window.lucide
+    ) {
+
+        lucide.createIcons();
+
+    }
+
+}
+
+
+// ============================================
+// EMBED VIDEO
+// ============================================
+
+function renderVideo(lesson) {
+
+    const videoBox =
+        document.querySelector(
+            ".video-box"
+        );
+
+
+    if (!videoBox) return;
+
+
+    const url =
+        lesson.videoUrl ||
+        lesson.youtubeUrl ||
+        "";
+
+
+    if (!url) {
+
+        videoBox.innerHTML = `
+
+            <div class="video-placeholder">
+
+                <i data-lucide="play-circle"></i>
+
+                <h3>
+                    Video coming soon
+                </h3>
+
+                <p>
+                    This lesson does not have
+                    a video yet.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    const videoId =
+        extractYouTubeId(url);
+
+
+    if (!videoId) {
+
+        videoBox.innerHTML = `
+
+            <div class="video-placeholder">
+
+                <h3>
+                    Invalid video link
+                </h3>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    videoBox.innerHTML = `
+
+        <iframe
+
+            src="https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1"
+
+            title="${lesson.title || "SSA Lesson"}"
+
+            allow="accelerometer; autoplay; clipboard-write;
+                   encrypted-media; gyroscope; picture-in-picture;
+                   web-share"
+
+            allowfullscreen>
+
+        </iframe>
+
+    `;
+
+}
+
+
+// ============================================
+// YOUTUBE ID
+// ============================================
+
+function extractYouTubeId(url) {
+
+    try {
+
+        const parsed =
+            new URL(url);
+
+
+        if (
+            parsed.hostname.includes(
+                "youtu.be"
+            )
+        ) {
+
+            return parsed.pathname
+                .replace("/", "");
 
         }
 
-    );
+
+        if (
+            parsed.hostname.includes(
+                "youtube.com"
+            )
+        ) {
+
+            return parsed.searchParams.get(
+                "v"
+            );
+
+        }
+
+    }
+
+    catch {
+
+        return null;
+
+    }
 
 
-}
-
-
-
-
-
-
-
-
-
-// ===============================
-// LOAD CLASSROOM
-// ===============================
-
-
-async function loadClassroom(uid){
-
-
-
-try{
-
-
-// COURSE DATA
-
-const courseRef =
-doc(
-    db,
-    "courses",
-    courseId
-);
-
-
-
-const courseSnap =
-await getDoc(courseRef);
-
-
-
-if(!courseSnap.exists()){
-
-
-    showError(
-        "Course not found"
-    );
-
-
-    return;
+    return null;
 
 }
 
 
-
-
-const course =
-courseSnap.data();
-
-
-
-
-
-// CHECK ENROLLMENT
-
-const enrollmentRef =
-doc(
-
-    db,
-
-    "students",
-
-    uid,
-
-    "enrollments",
-
-    courseId
-
-);
-
-
-
-const enrollmentSnap =
-await getDoc(
-    enrollmentRef
-);
-
-
-
-
-
-
-if(!enrollmentSnap.exists()){
-
-
-    showLocked();
-
-
-    return;
-
-}
-
-
-
-
-
-const enrollment =
-enrollmentSnap.data();
-
-
-
-
-
-// PAYMENT CHECK
-
-if(
-
-course.price > 0 &&
-
-enrollment.paymentStatus !== "paid"
-
-){
-
-
-    showLocked();
-
-
-    return;
-
-
-}
-
-
-
-
-
-
-// EVERYTHING OK
-
-
-showClassroom();
-
-
-loadCourseDetails(
-    course,
-    enrollment
-);
-
-loadNotes();
-loadResources(course.resources);
-
-
-}
-
-
-
-catch(error){
-
-
-console.error(
-
-"Classroom error:",
-
-error
-
-);
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-
-
-// ===============================
-// LOCK / UNLOCK UI
-// ===============================
-
-
-function showLocked(){
-
-
-document.getElementById(
-"courseLocked"
-).style.display="block";
-
-
-
-document.getElementById(
-"courseContent"
-).style.display="none";
-
-
-}
-
-
-
-
-
-
-function showClassroom(){
-
-
-document.getElementById(
-"courseLocked"
-).style.display="none";
-
-
-
-document.getElementById(
-"courseContent"
-).style.display="block";
-
-
-}
-
-
-
-
-
-
-
-// ===============================
-// COURSE DETAILS
-// ===============================
-
-
-function loadCourseDetails(
-course,
-enrollment
-){
-
-
-
-const title =
-document.getElementById(
-"courseTitle"
-);
-
-
-
-const description =
-document.getElementById(
-"courseDescription"
-);
-
-
-
-if(title)
-
-title.textContent =
-course.title || "Course";
-
-
-
-if(description)
-
-description.textContent =
-course.description || "";
-
-
-
-
-
-updateProgress(
-enrollment.progress || 0
-);
-
-
-
-}
-
-
-
-
-
-
-
-
-function updateProgress(value){
-
-
-
-const text =
-document.getElementById(
-"courseProgressText"
-);
-
-
-
-const bar =
-document.getElementById(
-"courseProgressBar"
-);
-
-
-
-
-if(text)
-
-text.textContent =
-value + "%";
-
-
-
-if(bar)
-
-bar.style.width =
-value + "%";
-
-
-}
-
-
-
-
-
-
-
-
-function showError(message){
-
-
-console.error(message);
-
-
-}
-// =====================================
-// LESSON SYSTEM
-// =====================================
-
-
-let lessons = [];
-
-let currentLesson = 0;
-
-let currentEnrollment = null;
-
-
-
-
-
-// ===============================
-// EXTEND COURSE LOADING
-// ===============================
-
-
-function loadCourseDetails(
-course,
-enrollment
-){
-
-
-currentEnrollment = enrollment;
-
-
-
-const title =
-document.getElementById(
-"courseTitle"
-);
-
-
-const description =
-document.getElementById(
-"courseDescription"
-);
-
-
-
-if(title)
-
-title.textContent =
-course.title || "Course";
-
-
-
-if(description)
-
-description.textContent =
-course.description || "";
-
-
-
-
-updateProgress(
-enrollment.progress || 0
-);
-
-
-
-
-
-// instructor
-
-const instructor =
-document.getElementById(
-"instructorName"
-);
-
-
-
-if(instructor)
-
-instructor.textContent =
-course.instructor ||
-"Spark Stack Academy";
-
-
-
-
-
-// lessons
-
-lessons =
-course.lessons || [];
-
-
-
-renderLessons();
-
-
-
-}
-
-
-
-
-
-// ===============================
-// DISPLAY LESSONS
-// ===============================
-
-
-function renderLessons(){
-
-
-const container =
-document.getElementById(
-"lessonList"
-);
-
-
-
-if(!container)
-return;
-
-
-
-container.innerHTML="";
-
-
-
-
-
-if(
-lessons.length === 0
-){
-
-
-container.innerHTML = `
-
-<p>
-No lessons available yet.
-</p>
-
-`;
-
-return;
-
-
-}
-
-
-
-
-
-
-
-lessons.forEach(
-(lesson,index)=>{
-
-
-const div =
-document.createElement(
-"div"
-);
-
-
-
-div.className =
-"lesson-item";
-
-
-
-if(index === currentLesson)
-
-div.classList.add(
-"active"
-);
-
-
-
-
-
-div.innerHTML = `
-
-${index+1}. 
-${lesson.title || "Lesson"}
-
-`;
-
-
-
-
-
-div.onclick = ()=>{
-
-
-openLesson(index);
-
-
-};
-
-
-
-container.appendChild(
-div
-);
-
-
-
-});
-
-
-
-
-
-openLesson(0);
-
-
-}
-
-
-
-
-
-
-
-
-
-// ===============================
-// OPEN LESSON
-// ===============================
-
-
-function openLesson(index){
-
-
-currentLesson = index;
-
-
-
-const lesson =
-lessons[index];
-
-
-
-if(!lesson)
-return;
-
-
-
-
-
-document.querySelectorAll(
-".lesson-item"
-)
-.forEach(
-(item,i)=>{
-
-
-item.classList.toggle(
-
-"active",
-
-i===index
-
-);
-
-
-});
-
-
-
-
-
-
-
-const title =
-document.getElementById(
-"lessonTitle"
-);
-
-
-
-const description =
-document.getElementById(
-"lessonDescription"
-);
-
-
-
-
-
-if(title)
-
-title.textContent =
-lesson.title || "Lesson";
-
-
-
-
-
-if(description)
-
-description.textContent =
-lesson.description ||
-"";
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-// ===============================
-// COMPLETE LESSON
-// ===============================
-
-
-const completeBtn =
-document.getElementById(
-"completeLessonBtn"
-);
-
-
-
-if(completeBtn){
-
-
-completeBtn.onclick = ()=>{
-
-
-completeLesson();
-
-
-};
-
-
-}
-
-
-
-
-
-
-
-async function completeLesson(){
-
-
-if(!currentEnrollment)
-
-return;
-
-
-
-
-const completed =
-currentEnrollment.completedLessons || [];
-
-
-
-const lessonId =
-lessons[currentLesson].id;
-
-
-
-
-if(
-!completed.includes(lessonId)
-){
-
-
-completed.push(
-lessonId
-);
-
-
-}
-
-
-
-
-
-
-
-const progress =
-Math.round(
-
-(completed.length /
-lessons.length)
-*
-100
-
-);
-
-
-
-updateProgress(
-progress
-);
-
-
-
-
-alert(
-"Lesson completed 🎉"
-);
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ===============================
-// NEXT / PREVIOUS
-// ===============================
-
-
-const nextBtn =
-document.getElementById(
-"nextLessonBtn"
-);
-
-
-
-const previousBtn =
-document.getElementById(
-"previousLessonBtn"
-);
-
-
-
-
-
-if(nextBtn){
-
-
-nextBtn.onclick = ()=>{
-
-
-if(
-currentLesson <
-lessons.length-1
-){
-
-
-openLesson(
-currentLesson + 1
-);
-
-
-}
-
-
-};
-
-
-}
-
-
-
-
-
-
-
-if(previousBtn){
-
-
-previousBtn.onclick = ()=>{
-
-
-if(
-currentLesson > 0
-){
-
-
-openLesson(
-currentLesson - 1
-);
-
-
-}
-
-
-};
-
-
-}
-
-
-
-
-
-
-
-
-
-// ===============================
+// ============================================
 // RESOURCES
-// ===============================
+// ============================================
+
+function renderResources(lesson) {
+
+    if (!courseResources) return;
 
 
-function loadResources(resources){
+    const resources =
+        lesson.resources || [];
 
 
-const box =
-document.getElementById(
-"courseResources"
-);
+    if (!resources.length) {
+
+        courseResources.innerHTML = `
+
+            <p>
+                No resources available.
+            </p>
+
+        `;
+
+        return;
+    }
 
 
-
-if(!box)
-return;
+    courseResources.innerHTML = "";
 
 
+    resources.forEach(
+        resource => {
 
-box.innerHTML="";
+            const link =
+                document.createElement(
+                    "a"
+                );
 
 
+            link.href =
+                resource.url || "#";
 
-if(!resources || resources.length===0){
+
+            link.target =
+                "_blank";
 
 
-box.innerHTML=
-"<p>No resources available.</p>";
+            link.rel =
+                "noopener noreferrer";
 
-return;
 
+            link.className =
+                "resource-item";
+
+
+            link.innerHTML = `
+
+                <span>
+                    ${resource.title || "Resource"}
+                </span>
+
+                <i data-lucide="external-link"></i>
+
+            `;
+
+
+            courseResources.appendChild(
+                link
+            );
+
+        }
+    );
+
+
+    if (window.lucide) {
+
+        lucide.createIcons();
+
+    }
 
 }
 
 
+// ============================================
+// PROGRESS
+// ============================================
+
+function updateProgress() {
+
+    if (!lessons.length) {
+
+        courseProgressText.textContent =
+            "0%";
+
+        courseProgressBar.style.width =
+            "0%";
+
+        return;
+
+    }
 
 
+    const percentage =
+        Math.round(
 
-resources.forEach(
-resource=>{
+            (
+                completedLessons.length /
+                lessons.length
+            ) * 100
 
-
-box.innerHTML += `
-
-<a href="${resource.url}"
-target="_blank">
-
-${resource.name}
-
-</a>
-
-<br>
-
-`;
+        );
 
 
-});
+    courseProgressText.textContent =
+        `${percentage}%`;
 
 
-}
-// =====================================
-// SAVE CLASSROOM PROGRESS
-// =====================================
-
-
-async function saveProgress(){
-
-
-if(!auth.currentUser)
-return;
-
-
-const uid =
-auth.currentUser.uid;
-
-
-
-const completed =
-currentEnrollment.completedLessons || [];
-
-
-
-const progress =
-Math.round(
-
-(completed.length /
-lessons.length)
-*
-100
-
-);
-
-
-
-
-
-const enrollmentRef =
-doc(
-
-db,
-
-"students",
-
-uid,
-
-"enrollments",
-
-courseId
-
-);
-
-
-
-
-try{
-
-
-await updateDoc(
-
-enrollmentRef,
-
-{
-
-completedLessons:completed,
-
-progress:progress,
-
-updatedAt:new Date()
+    courseProgressBar.style.width =
+        `${percentage}%`;
 
 }
 
+
+// ============================================
+// COMPLETE LESSON
+// ============================================
+
+completeLessonBtn?.addEventListener(
+    "click",
+    async () => {
+
+        if (
+            completedLessons.includes(
+                currentLessonIndex
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        completedLessons.push(
+            currentLessonIndex
+        );
+
+
+        updateProgress();
+
+        renderLessons();
+
+        completeLessonBtn.disabled =
+            true;
+
+        completeLessonBtn.innerHTML =
+            "Completed ✓";
+
+
+        await saveProgress();
+
+    }
 );
 
 
+// ============================================
+// NEXT
+// ============================================
 
+nextLessonBtn?.addEventListener(
+    "click",
+    () => {
 
+        if (
+            currentLessonIndex <
+            lessons.length - 1
+        ) {
 
-console.log(
-"Progress saved"
+            showLesson(
+                currentLessonIndex + 1
+            );
+
+        }
+
+    }
 );
 
 
+// ============================================
+// PREVIOUS
+// ============================================
 
-}
+previousLessonBtn?.addEventListener(
+    "click",
+    () => {
 
-catch(error){
+        if (
+            currentLessonIndex > 0
+        ) {
 
+            showLesson(
+                currentLessonIndex - 1
+            );
 
-console.error(
+        }
 
-"Progress save error",
-
-error
-
+    }
 );
 
 
-}
+// ============================================
+// SAVE PROGRESS + SYNC ENROLLMENT
+// ============================================
 
+async function saveProgress() {
 
-}
+    try {
 
+        const percentage =
+            lessons.length
+                ? Math.round(
+                    (completedLessons.length / lessons.length) * 100
+                )
+                : 0;
 
 
+        // ========================================
+        // SAVE DETAILED COURSE PROGRESS
+        // ========================================
 
+        const progressRef =
+            doc(
+                db,
+                "courseProgress",
+                `${currentUser.uid}_${courseId}`
+            );
 
 
+        await setDoc(
+            progressRef,
+            {
 
-// =====================================
-// COMPLETE LESSON UPDATED
-// =====================================
+                userId:
+                    currentUser.uid,
 
+                courseId,
 
-async function completeLesson(){
+                completedLessons,
 
+                currentLesson:
+                    currentLessonIndex,
 
-if(!lessons[currentLesson])
-return;
+                progress:
+                    percentage,
 
+                updatedAt:
+                    serverTimestamp()
 
+            },
+            {
+                merge: true
+            }
+        );
 
-const lessonId =
-lessons[currentLesson].id;
 
+        // ========================================
+        // SYNC STUDENT ENROLLMENT
+        // ========================================
 
+        const enrollmentRef =
+            doc(
+                db,
+                "students",
+                currentUser.uid,
+                "enrollments",
+                courseId
+            );
 
-let completed =
-currentEnrollment.completedLessons || [];
 
+        await setDoc(
+            enrollmentRef,
+            {
 
+                progress:
+                    percentage,
 
+                status:
+                    percentage >= 100
+                        ? "completed"
+                        : "active",
 
+                paymentStatus:
+                    "paid",
 
-if(
-!completed.includes(lessonId)
-){
+                lastLesson:
+                    currentLessonIndex,
 
+                updatedAt:
+                    serverTimestamp()
 
-completed.push(
-lessonId
-);
+            },
+            {
+                merge: true
+            }
+        );
 
 
-}
+        console.log(
+            `💾 Progress synced: ${percentage}%`
+        );
 
+    }
 
+    catch (error) {
 
-currentEnrollment.completedLessons =
-completed;
+        console.error(
+            "❌ Progress save failed:",
+            error
+        );
 
-
-
-
-const progress =
-Math.round(
-
-(completed.length /
-lessons.length)
-*
-100
-
-);
-
-
-
-
-updateProgress(
-progress
-);
-
-
-
-
-await saveProgress();
-
-
-
-
-
-console.log(
-"Lesson complete:",
-lessonId
-);
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// =====================================
-// NOTES SYSTEM
-// =====================================
-
-
-const saveNotesBtn =
-document.getElementById(
-"saveNotesBtn"
-);
-
-
-
-if(saveNotesBtn){
-
-
-saveNotesBtn.onclick =
-saveNotes;
-
+    }
 
 }
 
 
+// ============================================
+// LOAD PROGRESS
+// ============================================
+
+async function loadStudentProgress() {
+
+    const progressRef =
+        doc(
+            db,
+            "courseProgress",
+            `${currentUser.uid}_${courseId}`
+        );
 
 
+    const snapshot =
+        await getDoc(
+            progressRef
+        );
 
 
+    if (
+        !snapshot.exists()
+    ) {
 
-async function saveNotes(){
+        return;
 
-
-
-const notes =
-document.getElementById(
-"lessonNotes"
-).value;
+    }
 
 
-
-if(!auth.currentUser)
-return;
-
+    const data =
+        snapshot.data();
 
 
-const uid =
-auth.currentUser.uid;
+    completedLessons =
+        Array.isArray(
+            data.completedLessons
+        )
+            ? data.completedLessons
+            : [];
 
 
+    currentLessonIndex =
+        Number(
+            data.currentLesson || 0
+        );
 
 
-const notesRef =
-doc(
-
-db,
-
-"students",
-
-uid,
-
-"courseNotes",
-
-courseId
-
-);
-
-
-
-
-
-try{
-
-
-await setDoc(
-
-notesRef,
-
-{
-
-notes:notes,
-
-updatedAt:new Date()
-
-},
-
-{
-
-merge:true
-
-}
-
-);
-
-
-
-
-
-alert(
-"Notes saved ✅"
-);
-
-
-
-}
-
-catch(error){
-
-
-console.error(
-"Notes error",
-error
-);
-
+    console.log(
+        "📈 Progress loaded:",
+        completedLessons
+    );
 
 }
 
 
+// ============================================
+// NOTES
+// ============================================
+
+async function loadNotes(lesson) {
+
+    if (!lessonNotes) return;
+
+
+    lessonNotes.value = "";
+
+
+    const noteId =
+        `${currentUser.uid}_${courseId}_${currentLessonIndex}`;
+
+
+    const noteRef =
+        doc(
+            db,
+            "courseNotes",
+            noteId
+        );
+
+
+    const snapshot =
+        await getDoc(
+            noteRef
+        );
+
+
+    if (
+        snapshot.exists()
+    ) {
+
+        lessonNotes.value =
+            snapshot.data().notes || "";
+
+    }
 
 }
 
 
+saveNotesBtn?.addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            const noteId =
+                `${currentUser.uid}_${courseId}_${currentLessonIndex}`;
 
 
+            await setDoc(
+
+                doc(
+                    db,
+                    "courseNotes",
+                    noteId
+                ),
+
+                {
+
+                    userId:
+                        currentUser.uid,
+
+                    courseId,
+
+                    lessonIndex:
+                        currentLessonIndex,
+
+                    notes:
+                        lessonNotes.value,
+
+                    updatedAt:
+                        serverTimestamp()
+
+                },
+
+                {
+                    merge: true
+                }
+
+            );
 
 
+            saveNotesBtn.textContent =
+                "Saved ✓";
 
 
+            setTimeout(
+                () => {
 
-// =====================================
-// LOAD NOTES
-// =====================================
+                    saveNotesBtn.textContent =
+                        "Save Notes";
 
+                },
+                1500
+            );
 
-async function loadNotes(){
+        }
 
+        catch (error) {
 
+            console.error(
+                "Notes save failed:",
+                error
+            );
 
-if(!auth.currentUser)
-return;
+        }
 
-
-
-
-const uid =
-auth.currentUser.uid;
-
-
-
-
-const notesRef =
-doc(
-
-db,
-
-"students",
-
-uid,
-
-"courseNotes",
-
-courseId
-
+    }
 );
 
 
+// ============================================
+// ERROR
+// ============================================
 
+function showError(message) {
 
-const snap =
-await getDoc(
-notesRef
-);
+    if (courseContent) {
 
+        courseContent.innerHTML = `
 
+            <div class="course-lock-card">
 
+                <h2>
+                    Something went wrong
+                </h2>
 
+                <p>
+                    ${message}
+                </p>
 
-if(
-snap.exists()
-){
+                <button
+                    class="primary-btn"
+                    onclick="history.back()">
 
+                    Go Back
 
-document.getElementById(
-"lessonNotes"
-).value =
-snap.data().notes || "";
+                </button>
 
+            </div>
 
+        `;
 
-}
-
-
-
-}
-// =====================================
-// PAYMENT UNLOCK SYSTEM
-// =====================================
-
-
-
-const unlockBtn =
-document.getElementById(
-"unlockCourseBtn"
-);
-
-
-
-
-if(unlockBtn){
-
-
-unlockBtn.onclick = ()=>{
-
-
-startCoursePayment();
-
-
-};
-
-
-}
-
-
-
-
-
-
-
-// ===============================
-// START PAYMENT
-// ===============================
-
-
-async function startCoursePayment(){
-
-
-
-const user =
-auth.currentUser;
-
-
-
-if(!user)
-return;
-
-
-
-
-
-try{
-
-
-console.log(
-"Starting payment..."
-);
-
-
-
-
-
-/*
-
-THIS WILL CONNECT TO
-FIREBASE FUNCTION + DARAJA
-
-Example payload:
-
-studentId
-courseId
-amount
-
-
-*/
-
-
-
-
-
-const paymentData = {
-
-
-studentId:user.uid,
-
-
-courseId:courseId,
-
-
-amount:500
-
-};
-
-
-
-
-
-// Temporary simulation
-
-
-alert(
-"Payment request sent. Complete M-Pesa payment."
-);
-
-
-
-
-
-
-}
-
-catch(error){
-
-
-console.error(
-
-"Payment error",
-
-error
-
-);
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ===============================
-// CHECK PAYMENT STATUS
-// ===============================
-
-
-async function checkPaymentStatus(){
-
-
-
-const uid =
-auth.currentUser.uid;
-
-
-
-const enrollmentRef =
-doc(
-
-db,
-
-"students",
-
-uid,
-
-"enrollments",
-
-courseId
-
-);
-
-
-
-
-const snap =
-await getDoc(
-enrollmentRef
-);
-
-
-
-
-
-if(!snap.exists())
-
-return false;
-
-
-
-
-
-const data =
-snap.data();
-
-
-
-
-
-return (
-
-data.paymentStatus === "paid"
-
-);
-
-
-
-}
-
-
-
-
-
-
-
-
-// ===============================
-// REALTIME UNLOCK CHECK
-// ===============================
-
-
-async function verifyUnlock(){
-
-
-
-const paid =
-await checkPaymentStatus();
-
-
-
-if(paid){
-
-
-showClassroom();
-
-
-}
-
-else{
-
-
-showLocked();
-
-
-}
-
-
+    }
 
 }
