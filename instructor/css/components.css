@@ -1,0 +1,828 @@
+/* =========================================================
+   SPARK STACK ACADEMY
+   INSTRUCTOR PORTAL V1
+   COMPONENTS — SIDEBAR + TOPBAR
+========================================================= */
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.instructor-sidebar {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: var(--sidebar-width);
+
+    z-index: var(--z-sidebar);
+
+    background:
+        #0B1220;
+
+    border-right:
+        1px solid rgba(255,255,255,0.06);
+
+    color: #FFFFFF;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    transition:
+        width var(--transition),
+        transform var(--transition);
+
+}
+
+
+/* =========================================================
+   SIDEBAR INNER
+========================================================= */
+
+.instructor-sidebar-inner {
+
+    min-height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.instructor-brand {
+
+    height: 76px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        0 20px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.06);
+
+}
+
+
+.instructor-brand img {
+
+    width: 38px;
+    height: 38px;
+
+    object-fit: contain;
+
+}
+
+
+.instructor-brand-icon {
+
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563EB,
+            #06B6D4
+        );
+
+    box-shadow:
+        0 8px 20px
+        rgba(37,99,235,0.25);
+
+}
+
+
+.instructor-brand-icon svg {
+
+    width: 20px;
+    height: 20px;
+
+}
+
+
+.instructor-brand-text {
+
+    min-width: 0;
+
+}
+
+
+.instructor-brand-text strong {
+
+    display: block;
+
+    color: #FFFFFF;
+
+    font-size: 0.88rem;
+
+    font-weight: 800;
+
+    letter-spacing: -0.02em;
+
+}
+
+
+.instructor-brand-text span {
+
+    display: block;
+
+    margin-top: 1px;
+
+    color:
+        #64748B;
+
+    font-size: 0.68rem;
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.instructor-nav {
+
+    padding:
+        20px 12px;
+
+}
+
+
+.instructor-nav-label {
+
+    padding:
+        0 10px;
+
+    margin:
+        0 0 8px;
+
+    color:
+        #64748B;
+
+    font-size: 0.65rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.10em;
+
+}
+
+
+.instructor-nav ul {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+
+.instructor-nav a,
+.instructor-nav button {
+
+    width: 100%;
+
+    min-height: 44px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        0 12px;
+
+    border-radius:
+        10px;
+
+    background: transparent;
+
+    color:
+        #94A3B8;
+
+    font-size: 0.82rem;
+
+    font-weight: 500;
+
+    text-align: left;
+
+    transition:
+        background var(--transition),
+        color var(--transition),
+        transform var(--transition);
+
+}
+
+
+.instructor-nav a svg,
+.instructor-nav button svg {
+
+    width: 18px;
+    height: 18px;
+
+    flex: 0 0 18px;
+
+}
+
+
+.instructor-nav a:hover,
+.instructor-nav button:hover {
+
+    color: #FFFFFF;
+
+    background:
+        rgba(255,255,255,0.06);
+
+}
+
+
+.instructor-nav a.active,
+.instructor-nav button.active {
+
+    color: #FFFFFF;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(37,99,235,0.22),
+            rgba(6,182,212,0.08)
+        );
+
+    box-shadow:
+        inset 3px 0 0
+        var(--instructor-primary);
+
+}
+
+
+.instructor-nav a.active svg,
+.instructor-nav button.active svg {
+
+    color:
+        #60A5FA;
+
+}
+
+
+/* =========================================================
+   NAVIGATION DIVIDER
+========================================================= */
+
+.instructor-nav-divider {
+
+    height: 1px;
+
+    margin:
+        12px 10px;
+
+    background:
+        rgba(255,255,255,0.06);
+
+}
+
+
+/* =========================================================
+   SIDEBAR FOOTER
+========================================================= */
+
+.instructor-sidebar-footer {
+
+    margin-top: auto;
+
+    padding:
+        14px 12px;
+
+    border-top:
+        1px solid rgba(255,255,255,0.06);
+
+}
+
+
+/* =========================================================
+   INSTRUCTOR PROFILE
+========================================================= */
+
+.instructor-profile-mini {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        10px;
+
+    border-radius:
+        12px;
+
+    transition:
+        background var(--transition);
+
+}
+
+
+.instructor-profile-mini:hover {
+
+    background:
+        rgba(255,255,255,0.05);
+
+}
+
+
+.instructor-avatar {
+
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563EB,
+            #06B6D4
+        );
+
+    color: #FFFFFF;
+
+    font-size: 0.8rem;
+
+    font-weight: 700;
+
+}
+
+
+.instructor-avatar img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+.instructor-profile-info {
+
+    min-width: 0;
+
+}
+
+
+.instructor-profile-info strong {
+
+    display: block;
+
+    overflow: hidden;
+
+    color: #FFFFFF;
+
+    font-size: 0.76rem;
+
+    font-weight: 600;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+.instructor-profile-info span {
+
+    display: block;
+
+    color:
+        #64748B;
+
+    font-size: 0.65rem;
+
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.instructor-topbar {
+
+    position: fixed;
+
+    top: 0;
+    right: 0;
+
+    left: var(--sidebar-width);
+
+    height: var(--topbar-height);
+
+    z-index: var(--z-topbar);
+
+    display: flex;
+
+    align-items: center;
+
+    padding:
+        0 28px;
+
+    background:
+        rgba(255,255,255,0.88);
+
+    border-bottom:
+        1px solid var(--instructor-border);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    transition:
+        left var(--transition);
+
+}
+
+
+/* =========================================================
+   TOPBAR INNER
+========================================================= */
+
+.instructor-topbar-inner {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+.instructor-menu-toggle {
+
+    width: 40px;
+    height: 40px;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid var(--instructor-border);
+
+    border-radius:
+        10px;
+
+    background:
+        var(--instructor-surface);
+
+    color:
+        var(--instructor-text);
+
+}
+
+
+.instructor-menu-toggle svg {
+
+    width: 19px;
+    height: 19px;
+
+}
+
+
+/* =========================================================
+   TOPBAR PAGE INFO
+========================================================= */
+
+.instructor-topbar-info {
+
+    min-width: 0;
+
+}
+
+
+.instructor-topbar-info strong {
+
+    display: block;
+
+    color:
+        var(--instructor-text);
+
+    font-size: 0.9rem;
+
+    font-weight: 700;
+
+}
+
+
+.instructor-topbar-info span {
+
+    display: block;
+
+    margin-top: 1px;
+
+    color:
+        var(--instructor-text-muted);
+
+    font-size: 0.68rem;
+
+}
+
+
+/* =========================================================
+   TOPBAR ACTIONS
+========================================================= */
+
+.instructor-topbar-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+
+/* =========================================================
+   ICON BUTTON
+========================================================= */
+
+.instructor-icon-btn {
+
+    position: relative;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid var(--instructor-border);
+
+    border-radius:
+        10px;
+
+    background:
+        var(--instructor-surface);
+
+    color:
+        var(--instructor-text-secondary);
+
+    transition:
+        background var(--transition),
+        color var(--transition),
+        transform var(--transition);
+
+}
+
+
+.instructor-icon-btn:hover {
+
+    color:
+        var(--instructor-primary);
+
+    background:
+        var(--instructor-primary-soft);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+.instructor-icon-btn svg {
+
+    width: 18px;
+    height: 18px;
+
+}
+
+
+/* =========================================================
+   NOTIFICATION BADGE
+========================================================= */
+
+.instructor-notification-dot {
+
+    position: absolute;
+
+    top: 8px;
+    right: 8px;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+        var(--instructor-danger);
+
+    border:
+        2px solid #FFFFFF;
+
+}
+
+
+/* =========================================================
+   TOPBAR PROFILE
+========================================================= */
+
+.instructor-topbar-profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding-left: 10px;
+
+    margin-left: 2px;
+
+    border-left:
+        1px solid var(--instructor-border);
+
+}
+
+
+.instructor-topbar-profile .instructor-avatar {
+
+    width: 36px;
+    height: 36px;
+
+    flex-basis: 36px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .instructor-sidebar {
+
+        width: 230px;
+
+    }
+
+    .instructor-main {
+
+        margin-left: 230px;
+
+    }
+
+    .instructor-topbar {
+
+        left: 230px;
+
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — PHONE
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .instructor-sidebar {
+
+        width: 270px;
+
+        transform:
+            translateX(-100%);
+
+        box-shadow:
+            15px 0 40px
+            rgba(15,23,42,0.18);
+
+    }
+
+
+    .instructor-sidebar.open {
+
+        transform:
+            translateX(0);
+
+    }
+
+
+    .instructor-main {
+
+        margin-left: 0;
+
+    }
+
+
+    .instructor-topbar {
+
+        left: 0;
+
+        padding:
+            0 16px;
+
+    }
+
+
+    .instructor-menu-toggle {
+
+        display: flex;
+
+    }
+
+
+    .instructor-topbar-info span {
+
+        display: none;
+
+    }
+
+
+    .instructor-topbar-profile {
+
+        display: none;
+
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .instructor-sidebar {
+
+        width: 250px;
+
+    }
+
+
+    .instructor-topbar-actions {
+
+        gap: 5px;
+
+    }
+
+
+    .instructor-icon-btn {
+
+        width: 36px;
+        height: 36px;
+
+    }
+
+}

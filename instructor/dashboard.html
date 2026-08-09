@@ -1,0 +1,578 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Instructor Dashboard | Spark Stack Academy</title>
+
+<!-- =========================================
+     CORE STYLES
+========================================== -->
+
+<link
+    rel="stylesheet"
+    href="css/instructor-core.css"
+>
+
+<link
+    rel="stylesheet"
+    href="css/components.css"
+>
+
+<link
+    rel="stylesheet"
+    href="css/dashboard.css"
+>
+
+<link
+    rel="stylesheet"
+    href="css/responsive.css"
+>
+
+
+<!-- =========================================
+     FONT
+========================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
+
+
+<!-- =========================================
+     ICONS
+========================================== -->
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+</head><body><!-- =========================================
+     APPLICATION SHELL
+========================================== -->
+
+<div
+    class="instructor-app"
+    id="instructorApp"
+>
+
+
+    <!-- =====================================
+         SIDEBAR
+    ====================================== -->
+
+    <aside
+        class="instructor-sidebar"
+        id="instructorSidebar"
+    >
+
+        <!-- Sidebar component
+             will be injected here -->
+
+    </aside>
+
+
+    <!-- =====================================
+         MAIN AREA
+    ====================================== -->
+
+    <main class="instructor-main">
+
+
+        <!-- =================================
+             TOPBAR
+        ================================== -->
+
+        <header
+            class="instructor-topbar"
+            id="instructorTopbar"
+        >
+
+            <!-- Topbar component
+                 will be injected here -->
+
+        </header>
+
+
+        <!-- =================================
+             PAGE CONTENT
+        ================================== -->
+
+        <section class="dashboard-page">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="dashboard-header">
+
+                <div>
+
+                    <span class="dashboard-eyebrow">
+                        INSTRUCTOR PORTAL
+                    </span>
+
+                    <h1>
+                        Welcome back, Instructor 👋
+                    </h1>
+
+                    <p>
+                        Manage your courses, students,
+                        lessons and teaching activity.
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-header-actions">
+
+                    <button
+                        class="dashboard-action secondary"
+                        id="viewStudentsBtn"
+                    >
+
+                        <i data-lucide="users"></i>
+
+                        Students
+
+                    </button>
+
+
+                    <button
+                        class="dashboard-action primary"
+                        id="createCourseBtn"
+                    >
+
+                        <i data-lucide="plus"></i>
+
+                        Create Course
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 STATS
+            ================================== -->
+
+            <div class="instructor-stats">
+
+
+                <article class="stat-card">
+
+                    <div class="stat-icon blue">
+
+                        <i data-lucide="book-open"></i>
+
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            Published Courses
+                        </span>
+
+                        <strong id="statCourses">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <span class="stat-trend positive">
+                        +0%
+                    </span>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <div class="stat-icon purple">
+
+                        <i data-lucide="users"></i>
+
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            Students
+                        </span>
+
+                        <strong id="statStudents">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <span class="stat-trend positive">
+                        +0%
+                    </span>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <div class="stat-icon gold">
+
+                        <i data-lucide="award"></i>
+
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            Completions
+                        </span>
+
+                        <strong id="statCompletions">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <span class="stat-trend positive">
+                        +0%
+                    </span>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <div class="stat-icon green">
+
+                        <i data-lucide="wallet"></i>
+
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            Earnings
+                        </span>
+
+                        <strong id="statEarnings">
+                            KSh 0
+                        </strong>
+
+                    </div>
+
+                    <span class="stat-trend positive">
+                        +0%
+                    </span>
+
+                </article>
+
+            </div>
+
+
+            <!-- =================================
+                 DASHBOARD GRID
+            ================================== -->
+
+            <div class="dashboard-grid">
+
+
+                <!-- RECENT COURSES -->
+
+                <section class="dashboard-card courses-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span>
+                                YOUR COURSES
+                            </span>
+
+                            <h2>
+                                Course Overview
+                            </h2>
+
+                        </div>
+
+                        <a
+                            href="courses.html"
+                            class="card-link"
+                        >
+                            View All
+                            <i data-lucide="arrow-right"></i>
+                        </a>
+
+                    </div>
+
+
+                    <div
+                        class="course-list"
+                        id="courseList"
+                    >
+
+                        <div class="empty-state">
+
+                            <div class="empty-icon">
+
+                                <i data-lucide="book-open"></i>
+
+                            </div>
+
+                            <h3>
+                                No courses yet
+                            </h3>
+
+                            <p>
+                                Create your first course
+                                and start teaching.
+                            </p>
+
+                            <button
+                                class="empty-action"
+                                id="emptyCreateCourseBtn"
+                            >
+
+                                <i data-lucide="plus"></i>
+
+                                Create Course
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- QUICK ACTIONS -->
+
+                <section class="dashboard-card quick-actions-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span>
+                                QUICK ACTIONS
+                            </span>
+
+                            <h2>
+                                Teaching Tools
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quick-actions">
+
+
+                        <button
+                            class="quick-action"
+                            data-action="lesson"
+                        >
+
+                            <div class="quick-icon blue">
+
+                                <i data-lucide="file-plus-2"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Add Lesson
+                                </strong>
+
+                                <span>
+                                    Create learning content
+                                </span>
+
+                            </div>
+
+                            <i data-lucide="arrow-up-right"></i>
+
+                        </button>
+
+
+                        <button
+                            class="quick-action"
+                            data-action="assignment"
+                        >
+
+                            <div class="quick-icon purple">
+
+                                <i data-lucide="clipboard-list"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Create Assignment
+                                </strong>
+
+                                <span>
+                                    Give students work
+                                </span>
+
+                            </div>
+
+                            <i data-lucide="arrow-up-right"></i>
+
+                        </button>
+
+
+                        <button
+                            class="quick-action"
+                            data-action="quiz"
+                        >
+
+                            <div class="quick-icon gold">
+
+                                <i data-lucide="brain"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Create Quiz
+                                </strong>
+
+                                <span>
+                                    Test student knowledge
+                                </span>
+
+                            </div>
+
+                            <i data-lucide="arrow-up-right"></i>
+
+                        </button>
+
+
+                        <button
+                            class="quick-action"
+                            data-action="announcement"
+                        >
+
+                            <div class="quick-icon green">
+
+                                <i data-lucide="megaphone"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Announcement
+                                </strong>
+
+                                <span>
+                                    Notify your students
+                                </span>
+
+                            </div>
+
+                            <i data-lucide="arrow-up-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+
+            <!-- =================================
+                 STUDENT ACTIVITY
+            ================================== -->
+
+            <section class="dashboard-card activity-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span>
+                            STUDENT ACTIVITY
+                        </span>
+
+                        <h2>
+                            Recent Activity
+                        </h2>
+
+                    </div>
+
+                    <a
+                        href="students.html"
+                        class="card-link"
+                    >
+                        View Students
+                        <i data-lucide="arrow-right"></i>
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="activity-list"
+                    id="activityList"
+                >
+
+                    <div class="empty-activity">
+
+                        <i data-lucide="activity"></i>
+
+                        <p>
+                            Student activity will appear here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================
+     APPLICATION ENGINE
+========================================== -->
+
+<script
+    type="module"
+    src="js/instructor-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/dashboard.js"
+></script>
+
+
+<script>
+    lucide.createIcons();
+</script>
+
+</body></html>
