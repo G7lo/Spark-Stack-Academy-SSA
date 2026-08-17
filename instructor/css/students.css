@@ -1,0 +1,499 @@
+/* ============================================================
+   SPARK STACK ACADEMY
+   INSTRUCTOR STUDENTS
+   ============================================================ */
+
+.students-page {
+    padding: 32px;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.page-eyebrow,
+.card-eyebrow {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #2979ff;
+    margin-bottom: 7px;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+    color: #081c3a;
+}
+
+.page-header p {
+    margin: 8px 0 0;
+    color: #718096;
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   STATS
+   ============================================================ */
+
+.student-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.student-stat {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 21px;
+    background: #fff;
+    border: 1px solid #e9eef5;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(8, 28, 58, 0.05);
+}
+
+.student-stat > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.student-stat span {
+    font-size: 12px;
+    color: #718096;
+    font-weight: 500;
+}
+
+.student-stat strong {
+    font-size: 24px;
+    color: #081c3a;
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   STAT ICONS
+   ============================================================ */
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-icon svg {
+    width: 21px;
+    height: 21px;
+}
+
+.stat-icon.blue {
+    background: #eaf2ff;
+    color: #2979ff;
+}
+
+.stat-icon.green {
+    background: #eafaf1;
+    color: #16a36a;
+}
+
+.stat-icon.gold {
+    background: #fff7df;
+    color: #d89b00;
+}
+
+.stat-icon.purple {
+    background: #f2edff;
+    color: #7957d5;
+}
+
+
+/* ============================================================
+   MAIN CARD
+   ============================================================ */
+
+.students-card {
+    background: #fff;
+    border: 1px solid #e9eef5;
+    border-radius: 22px;
+    box-shadow: 0 10px 35px rgba(8, 28, 58, 0.06);
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   TOOLBAR
+   ============================================================ */
+
+.students-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 25px 28px;
+    border-bottom: 1px solid #edf1f6;
+}
+
+.students-toolbar h2 {
+    margin: 0;
+    color: #081c3a;
+    font-size: 20px;
+    font-weight: 750;
+}
+
+.student-search {
+    width: 300px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    background: #f7f9fc;
+    border: 1px solid #e5eaf1;
+    border-radius: 12px;
+}
+
+.student-search svg {
+    width: 18px;
+    color: #8793a5;
+}
+
+.student-search input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #081c3a;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.student-search input::placeholder {
+    color: #9aa5b5;
+}
+
+
+/* ============================================================
+   FILTERS
+   ============================================================ */
+
+.student-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 28px;
+    border-bottom: 1px solid #edf1f6;
+}
+
+.filter-btn {
+    border: 0;
+    background: transparent;
+    color: #718096;
+    padding: 9px 15px;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.filter-btn:hover {
+    background: #f4f7fb;
+    color: #081c3a;
+}
+
+.filter-btn.active {
+    background: #081c3a;
+    color: #fff;
+}
+
+
+/* ============================================================
+   STUDENT LIST
+   ============================================================ */
+
+.student-list {
+    min-height: 280px;
+}
+
+.student-row {
+    display: grid;
+    grid-template-columns: minmax(220px, 2fr) 1.2fr 1fr 120px;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 28px;
+    border-bottom: 1px solid #edf1f6;
+    transition: background 0.2s ease;
+}
+
+.student-row:hover {
+    background: #fafcff;
+}
+
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.student-avatar {
+    width: 43px;
+    height: 43px;
+    min-width: 43px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eaf2ff;
+    color: #2979ff;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.student-name {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.student-name strong {
+    font-size: 13px;
+    color: #081c3a;
+}
+
+.student-name span {
+    font-size: 11px;
+    color: #8a96a7;
+}
+
+.student-course {
+    font-size: 12px;
+    color: #59677a;
+}
+
+.student-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #718096;
+}
+
+.progress-track {
+    width: 100%;
+    height: 6px;
+    background: #edf1f6;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0;
+    border-radius: inherit;
+    background: #2979ff;
+}
+
+.student-status {
+    justify-self: end;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.student-status.active {
+    background: #eafaf1;
+    color: #159664;
+}
+
+.student-status.completed {
+    background: #fff5d8;
+    color: #b27a00;
+}
+
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+.students-loading {
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #8793a5;
+    font-size: 12px;
+}
+
+.loading-spinner {
+    width: 27px;
+    height: 27px;
+    border: 3px solid #e7edf5;
+    border-top-color: #2979ff;
+    border-radius: 50%;
+    animation: studentSpin 0.8s linear infinite;
+}
+
+@keyframes studentSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   EMPTY
+   ============================================================ */
+
+.students-empty {
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.students-empty.hidden {
+    display: none;
+}
+
+.empty-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: #edf4ff;
+    color: #2979ff;
+    margin-bottom: 15px;
+}
+
+.empty-icon svg {
+    width: 25px;
+}
+
+.students-empty h3 {
+    margin: 0 0 6px;
+    color: #081c3a;
+    font-size: 16px;
+}
+
+.students-empty p {
+    margin: 0;
+    color: #8793a5;
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+    .student-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .student-row {
+        grid-template-columns: 2fr 1fr 100px;
+    }
+
+    .student-course {
+        display: none;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .students-page {
+        padding: 20px 15px;
+    }
+
+    .page-header h1 {
+        font-size: 26px;
+    }
+
+    .student-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .student-stat {
+        padding: 15px;
+    }
+
+    .student-stat strong {
+        font-size: 20px;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+    }
+
+    .students-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .student-search {
+        width: auto;
+    }
+
+    .student-filters {
+        padding: 12px 20px;
+        overflow-x: auto;
+    }
+
+    .filter-btn {
+        white-space: nowrap;
+    }
+
+    .student-row {
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        padding: 16px 20px;
+    }
+
+    .student-progress {
+        grid-column: 1 / -1;
+    }
+
+    .student-status {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+}

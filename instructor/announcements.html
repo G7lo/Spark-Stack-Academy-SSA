@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Announcements | Spark Stack Academy
+    </title>
+
+
+    <!-- CORE -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/announcements.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="instructor-app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside
+        id="instructorSidebar"
+        class="instructor-sidebar"
+    ></aside>
+
+
+    <!-- OVERLAY -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- MAIN -->
+
+    <main class="instructor-main">
+
+
+        <!-- TOPBAR -->
+
+        <header
+            id="instructorTopbar"
+            class="instructor-topbar"
+        ></header>
+
+
+        <!-- PAGE -->
+
+        <section class="announcements-page">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        COMMUNICATION
+                    </span>
+
+                    <h1>
+                        Announcements
+                    </h1>
+
+                    <p>
+                        Keep your students informed
+                        with important updates.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="createAnnouncementBtn"
+                    class="primary-btn"
+                    type="button"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    New Announcement
+
+                </button>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <section class="announcement-stats">
+
+
+                <article class="announcement-stat">
+
+                    <div class="stat-icon blue">
+
+                        <i data-lucide="megaphone"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong id="totalAnnouncements">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="announcement-stat">
+
+                    <div class="stat-icon green">
+
+                        <i data-lucide="send"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Published
+                        </span>
+
+                        <strong id="publishedAnnouncements">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="announcement-stat">
+
+                    <div class="stat-icon gold">
+
+                        <i data-lucide="file-edit"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Drafts
+                        </span>
+
+                        <strong id="draftAnnouncements">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="announcement-stat">
+
+                    <div class="stat-icon purple">
+
+                        <i data-lucide="users"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Audience
+                        </span>
+
+                        <strong id="announcementAudience">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- WORKSPACE -->
+
+            <section class="announcements-card">
+
+
+                <!-- TOOLBAR -->
+
+                <div class="announcements-toolbar">
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            COMMUNICATION CENTER
+                        </span>
+
+                        <h2>
+                            Your Announcements
+                        </h2>
+
+                    </div>
+
+
+                    <!-- SEARCH -->
+
+                    <div class="announcement-search">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            type="search"
+                            id="announcementSearch"
+                            placeholder="Search announcements..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- FILTERS -->
+
+                <div class="announcement-filters">
+
+                    <button
+                        class="announcement-filter active"
+                        data-filter="all"
+                        type="button"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        class="announcement-filter"
+                        data-filter="published"
+                        type="button"
+                    >
+                        Published
+                    </button>
+
+                    <button
+                        class="announcement-filter"
+                        data-filter="draft"
+                        type="button"
+                    >
+                        Drafts
+                    </button>
+
+                </div>
+
+
+                <!-- LIST -->
+
+                <div
+                    id="announcementList"
+                    class="announcement-list"
+                >
+
+                    <div class="announcement-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading announcements...
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMPTY -->
+
+                <div
+                    id="announcementEmpty"
+                    class="announcement-empty hidden"
+                >
+
+                    <div class="empty-icon">
+
+                        <i data-lucide="megaphone"></i>
+
+                    </div>
+
+                    <h3>
+                        No announcements yet
+                    </h3>
+
+                    <p>
+                        Create an announcement to
+                        communicate with your students.
+                    </p>
+
+                    <button
+                        id="emptyCreateAnnouncementBtn"
+                        class="empty-action"
+                        type="button"
+                    >
+
+                        <i data-lucide="plus"></i>
+
+                        New Announcement
+
+                    </button>
+
+                </div>
+
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================
+     CREATE ANNOUNCEMENT MODAL
+========================================= -->
+
+<div
+    id="announcementModal"
+    class="announcement-modal"
+    aria-hidden="true"
+>
+
+    <div class="announcement-modal-backdrop"></div>
+
+    <div
+        class="announcement-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="announcementModalTitle"
+    >
+
+        <!-- HEADER -->
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="modal-eyebrow">
+                    BROADCAST
+                </span>
+
+                <h2 id="announcementModalTitle">
+                    Create Announcement
+                </h2>
+
+                <p>
+                    Share an important update with your audience.
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                id="closeAnnouncementModal"
+                class="modal-close"
+                aria-label="Close"
+            >
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form id="announcementForm">
+
+            <!-- TITLE -->
+
+            <div class="form-group">
+
+                <label for="announcementTitle">
+                    Announcement Title
+                </label>
+
+                <input
+                    type="text"
+                    id="announcementTitle"
+                    name="title"
+                    placeholder="e.g. New course available"
+                    maxlength="120"
+                    required
+                >
+
+            </div>
+
+
+            <!-- MESSAGE -->
+
+            <div class="form-group">
+
+                <label for="announcementMessage">
+                    Message
+                </label>
+
+                <textarea
+                    id="announcementMessage"
+                    name="message"
+                    rows="6"
+                    maxlength="2000"
+                    placeholder="Write your announcement..."
+                    required
+                ></textarea>
+
+                <div class="character-count">
+
+                    <span id="announcementCharCount">
+                        0
+                    </span>
+
+                    / 2000
+
+                </div>
+
+            </div>
+
+
+            <!-- AUDIENCE -->
+
+            <div class="form-group">
+
+                <label for="announcementAudience">
+                    Audience
+                </label>
+
+                <select
+                    id="announcementAudience"
+                    name="audience"
+                    required
+                >
+
+                    <option value="all">
+                        Everyone
+                    </option>
+
+                    <option value="students">
+                        Students
+                    </option>
+
+                    <option value="instructors">
+                        Instructors
+                    </option>
+
+                    <option value="founder">
+                        Founder / Admin
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- PRIORITY -->
+
+            <div class="form-group">
+
+                <label>
+                    Priority
+                </label>
+
+                <div class="priority-options">
+
+                    <label class="priority-option">
+
+                        <input
+                            type="radio"
+                            name="priority"
+                            value="normal"
+                            checked
+                        >
+
+                        <span>
+                            Normal
+                        </span>
+
+                    </label>
+
+
+                    <label class="priority-option">
+
+                        <input
+                            type="radio"
+                            name="priority"
+                            value="important"
+                        >
+
+                        <span>
+                            Important
+                        </span>
+
+                    </label>
+
+
+                    <label class="priority-option">
+
+                        <input
+                            type="radio"
+                            name="priority"
+                            value="urgent"
+                        >
+
+                        <span>
+                            Urgent
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    id="cancelAnnouncementBtn"
+                    class="secondary-btn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    id="publishAnnouncementBtn"
+                    class="primary-btn"
+                >
+
+                    <i data-lucide="send"></i>
+
+                    Publish Announcement
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- APP SHELL -->
+
+<script
+    type="module"
+    src="js/instructor-app.js"
+></script>
+
+
+<!-- ANNOUNCEMENTS -->
+
+<script
+    type="module"
+    src="js/announcements.js"
+></script>
+
+
+<script>
+    lucide.createIcons();
+</script>
+
+
+</body>
+
+</html>

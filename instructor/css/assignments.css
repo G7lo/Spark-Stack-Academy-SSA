@@ -1,0 +1,468 @@
+/* ============================================================
+   SPARK STACK ACADEMY
+   INSTRUCTOR ASSIGNMENTS
+   ============================================================ */
+
+.assignments-page {
+    padding: 32px;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+
+.page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.page-eyebrow,
+.card-eyebrow {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #2979ff;
+    margin-bottom: 7px;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+    color: #081c3a;
+}
+
+.page-header p {
+    margin: 8px 0 0;
+    color: #718096;
+    font-size: 14px;
+}
+
+/* ============================================================
+   BUTTON
+   ============================================================ */
+
+.primary-btn,
+.empty-action {
+    border: 0;
+    border-radius: 12px;
+    padding: 12px 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.primary-btn {
+    background: #081c3a;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(8, 28, 58, .15);
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+}
+
+.primary-btn svg,
+.empty-action svg {
+    width: 17px;
+    height: 17px;
+}
+
+/* ============================================================
+   STATS
+   ============================================================ */
+
+.assignment-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 26px;
+}
+
+.assignment-stat {
+    background: #fff;
+    border: 1px solid #e9eef5;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 88px;
+    box-shadow: 0 5px 20px rgba(8, 28, 58, .04);
+}
+
+.stat-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
+
+.stat-icon svg {
+    width: 21px;
+    height: 21px;
+}
+
+.stat-icon.blue {
+    background: #eaf2ff;
+    color: #2979ff;
+}
+
+.stat-icon.gold {
+    background: #fff7df;
+    color: #d99b00;
+}
+
+.stat-icon.green {
+    background: #eafaf1;
+    color: #20a464;
+}
+
+.stat-icon.purple {
+    background: #f2edff;
+    color: #7654d8;
+}
+
+.assignment-stat span {
+    display: block;
+    color: #7b8798;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.assignment-stat strong {
+    color: #081c3a;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+/* ============================================================
+   MAIN CARD
+   ============================================================ */
+
+.assignments-card {
+    background: #fff;
+    border: 1px solid #e9eef5;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 5px 25px rgba(8, 28, 58, .04);
+}
+
+.assignments-toolbar {
+    padding: 23px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    border-bottom: 1px solid #edf1f6;
+}
+
+.assignments-toolbar h2 {
+    margin: 0;
+    color: #081c3a;
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.assignment-search {
+    width: 280px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 13px;
+    background: #f7f9fc;
+    border: 1px solid #e6ebf2;
+    border-radius: 11px;
+}
+
+.assignment-search svg {
+    width: 17px;
+    color: #8995a6;
+    flex-shrink: 0;
+}
+
+.assignment-search input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: 12px;
+    color: #081c3a;
+}
+
+.assignment-search input::placeholder {
+    color: #9aa5b4;
+}
+
+/* ============================================================
+   FILTERS
+   ============================================================ */
+
+.assignment-filters {
+    display: flex;
+    gap: 8px;
+    padding: 16px 24px;
+    border-bottom: 1px solid #edf1f6;
+}
+
+.assignment-filter {
+    border: 0;
+    background: transparent;
+    color: #778396;
+    padding: 8px 15px;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.assignment-filter:hover {
+    background: #f4f7fb;
+    color: #081c3a;
+}
+
+.assignment-filter.active {
+    background: #081c3a;
+    color: #fff;
+}
+
+/* ============================================================
+   LIST
+   ============================================================ */
+
+.assignment-list {
+    padding: 8px 24px 20px;
+}
+
+.assignment-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 17px 5px;
+    border-bottom: 1px solid #edf1f6;
+}
+
+.assignment-item:last-child {
+    border-bottom: 0;
+}
+
+.assignment-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 11px;
+    display: grid;
+    place-items: center;
+    background: #edf4ff;
+    color: #2979ff;
+    flex-shrink: 0;
+}
+
+.assignment-icon svg {
+    width: 19px;
+}
+
+.assignment-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.assignment-content h3 {
+    margin: 0 0 4px;
+    color: #081c3a;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.assignment-content p {
+    margin: 0;
+    color: #8792a3;
+    font-size: 11px;
+}
+
+.assignment-meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.assignment-meta-item {
+    color: #758194;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.assignment-status {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.assignment-status.pending {
+    background: #fff6dd;
+    color: #b47a00;
+}
+
+.assignment-status.graded {
+    background: #e9f9f0;
+    color: #16834c;
+}
+
+/* ============================================================
+   EMPTY / LOADING
+   ============================================================ */
+
+.assignment-loading,
+.assignment-empty,
+.empty-state {
+    text-align: center;
+    padding: 55px 20px;
+}
+
+.assignment-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #8490a1;
+    font-size: 13px;
+}
+
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #dfe7f1;
+    border-top-color: #2979ff;
+    border-radius: 50%;
+    animation: assignmentSpin .7s linear infinite;
+}
+
+@keyframes assignmentSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.assignment-empty.hidden {
+    display: none;
+}
+
+.empty-icon {
+    width: 54px;
+    height: 54px;
+    margin: 0 auto 14px;
+    display: grid;
+    place-items: center;
+    border-radius: 15px;
+    background: #f0f4fa;
+    color: #7d8a9e;
+}
+
+.empty-icon svg {
+    width: 24px;
+}
+
+.assignment-empty h3 {
+    margin: 0 0 7px;
+    color: #081c3a;
+    font-size: 16px;
+}
+
+.assignment-empty p {
+    margin: 0 0 18px;
+    color: #8994a5;
+    font-size: 12px;
+}
+
+.empty-action {
+    background: #2979ff;
+    color: #fff;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1000px) {
+
+    .assignment-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .assignments-page {
+        padding: 20px 15px;
+    }
+
+    .page-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .page-header h1 {
+        font-size: 26px;
+    }
+
+    .primary-btn {
+        width: 100%;
+    }
+
+    .assignment-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .assignments-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+        padding: 18px;
+    }
+
+    .assignment-search {
+        width: auto;
+    }
+
+    .assignment-filters {
+        padding: 12px 18px;
+        overflow-x: auto;
+    }
+
+    .assignment-list {
+        padding: 5px 15px 15px;
+    }
+
+    .assignment-item {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .assignment-meta {
+        width: 100%;
+        padding-left: 58px;
+        flex-wrap: wrap;
+    }
+
+}

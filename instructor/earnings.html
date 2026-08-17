@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Earnings | Spark Stack Academy
+    </title>
+
+
+    <!-- CORE -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/earnings.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script
+        src="https://unpkg.com/lucide@latest">
+    </script>
+
+</head>
+
+
+<body>
+
+
+<div class="instructor-app">
+
+
+    <!-- =====================================
+         SIDEBAR
+    ====================================== -->
+
+    <aside
+        id="instructorSidebar"
+        class="instructor-sidebar"
+    ></aside>
+
+
+    <!-- OVERLAY -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- =====================================
+         MAIN
+    ====================================== -->
+
+    <main class="instructor-main">
+
+
+        <!-- TOPBAR -->
+
+        <header
+            id="instructorTopbar"
+            class="instructor-topbar"
+        ></header>
+
+
+        <!-- =================================
+             EARNINGS PAGE
+        ================================== -->
+
+        <section class="earnings-page">
+
+
+            <!-- =================================
+                 HEADER
+            ================================== -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        FINANCE
+                    </span>
+
+                    <h1>
+                        Earnings
+                    </h1>
+
+                    <p>
+                        Track your income,
+                        withdrawals and instructor
+                        rewards.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="withdrawBtn"
+                    class="primary-btn"
+                    type="button"
+                >
+
+                    <i data-lucide="banknote"></i>
+
+                    Withdraw Funds
+
+                </button>
+
+            </div>
+
+
+            <!-- =================================
+                 BALANCE HERO
+            ================================== -->
+
+            <section class="earnings-hero">
+
+
+                <div class="balance-main">
+
+                    <span>
+                        Available Balance
+                    </span>
+
+                    <strong id="availableBalance">
+                        KSh 0
+                    </strong>
+
+                    <small id="balanceStatus">
+                        Available for withdrawal
+                    </small>
+
+                </div>
+
+
+                <div class="balance-actions">
+
+                    <button
+                        id="heroWithdrawBtn"
+                        class="balance-withdraw-btn"
+                        type="button"
+                    >
+
+                        <i data-lucide="arrow-up-right"></i>
+
+                        Withdraw
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 FINANCIAL STATS
+            ================================== -->
+
+            <section class="earnings-stats">
+
+
+                <article class="earnings-stat">
+
+                    <div class="stat-icon gold">
+
+                        <i data-lucide="clock-3"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Pending
+                        </span>
+
+                        <strong id="pendingBalance">
+                            KSh 0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="earnings-stat">
+
+                    <div class="stat-icon blue">
+
+                        <i data-lucide="trending-up"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            This Month
+                        </span>
+
+                        <strong id="monthlyEarnings">
+                            KSh 0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="earnings-stat">
+
+                    <div class="stat-icon purple">
+
+                        <i data-lucide="wallet"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Lifetime Earnings
+                        </span>
+
+                        <strong id="lifetimeEarnings">
+                            KSh 0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="earnings-stat">
+
+                    <div class="stat-icon green">
+
+                        <i data-lucide="shopping-bag"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Sales
+                        </span>
+
+                        <strong id="totalSales">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =================================
+                 MAIN GRID
+            ================================== -->
+
+            <div class="earnings-grid">
+
+
+                <!-- =================================
+                     REVENUE BREAKDOWN
+                ================================== -->
+
+                <section class="earnings-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                REVENUE
+                            </span>
+
+                            <h2>
+                                Earnings Breakdown
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="revenue-breakdown">
+
+
+                        <div class="revenue-row">
+
+                            <span>
+                                Course Sales
+                            </span>
+
+                            <strong id="courseRevenue">
+                                KSh 0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="revenue-row">
+
+                            <span>
+                                Premium Students
+                            </span>
+
+                            <strong id="premiumRevenue">
+                                KSh 0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="revenue-row">
+
+                            <span>
+                                Bonuses
+                            </span>
+
+                            <strong id="bonusRevenue">
+                                KSh 0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="revenue-divider"></div>
+
+
+                        <div class="revenue-row total">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong id="revenueTotal">
+                                KSh 0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================
+                     WITHDRAWAL INFO
+                ================================== -->
+
+                <section class="earnings-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                WITHDRAWALS
+                            </span>
+
+                            <h2>
+                                Withdrawal Status
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="withdrawal-info">
+
+
+                        <div class="withdrawal-status">
+
+                            <div class="status-dot"></div>
+
+                            <div>
+
+                                <strong id="withdrawalStatus">
+                                    Withdrawal available
+                                </strong>
+
+                                <span id="withdrawalMessage">
+                                    You can request a withdrawal
+                                    when your balance reaches
+                                    the minimum threshold.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="withdrawal-rule">
+
+                            <span>
+                                Minimum Withdrawal
+                            </span>
+
+                            <strong id="minimumWithdrawal">
+                                KSh 0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="withdrawal-rule">
+
+                            <span>
+                                Withdrawal Fee
+                            </span>
+
+                            <strong id="withdrawalFee">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="withdrawal-rule">
+
+                            <span>
+                                Platform Tax
+                            </span>
+
+                            <strong id="platformTax">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+
+            <!-- =================================
+                 INSTRUCTOR PRO
+            ================================== -->
+
+            <section class="premium-instructor-card">
+
+
+                <div class="premium-content">
+
+                    <span class="premium-badge">
+                        INSTRUCTOR PRO
+                    </span>
+
+                    <h2>
+                        Unlock more as a
+                        Premium Instructor.
+                    </h2>
+
+                    <p>
+                        Get advanced analytics,
+                        a verified instructor badge,
+                        premium teaching tools and
+                        exclusive academy benefits.
+                    </p>
+
+
+                    <div class="premium-features">
+
+                        <span>
+                            <i data-lucide="badge-check"></i>
+                            Verified Badge
+                        </span>
+
+                        <span>
+                            <i data-lucide="chart-no-axes-combined"></i>
+                            Advanced Analytics
+                        </span>
+
+                        <span>
+                            <i data-lucide="sparkles"></i>
+                            AI Teaching Tools
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        id="premiumInstructorBtn"
+                        class="premium-btn"
+                        type="button"
+                    >
+
+                        <i data-lucide="crown"></i>
+
+                        Upgrade to Pro
+
+                    </button>
+
+                </div>
+
+
+                <div class="premium-price">
+
+                    <span>
+                        Starting from
+                    </span>
+
+                    <strong id="premiumPrice">
+                        KSh 0
+                    </strong>
+
+                    <small>
+                        / month
+                    </small>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 TRANSACTIONS
+            ================================== -->
+
+            <section class="earnings-card transactions-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            ACTIVITY
+                        </span>
+
+                        <h2>
+                            Recent Transactions
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="transactionList"
+                    class="transaction-list"
+                >
+
+                    <div class="earnings-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading transactions...
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================
+                 WITHDRAWAL HISTORY
+            ================================== -->
+
+            <section class="earnings-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            PAYOUTS
+                        </span>
+
+                        <h2>
+                            Withdrawal History
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="withdrawalHistory"
+                    class="withdrawal-history"
+                >
+
+                    <div class="earnings-empty">
+
+                        <i data-lucide="banknote"></i>
+
+                        <p>
+                            No withdrawals yet.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================
+     WITHDRAWAL MODAL
+========================================= -->
+
+<div
+    id="withdrawalModal"
+    class="modal hidden"
+>
+
+
+    <div class="modal-backdrop"></div>
+
+
+    <div class="withdrawal-modal">
+
+
+        <button
+            id="closeWithdrawalModal"
+            class="modal-close"
+            type="button"
+        >
+
+            <i data-lucide="x"></i>
+
+        </button>
+
+
+        <div class="modal-header">
+
+            <span class="page-eyebrow">
+                SECURE PAYOUT
+            </span>
+
+            <h2>
+                Withdraw Funds
+            </h2>
+
+            <p>
+                Review your payout before
+                submitting the request.
+            </p>
+
+        </div>
+
+
+        <!-- AMOUNT -->
+
+        <div class="withdrawal-field">
+
+            <label for="withdrawalAmount">
+                Withdrawal Amount
+            </label>
+
+            <div class="amount-input">
+
+                <span>
+                    KSh
+                </span>
+
+                <input
+                    id="withdrawalAmount"
+                    type="number"
+                    min="0"
+                    placeholder="0"
+                >
+
+            </div>
+
+            <small>
+                Available:
+                <strong id="modalAvailableBalance">
+                    KSh 0
+                </strong>
+            </small>
+
+        </div>
+
+
+        <!-- METHOD -->
+
+        <div class="withdrawal-field">
+
+            <label for="withdrawalMethod">
+                Withdrawal Method
+            </label>
+
+            <select
+                id="withdrawalMethod"
+            >
+
+                <option value="mpesa">
+                    M-Pesa
+                </option>
+
+                <option value="bank">
+                    Bank Account
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- ACCOUNT -->
+
+        <div class="withdrawal-field">
+
+            <label for="withdrawalAccount">
+                Account / Phone Number
+            </label>
+
+            <input
+                id="withdrawalAccount"
+                type="text"
+                placeholder="Enter payout details"
+            >
+
+        </div>
+
+
+        <!-- BREAKDOWN -->
+
+        <div class="withdrawal-summary">
+
+
+            <div>
+
+                <span>
+                    Withdrawal Amount
+                </span>
+
+                <strong id="summaryGross">
+                    KSh 0
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Platform Tax
+                </span>
+
+                <strong id="summaryTax">
+                    KSh 0
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Withdrawal Fee
+                </span>
+
+                <strong id="summaryFee">
+                    KSh 0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-total">
+
+                <span>
+                    You Receive
+                </span>
+
+                <strong id="summaryNet">
+                    KSh 0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <button
+            id="confirmWithdrawalBtn"
+            class="primary-btn withdrawal-submit"
+            type="button"
+        >
+
+            <i data-lucide="shield-check"></i>
+
+            Confirm Withdrawal
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script
+    type="module"
+    src="js/instructor-app.js">
+</script>
+
+<script
+    type="module"
+    src="js/earnings.js">
+</script>
+
+
+<script>
+
+    lucide.createIcons();
+
+</script>
+
+
+</body>
+
+</html>

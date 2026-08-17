@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Instructor Profile | Spark Stack Academy
+    </title>
+
+
+    <!-- CORE -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/profile.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="instructor-app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside
+        id="instructorSidebar"
+        class="instructor-sidebar"
+    ></aside>
+
+
+    <!-- OVERLAY -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- MAIN -->
+
+    <main class="instructor-main">
+
+
+        <!-- TOPBAR -->
+
+        <header
+            id="instructorTopbar"
+            class="instructor-topbar"
+        ></header>
+
+
+        <!-- PROFILE PAGE -->
+
+        <section class="profile-page">
+
+
+            <!-- =================================
+                 HEADER
+            ================================== -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        ACCOUNT
+                    </span>
+
+                    <h1>
+                        Instructor Profile
+                    </h1>
+
+                    <p>
+                        Manage your public instructor
+                        identity and teaching information.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="saveProfileBtn"
+                    class="primary-btn"
+                    type="button"
+                >
+
+                    <i data-lucide="save"></i>
+
+                    Save Changes
+
+                </button>
+
+            </div>
+
+
+            <!-- =================================
+                 PROFILE HERO
+            ================================== -->
+
+            <section class="profile-hero">
+
+
+                <div class="profile-avatar-wrapper">
+
+                    <div
+                        id="profileAvatar"
+                        class="profile-avatar"
+                    >
+                        I
+                    </div>
+
+
+                    <button
+                        id="changeAvatarBtn"
+                        class="avatar-edit"
+                        type="button"
+                        aria-label="Change profile photo"
+                    >
+
+                        <i data-lucide="camera"></i>
+
+                    </button>
+
+                    <input
+                        type="file"
+                        id="avatarInput"
+                        accept="image/*"
+                        hidden
+                    >
+
+                </div>
+
+
+                <div class="profile-identity">
+
+                    <div class="profile-name-row">
+
+                        <h2 id="profileName">
+                            Instructor
+                        </h2>
+
+                        <span
+                            id="premiumBadge"
+                            class="premium-badge hidden"
+                        >
+
+                            <i data-lucide="badge-check"></i>
+
+                            Pro Instructor
+
+                        </span>
+
+                    </div>
+
+
+                    <p id="profileEmail">
+                        instructor@example.com
+                    </p>
+
+
+                    <span
+                        id="profileStatus"
+                        class="profile-status"
+                    >
+
+                        <span class="status-dot"></span>
+
+                        Active Instructor
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 PROFILE GRID
+            ================================== -->
+
+            <div class="profile-grid">
+
+
+                <!-- =================================
+                     PERSONAL INFORMATION
+                ================================== -->
+
+                <section class="profile-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                IDENTITY
+                            </span>
+
+                            <h2>
+                                Personal Information
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="displayName">
+                                Full Name
+                            </label>
+
+                            <input
+                                id="displayName"
+                                type="text"
+                                placeholder="Your full name"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="profileEmailInput">
+                                Email Address
+                            </label>
+
+                            <input
+                                id="profileEmailInput"
+                                type="email"
+                                disabled
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="phoneNumber">
+                                Phone Number
+                            </label>
+
+                            <input
+                                id="phoneNumber"
+                                type="tel"
+                                placeholder="+254..."
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="location">
+                                Location
+                            </label>
+
+                            <input
+                                id="location"
+                                type="text"
+                                placeholder="Nairobi, Kenya"
+                            >
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================
+                     PROFESSIONAL INFORMATION
+                ================================== -->
+
+                <section class="profile-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                TEACHING
+                            </span>
+
+                            <h2>
+                                Professional Profile
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="headline">
+                            Instructor Headline
+                        </label>
+
+                        <input
+                            id="headline"
+                            type="text"
+                            maxlength="120"
+                            placeholder="e.g. Full Stack Web Development Instructor"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="bio">
+                            About You
+                        </label>
+
+                        <textarea
+                            id="bio"
+                            rows="5"
+                            maxlength="1000"
+                            placeholder="Tell students about yourself..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="expertise">
+                            Areas of Expertise
+                        </label>
+
+                        <input
+                            id="expertise"
+                            type="text"
+                            placeholder="JavaScript, Firebase, Web Development"
+                        >
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================
+                     TEACHING STATS
+                ================================== -->
+
+                <section class="profile-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                PERFORMANCE
+                            </span>
+
+                            <h2>
+                                Teaching Overview
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-stats">
+
+
+                        <div class="profile-stat">
+
+                            <div class="profile-stat-icon blue">
+
+                                <i data-lucide="book-open"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Courses
+                                </span>
+
+                                <strong id="profileCourses">
+                                    0
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="profile-stat">
+
+                            <div class="profile-stat-icon purple">
+
+                                <i data-lucide="users"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Students
+                                </span>
+
+                                <strong id="profileStudents">
+                                    0
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="profile-stat">
+
+                            <div class="profile-stat-icon green">
+
+                                <i data-lucide="award"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Completions
+                                </span>
+
+                                <strong id="profileCompletions">
+                                    0
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="profile-stat">
+
+                            <div class="profile-stat-icon gold">
+
+                                <i data-lucide="star"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Rating
+                                </span>
+
+                                <strong id="profileRating">
+                                    0.0
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================
+                     ACCOUNT STATUS
+                ================================== -->
+
+                <section class="profile-card account-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                ACCOUNT
+                            </span>
+
+                            <h2>
+                                Account Status
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="account-status-list">
+
+
+                        <div class="account-status-item">
+
+                            <div>
+
+                                <strong>
+                                    Instructor Account
+                                </strong>
+
+                                <span>
+                                    Your instructor access
+                                    is currently active.
+                                </span>
+
+                            </div>
+
+                            <span class="status-pill active">
+                                Active
+                            </span>
+
+                        </div>
+
+
+                        <div class="account-status-item">
+
+                            <div>
+
+                                <strong>
+                                    Instructor Pro
+                                </strong>
+
+                                <span id="proStatusText">
+                                    Upgrade to unlock
+                                    premium features.
+                                </span>
+
+                            </div>
+
+                            <a
+                                href="pro.html"
+                                id="profileProLink"
+                                class="secondary-btn"
+                            >
+
+                                <i data-lucide="crown"></i>
+
+                                Upgrade
+
+                            </a>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- APP -->
+
+<script
+    type="module"
+    src="js/instructor-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/profile.js"
+></script>
+
+
+<script>
+
+    lucide.createIcons();
+
+</script>
+
+
+</body>
+
+</html>

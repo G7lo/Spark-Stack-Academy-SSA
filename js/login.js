@@ -474,48 +474,38 @@ loginForm.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
-    const email =
-    emailInput.value.trim();
-
-    const password =
-    passwordInput.value;
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
 
     if (!email || !password) {
-
         showToast(
             "Please enter your email and password.",
             "warning"
         );
-
         return;
-
     }
 
     if (!isValidEmail(email)) {
-
         showToast(
             "Please enter a valid email address.",
             "error"
         );
-
         return;
-
     }
 
     try {
 
         disableButtons();
-
         showLoader("Signing you in...");
 
-        // ==========================
+        // =====================================
         // REMEMBER ME
-        // ==========================
+        // =====================================
 
         const persistence =
-        rememberMe.checked
-            ? browserLocalPersistence
-            : browserSessionPersistence;
+            rememberMe.checked
+                ? browserLocalPersistence
+                : browserSessionPersistence;
 
         await setPersistence(
             auth,
@@ -537,98 +527,193 @@ loginForm.addEventListener("submit", async (e) => {
 
         }
 
-        // ==========================
-        // FIREBASE LOGIN
-        // ==========================
+        // =====================================
+        // FIREBASE AUTHENTICATION
+        // =====================================
 
         const credential =
-        await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
-        );
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
 
         const user =
-        credential.user;
+            credential.user;
 
-        // ==========================
-        // GET USER PROFILE
-        // ==========================
+        // =====================================
+        // FIRST: CHECK USERS COLLECTION
+        // =====================================
 
         const userRef =
-        doc(db, "users", user.uid);
+            doc(db, "users", user.uid);
 
         const userSnap =
-        await getDoc(userRef);
+            await getDoc(userRef);
 
-        if (!userSnap.exists()) {
+        if (userSnap.exists()) {
 
-            hideLoader();
+            const userData =
+                userSnap.data();
 
-            enableButtons();
+            // Account disabled
+
+            if (userData.active === false) {
+
+                hideLoader();
+                enableButtons();
+
+                showToast(
+                    "This account has been disabled.",
+                    "error"
+                );
+
+                return;
+            }
+
+            // Update login time
+
+            await updateDoc(userRef, {
+
+                lastLogin:
+                    serverTimestamp()
+
+            });
 
             showToast(
-                "User profile not found.",
-                "error"
+                `Welcome back, ${userData.fullName || "User"}!`,
+                "success"
             );
+
+            setTimeout(() => {
+
+                redirectByRole(
+                    userData.role
+                );
+
+            }, 1200);
 
             return;
 
         }
 
-        const userData =
-        userSnap.data();
+        // =====================================
+        // SECOND: CHECK INSTRUCTORS COLLECTION
+        // =====================================
 
-        // Optional account status check
+        const instructorRef =
+            doc(
+                db,
+                "instructors",
+                user.uid
+            );
 
-        if (userData.active === false) {
+        const instructorSnap =
+            await getDoc(instructorRef);
 
-            hideLoader();
+        if (instructorSnap.exists()) {
 
-            enableButtons();
+            const instructorData =
+                instructorSnap.data();
+
+            // Instructor disabled
+
+            if (instructorData.active === false) {
+
+                hideLoader();
+                enableButtons();
+
+                showToast(
+                    "This instructor account has been disabled.",
+                    "error"
+                );
+
+                return;
+            }
+
+            // =================================
+            // ENSURE USERS PROFILE EXISTS
+            // =================================
+
+            await setDoc(
+                userRef,
+                {
+                    uid: user.uid,
+
+                    fullName:
+                        instructorData.name ||
+                        user.displayName ||
+                        "",
+
+                    email:
+                        instructorData.email ||
+                        user.email ||
+                        "",
+
+                    role: "instructor",
+
+                    active: true,
+
+                    verified:
+                        instructorData.verified === true,
+
+                    lastLogin:
+                        serverTimestamp(),
+
+                    createdAt:
+                        instructorData.createdAt ||
+                        serverTimestamp()
+
+                },
+                {
+                    merge: true
+                }
+            );
 
             showToast(
-                "This account has been disabled.",
-                "error"
+                `Welcome back, ${instructorData.name || "Instructor"}!`,
+                "success"
             );
+
+            // =================================
+            // INSTRUCTOR DASHBOARD
+            // =================================
+
+            setTimeout(() => {
+
+                redirectByRole(
+                    "instructor"
+                );
+
+            }, 1200);
 
             return;
 
         }
 
-        // ==========================
-        // UPDATE LAST LOGIN
-        // ==========================
-
-        await updateDoc(userRef, {
-
-            lastLogin:
-            serverTimestamp()
-
-        });
-
-        showToast(
-            `Welcome back, ${userData.fullName}!`,
-            "success"
-        );
-
-        // ==========================
-        // ROLE REDIRECT
-        // ==========================
-
-        setTimeout(() => {
-
-            redirectByRole(
-                userData.role
-            );
-
-        }, 1200);
-
-    } catch (error) {
+        // =====================================
+        // NO PROFILE FOUND
+        // =====================================
 
         hideLoader();
-
         enableButtons();
+
+        showToast(
+            "User profile not found.",
+            "error"
+        );
+
+    }
+
+    catch (error) {
+
+        hideLoader();
+        enableButtons();
+
+        console.error(
+            "Login error:",
+            error
+        );
 
         switch (error.code) {
 

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        My Courses | Spark Stack Academy
+    </title>
+
+
+    <!-- CORE -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/courses.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="instructor-app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside
+        id="instructorSidebar"
+        class="instructor-sidebar"
+    ></aside>
+
+
+    <!-- MOBILE OVERLAY -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- MAIN -->
+
+    <main class="instructor-main">
+
+
+        <!-- TOPBAR -->
+
+        <header
+            id="instructorTopbar"
+            class="instructor-topbar"
+        ></header>
+
+
+        <!-- PAGE -->
+
+        <section class="courses-page">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        TEACHING
+                    </span>
+
+                    <h1>
+                        My Courses
+                    </h1>
+
+                    <p>
+                        Create, manage and publish
+                        your courses.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="createCourseBtn"
+                    class="primary-btn"
+                    type="button"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Create Course
+
+                </button>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <section class="course-stats">
+
+
+                <article class="course-stat">
+
+                    <div class="stat-icon blue">
+
+                        <i data-lucide="book-open"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Courses
+                        </span>
+
+                        <strong id="totalCourses">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="course-stat">
+
+                    <div class="stat-icon green">
+
+                        <i data-lucide="globe-2"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Published
+                        </span>
+
+                        <strong id="publishedCourses">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="course-stat">
+
+                    <div class="stat-icon gold">
+
+                        <i data-lucide="file-edit"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Drafts
+                        </span>
+
+                        <strong id="draftCourses">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="course-stat">
+
+                    <div class="stat-icon purple">
+
+                        <i data-lucide="users"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Students
+                        </span>
+
+                        <strong id="totalStudents">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- COURSE WORKSPACE -->
+
+            <section class="courses-card">
+
+
+                <!-- TOOLBAR -->
+
+                <div class="courses-toolbar">
+
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            COURSE LIBRARY
+                        </span>
+
+                        <h2>
+                            Your Courses
+                        </h2>
+
+                    </div>
+
+
+                    <!-- SEARCH -->
+
+                    <div class="course-search">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            type="search"
+                            id="courseSearch"
+                            placeholder="Search courses..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- FILTERS -->
+
+                <div class="course-filters">
+
+                    <button
+                        class="course-filter active"
+                        data-filter="all"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        class="course-filter"
+                        data-filter="published"
+                    >
+                        Published
+                    </button>
+
+                    <button
+                        class="course-filter"
+                        data-filter="draft"
+                    >
+                        Drafts
+                    </button>
+
+                </div>
+
+
+                <!-- COURSE GRID -->
+
+                <div
+                    id="courseGrid"
+                    class="course-grid"
+                >
+
+                    <div class="course-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading courses...
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMPTY STATE -->
+
+                <div
+                    id="courseEmpty"
+                    class="course-empty hidden"
+                >
+
+                    <div class="empty-icon">
+
+                        <i data-lucide="book-open"></i>
+
+                    </div>
+
+                    <h3>
+                        No courses yet
+                    </h3>
+
+                    <p>
+                        Create your first course
+                        and start teaching.
+                    </p>
+
+                    <button
+                        id="emptyCreateCourseBtn"
+                        class="empty-action"
+                        type="button"
+                    >
+
+                        <i data-lucide="plus"></i>
+
+                        Create Course
+
+                    </button>
+
+                </div>
+
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- APP -->
+
+<script
+    type="module"
+    src="js/instructor-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/courses.js"
+></script>
+
+
+<script>
+
+    lucide.createIcons();
+
+</script>
+
+
+</body>
+
+</html>

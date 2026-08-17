@@ -1,88 +1,85 @@
-// ============================================
+// ============================================================
 // SPARK STACK ACADEMY
-// INSTRUCTOR DASHBOARD ENGINE V1
-// ============================================
+// INSTRUCTOR DASHBOARD V2
+// DASHBOARD ENGINE
+// ============================================================
 
-import { db, auth } from "../../js/firebase.js";
+import { db } from "../../js/firebase.js";
 
 import {
     collection,
     query,
     where,
     getDocs,
-    getDoc,
-    doc,
     orderBy,
     limit
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// ============================================================
+// STATE
+// ============================================================
+
+let instructor = null;
 
 
-// ============================================
-// HELPERS
-// ============================================
+// ============================================================
+// DOM HELPER
+// ============================================================
 
 const $ = id => document.getElementById(id);
 
-const money = value =>
-    `KSh ${Number(value || 0).toLocaleString()}`;
 
+// ============================================================
+// BOOT
+// ============================================================
 
-// ============================================
-// DASHBOARD STATE
-// ============================================
-
-let currentInstructor = null;
-
-let dashboardData = {
-    courses: [],
-    students: [],
-    completions: 0,
-    earnings: 0
-};
-
-
-// ============================================
-// INITIALIZE
-// ============================================
-
-async function initDashboard(user) {
+async function initDashboard() {
 
     try {
 
-        console.log("⚡ Instructor Dashboard loading...");
+        await waitForInstructor();
 
-        currentInstructor = user;
+        instructor = window.currentInstructor;
 
-        await loadInstructorData(user);
+        if (!instructor) {
 
-        await loadCourses(user);
+            console.warn(
+                "Instructor dashboard: instructor not available."
+            );
 
-        await loadStudentStats(user);
+            return;
+        }
 
-        await loadEarnings(user);
 
-        renderStats();
+        setInstructorName();
 
-        renderCourses();
+        await Promise.allSettled([
 
-        renderActivity();
+            loadCourses(),
 
-        bindDashboardActions();
+            loadStudents(),
+
+            loadAssignments(),
+
+            loadEarnings(),
+
+            loadRecentActivity()
+
+        ]);
+
 
         refreshIcons();
 
-        console.log("✅ Instructor Dashboard ready.");
 
-    }
+        console.log(
+            "✓ Instructor dashboard loaded"
+        );
 
-    catch (error) {
+    } catch (error) {
 
         console.error(
-            "❌ Instructor Dashboard error:",
+            "Instructor dashboard failed:",
             error
         );
 
@@ -91,52 +88,89 @@ async function initDashboard(user) {
 }
 
 
-// ============================================
-// INSTRUCTOR PROFILE
-// ============================================
+// ============================================================
+// WAIT FOR APP SHELL AUTH
+// ============================================================
 
-async function loadInstructorData(user) {
+function waitForInstructor() {
 
-    try {
+    return new Promise(resolve => {
 
-        const instructorRef =
-            doc(
-                db,
-                "instructors",
-                user.uid
-            );
+        let attempts = 0;
 
-        const snapshot =
-            await getDoc(instructorRef);
+        const maxAttempts = 100;
 
-        if (snapshot.exists()) {
+        const timer = setInterval(() => {
 
-            dashboardData.instructor =
-                snapshot.data();
+            attempts++;
 
-        }
 
-    }
+            if (window.currentInstructor) {
 
-    catch (error) {
+                clearInterval(timer);
 
-        console.warn(
-            "Instructor profile unavailable:",
-            error
-        );
+                resolve();
+
+                return;
+
+            }
+
+
+            if (attempts >= maxAttempts) {
+
+                clearInterval(timer);
+
+                resolve();
+
+            }
+
+        }, 100);
+
+    });
+
+}
+
+
+// ============================================================
+// INSTRUCTOR NAME
+// ============================================================
+
+function setInstructorName() {
+
+    const name =
+        instructor.displayName ||
+        instructor.name ||
+        instructor.email?.split("@")[0] ||
+        "Instructor";
+
+
+    setText(
+        "instructorName",
+        name
+    );
+
+
+    // Supports the current HTML if the
+    // welcome heading contains a separate span.
+
+    const welcomeName =
+        $("instructorWelcomeName");
+
+    if (welcomeName) {
+
+        welcomeName.textContent =
+            name;
 
     }
 
 }
 
 
-// ============================================
-// LOAD COURSES
-// ============================================
+// ============================================================
+// COURSES
+// ============================================================
 
-async function loadCourses(user) {
-
-    dashboardData.courses = [];
+async function loadCourses() {
 
     try {
 
@@ -146,374 +180,83 @@ async function loadCourses(user) {
                 "courses"
             );
 
-        let snapshot;
 
-        /*
-         * Primary query:
-         * courses belonging to this instructor.
-         */
-
-        try {
-
-            snapshot =
-                await getDocs(
-                    query(
-                        coursesRef,
-                        where(
-                            "instructorId",
-                            "==",
-                            user.uid
-                        )
-                    )
-                );
-
-        }
-
-        catch (error) {
-
-            console.warn(
-                "Primary course query failed.",
-                error
-            );
-
-            /*
-             * Fallback for projects using
-             * instructorUID instead.
-             */
-
-            snapshot =
-                await getDocs(
-                    query(
-                        coursesRef,
-                        where(
-                            "instructorUID",
-                            "==",
-                            user.uid
-                        )
-                    )
-                );
-
-        }
-
-
-        snapshot.forEach(courseDoc => {
-
-            dashboardData.courses.push({
-                id: courseDoc.id,
-                ...courseDoc.data()
-            });
-
-        });
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Course loading failed:",
-            error
-        );
-
-    }
-
-}
-
-
-// ============================================
-// STUDENT STATISTICS
-// ============================================
-
-async function loadStudentStats(user) {
-
-    dashboardData.students = [];
-
-    try {
-
-        /*
-         * First attempt:
-         * instructor-specific students.
-         */
-
-        const studentsRef =
-            collection(
-                db,
-                "students"
-            );
-
-        let snapshot;
-
-        try {
-
-            snapshot =
-                await getDocs(
-                    query(
-                        studentsRef,
-                        where(
-                            "instructorId",
-                            "==",
-                            user.uid
-                        )
-                    )
-                );
-
-        }
-
-        catch {
-
-            /*
-             * If students don't directly
-             * contain instructorId, use
-             * course enrollment information.
-             */
-
-            snapshot = null;
-
-        }
-
-
-        if (snapshot) {
-
-            snapshot.forEach(studentDoc => {
-
-                dashboardData.students.push({
-                    id: studentDoc.id,
-                    ...studentDoc.data()
-                });
-
-            });
-
-        }
-
-
-        /*
-         * If no direct instructor students
-         * were found, calculate students
-         * from course enrollment fields.
-         */
-
-        if (
-            !dashboardData.students.length
-        ) {
-
-            const uniqueStudents =
-                new Set();
-
-            dashboardData.courses
-                .forEach(course => {
-
-                    const enrolled =
-                        Array.isArray(
-                            course.enrolledStudents
-                        )
-                            ? course.enrolledStudents
-                            : [];
-
-                    enrolled.forEach(uid => {
-
-                        uniqueStudents.add(uid);
-
-                    });
-
-                });
-
-            dashboardData.students =
-                [...uniqueStudents]
-                    .map(uid => ({
-                        id: uid
-                    }));
-
-        }
-
-
-        /*
-         * Completion count
-         */
-
-        let completions = 0;
-
-        dashboardData.students
-            .forEach(student => {
-
-                const completed =
-                    Number(
-                        student.completedCourses ||
-                        student.coursesCompleted ||
-                        student.completions ||
-                        0
-                    );
-
-                completions += completed;
-
-            });
-
-
-        /*
-         * Also support completion count
-         * stored directly on courses.
-         */
-
-        dashboardData.courses
-            .forEach(course => {
-
-                completions += Number(
-                    course.completions ||
-                    course.completedStudents ||
-                    0
-                );
-
-            });
-
-
-        dashboardData.completions =
-            completions;
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Student statistics failed:",
-            error
-        );
-
-    }
-
-}
-
-
-// ============================================
-// EARNINGS
-// ============================================
-
-async function loadEarnings(user) {
-
-    dashboardData.earnings = 0;
-
-    try {
-
-        /*
-         * Instructor wallet/profile values
-         */
-
-        const instructor =
-            dashboardData.instructor || {};
-
-        dashboardData.earnings =
-            Number(
-                instructor.earnings ||
-                instructor.totalEarnings ||
-                instructor.balanceEarned ||
-                0
+        const q =
+            query(
+                coursesRef,
+                where(
+                    "instructorId",
+                    "==",
+                    instructor.uid
+                )
             );
 
 
-        /*
-         * If no profile earnings exist,
-         * calculate from course earnings.
-         */
-
-        if (
-            dashboardData.earnings === 0
-        ) {
-
-            dashboardData.courses
-                .forEach(course => {
-
-                    dashboardData.earnings +=
-                        Number(
-                            course.earnings ||
-                            course.totalEarnings ||
-                            0
-                        );
-
-                });
-
-        }
-
-    }
-
-    catch (error) {
-
-        console.warn(
-            "Earnings unavailable:",
-            error
-        );
-
-    }
-
-}
+        const snapshot =
+            await getDocs(q);
 
 
-// ============================================
-// RENDER STATS
-// ============================================
+        const courses =
+            snapshot.docs.map(course => ({
 
-function renderStats() {
+                id: course.id,
 
-    const courses =
-        dashboardData.courses
-            .filter(course =>
+                ...course.data()
+
+            }));
+
+
+        const publishedCourses =
+            courses.filter(course =>
+
                 course.status === "published" ||
-                course.published === true ||
-                !course.status
-            )
-            .length;
+                course.published === true
 
-
-    if ($("statCourses")) {
-
-        $("statCourses").textContent =
-            courses.toLocaleString();
-
-    }
-
-
-    if ($("statStudents")) {
-
-        $("statStudents").textContent =
-            dashboardData.students.length
-                .toLocaleString();
-
-    }
-
-
-    if ($("statCompletions")) {
-
-        $("statCompletions").textContent =
-            dashboardData.completions
-                .toLocaleString();
-
-    }
-
-
-    if ($("statEarnings")) {
-
-        $("statEarnings").textContent =
-            money(
-                dashboardData.earnings
             );
+
+
+        // CURRENT HTML ID
+
+        setText(
+            "statCourses",
+            publishedCourses.length
+        );
+
+
+        renderCourses(
+            courses
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load courses:",
+            error
+        );
+
+
+        setText(
+            "statCourses",
+            "0"
+        );
 
     }
 
 }
 
 
-// ============================================
-// RENDER COURSES
-// ============================================
+// ============================================================
+// COURSE LIST
+// ============================================================
 
-function renderCourses() {
+function renderCourses(courses) {
 
     const container =
         $("courseList");
 
-    if (!container)
-        return;
 
-
-    const courses =
-        dashboardData.courses
-            .slice(0, 5);
+    if (!container) return;
 
 
     if (!courses.length) {
@@ -539,7 +282,8 @@ function renderCourses() {
 
                 <button
                     class="empty-action"
-                    id="emptyCreateCourseBtn"
+                    id="dashboardCreateCourse"
+                    type="button"
                 >
 
                     <i data-lucide="plus"></i>
@@ -552,17 +296,21 @@ function renderCourses() {
 
         `;
 
+
         const button =
-            $("emptyCreateCourseBtn");
+            $("dashboardCreateCourse");
 
-        if (button) {
 
-            button.addEventListener(
-                "click",
-                createCourse
-            );
+        button?.addEventListener(
+            "click",
+            () => {
 
-        }
+                window.location.href =
+                    "course-builder.html";
+
+            }
+        );
+
 
         refreshIcons();
 
@@ -571,98 +319,78 @@ function renderCourses() {
     }
 
 
-    container.innerHTML = "";
+    const recent =
+        courses.slice(0, 5);
 
 
-    courses.forEach(course => {
+    container.innerHTML =
+        recent.map(course => {
 
-        const item =
-            document.createElement("div");
-
-        item.className =
-            "dashboard-course";
-
-
-        const title =
-            escapeHTML(
-                course.title ||
-                course.name ||
-                "Untitled Course"
-            );
+            const title =
+                escapeHTML(
+                    course.title ||
+                    course.name ||
+                    "Untitled Course"
+                );
 
 
-        const status =
-            course.status ||
-            (
-                course.published === true
-                    ? "published"
-                    : "draft"
-            );
+            const status =
+                String(
+                    course.status ||
+                    (course.published
+                        ? "Published"
+                        : "Draft")
+                );
 
 
-        const students =
-            Number(
-                course.studentsCount ||
-                course.enrolledCount ||
-                (
-                    Array.isArray(
-                        course.enrolledStudents
-                    )
-                        ? course.enrolledStudents.length
-                        : 0
-                )
-            );
+            const students =
+                Number(
+                    course.studentCount ||
+                    course.studentsCount ||
+                    0
+                );
 
 
-        item.innerHTML = `
+            return `
 
-            <div class="course-main">
+                <article class="course-item">
 
-                <div class="course-thumb">
+                    <div class="course-item-icon">
 
-                    <i data-lucide="book-open"></i>
+                        <i data-lucide="book-open"></i>
 
-                </div>
-
-                <div>
-
-                    <strong>
-                        ${title}
-                    </strong>
-
-                    <span>
-                        ${students.toLocaleString()}
-                        student${students === 1 ? "" : "s"}
-                    </span>
-
-                </div>
-
-            </div>
-
-            <span class="
-                course-status
-                ${status.toLowerCase()}
-            ">
-                ${escapeHTML(status)}
-            </span>
-
-        `;
+                    </div>
 
 
-        item.addEventListener(
-            "click",
-            () => {
+                    <div class="course-item-info">
 
-                window.location.href =
-                    `courses.html?id=${encodeURIComponent(course.id)}`;
+                        <h3>
+                            ${title}
+                        </h3>
 
-            }
-        );
+                        <p>
+                            ${escapeHTML(status)}
+                            · ${students} students
+                        </p>
+
+                    </div>
 
 
-        container.appendChild(item);
+                    <a
+                        href="courses.html?id=${encodeURIComponent(course.id)}"
+                        class="course-item-action"
+                        aria-label="Open course"
+                    >
 
-    });
+                        <i data-lucide="arrow-up-right"></i>
+
+                    </a>
+
+                </article>
+
+            `;
+
+        }).join("");
 
 
     refreshIcons();
@@ -670,71 +398,114 @@ function renderCourses() {
 }
 
 
-// ============================================
-// ACTIVITY
-// ============================================
+// ============================================================
+// STUDENTS
+// ============================================================
 
-function renderActivity() {
+async function loadStudents() {
 
-    const container =
-        $("activityList");
+    try {
 
-    if (!container)
-        return;
-
-
-    /*
-     * For now activity is derived from
-     * available course data.
-     *
-     * We can connect this to a dedicated
-     * activity collection later.
-     */
-
-    const activities = [];
+        const enrollmentRef =
+            collection(
+                db,
+                "enrollments"
+            );
 
 
-    dashboardData.courses
-        .slice(0, 5)
-        .forEach(course => {
+        const q =
+            query(
+                enrollmentRef,
+                where(
+                    "instructorId",
+                    "==",
+                    instructor.uid
+                )
+            );
 
-            if (
-                course.updatedAt ||
-                course.createdAt
-            ) {
 
-                activities.push({
+        const snapshot =
+            await getDocs(q);
 
-                    icon: "book-open",
 
-                    title:
-                        course.title ||
-                        course.name ||
-                        "Course updated",
+        const enrollments =
+            snapshot.docs.map(enrollment => ({
 
-                    description:
-                        "Course activity",
+                id: enrollment.id,
 
-                    time:
-                        formatDate(
-                            course.updatedAt ||
-                            course.createdAt
-                        )
+                ...enrollment.data()
 
-                });
+            }));
+
+
+        const uniqueStudents =
+            new Set();
+
+
+        enrollments.forEach(enrollment => {
+
+            if (enrollment.studentId) {
+
+                uniqueStudents.add(
+                    enrollment.studentId
+                );
 
             }
 
         });
 
 
-    if (!activities.length) {
+        setText(
+            "statStudents",
+            uniqueStudents.size
+        );
+
+
+        renderStudentActivity(
+            enrollments
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load students:",
+            error
+        );
+
+
+        setText(
+            "statStudents",
+            "0"
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// STUDENT ACTIVITY
+// ============================================================
+
+function renderStudentActivity(
+    enrollments
+) {
+
+    const container =
+        $("activityList");
+
+
+    if (!container) return;
+
+
+    if (!enrollments.length) {
 
         container.innerHTML = `
 
             <div class="empty-activity">
 
-                <i data-lucide="activity"></i>
+                <i data-lucide="users"></i>
 
                 <p>
                     Student activity will appear here.
@@ -744,6 +515,7 @@ function renderActivity() {
 
         `;
 
+
         refreshIcons();
 
         return;
@@ -751,48 +523,49 @@ function renderActivity() {
     }
 
 
-    container.innerHTML = "";
+    const recent =
+        enrollments.slice(0, 5);
 
 
-    activities.forEach(activity => {
+    container.innerHTML =
+        recent.map(enrollment => {
 
-        const item =
-            document.createElement("div");
-
-        item.className =
-            "activity-item";
-
-
-        item.innerHTML = `
-
-            <div class="activity-icon">
-
-                <i data-lucide="${activity.icon}"></i>
-
-            </div>
-
-            <div class="activity-content">
-
-                <strong>
-                    ${escapeHTML(activity.title)}
-                </strong>
-
-                <span>
-                    ${escapeHTML(activity.description)}
-                </span>
-
-            </div>
-
-            <time>
-                ${escapeHTML(activity.time)}
-            </time>
-
-        `;
+            const name =
+                escapeHTML(
+                    enrollment.studentName ||
+                    enrollment.name ||
+                    "Student"
+                );
 
 
-        container.appendChild(item);
+            return `
 
-    });
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+
+                        <i data-lucide="user-plus"></i>
+
+                    </div>
+
+
+                    <div class="activity-content">
+
+                        <h4>
+                            ${name}
+                        </h4>
+
+                        <p>
+                            Recently enrolled
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
 
 
     refreshIcons();
@@ -800,50 +573,317 @@ function renderActivity() {
 }
 
 
-// ============================================
-// ACTIONS
-// ============================================
+// ============================================================
+// ASSIGNMENTS / COMPLETIONS
+// ============================================================
 
-function bindDashboardActions() {
+async function loadAssignments() {
 
-    const createButtons = [
+    try {
 
-        $("createCourseBtn"),
-
-        $("emptyCreateCourseBtn")
-
-    ];
-
-
-    createButtons.forEach(button => {
-
-        if (!button) return;
-
-        button.addEventListener(
-            "click",
-            createCourse
-        );
-
-    });
+        const assignmentRef =
+            collection(
+                db,
+                "assignments"
+            );
 
 
-    const studentsButton =
-        $("viewStudentsBtn");
+        const q =
+            query(
+                assignmentRef,
+                where(
+                    "instructorId",
+                    "==",
+                    instructor.uid
+                )
+            );
 
 
-    if (studentsButton) {
+        const snapshot =
+            await getDocs(q);
 
-        studentsButton.addEventListener(
-            "click",
-            () => {
 
-                window.location.href =
-                    "students.html";
+        let completions = 0;
+
+
+        snapshot.forEach(doc => {
+
+            const data =
+                doc.data();
+
+
+            if (
+                data.status === "completed" ||
+                data.status === "graded" ||
+                data.completed === true
+            ) {
+
+                completions++;
 
             }
+
+        });
+
+
+        setText(
+            "statCompletions",
+            completions
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load completions:",
+            error
+        );
+
+
+        setText(
+            "statCompletions",
+            "0"
         );
 
     }
+
+}
+
+
+// ============================================================
+// EARNINGS
+// ============================================================
+
+async function loadEarnings() {
+
+    try {
+
+        const earningsRef =
+            collection(
+                db,
+                "instructorEarnings"
+            );
+
+
+        const q =
+            query(
+                earningsRef,
+                where(
+                    "instructorId",
+                    "==",
+                    instructor.uid
+                )
+            );
+
+
+        const snapshot =
+            await getDocs(q);
+
+
+        let total = 0;
+
+
+        snapshot.forEach(doc => {
+
+            const data =
+                doc.data();
+
+
+            total += Number(
+                data.amount ||
+                data.total ||
+                data.earnings ||
+                0
+            );
+
+        });
+
+
+        setText(
+            "statEarnings",
+            formatCurrency(total)
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load earnings:",
+            error
+        );
+
+
+        setText(
+            "statEarnings",
+            "KSh 0"
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// RECENT ACTIVITY
+// ============================================================
+
+async function loadRecentActivity() {
+
+    const container =
+        $("activityList");
+
+
+    if (!container) return;
+
+
+    try {
+
+        const activityRef =
+            collection(
+                db,
+                "instructorActivity"
+            );
+
+
+        const q =
+            query(
+                activityRef,
+
+                where(
+                    "instructorId",
+                    "==",
+                    instructor.uid
+                ),
+
+                orderBy(
+                    "createdAt",
+                    "desc"
+                ),
+
+                limit(5)
+            );
+
+
+        const snapshot =
+            await getDocs(q);
+
+
+        if (snapshot.empty) {
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            snapshot.docs.map(doc => {
+
+                const data =
+                    doc.data();
+
+
+                return `
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon">
+
+                            <i data-lucide="activity"></i>
+
+                        </div>
+
+
+                        <div class="activity-content">
+
+                            <h4>
+                                ${escapeHTML(
+                                    data.title ||
+                                    "Instructor activity"
+                                )}
+                            </h4>
+
+                            <p>
+                                ${escapeHTML(
+                                    data.description ||
+                                    "Recent activity"
+                                )}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+
+        refreshIcons();
+
+
+    } catch (error) {
+
+        // Activity is optional.
+        // Do not break the dashboard.
+
+        console.warn(
+            "Activity feed unavailable:",
+            error
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// BUTTON ACTIONS
+// ============================================================
+
+function setupDashboardActions() {
+
+    const createCourseBtn =
+        $("createCourseBtn");
+
+
+    const emptyCreateCourseBtn =
+        $("emptyCreateCourseBtn");
+
+
+    const viewStudentsBtn =
+        $("viewStudentsBtn");
+
+
+    createCourseBtn?.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "course-builder.html";
+
+        }
+    );
+
+
+    emptyCreateCourseBtn?.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "course-builder.html";
+
+        }
+    );
+
+
+    viewStudentsBtn?.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "students.html";
+
+        }
+    );
 
 
     document
@@ -859,9 +899,30 @@ function bindDashboardActions() {
                     const action =
                         button.dataset.action;
 
-                    handleQuickAction(
-                        action
-                    );
+
+                    const routes = {
+
+                        lesson:
+                            "lessons.html",
+
+                        assignment:
+                            "assignments.html",
+
+                        quiz:
+                            "quizzes.html",
+
+                        announcement:
+                            "announcements.html"
+
+                    };
+
+
+                    if (routes[action]) {
+
+                        window.location.href =
+                            routes[action];
+
+                    }
 
                 }
             );
@@ -871,176 +932,114 @@ function bindDashboardActions() {
 }
 
 
-// ============================================
-// CREATE COURSE
-// ============================================
+// ============================================================
+// TEXT
+// ============================================================
 
-function createCourse() {
+function setText(
+    id,
+    value
+) {
 
-    window.location.href =
-        "courses.html?action=create";
-
-}
-
-
-// ============================================
-// QUICK ACTIONS
-// ============================================
-
-function handleQuickAction(action) {
-
-    switch (action) {
-
-        case "lesson":
-
-            window.location.href =
-                "courses.html?action=lesson";
-
-            break;
+    const element =
+        $(id);
 
 
-        case "assignment":
+    if (element) {
 
-            window.location.href =
-                "courses.html?action=assignment";
-
-            break;
-
-
-        case "quiz":
-
-            window.location.href =
-                "courses.html?action=quiz";
-
-            break;
-
-
-        case "announcement":
-
-            window.location.href =
-                "announcements.html";
-
-            break;
-
-
-        default:
-
-            console.warn(
-                "Unknown dashboard action:",
-                action
-            );
+        element.textContent =
+            value;
 
     }
 
 }
 
 
-// ============================================
-// DATE FORMATTER
-// ============================================
+// ============================================================
+// CURRENCY
+// ============================================================
 
-function formatDate(timestamp) {
+function formatCurrency(
+    amount
+) {
 
-    if (!timestamp)
-        return "Recently";
-
-
-    try {
-
-        const date =
-            timestamp.toDate
-                ? timestamp.toDate()
-                : new Date(timestamp);
-
-
-        if (Number.isNaN(
-            date.getTime()
-        )) {
-
-            return "Recently";
-
+    return new Intl.NumberFormat(
+        "en-KE",
+        {
+            style: "currency",
+            currency: "KES",
+            maximumFractionDigits: 0
         }
-
-
-        return date.toLocaleDateString(
-            undefined,
-            {
-                day: "numeric",
-                month: "short",
-                year: "numeric"
-            }
-        );
-
-    }
-
-    catch {
-
-        return "Recently";
-
-    }
+    ).format(amount);
 
 }
 
 
-// ============================================
-// HTML SAFETY
-// ============================================
+// ============================================================
+// ESCAPE HTML
+// ============================================================
 
-function escapeHTML(value) {
+function escapeHTML(
+    value
+) {
 
-    return String(value || "")
+    return String(value)
+
         .replaceAll("&", "&amp;")
+
         .replaceAll("<", "&lt;")
+
         .replaceAll(">", "&gt;")
+
         .replaceAll('"', "&quot;")
+
         .replaceAll("'", "&#039;");
 
 }
 
 
-// ============================================
-// ICON REFRESH
-// ============================================
+// ============================================================
+// ICONS
+// ============================================================
 
 function refreshIcons() {
 
     if (
         window.lucide &&
-        typeof lucide.createIcons === "function"
+        typeof window.lucide.createIcons ===
+        "function"
     ) {
 
-        lucide.createIcons();
+        window.lucide.createIcons();
 
     }
 
 }
 
 
-// ============================================
-// AUTH
-// ============================================
+// ============================================================
+// START AFTER DOM
+// ============================================================
 
-onAuthStateChanged(
-    auth,
-    user => {
+if (
+    document.readyState === "loading"
+) {
 
-        if (!user) {
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
 
-            console.log(
-                "🔐 Instructor not authenticated."
-            );
+            setupDashboardActions();
 
-            return;
+            initDashboard();
 
         }
+    );
 
+} else {
 
-        initDashboard(user);
+    setupDashboardActions();
 
-    }
-);
+    initDashboard();
 
-
-console.log(
-    "🚀 Instructor Dashboard Engine Loaded"
-);
+}

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Payments | Spark Stack Academy
+    </title>
+
+
+    <!-- CORE -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/payments.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script
+        src="https://unpkg.com/lucide@latest">
+    </script>
+
+</head>
+
+
+<body>
+
+
+<div class="instructor-app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside
+        id="instructorSidebar"
+        class="instructor-sidebar"
+    ></aside>
+
+
+    <!-- OVERLAY -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- MAIN -->
+
+    <main class="instructor-main">
+
+
+        <!-- TOPBAR -->
+
+        <header
+            id="instructorTopbar"
+            class="instructor-topbar"
+        ></header>
+
+
+        <!-- PAGE -->
+
+        <section class="payments-page">
+
+
+            <!-- =================================
+                 HEADER
+            ================================== -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        FINANCE
+                    </span>
+
+                    <h1>
+                        Payments
+                    </h1>
+
+                    <p>
+                        Track course payments,
+                        transactions and payment status.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="upgradeProBtn"
+                    class="pro-btn"
+                    type="button"
+                >
+
+                    <i data-lucide="crown"></i>
+
+                    Upgrade to Pro
+
+                </button>
+
+            </div>
+
+
+            <!-- =================================
+                 PAYMENT STATS
+            ================================== -->
+
+            <section class="payment-stats">
+
+
+                <article class="payment-stat">
+
+                    <div class="stat-icon blue">
+
+                        <i data-lucide="wallet"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Payments
+                        </span>
+
+                        <strong id="totalPayments">
+                            KSh 0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="payment-stat">
+
+                    <div class="stat-icon green">
+
+                        <i data-lucide="circle-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Successful
+                        </span>
+
+                        <strong id="successfulPayments">
+                            KSh 0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="payment-stat">
+
+                    <div class="stat-icon gold">
+
+                        <i data-lucide="clock-3"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Pending
+                        </span>
+
+                        <strong id="pendingPayments">
+                            KSh 0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="payment-stat">
+
+                    <div class="stat-icon purple">
+
+                        <i data-lucide="receipt"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Transactions
+                        </span>
+
+                        <strong id="paymentTransactions">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =================================
+                 PRO BANNER
+            ================================== -->
+
+            <section
+                id="proBanner"
+                class="pro-banner"
+            >
+
+                <div class="pro-banner-icon">
+
+                    <i data-lucide="crown"></i>
+
+                </div>
+
+
+                <div class="pro-banner-content">
+
+                    <span>
+                        INSTRUCTOR PRO
+                    </span>
+
+                    <h2>
+                        Unlock more earning tools.
+                    </h2>
+
+                    <p>
+                        Get premium instructor features,
+                        enhanced analytics and advanced
+                        teaching tools.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="proBannerBtn"
+                    class="primary-btn"
+                    type="button"
+                >
+
+                    Upgrade Now
+
+                    <i data-lucide="arrow-right"></i>
+
+                </button>
+
+            </section>
+
+
+            <!-- =================================
+                 TRANSACTION WORKSPACE
+            ================================== -->
+
+            <section class="payments-card">
+
+
+                <div class="payments-toolbar">
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            TRANSACTIONS
+                        </span>
+
+                        <h2>
+                            Payment History
+                        </h2>
+
+                    </div>
+
+
+                    <div class="payment-search">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            type="search"
+                            id="paymentSearch"
+                            placeholder="Search transactions..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- FILTERS -->
+
+                <div class="payment-filters">
+
+                    <button
+                        class="payment-filter active"
+                        data-filter="all"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        class="payment-filter"
+                        data-filter="successful"
+                    >
+                        Successful
+                    </button>
+
+                    <button
+                        class="payment-filter"
+                        data-filter="pending"
+                    >
+                        Pending
+                    </button>
+
+                    <button
+                        class="payment-filter"
+                        data-filter="failed"
+                    >
+                        Failed
+                    </button>
+
+                    <button
+                        class="payment-filter"
+                        data-filter="refunded"
+                    >
+                        Refunded
+                    </button>
+
+                </div>
+
+
+                <!-- TRANSACTIONS -->
+
+                <div
+                    id="paymentList"
+                    class="payment-list"
+                >
+
+                    <div class="payment-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading payments...
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMPTY -->
+
+                <div
+                    id="paymentEmpty"
+                    class="payment-empty hidden"
+                >
+
+                    <div class="empty-icon">
+
+                        <i data-lucide="receipt"></i>
+
+                    </div>
+
+                    <h3>
+                        No payments found
+                    </h3>
+
+                    <p>
+                        Course payment transactions
+                        will appear here.
+                    </p>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================
+                 PAYMENT INFORMATION
+            ================================== -->
+
+            <section class="payment-info-grid">
+
+
+                <article class="payment-info-card">
+
+                    <div class="info-icon">
+
+                        <i data-lucide="shield-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Secure Payments
+                        </h3>
+
+                        <p>
+                            Payments are processed securely
+                            and tracked automatically.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="payment-info-card">
+
+                    <div class="info-icon">
+
+                        <i data-lucide="percent"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Transparent Fees
+                        </h3>
+
+                        <p>
+                            Platform deductions are displayed
+                            clearly before earnings are settled.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="payment-info-card">
+
+                    <div class="info-icon">
+
+                        <i data-lucide="arrow-down-to-line"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Fast Withdrawals
+                        </h3>
+
+                        <p>
+                            Transfer eligible earnings through
+                            your configured withdrawal method.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script
+    type="module"
+    src="js/instructor-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/payments.js"
+></script>
+
+
+<script>
+
+    lucide.createIcons();
+
+</script>
+
+
+</body>
+
+</html>

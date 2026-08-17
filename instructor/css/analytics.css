@@ -1,0 +1,667 @@
+/* ============================================================
+   SPARK STACK ACADEMY
+   INSTRUCTOR ANALYTICS
+============================================================ */
+
+.analytics-page {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 32px;
+    color: #081c3a;
+}
+
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+
+.analytics-page .page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.page-eyebrow,
+.card-eyebrow {
+    display: block;
+    color: #2979ff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.page-eyebrow {
+    margin-bottom: 8px;
+}
+
+.analytics-page .page-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -.8px;
+}
+
+.analytics-page .page-header p {
+    margin: 8px 0 0;
+    color: #718096;
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   COURSE FILTER
+============================================================ */
+
+.analytics-actions {
+    display: flex;
+    align-items: center;
+}
+
+.analytics-select {
+    min-width: 190px;
+    padding: 12px 38px 12px 15px;
+    border: 1px solid #e3e9f1;
+    border-radius: 11px;
+    background: #fff;
+    color: #081c3a;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.analytics-select:hover {
+    border-color: #2979ff;
+}
+
+.analytics-select:focus {
+    border-color: #2979ff;
+    box-shadow: 0 0 0 3px rgba(41,121,255,.10);
+}
+
+
+/* ============================================================
+   STAT CARDS
+============================================================ */
+
+.analytics-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.analytics-stat {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 125px;
+    padding: 22px;
+    overflow: hidden;
+
+    background: #fff;
+    border: 1px solid #e8edf4;
+    border-radius: 17px;
+
+    box-shadow:
+        0 8px 30px rgba(8,28,58,.055);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.analytics-stat::after {
+    content: "";
+    position: absolute;
+    right: -25px;
+    bottom: -35px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #f4f7fb;
+}
+
+.analytics-stat:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 14px 35px rgba(8,28,58,.09);
+}
+
+.analytics-stat .stat-icon {
+    position: relative;
+    z-index: 1;
+
+    width: 50px;
+    height: 50px;
+    flex: 0 0 50px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 14px;
+}
+
+.analytics-stat .stat-icon svg {
+    width: 21px;
+    height: 21px;
+}
+
+.stat-icon.purple {
+    color: #7c4dff;
+    background: #f1ebff;
+}
+
+.stat-icon.blue {
+    color: #2979ff;
+    background: #eaf2ff;
+}
+
+.stat-icon.green {
+    color: #159957;
+    background: #e9f9f0;
+}
+
+.stat-icon.gold {
+    color: #d99a00;
+    background: #fff7df;
+}
+
+.analytics-stat > div:last-child {
+    position: relative;
+    z-index: 1;
+}
+
+.analytics-stat span {
+    display: block;
+    margin-bottom: 5px;
+    color: #7b8798;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.analytics-stat strong {
+    display: block;
+    color: #081c3a;
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+}
+
+
+/* ============================================================
+   ANALYTICS GRID
+============================================================ */
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(340px, .85fr);
+    gap: 22px;
+    margin-bottom: 22px;
+}
+
+
+/* ============================================================
+   CARDS
+============================================================ */
+
+.analytics-card {
+    min-width: 0;
+    overflow: hidden;
+
+    background: #fff;
+    border: 1px solid #e7ecf3;
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 30px rgba(8,28,58,.045);
+}
+
+.analytics-card .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding: 22px 24px;
+
+    border-bottom: 1px solid #edf1f6;
+}
+
+.analytics-card .card-header h2 {
+    margin: 5px 0 0;
+    color: #081c3a;
+    font-size: 17px;
+    font-weight: 750;
+}
+
+.analytics-card .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    color: #2979ff;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.analytics-card .card-link:hover {
+    text-decoration: underline;
+}
+
+.analytics-card .card-link svg {
+    width: 14px;
+    height: 14px;
+}
+
+
+/* ============================================================
+   COURSE PERFORMANCE
+============================================================ */
+
+.course-performance {
+    padding: 8px 24px 22px;
+}
+
+.course-performance-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+
+    border-bottom: 1px solid #edf1f6;
+}
+
+.course-performance-item:last-child {
+    border-bottom: 0;
+}
+
+.course-performance-icon {
+    width: 43px;
+    height: 43px;
+    flex: 0 0 43px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+    color: #2979ff;
+    background: #edf4ff;
+}
+
+.course-performance-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.course-performance-info strong {
+    display: block;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: #081c3a;
+    font-size: 13px;
+}
+
+.course-performance-info span {
+    display: block;
+    margin-top: 4px;
+
+    color: #8a95a5;
+    font-size: 11px;
+}
+
+
+/* ============================================================
+   ENGAGEMENT
+============================================================ */
+
+.engagement-overview {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 28px 24px;
+}
+
+.engagement-circle {
+    position: relative;
+
+    width: 145px;
+    height: 145px;
+    flex: 0 0 145px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #fff 57%,
+            transparent 58%
+        );
+
+    border: 10px solid #eaf2ff;
+}
+
+.engagement-circle::before {
+    content: "";
+
+    position: absolute;
+    inset: -10px;
+
+    border-radius: 50%;
+    border: 10px solid transparent;
+    border-top-color: #2979ff;
+    border-right-color: #2979ff;
+
+    transform: rotate(-35deg);
+}
+
+.engagement-circle strong {
+    position: relative;
+    font-size: 27px;
+    font-weight: 800;
+    color: #081c3a;
+}
+
+.engagement-circle span {
+    position: relative;
+    margin-top: 2px;
+    color: #8a95a5;
+    font-size: 10px;
+}
+
+.engagement-details {
+    flex: 1;
+}
+
+.engagement-details > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 13px 0;
+    border-bottom: 1px solid #edf1f6;
+}
+
+.engagement-details > div:last-child {
+    border-bottom: 0;
+}
+
+.engagement-details span {
+    color: #718096;
+    font-size: 11px;
+}
+
+.engagement-details strong {
+    color: #081c3a;
+    font-size: 14px;
+    font-weight: 750;
+}
+
+
+/* ============================================================
+   COMPLETION
+============================================================ */
+
+.completion-list {
+    padding: 8px 24px 22px;
+}
+
+.completion-item {
+    padding: 17px 0;
+    border-bottom: 1px solid #edf1f6;
+}
+
+.completion-item:last-child {
+    border-bottom: 0;
+}
+
+.completion-item-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 9px;
+}
+
+.completion-item-header span {
+    max-width: 75%;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: #344054;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.completion-item-header strong {
+    color: #081c3a;
+    font-size: 12px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 7px;
+    overflow: hidden;
+
+    border-radius: 99px;
+    background: #edf1f6;
+}
+
+.progress-fill {
+    width: 0;
+    height: 100%;
+
+    border-radius: inherit;
+    background: #2979ff;
+
+    transition: width .5s ease;
+}
+
+
+/* ============================================================
+   ASSIGNMENT PERFORMANCE
+============================================================ */
+
+.assignment-performance {
+    padding: 10px 24px 24px;
+}
+
+.performance-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 0;
+    border-bottom: 1px solid #edf1f6;
+}
+
+.performance-row span {
+    color: #718096;
+    font-size: 12px;
+}
+
+.performance-row strong {
+    color: #081c3a;
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.assignment-performance .progress-track {
+    margin-top: 20px;
+}
+
+
+/* ============================================================
+   EARNINGS
+============================================================ */
+
+.earnings-analytics {
+    margin-top: 22px;
+}
+
+.earnings-overview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+
+    padding: 30px 24px;
+}
+
+.earnings-main span,
+.earnings-mini span {
+    display: block;
+    margin-bottom: 6px;
+
+    color: #718096;
+    font-size: 11px;
+}
+
+.earnings-main strong {
+    display: block;
+    color: #081c3a;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -.8px;
+}
+
+.earnings-mini {
+    display: flex;
+    gap: 50px;
+}
+
+.earnings-mini strong {
+    color: #081c3a;
+    font-size: 17px;
+    font-weight: 750;
+}
+
+
+/* ============================================================
+   LOADING
+============================================================ */
+
+.analytics-loading {
+    min-height: 140px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    color: #8a95a5;
+    font-size: 12px;
+}
+
+.loading-spinner {
+    width: 25px;
+    height: 25px;
+
+    border: 3px solid #e8edf4;
+    border-top-color: #2979ff;
+
+    border-radius: 50%;
+
+    animation: analyticsSpin .8s linear infinite;
+}
+
+@keyframes analyticsSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 1100px) {
+
+    .analytics-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .analytics-page {
+        padding: 20px 15px;
+    }
+
+    .analytics-page .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .analytics-page .page-header h1 {
+        font-size: 27px;
+    }
+
+    .analytics-actions {
+        width: 100%;
+    }
+
+    .analytics-select {
+        width: 100%;
+    }
+
+    .analytics-stats {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .analytics-stat {
+        min-height: 105px;
+    }
+
+    .analytics-card .card-header {
+        padding: 18px;
+    }
+
+    .engagement-overview {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .engagement-circle {
+        margin: 0 auto;
+    }
+
+    .earnings-overview {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .earnings-mini {
+        width: 100%;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+}

@@ -1,12 +1,15 @@
-// ============================================
+console.log("🔥 INSTRUCTOR APP JS LOADED");
+
+// ============================================================
 // SPARK STACK ACADEMY
-// INSTRUCTOR APP V1
-// ============================================
+// INSTRUCTOR PORTAL
+// APP SHELL ENGINE
+// ============================================================
 
 import {
     auth,
     db
-} from "../../firebase.js";
+} from "../../js/firebase.js";
 
 import {
     onAuthStateChanged,
@@ -19,89 +22,126 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-// ============================================
+// ============================================================
 // CONFIG
-// ============================================
+// ============================================================
 
-const COMPONENT_PATH = "components/";
-
-
-// ============================================
-// DOM READY
-// ============================================
-
-document.addEventListener("DOMContentLoaded", async () => {
-
-    await loadComponents();
-
-    setupNavigation();
-
-    setupLogout();
-
-    setupPageTitle();
-
-    await loadInstructor();
-
-    refreshIcons();
-
-});
+const LOGIN_PAGE = "../login.html";
 
 
-// ============================================
+// ============================================================
+// DOM
+// ============================================================
+
+const sidebar =
+    document.getElementById("instructorSidebar");
+
+const topbar =
+    document.getElementById("instructorTopbar");
+
+const overlay =
+    document.getElementById("sidebarOverlay");
+
+
+// ============================================================
 // LOAD COMPONENTS
-// ============================================
+// ============================================================
 
-async function loadComponents() {
+async function loadComponent(container, path) {
 
-    const sidebar = document.getElementById("instructorSidebar");
-    const topbar = document.getElementById("instructorTopbar");
+    if (!container) {
+
+        console.error("❌ Missing container:", path);
+
+        return false;
+
+    }
 
     try {
 
-        const [sidebarResponse, topbarResponse] = await Promise.all([
+        const response = await fetch(path);
 
-            fetch(`${COMPONENT_PATH}sidebar.html`),
+        if (!response.ok) {
 
-            fetch(`${COMPONENT_PATH}topbar.html`)
-
-        ]);
-
-
-        if (!sidebarResponse.ok || !topbarResponse.ok) {
-
-            throw new Error("Failed to load instructor components.");
+            throw new Error(
+                `HTTP ${response.status}`
+            );
 
         }
 
+        container.innerHTML =
+            await response.text();
 
-        sidebar.innerHTML = await sidebarResponse.text();
+        console.log("✓ Loaded:", path);
 
-        topbar.innerHTML = await topbarResponse.text();
-
+        return true;
 
     } catch (error) {
 
         console.error(
-            "Instructor components error:",
+            "❌ Failed loading:",
+            path,
             error
         );
 
+        return false;
+
     }
 
 }
 
 
-// ============================================
-// NAVIGATION
-// ============================================
+// ============================================================
+// LOAD SHELL
+// ============================================================
 
-function setupNavigation() {
+async function loadShell() {
+
+    console.log("🚀 Loading instructor shell...");
+
+
+    await Promise.all([
+
+        loadComponent(
+            sidebar,
+            "components/sidebar.html"
+        ),
+
+        loadComponent(
+            topbar,
+            "components/topbar.html"
+        )
+
+    ]);
+
+
+    // IMPORTANT:
+    // Components are now inside the DOM.
+
+    setupMobileSidebar();
+
+    setupLogout();
+
+    setupNotifications();
+
+    updateActiveLink();
+
+    refreshIcons();
+
+
+    console.log("✓ Instructor shell ready");
+
+}
+
+
+// ============================================================
+// SIDEBAR
+// ============================================================
+
+function setupMobileSidebar() {
 
     const menuButton =
-        document.getElementById("mobileMenuBtn");
-
-    const closeButton =
-        document.getElementById("sidebarClose");
+        document.getElementById("instructorMenuBtn");
 
     const sidebar =
         document.getElementById("instructorSidebar");
@@ -110,88 +150,127 @@ function setupNavigation() {
         document.getElementById("sidebarOverlay");
 
 
-    if (menuButton) {
+    // OPEN
+    menuButton?.addEventListener(
+        "click",
+        (event) => {
 
-        menuButton.addEventListener(
-            "click",
-            openSidebar
-        );
+            event.stopPropagation();
 
-    }
+            openSidebar();
 
-
-    if (closeButton) {
-
-        closeButton.addEventListener(
-            "click",
-            closeSidebar
-        );
-
-    }
+        }
+    );
 
 
-    if (overlay) {
-
-        overlay.addEventListener(
-            "click",
-            closeSidebar
-        );
-
-    }
+    // CLOSE WHEN TAPPING OVERLAY
+    overlay?.addEventListener(
+        "click",
+        closeSidebar
+    );
 
 
-    // Close sidebar after navigation on mobile
+    // CLOSE WHEN TAPPING ANYTHING OUTSIDE SIDEBAR
+    document.addEventListener(
+        "click",
+        (event) => {
 
-    document
-        .querySelectorAll(".nav-item[href]")
+            if (!sidebar?.classList.contains("open")) {
+                return;
+            }
+
+            const clickedInsideSidebar =
+                sidebar.contains(event.target);
+
+            const clickedMenuButton =
+                menuButton?.contains(event.target);
+
+            if (
+                !clickedInsideSidebar &&
+                !clickedMenuButton
+            ) {
+
+                closeSidebar();
+
+            }
+
+        }
+    );
+
+
+    // CLOSE WITH ESC
+    document.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (event.key === "Escape") {
+
+                closeSidebar();
+
+            }
+
+        }
+    );
+
+
+    // CLOSE AFTER NAVIGATION
+    sidebar?.querySelectorAll(".nav-link")
         .forEach(link => {
 
-            link.addEventListener("click", () => {
-
-                if (
-                    window.innerWidth <= 900 &&
-                    sidebar
-                ) {
-
-                    closeSidebar();
-
-                }
-
-            });
+            link.addEventListener(
+                "click",
+                closeSidebar
+            );
 
         });
 
+}
+// ============================================================
+// TOGGLE
+// ============================================================
 
-    setActiveNavigation();
+function toggleSidebar() {
+
+    if (
+        sidebar?.classList.contains("open")
+    ) {
+
+        closeSidebar();
+
+    } else {
+
+        openSidebar();
+
+    }
 
 }
 
 
-// ============================================
-// OPEN SIDEBAR
-// ============================================
+// ============================================================
+// OPEN
+// ============================================================
 
 function openSidebar() {
 
-    const sidebar =
-        document.getElementById("instructorSidebar");
+    sidebar?.classList.add("open");
 
-    const overlay =
-        document.getElementById("sidebarOverlay");
+    overlay?.classList.add("active");
+
+    document.body.classList.add(
+        "sidebar-open"
+    );
 
 
-    sidebar?.classList.add("sidebar-open");
-
-    overlay?.classList.add("overlay-visible");
-
-    document.body.classList.add("sidebar-active");
+    console.log(
+        "📂 SIDEBAR OPENED"
+    );
 
 }
 
 
-// ============================================
-// CLOSE SIDEBAR
-// ============================================
+// ============================================================
+// CLOSE
+// ============================================================
 
 function closeSidebar() {
 
@@ -202,38 +281,49 @@ function closeSidebar() {
         document.getElementById("sidebarOverlay");
 
 
-    sidebar?.classList.remove("sidebar-open");
+    sidebar?.classList.remove("open");
 
-    overlay?.classList.remove("overlay-visible");
+    overlay?.classList.remove("active");
 
-    document.body.classList.remove("sidebar-active");
+    document.body.classList.remove("sidebar-open");
+
+    document.body.style.overflow = "";
 
 }
 
 
-// ============================================
-// ACTIVE NAVIGATION
-// ============================================
+// ============================================================
+// ACTIVE LINK
+// ============================================================
 
-function setActiveNavigation() {
+function updateActiveLink() {
 
     const currentPage =
         window.location.pathname
             .split("/")
             .pop()
-            .replace(".html", "")
             .toLowerCase();
 
 
-    document
-        .querySelectorAll(".nav-item[data-page]")
-        .forEach(item => {
+    sidebar
+        ?.querySelectorAll(".nav-link")
+        .forEach(link => {
+
+            const href =
+                link.getAttribute("href");
+
+            if (!href) return;
+
 
             const page =
-                item.dataset.page?.toLowerCase();
+                href
+                    .split("/")
+                    .pop()
+                    .split("?")[0]
+                    .toLowerCase();
 
 
-            item.classList.toggle(
+            link.classList.toggle(
                 "active",
                 page === currentPage
             );
@@ -243,38 +333,33 @@ function setActiveNavigation() {
 }
 
 
-// ============================================
+// ============================================================
 // LOGOUT
-// ============================================
+// ============================================================
 
 function setupLogout() {
 
-    const logoutButton =
-        document.getElementById("instructorLogout");
-
-
-    if (!logoutButton) return;
-
-
-    logoutButton.addEventListener(
+    document.addEventListener(
         "click",
-        async () => {
+        async event => {
 
-            const confirmed = confirm(
-                "Are you sure you want to logout?"
-            );
+            const button =
+                event.target.closest(
+                    "#instructorLogoutBtn"
+                );
 
 
-            if (!confirmed) return;
+            if (!button) return;
 
 
             try {
 
+                button.disabled = true;
+
                 await signOut(auth);
 
                 window.location.href =
-                    "../login.html";
-
+                    LOGIN_PAGE;
 
             } catch (error) {
 
@@ -283,9 +368,7 @@ function setupLogout() {
                     error
                 );
 
-                alert(
-                    "Unable to logout. Please try again."
-                );
+                button.disabled = false;
 
             }
 
@@ -295,11 +378,39 @@ function setupLogout() {
 }
 
 
-// ============================================
-// LOAD INSTRUCTOR
-// ============================================
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
 
-async function loadInstructor() {
+function setupNotifications() {
+
+    const button =
+        document.getElementById(
+            "notificationBtn"
+        );
+
+
+    if (!button) return;
+
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "notifications.html";
+
+        }
+    );
+
+}
+
+
+// ============================================================
+// AUTH
+// ============================================================
+
+function initAuth() {
 
     onAuthStateChanged(
         auth,
@@ -308,7 +419,7 @@ async function loadInstructor() {
             if (!user) {
 
                 window.location.href =
-                    "../login.html";
+                    LOGIN_PAGE;
 
                 return;
 
@@ -317,7 +428,7 @@ async function loadInstructor() {
 
             try {
 
-                const instructorRef =
+                const ref =
                     doc(
                         db,
                         "users",
@@ -325,53 +436,47 @@ async function loadInstructor() {
                     );
 
 
-                const instructorSnap =
-                    await getDoc(instructorRef);
+                const snapshot =
+                    await getDoc(ref);
 
 
-                let instructor = {};
+                const data =
+                    snapshot.exists()
+                        ? snapshot.data()
+                        : {};
 
 
-                if (instructorSnap.exists()) {
+                window.currentInstructor = {
 
-                    instructor =
-                        instructorSnap.data();
+                    uid: user.uid,
 
-                }
+                    email:
+                        user.email || "",
 
+                    displayName:
+                        data.displayName ||
+                        data.name ||
+                        user.displayName ||
+                        "Instructor",
 
-                const name =
-                    instructor.displayName ||
-                    instructor.name ||
-                    user.displayName ||
-                    "Instructor";
+                    ...data
 
-
-                const email =
-                    instructor.email ||
-                    user.email ||
-                    "instructor@email.com";
+                };
 
 
                 updateInstructorUI(
-                    name,
-                    email,
-                    instructor
+                    window.currentInstructor
                 );
+
+
+                refreshIcons();
 
 
             } catch (error) {
 
                 console.error(
-                    "Failed to load instructor:",
+                    "❌ Instructor auth error:",
                     error
-                );
-
-
-                updateInstructorUI(
-                    user.displayName || "Instructor",
-                    user.email || "instructor@email.com",
-                    {}
                 );
 
             }
@@ -382,38 +487,22 @@ async function loadInstructor() {
 }
 
 
-// ============================================
-// UPDATE INSTRUCTOR UI
-// ============================================
+// ============================================================
+// UPDATE PROFILE
+// ============================================================
 
 function updateInstructorUI(
-    name,
-    email,
     instructor
 ) {
 
-    const firstLetter =
-        name
-            .trim()
-            .charAt(0)
-            .toUpperCase() || "I";
+    const name =
+        instructor.displayName ||
+        "Instructor";
 
 
-    // Topbar
+    const initials =
+        getInitials(name);
 
-    setText(
-        "topbarInstructorName",
-        name
-    );
-
-
-    setText(
-        "topbarAvatar",
-        firstLetter
-    );
-
-
-    // Sidebar
 
     setText(
         "sidebarInstructorName",
@@ -422,152 +511,68 @@ function updateInstructorUI(
 
 
     setText(
-        "sidebarAvatar",
-        firstLetter
+        "topbarInstructorName",
+        name
     );
 
 
-    // Dashboard
+    setText(
+        "sidebarInstructorAvatar",
+        initials
+    );
+
+
+    setText(
+        "topbarInstructorAvatar",
+        initials
+    );
+
 
     setText(
         "instructorName",
         name
     );
 
-
-    setText(
-        "profileName",
-        name
-    );
+}
 
 
-    setText(
-        "profileEmail",
-        email
-    );
+// ============================================================
+// INITIALS
+// ============================================================
+
+function getInitials(name) {
+
+    const parts =
+        String(name)
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean);
 
 
-    setText(
-        "profileAvatar",
-        firstLetter
-    );
+    if (!parts.length) return "I";
+
+    if (parts.length === 1) {
+
+        return parts[0]
+            .charAt(0)
+            .toUpperCase();
+
+    }
 
 
-    // Expertise
-
-    const expertise =
-        instructor.expertise ||
-        instructor.specialization ||
-        "Not specified";
-
-
-    setText(
-        "profileExpertise",
-        `Expertise: ${expertise}`
-    );
+    return (
+        parts[0].charAt(0) +
+        parts[parts.length - 1].charAt(0)
+    ).toUpperCase();
 
 }
 
 
-// ============================================
-// PAGE TITLE
-// ============================================
+// ============================================================
+// HELPER
+// ============================================================
 
-function setupPageTitle() {
-
-    const title =
-        document.getElementById("pageTitle");
-
-
-    if (!title) return;
-
-
-    const page =
-        window.location.pathname
-            .split("/")
-            .pop()
-            .replace(".html", "")
-            .toLowerCase();
-
-
-    const titles = {
-
-        dashboard: "Dashboard",
-
-        courses: "My Courses",
-
-        students: "Students",
-
-        assignments: "Assignments",
-
-        quizzes: "Quizzes",
-
-        announcements: "Announcements",
-
-        notifications: "Notifications",
-
-        wallet: "Wallet",
-
-        earnings: "Earnings",
-
-        payments: "Payments",
-
-        withdrawals: "Withdrawals",
-
-        profile: "My Profile",
-
-        settings: "Settings",
-
-        help: "Help & Support"
-
-    };
-
-
-    title.textContent =
-        titles[page] || "Instructor Workspace";
-
-}
-
-
-// ============================================
-// TODAY'S DATE
-// ============================================
-
-function setTodayDate() {
-
-    const element =
-        document.getElementById("todayDate");
-
-
-    if (!element) return;
-
-
-    const today =
-        new Date();
-
-
-    element.textContent =
-        today.toLocaleDateString(
-            undefined,
-            {
-                weekday: "long",
-                month: "short",
-                day: "numeric",
-                year: "numeric"
-            }
-        );
-
-}
-
-
-// ============================================
-// UTILITY
-// ============================================
-
-function setText(
-    id,
-    value
-) {
+function setText(id, value) {
 
     const element =
         document.getElementById(id);
@@ -575,23 +580,23 @@ function setText(
 
     if (element) {
 
-        element.textContent =
-            value;
+        element.textContent = value;
 
     }
 
 }
 
 
-// ============================================
-// LUCIDE
-// ============================================
+// ============================================================
+// ICONS
+// ============================================================
 
 function refreshIcons() {
 
     if (
         window.lucide &&
-        typeof window.lucide.createIcons === "function"
+        typeof window.lucide.createIcons ===
+            "function"
     ) {
 
         window.lucide.createIcons();
@@ -601,8 +606,17 @@ function refreshIcons() {
 }
 
 
-// ============================================
-// INITIAL DATE
-// ============================================
+// ============================================================
+// BOOT
+// ============================================================
 
-setTodayDate();
+async function boot() {
+
+    await loadShell();
+
+    initAuth();
+
+}
+
+
+boot();

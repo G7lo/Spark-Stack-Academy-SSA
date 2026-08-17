@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Notifications | Spark Stack Academy
+    </title>
+
+
+    <!-- CORE -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/notifications.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script
+        src="https://unpkg.com/lucide@latest"
+    ></script>
+
+</head>
+
+
+<body>
+
+
+<div class="instructor-app">
+
+
+    <!-- =====================================
+         SIDEBAR
+    ====================================== -->
+
+    <aside
+        id="instructorSidebar"
+        class="instructor-sidebar"
+    ></aside>
+
+
+    <!-- =====================================
+         MOBILE OVERLAY
+    ====================================== -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- =====================================
+         MAIN
+    ====================================== -->
+
+    <main class="instructor-main">
+
+
+        <!-- =================================
+             TOPBAR
+        ================================== -->
+
+        <header
+            id="instructorTopbar"
+            class="instructor-topbar"
+        ></header>
+
+
+        <!-- =================================
+             NOTIFICATIONS PAGE
+        ================================== -->
+
+        <section class="notifications-page">
+
+
+            <!-- =================================
+                 PAGE HEADER
+            ================================== -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        UPDATES
+                    </span>
+
+                    <h1>
+                        Notifications
+                    </h1>
+
+                    <p>
+                        Stay updated with your students,
+                        courses and academy activity.
+                    </p>
+
+                </div>
+
+
+                <div class="notification-actions">
+
+                    <button
+                        id="markAllReadBtn"
+                        class="secondary-btn"
+                        type="button"
+                    >
+
+                        <i data-lucide="check-check"></i>
+
+                        Mark All Read
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 NOTIFICATION SUMMARY
+            ================================== -->
+
+            <section class="notification-stats">
+
+
+                <article class="notification-stat">
+
+                    <div class="notification-stat-icon blue">
+
+                        <i data-lucide="bell"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong id="totalNotifications">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="notification-stat">
+
+                    <div class="notification-stat-icon purple">
+
+                        <i data-lucide="mail-open"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Unread
+                        </span>
+
+                        <strong id="unreadNotifications">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="notification-stat">
+
+                    <div class="notification-stat-icon green">
+
+                        <i data-lucide="graduation-cap"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Students
+                        </span>
+
+                        <strong id="studentNotifications">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="notification-stat">
+
+                    <div class="notification-stat-icon gold">
+
+                        <i data-lucide="wallet"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Earnings
+                        </span>
+
+                        <strong id="earningNotifications">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =================================
+                 NOTIFICATION WORKSPACE
+            ================================== -->
+
+            <section class="notifications-card">
+
+
+                <!-- =================================
+                     TOOLBAR
+                ================================== -->
+
+                <div class="notifications-toolbar">
+
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            ACTIVITY CENTER
+                        </span>
+
+                        <h2>
+                            Your Notifications
+                        </h2>
+
+                    </div>
+
+
+                    <div class="notification-search">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            type="search"
+                            id="notificationSearch"
+                            placeholder="Search notifications..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     FILTERS
+                ================================== -->
+
+                <div class="notification-filters">
+
+                    <button
+                        class="notification-filter active"
+                        data-filter="all"
+                        type="button"
+                    >
+                        All
+                    </button>
+
+
+                    <button
+                        class="notification-filter"
+                        data-filter="unread"
+                        type="button"
+                    >
+                        Unread
+                    </button>
+
+
+                    <button
+                        class="notification-filter"
+                        data-filter="students"
+                        type="button"
+                    >
+                        Students
+                    </button>
+
+
+                    <button
+                        class="notification-filter"
+                        data-filter="assignments"
+                        type="button"
+                    >
+                        Assignments
+                    </button>
+
+
+                    <button
+                        class="notification-filter"
+                        data-filter="earnings"
+                        type="button"
+                    >
+                        Earnings
+                    </button>
+
+
+                    <button
+                        class="notification-filter"
+                        data-filter="system"
+                        type="button"
+                    >
+                        System
+                    </button>
+
+                </div>
+
+
+                <!-- =================================
+                     NOTIFICATION LIST
+                ================================== -->
+
+                <div
+                    id="notificationList"
+                    class="notification-list"
+                >
+
+                    <div class="notifications-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading notifications...
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     EMPTY STATE
+                ================================== -->
+
+                <div
+                    id="notificationEmpty"
+                    class="notification-empty hidden"
+                >
+
+                    <div class="empty-icon">
+
+                        <i data-lucide="bell-off"></i>
+
+                    </div>
+
+                    <h3>
+                        You're all caught up
+                    </h3>
+
+                    <p>
+                        There are no notifications
+                        matching your current filter.
+                    </p>
+
+                </div>
+
+
+                <!-- =================================
+                     PAGINATION / LOAD MORE
+                ================================== -->
+
+                <div
+                    id="notificationPagination"
+                    class="notification-pagination hidden"
+                >
+
+                    <button
+                        id="loadMoreNotifications"
+                        class="secondary-btn"
+                        type="button"
+                    >
+
+                        <i data-lucide="rotate-cw"></i>
+
+                        Load More
+
+                    </button>
+
+                </div>
+
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script
+    type="module"
+    src="js/instructor-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/notifications.js"
+></script>
+
+
+<script>
+
+    lucide.createIcons();
+
+</script>
+
+
+</body>
+
+</html>

@@ -3,45 +3,70 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>Help Center | Spark Stack Academy</title>
+    <meta
+        name="description"
+        content="Spark Stack Academy Student Help Center"
+    >
 
-
-<!-- CORE STYLES -->
-
-<link rel="stylesheet"
-      href="css/student-core.css">
-
-<link rel="stylesheet"
-      href="css/components.css">
-
-<link rel="stylesheet"
-      href="css/help-center.css">
-
-<link rel="stylesheet"
-      href="css/responsive.css">
+    <title>
+        Help Center | Spark Stack Academy
+    </title>
 
 
-<!-- FONT -->
+    <!-- CORE -->
 
-<link rel="preconnect"
-      href="https://fonts.googleapis.com">
+    <link
+        rel="stylesheet"
+        href="css/student-core.css"
+    >
 
-<link rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin>
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet">
+    <link
+        rel="stylesheet"
+        href="css/help-center.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
 
 
-<!-- ICONS -->
+    <!-- FONT -->
 
-<script src="https://unpkg.com/lucide@latest"></script>
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script
+        src="https://unpkg.com/lucide@latest">
+    </script>
 
 </head>
 
@@ -52,660 +77,1076 @@
 <div class="help-page">
 
 
-<!-- =====================================================
-     COMMAND HEADER
-===================================================== -->
+    <!-- =========================================
+         HEADER
+    ========================================== -->
 
-<header class="help-command">
+    <header class="help-command">
 
-    <div class="help-brand">
+        <div class="help-command-left">
 
-        <div class="help-brand-icon">
-            <i data-lucide="sparkles"></i>
+            <a
+                href="settings.html"
+                class="help-back-btn"
+                aria-label="Back to settings"
+            >
+
+                <i data-lucide="arrow-left"></i>
+
+            </a>
+
+
+            <div class="help-brand">
+
+                <div class="help-brand-icon">
+
+                    <i data-lucide="life-buoy"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        SPARK SUPPORT
+                    </strong>
+
+                    <span>
+                        Student Help Center
+                    </span>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div>
 
-            <strong>
-                SPARK SUPPORT
-            </strong>
+        <div class="help-status">
+
+            <span class="status-dot"></span>
 
             <span>
-                Student Help Center
+                Support Online
             </span>
 
         </div>
 
-    </div>
-
-
-    <div class="help-status">
-
-        <span class="status-dot"></span>
-
-        Support Online
-
-    </div>
-
-</header>
+    </header>
 
 
 
-<!-- =====================================================
-     HERO
-===================================================== -->
+    <!-- =========================================
+         HERO
+    ========================================== -->
 
-<section class="help-hero">
+    <section class="help-hero">
 
-    <div class="help-grid"></div>
+        <div class="help-grid"></div>
 
-    <div class="help-glow"></div>
-
-
-    <div class="help-hero-content">
-
-        <span class="hero-label">
-            SPARK STACK ACADEMY
-        </span>
+        <div class="help-glow"></div>
 
 
-        <h1>
-            How can we
-            <span>help?</span>
-        </h1>
+        <div class="help-hero-content">
 
-
-        <p>
-            Find answers, explore guides, or get help
-            from the Spark Stack support team.
-        </p>
-
-
-        <!-- SEARCH -->
-
-        <div class="help-search">
-
-            <i data-lucide="search"></i>
-
-            <input
-                type="search"
-                id="helpSearch"
-                placeholder="Search for help..."
-                autocomplete="off">
-
-            <kbd>
-                /
-            </kbd>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     QUICK ACTIONS
-===================================================== -->
-
-<section class="help-section">
-
-
-    <div class="section-heading">
-
-        <div>
-
-            <span>
-                QUICK ACCESS
+            <span class="hero-label">
+                SPARK STACK ACADEMY
             </span>
 
-            <h2>
-                What do you need?
-            </h2>
 
-        </div>
+            <h1>
+                How can we
+                <span>help?</span>
+            </h1>
 
-    </div>
-
-
-    <div class="help-actions">
-
-
-        <button
-            class="help-action"
-            data-category="courses">
-
-            <div class="action-icon blue">
-                <i data-lucide="book-open"></i>
-            </div>
-
-            <div>
-
-                <strong>
-                    Courses
-                </strong>
-
-                <p>
-                    Lessons, enrollment & progress
-                </p>
-
-            </div>
-
-            <i data-lucide="arrow-up-right"></i>
-
-        </button>
-
-
-
-        <button
-            class="help-action"
-            data-category="payments">
-
-            <div class="action-icon gold">
-                <i data-lucide="credit-card"></i>
-            </div>
-
-            <div>
-
-                <strong>
-                    Payments
-                </strong>
-
-                <p>
-                    Payments, subscriptions & receipts
-                </p>
-
-            </div>
-
-            <i data-lucide="arrow-up-right"></i>
-
-        </button>
-
-
-
-        <button
-            class="help-action"
-            data-category="account">
-
-            <div class="action-icon purple">
-                <i data-lucide="user-round"></i>
-            </div>
-
-            <div>
-
-                <strong>
-                    Account
-                </strong>
-
-                <p>
-                    Profile, security & settings
-                </p>
-
-            </div>
-
-            <i data-lucide="arrow-up-right"></i>
-
-        </button>
-
-
-
-        <button
-            class="help-action"
-            data-category="learning">
-
-            <div class="action-icon green">
-                <i data-lucide="graduation-cap"></i>
-            </div>
-
-            <div>
-
-                <strong>
-                    Learning
-                </strong>
-
-                <p>
-                    XP, badges & achievements
-                </p>
-
-            </div>
-
-            <i data-lucide="arrow-up-right"></i>
-
-        </button>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     POPULAR QUESTIONS
-===================================================== -->
-
-<section class="help-section">
-
-
-    <div class="section-heading">
-
-        <div>
-
-            <span>
-                FREQUENTLY ASKED
-            </span>
-
-            <h2>
-                Popular questions
-            </h2>
-
-        </div>
-
-    </div>
-
-
-    <div
-        id="faqList"
-        class="faq-list">
-
-
-        <article class="faq-item">
-
-            <button class="faq-question">
-
-                <span>
-                    How do I enroll in a course?
-                </span>
-
-                <i data-lucide="plus"></i>
-
-            </button>
-
-            <div class="faq-answer">
-
-                <p>
-                    Open the course, review its details,
-                    then select the enrollment option.
-                </p>
-
-            </div>
-
-        </article>
-
-
-
-        <article class="faq-item">
-
-            <button class="faq-question">
-
-                <span>
-                    How do I continue a course?
-                </span>
-
-                <i data-lucide="plus"></i>
-
-            </button>
-
-            <div class="faq-answer">
-
-                <p>
-                    Open your enrolled course from your
-                    learning dashboard and select
-                    Continue Learning.
-                </p>
-
-            </div>
-
-        </article>
-
-
-
-        <article class="faq-item">
-
-            <button class="faq-question">
-
-                <span>
-                    How does XP and leveling work?
-                </span>
-
-                <i data-lucide="plus"></i>
-
-            </button>
-
-            <div class="faq-answer">
-
-                <p>
-                    You earn XP through learning activities,
-                    quizzes, projects and other achievements.
-                </p>
-
-            </div>
-
-        </article>
-
-
-
-        <article class="faq-item">
-
-            <button class="faq-question">
-
-                <span>
-                    Where can I see my certificates?
-                </span>
-
-                <i data-lucide="plus"></i>
-
-            </button>
-
-            <div class="faq-answer">
-
-                <p>
-                    Completed certificates are available
-                    from your student dashboard.
-                </p>
-
-            </div>
-
-        </article>
-
-
-
-        <article class="faq-item">
-
-            <button class="faq-question">
-
-                <span>
-                    I found a problem. What should I do?
-                </span>
-
-                <i data-lucide="plus"></i>
-
-            </button>
-
-            <div class="faq-answer">
-
-                <p>
-                    Use the Report a Problem option below
-                    so our support team can investigate it.
-                </p>
-
-            </div>
-
-        </article>
-
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     GUIDES
-===================================================== -->
-
-<section class="help-section">
-
-
-    <div class="section-heading">
-
-        <div>
-
-            <span>
-                LEARNING GUIDES
-            </span>
-
-            <h2>
-                Student resources
-            </h2>
-
-        </div>
-
-    </div>
-
-
-    <div class="guide-grid">
-
-
-        <article class="guide-card">
-
-            <div class="guide-icon">
-                <i data-lucide="rocket"></i>
-            </div>
-
-            <h3>
-                Getting Started
-            </h3>
 
             <p>
-                Learn how to navigate Spark Stack Academy.
+                Find answers, troubleshoot problems,
+                explore student guides, or contact
+                Spark Support.
             </p>
 
-            <button>
-                Read Guide
-                <i data-lucide="arrow-right"></i>
-            </button>
 
-        </article>
+            <!-- SEARCH -->
 
+            <div class="help-search">
 
-
-        <article class="guide-card">
-
-            <div class="guide-icon">
-                <i data-lucide="play-circle"></i>
-            </div>
-
-            <h3>
-                Learning With Courses
-            </h3>
-
-            <p>
-                Understand lessons, progress and completion.
-            </p>
-
-            <button>
-                Read Guide
-                <i data-lucide="arrow-right"></i>
-            </button>
-
-        </article>
-
-
-
-        <article class="guide-card">
-
-            <div class="guide-icon">
-                <i data-lucide="trophy"></i>
-            </div>
-
-            <h3>
-                XP & Achievements
-            </h3>
-
-            <p>
-                Discover how your builder journey works.
-            </p>
-
-            <button>
-                Read Guide
-                <i data-lucide="arrow-right"></i>
-            </button>
-
-        </article>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     SUPPORT CENTER
-===================================================== -->
-
-<section class="support-panel">
-
-
-    <div class="support-icon">
-
-        <i data-lucide="life-buoy"></i>
-
-    </div>
-
-
-    <div class="support-content">
-
-        <span>
-            NEED MORE HELP?
-        </span>
-
-        <h2>
-            Talk to Spark Support.
-        </h2>
-
-        <p>
-            Can't find what you're looking for?
-            Send us a support request and we'll
-            get back to you.
-        </p>
-
-    </div>
-
-
-    <div class="support-actions">
-
-        <button
-            id="contactSupportBtn"
-            class="primary-support-btn">
-
-            <i data-lucide="message-circle"></i>
-
-            Contact Support
-
-        </button>
-
-
-        <button
-            id="reportProblemBtn"
-            class="secondary-support-btn">
-
-            <i data-lucide="flag"></i>
-
-            Report Problem
-
-        </button>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     SUPPORT REQUEST MODAL
-===================================================== -->
-
-<div
-    id="supportModal"
-    class="support-modal">
-
-
-    <div class="modal-backdrop"></div>
-
-
-    <div class="support-modal-card">
-
-
-        <button
-            id="closeSupportModal"
-            class="modal-close">
-
-            <i data-lucide="x"></i>
-
-        </button>
-
-
-        <span>
-            SPARK SUPPORT
-        </span>
-
-
-        <h2>
-            Send us a message
-        </h2>
-
-
-        <p>
-            Tell us what you need help with.
-        </p>
-
-
-        <form id="supportForm">
-
-
-            <label>
-                Subject
+                <i data-lucide="search"></i>
 
                 <input
-                    id="supportSubject"
-                    type="text"
-                    placeholder="What do you need help with?"
-                    required>
+                    type="search"
+                    id="helpSearch"
+                    placeholder="Search questions, payments, courses..."
+                    autocomplete="off"
+                    aria-label="Search Help Center"
+                >
 
-            </label>
+                <kbd>
+                    /
+                </kbd>
+
+            </div>
 
 
-            <label>
-                Message
+            <div
+                id="searchResults"
+                class="help-search-results"
+                aria-live="polite"
+            ></div>
 
-                <textarea
-                    id="supportMessage"
-                    rows="5"
-                    placeholder="Describe your issue..."
-                    required></textarea>
+        </div>
 
-            </label>
+    </section>
+
+
+
+    <!-- =========================================
+         QUICK ACCESS
+    ========================================== -->
+
+    <section class="help-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span>
+                    QUICK ACCESS
+                </span>
+
+                <h2>
+                    What do you need help with?
+                </h2>
+
+                <p>
+                    Choose a topic and we'll point you
+                    in the right direction.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="help-actions">
 
 
             <button
-                type="submit"
-                class="submit-support">
+                class="help-action"
+                type="button"
+                data-category="courses"
+            >
 
-                <i data-lucide="send"></i>
+                <div class="action-icon blue">
 
-                Send Request
+                    <i data-lucide="book-open"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Courses
+                    </strong>
+
+                    <p>
+                        Enrollment, lessons & progress
+                    </p>
+
+                </div>
+
+                <i data-lucide="arrow-up-right"></i>
 
             </button>
 
 
-        </form>
+
+            <button
+                class="help-action"
+                type="button"
+                data-category="payments"
+            >
+
+                <div class="action-icon gold">
+
+                    <i data-lucide="credit-card"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Payments
+                    </strong>
+
+                    <p>
+                        Paystack, receipts & Premium
+                    </p>
+
+                </div>
+
+                <i data-lucide="arrow-up-right"></i>
+
+            </button>
+
+
+
+            <button
+                class="help-action"
+                type="button"
+                data-category="account"
+            >
+
+                <div class="action-icon purple">
+
+                    <i data-lucide="user-round"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Account
+                    </strong>
+
+                    <p>
+                        Profile, password & settings
+                    </p>
+
+                </div>
+
+                <i data-lucide="arrow-up-right"></i>
+
+            </button>
+
+
+
+            <button
+                class="help-action"
+                type="button"
+                data-category="learning"
+            >
+
+                <div class="action-icon green">
+
+                    <i data-lucide="graduation-cap"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Learning
+                    </strong>
+
+                    <p>
+                        XP, levels, badges & certificates
+                    </p>
+
+                </div>
+
+                <i data-lucide="arrow-up-right"></i>
+
+            </button>
+
+
+
+            <button
+                class="help-action"
+                type="button"
+                data-category="technical"
+            >
+
+                <div class="action-icon red">
+
+                    <i data-lucide="wrench"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Technical Issues
+                    </strong>
+
+                    <p>
+                        Loading, buttons & app problems
+                    </p>
+
+                </div>
+
+                <i data-lucide="arrow-up-right"></i>
+
+            </button>
+
+
+
+            <button
+                class="help-action"
+                type="button"
+                data-category="security"
+            >
+
+                <div class="action-icon navy">
+
+                    <i data-lucide="shield-check"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Security
+                    </strong>
+
+                    <p>
+                        Passwords, privacy & account safety
+                    </p>
+
+                </div>
+
+                <i data-lucide="arrow-up-right"></i>
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         FAQ
+    ========================================== -->
+
+    <section class="help-section faq-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span>
+                    FAQ
+                </span>
+
+                <h2>
+                    Frequently asked questions
+                </h2>
+
+                <p>
+                    Quick answers to common student questions.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="faqList"
+            class="faq-list"
+        >
+
+
+            <article
+                class="faq-item"
+                data-category="courses"
+                data-search="enroll enrollment course join course"
+            >
+
+                <button
+                    class="faq-question"
+                    type="button"
+                    aria-expanded="false"
+                >
+
+                    <span>
+                        How do I enroll in a course?
+                    </span>
+
+                    <i data-lucide="plus"></i>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Open the course from the Course Library,
+                        review the course information and select
+                        the enrollment option. Once enrolled,
+                        the course will appear in My Courses.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <article
+                class="faq-item"
+                data-category="courses"
+                data-search="continue course lesson resume learning"
+            >
+
+                <button
+                    class="faq-question"
+                    type="button"
+                    aria-expanded="false"
+                >
+
+                    <span>
+                        How do I continue a course?
+                    </span>
+
+                    <i data-lucide="plus"></i>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Open My Courses and select the course
+                        you want to continue. Your learning
+                        progress will show where you left off.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <article
+                class="faq-item"
+                data-category="learning"
+                data-search="xp experience points level leveling badges achievements"
+            >
+
+                <button
+                    class="faq-question"
+                    type="button"
+                    aria-expanded="false"
+                >
+
+                    <span>
+                        How do XP and levels work?
+                    </span>
+
+                    <i data-lucide="plus"></i>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        You earn XP by completing learning
+                        activities and achievements. As your
+                        XP increases, your student level rises
+                        and you can unlock badges and rewards.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <article
+                class="faq-item"
+                data-category="learning"
+                data-search="certificate certificates completion download"
+            >
+
+                <button
+                    class="faq-question"
+                    type="button"
+                    aria-expanded="false"
+                >
+
+                    <span>
+                        Where can I find my certificates?
+                    </span>
+
+                    <i data-lucide="plus"></i>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Open Certificates from your student
+                        portal. Completed certificates will be
+                        available there once the required
+                        course requirements have been met.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <article
+                class="faq-item"
+                data-category="payments"
+                data-search="payment paystack failed payment receipt premium"
+            >
+
+                <button
+                    class="faq-question"
+                    type="button"
+                    aria-expanded="false"
+                >
+
+                    <span>
+                        What should I do if my payment fails?
+                    </span>
+
+                    <i data-lucide="plus"></i>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        First check your payment details and
+                        try again. If money was deducted but
+                        your account was not updated, keep your
+                        transaction information and contact
+                        Spark Support.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <article
+                class="faq-item"
+                data-category="payments"
+                data-search="premium subscription upgrade cancel plan"
+            >
+
+                <button
+                    class="faq-question"
+                    type="button"
+                    aria-expanded="false"
+                >
+
+                    <span>
+                        How do I manage Premium?
+                    </span>
+
+                    <i data-lucide="plus"></i>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Open Premium from your student portal
+                        to view available plans and manage your
+                        Premium subscription.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <article
+                class="faq-item"
+                data-category="account"
+                data-search="password change reset account security"
+            >
+
+                <button
+                    class="faq-question"
+                    type="button"
+                    aria-expanded="false"
+                >
+
+                    <span>
+                        How do I change my password?
+                    </span>
+
+                    <i data-lucide="plus"></i>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Go to Settings and select Change Password.
+                        For security-sensitive changes, you may
+                        be asked to sign in again.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <article
+                class="faq-item"
+                data-category="technical"
+                data-search="page loading button broken error technical problem"
+            >
+
+                <button
+                    class="faq-question"
+                    type="button"
+                    aria-expanded="false"
+                >
+
+                    <span>
+                        What should I do if something isn't working?
+                    </span>
+
+                    <i data-lucide="plus"></i>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Refresh the page first. If the problem
+                        continues, try opening the page again or
+                        sign out and back in. If the issue remains,
+                        use Report a Problem below and describe
+                        exactly what happened.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <article
+                class="faq-item"
+                data-category="security"
+                data-search="privacy account safety suspicious security"
+            >
+
+                <button
+                    class="faq-question"
+                    type="button"
+                    aria-expanded="false"
+                >
+
+                    <span>
+                        How can I keep my account secure?
+                    </span>
+
+                    <i data-lucide="plus"></i>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Use a strong password, never share your
+                        login details and report suspicious
+                        account activity to Spark Support.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+
+        <div
+            id="faqEmpty"
+            class="faq-empty"
+            hidden
+        >
+
+            <i data-lucide="search-x"></i>
+
+            <h3>
+                No matching questions
+            </h3>
+
+            <p>
+                Try another search or contact Spark Support.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         GUIDES
+    ========================================== -->
+
+    <section class="help-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span>
+                    STUDENT GUIDES
+                </span>
+
+                <h2>
+                    Learn how everything works
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="guide-grid">
+
+
+            <article class="guide-card">
+
+                <div class="guide-icon">
+
+                    <i data-lucide="rocket"></i>
+
+                </div>
+
+                <h3>
+                    Getting Started
+                </h3>
+
+                <p>
+                    Learn how to navigate your dashboard,
+                    find courses and begin learning.
+                </p>
+
+                <button
+                    type="button"
+                    data-guide="getting-started"
+                >
+                    Read Guide
+                    <i data-lucide="arrow-right"></i>
+                </button>
+
+            </article>
+
+
+
+            <article class="guide-card">
+
+                <div class="guide-icon">
+
+                    <i data-lucide="play-circle"></i>
+
+                </div>
+
+                <h3>
+                    Learning With Courses
+                </h3>
+
+                <p>
+                    Understand lessons, progress,
+                    assignments and course completion.
+                </p>
+
+                <button
+                    type="button"
+                    data-guide="courses"
+                >
+                    Read Guide
+                    <i data-lucide="arrow-right"></i>
+                </button>
+
+            </article>
+
+
+
+            <article class="guide-card">
+
+                <div class="guide-icon">
+
+                    <i data-lucide="trophy"></i>
+
+                </div>
+
+                <h3>
+                    XP & Achievements
+                </h3>
+
+                <p>
+                    Discover how XP, levels, badges and
+                    certificates work.
+                </p>
+
+                <button
+                    type="button"
+                    data-guide="achievements"
+                >
+                    Read Guide
+                    <i data-lucide="arrow-right"></i>
+                </button>
+
+            </article>
+
+
+
+            <article class="guide-card">
+
+                <div class="guide-icon">
+
+                    <i data-lucide="credit-card"></i>
+
+                </div>
+
+                <h3>
+                    Payments & Premium
+                </h3>
+
+                <p>
+                    Learn about payments, receipts and
+                    Premium subscriptions.
+                </p>
+
+                <button
+                    type="button"
+                    data-guide="payments"
+                >
+                    Read Guide
+                    <i data-lucide="arrow-right"></i>
+                </button>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         SUPPORT CENTER
+    ========================================== -->
+
+    <section class="support-panel">
+
+        <div class="support-icon">
+
+            <i data-lucide="life-buoy"></i>
+
+        </div>
+
+
+        <div class="support-content">
+
+            <span>
+                NEED MORE HELP?
+            </span>
+
+            <h2>
+                Talk to Spark Support.
+            </h2>
+
+            <p>
+                Can't find what you're looking for?
+                Send us a support request and our team
+                can help you.
+            </p>
+
+        </div>
+
+
+        <div class="support-actions">
+
+            <button
+                id="contactSupportBtn"
+                class="primary-support-btn"
+                type="button"
+            >
+
+                <i data-lucide="message-circle"></i>
+
+                Contact Support
+
+            </button>
+
+
+            <button
+                id="reportProblemBtn"
+                class="secondary-support-btn"
+                type="button"
+            >
+
+                <i data-lucide="flag"></i>
+
+                Report a Problem
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         SUPPORT MODAL
+    ========================================== -->
+
+    <div
+        id="supportModal"
+        class="support-modal"
+        aria-hidden="true"
+    >
+
+        <div class="modal-backdrop"></div>
+
+
+        <div
+            class="support-modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="supportModalTitle"
+        >
+
+            <button
+                id="closeSupportModal"
+                class="modal-close"
+                type="button"
+                aria-label="Close support form"
+            >
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+
+            <span id="supportModalLabel">
+                SPARK SUPPORT
+            </span>
+
+
+            <h2 id="supportModalTitle">
+                Send us a message
+            </h2>
+
+
+            <p id="supportModalDescription">
+                Tell us what you need help with and
+                we'll take a look.
+            </p>
+
+
+            <form id="supportForm">
+
+
+                <label>
+
+                    Subject
+
+                    <input
+                        id="supportSubject"
+                        type="text"
+                        placeholder="What do you need help with?"
+                        autocomplete="off"
+                        required
+                    >
+
+                </label>
+
+
+                <label>
+
+                    Message
+
+                    <textarea
+                        id="supportMessage"
+                        rows="5"
+                        placeholder="Describe your issue..."
+                        required
+                    ></textarea>
+
+                </label>
+
+
+                <div class="support-form-meta">
+
+                    <span>
+                        Please don't share your password.
+                    </span>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-support"
+                >
+
+                    <i data-lucide="send"></i>
+
+                    Send Request
+
+                </button>
+
+            </form>
+
+        </div>
 
     </div>
 
+
+
+    <!-- =========================================
+         APP ENGINE
+    ========================================== -->
+
+    <script
+        type="module"
+        src="js/student-app.js">
+    </script>
+
+
+    <script
+        type="module"
+        src="js/help-center.js">
+    </script>
+
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            () => {
+
+                if (window.lucide) {
+
+                    lucide.createIcons();
+
+                }
+
+            }
+        );
+
+    </script>
+
+
 </div>
-
-
-
-<!-- =====================================================
-     APPLICATION ENGINE
-===================================================== -->
-
-<script
-    type="module"
-    src="js/student-app.js">
-</script>
-
-<script
-    type="module"
-    src="js/help-center.js">
-</script>
-
-
-<script>
-    lucide.createIcons();
-</script>
-
 
 </body>
 

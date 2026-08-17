@@ -1,69 +1,81 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<head>
 
-<title>Instructor Dashboard | Spark Stack Academy</title>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Instructor Dashboard | Spark Stack Academy
+    </title>
+
+
+    <!-- =====================================
+         CORE STYLES
+    ====================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/dashboard.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- =====================================
+         FONT
+    ====================================== -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================
+         ICONS
+    ====================================== -->
+
+    <script
+        src="https://unpkg.com/lucide@latest">
+    </script>
+
+</head>
+
+
+<body>
+
 
 <!-- =========================================
-     CORE STYLES
-========================================== -->
+     INSTRUCTOR APPLICATION
+========================================= -->
 
-<link
-    rel="stylesheet"
-    href="css/instructor-core.css"
->
-
-<link
-    rel="stylesheet"
-    href="css/components.css"
->
-
-<link
-    rel="stylesheet"
-    href="css/dashboard.css"
->
-
-<link
-    rel="stylesheet"
-    href="css/responsive.css"
->
-
-
-<!-- =========================================
-     FONT
-========================================== -->
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
->
-
-<link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
->
-
-
-<!-- =========================================
-     ICONS
-========================================== -->
-
-<script src="https://unpkg.com/lucide@latest"></script>
-
-</head><body><!-- =========================================
-     APPLICATION SHELL
-========================================== -->
-
-<div
-    class="instructor-app"
-    id="instructorApp"
->
+<div class="instructor-app">
 
 
     <!-- =====================================
@@ -71,72 +83,75 @@
     ====================================== -->
 
     <aside
-        class="instructor-sidebar"
         id="instructorSidebar"
-    >
+        class="instructor-sidebar"
+    ></aside>
 
-        <!-- Sidebar component
-             will be injected here -->
 
-    </aside>
+    <!-- MOBILE OVERLAY -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
 
 
     <!-- =====================================
-         MAIN AREA
+         MAIN
     ====================================== -->
 
     <main class="instructor-main">
 
 
-        <!-- =================================
-             TOPBAR
-        ================================== -->
+        <!-- TOPBAR -->
 
         <header
-            class="instructor-topbar"
             id="instructorTopbar"
-        >
-
-            <!-- Topbar component
-                 will be injected here -->
-
-        </header>
+            class="instructor-topbar"
+        ></header>
 
 
         <!-- =================================
-             PAGE CONTENT
+             DASHBOARD
         ================================== -->
 
         <section class="dashboard-page">
 
 
-            <!-- PAGE HEADER -->
+            <!-- =================================
+                 HERO
+            ================================== -->
 
-            <div class="dashboard-header">
+            <div class="dashboard-hero">
 
-                <div>
+                <div class="hero-content">
 
                     <span class="dashboard-eyebrow">
-                        INSTRUCTOR PORTAL
+                        INSTRUCTOR WORKSPACE
                     </span>
 
                     <h1>
-                        Welcome back, Instructor 👋
+                        Welcome back,
+                        <span id="instructorName">
+                            Instructor
+                        </span>
+                        👋
                     </h1>
 
                     <p>
                         Manage your courses, students,
-                        lessons and teaching activity.
+                        content and teaching performance
+                        from one place.
                     </p>
 
                 </div>
 
 
-                <div class="dashboard-header-actions">
+                <div class="hero-actions">
 
                     <button
-                        class="dashboard-action secondary"
                         id="viewStudentsBtn"
+                        class="dashboard-btn secondary"
                     >
 
                         <i data-lucide="users"></i>
@@ -147,8 +162,8 @@
 
 
                     <button
-                        class="dashboard-action primary"
                         id="createCourseBtn"
+                        class="dashboard-btn primary"
                     >
 
                         <i data-lucide="plus"></i>
@@ -163,13 +178,15 @@
 
 
             <!-- =================================
-                 STATS
+                 OVERVIEW STATS
             ================================== -->
 
-            <div class="instructor-stats">
+            <section class="stats-grid">
 
 
-                <article class="stat-card">
+                <!-- COURSES -->
+
+                <article class="dashboard-stat">
 
                     <div class="stat-icon blue">
 
@@ -177,10 +194,10 @@
 
                     </div>
 
-                    <div class="stat-content">
+                    <div class="stat-info">
 
                         <span>
-                            Published Courses
+                            My Courses
                         </span>
 
                         <strong id="statCourses">
@@ -189,14 +206,12 @@
 
                     </div>
 
-                    <span class="stat-trend positive">
-                        +0%
-                    </span>
-
                 </article>
 
 
-                <article class="stat-card">
+                <!-- STUDENTS -->
+
+                <article class="dashboard-stat">
 
                     <div class="stat-icon purple">
 
@@ -204,10 +219,10 @@
 
                     </div>
 
-                    <div class="stat-content">
+                    <div class="stat-info">
 
                         <span>
-                            Students
+                            Total Students
                         </span>
 
                         <strong id="statStudents">
@@ -216,22 +231,45 @@
 
                     </div>
 
-                    <span class="stat-trend positive">
-                        +0%
-                    </span>
+                </article>
+
+
+                <!-- PROGRESS -->
+
+                <article class="dashboard-stat">
+
+                    <div class="stat-icon gold">
+
+                        <i data-lucide="trending-up"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Avg. Progress
+                        </span>
+
+                        <strong id="statProgress">
+                            0%
+                        </strong>
+
+                    </div>
 
                 </article>
 
 
-                <article class="stat-card">
+                <!-- COMPLETIONS -->
 
-                    <div class="stat-icon gold">
+                <article class="dashboard-stat">
+
+                    <div class="stat-icon green">
 
                         <i data-lucide="award"></i>
 
                     </div>
 
-                    <div class="stat-content">
+                    <div class="stat-info">
 
                         <span>
                             Completions
@@ -243,22 +281,20 @@
 
                     </div>
 
-                    <span class="stat-trend positive">
-                        +0%
-                    </span>
-
                 </article>
 
 
-                <article class="stat-card">
+                <!-- EARNINGS -->
 
-                    <div class="stat-icon green">
+                <article class="dashboard-stat earnings-stat">
+
+                    <div class="stat-icon navy">
 
                         <i data-lucide="wallet"></i>
 
                     </div>
 
-                    <div class="stat-content">
+                    <div class="stat-info">
 
                         <span>
                             Earnings
@@ -270,54 +306,58 @@
 
                     </div>
 
-                    <span class="stat-trend positive">
-                        +0%
-                    </span>
-
                 </article>
 
-            </div>
+
+            </section>
 
 
             <!-- =================================
-                 DASHBOARD GRID
+                 MAIN GRID
             ================================== -->
 
             <div class="dashboard-grid">
 
 
-                <!-- RECENT COURSES -->
+                <!-- =================================
+                     MY COURSES
+                ================================== -->
 
                 <section class="dashboard-card courses-card">
+
 
                     <div class="card-header">
 
                         <div>
 
                             <span>
-                                YOUR COURSES
+                                TEACHING
                             </span>
 
                             <h2>
-                                Course Overview
+                                My Courses
                             </h2>
 
                         </div>
+
 
                         <a
                             href="courses.html"
                             class="card-link"
                         >
+
                             View All
+
                             <i data-lucide="arrow-right"></i>
+
                         </a>
 
                     </div>
 
 
                     <div
-                        class="course-list"
                         id="courseList"
+                        class="course-list"
                     >
 
                         <div class="empty-state">
@@ -338,8 +378,8 @@
                             </p>
 
                             <button
-                                class="empty-action"
                                 id="emptyCreateCourseBtn"
+                                class="empty-action"
                             >
 
                                 <i data-lucide="plus"></i>
@@ -355,20 +395,23 @@
                 </section>
 
 
-                <!-- QUICK ACTIONS -->
+                <!-- =================================
+                     QUICK ACTIONS
+                ================================== -->
 
-                <section class="dashboard-card quick-actions-card">
+                <section class="dashboard-card">
+
 
                     <div class="card-header">
 
                         <div>
 
                             <span>
-                                QUICK ACTIONS
+                                TOOLS
                             </span>
 
                             <h2>
-                                Teaching Tools
+                                Quick Actions
                             </h2>
 
                         </div>
@@ -381,10 +424,38 @@
 
                         <button
                             class="quick-action"
-                            data-action="lesson"
+                            data-action="course"
                         >
 
                             <div class="quick-icon blue">
+
+                                <i data-lucide="plus-circle"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Create Course
+                                </strong>
+
+                                <span>
+                                    Start a new course
+                                </span>
+
+                            </div>
+
+                            <i data-lucide="arrow-up-right"></i>
+
+                        </button>
+
+
+                        <button
+                            class="quick-action"
+                            data-action="lesson"
+                        >
+
+                            <div class="quick-icon purple">
 
                                 <i data-lucide="file-plus-2"></i>
 
@@ -412,7 +483,7 @@
                             data-action="assignment"
                         >
 
-                            <div class="quick-icon purple">
+                            <div class="quick-icon gold">
 
                                 <i data-lucide="clipboard-list"></i>
 
@@ -421,7 +492,7 @@
                             <div>
 
                                 <strong>
-                                    Create Assignment
+                                    Assignment
                                 </strong>
 
                                 <span>
@@ -440,7 +511,7 @@
                             data-action="quiz"
                         >
 
-                            <div class="quick-icon gold">
+                            <div class="quick-icon green">
 
                                 <i data-lucide="brain"></i>
 
@@ -468,7 +539,7 @@
                             data-action="announcement"
                         >
 
-                            <div class="quick-icon green">
+                            <div class="quick-icon red">
 
                                 <i data-lucide="megaphone"></i>
 
@@ -490,6 +561,7 @@
 
                         </button>
 
+
                     </div>
 
                 </section>
@@ -499,50 +571,224 @@
 
 
             <!-- =================================
-                 STUDENT ACTIVITY
+                 LOWER GRID
             ================================== -->
 
-            <section class="dashboard-card activity-card">
+            <div class="dashboard-grid lower-grid">
+
+
+                <!-- STUDENT ACTIVITY -->
+
+                <section class="dashboard-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span>
+                                STUDENTS
+                            </span>
+
+                            <h2>
+                                Recent Activity
+                            </h2>
+
+                        </div>
+
+
+                        <a
+                            href="students.html"
+                            class="card-link"
+                        >
+
+                            View Students
+
+                            <i data-lucide="arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+
+                    <div
+                        id="activityList"
+                        class="activity-list"
+                    >
+
+                        <div class="empty-state small">
+
+                            <div class="empty-icon">
+
+                                <i data-lucide="activity"></i>
+
+                            </div>
+
+                            <p>
+                                Student activity will
+                                appear here.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- UPCOMING TASKS -->
+
+                <section class="dashboard-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span>
+                                WORKSPACE
+                            </span>
+
+                            <h2>
+                                Upcoming Tasks
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="upcomingTasks"
+                        class="task-list"
+                    >
+
+                        <div class="empty-state small">
+
+                            <div class="empty-icon">
+
+                                <i data-lucide="check-circle"></i>
+
+                            </div>
+
+                            <p>
+                                No pending tasks.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+
+            <!-- =================================
+                 PERFORMANCE
+            ================================== -->
+
+            <section class="dashboard-card performance-card">
+
 
                 <div class="card-header">
 
                     <div>
 
                         <span>
-                            STUDENT ACTIVITY
+                            PERFORMANCE
                         </span>
 
                         <h2>
-                            Recent Activity
+                            Teaching Overview
                         </h2>
 
                     </div>
 
+
                     <a
-                        href="students.html"
+                        href="analytics.html"
                         class="card-link"
                     >
-                        View Students
+
+                        View Analytics
+
                         <i data-lucide="arrow-right"></i>
+
                     </a>
 
                 </div>
 
 
-                <div
-                    class="activity-list"
-                    id="activityList"
-                >
+                <div class="performance-grid">
 
-                    <div class="empty-activity">
 
-                        <i data-lucide="activity"></i>
+                    <div class="performance-item">
 
-                        <p>
-                            Student activity will appear here.
-                        </p>
+                        <span>
+                            Student Engagement
+                        </span>
+
+                        <strong id="engagementPercent">
+                            0%
+                        </strong>
+
+                        <div class="progress-track">
+
+                            <div
+                                id="engagementBar"
+                                class="progress-fill"
+                            ></div>
+
+                        </div>
 
                     </div>
+
+
+                    <div class="performance-item">
+
+                        <span>
+                            Course Completion
+                        </span>
+
+                        <strong id="completionPercent">
+                            0%
+                        </strong>
+
+                        <div class="progress-track">
+
+                            <div
+                                id="completionBar"
+                                class="progress-fill"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="performance-item">
+
+                        <span>
+                            Student Satisfaction
+                        </span>
+
+                        <strong id="satisfactionPercent">
+                            0%
+                        </strong>
+
+                        <div class="progress-track">
+
+                            <div
+                                id="satisfactionBar"
+                                class="progress-fill"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
 
                 </div>
 
@@ -557,8 +803,8 @@
 
 
 <!-- =========================================
-     APPLICATION ENGINE
-========================================== -->
+     JAVASCRIPT
+========================================= -->
 
 <script
     type="module"
@@ -572,7 +818,12 @@
 
 
 <script>
+
     lucide.createIcons();
+
 </script>
 
-</body></html>
+
+</body>
+
+</html>

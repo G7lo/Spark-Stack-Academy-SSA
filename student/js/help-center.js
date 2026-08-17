@@ -1,198 +1,158 @@
-// ============================================
+// =====================================
 // SPARK STACK ACADEMY
-// HELP CENTER ENGINE V1
-// ============================================
-
-import { db, auth } from "../../js/firebase.js";
+// STUDENT HELP CENTER
+// help-center.js
+// =====================================
 
 import {
-    collection,
+    auth,
+    db
+} from "../../js/firebase.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
     addDoc,
+    collection,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-// ============================================
-// HELPERS
-// ============================================
-
-const $ = (id) =>
-    document.getElementById(id);
+console.log("🛟 Help Center Loaded");
 
 
-// ============================================
-// INIT
-// ============================================
+let currentUser = null;
 
-document.addEventListener("DOMContentLoaded", () => {
 
-    console.log("⚡ Spark Support loading...");
+// =====================================
+// AUTH
+// =====================================
 
-    initFAQ();
-    initSearch();
-    initKeyboardSearch();
-    initSupportModal();
-    initQuickActions();
+onAuthStateChanged(
+    auth,
+    user => {
 
-    if (window.lucide) {
-        lucide.createIcons();
+        if (!user) {
+
+            window.location.href =
+                "../login.html";
+
+            return;
+
+        }
+
+        currentUser = user;
+
     }
+);
 
-});
+
+// =====================================
+// DOM READY
+// =====================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        initializeFAQ();
+
+        initializeSearch();
+
+        initializeCategories();
+
+        initializeGuides();
+
+        initializeSupport();
+
+        initializeKeyboard();
+
+        refreshIcons();
+
+    }
+);
 
 
-// ============================================
-// FAQ ENGINE
-// ============================================
+// =====================================
+// FAQ
+// =====================================
 
-function initFAQ() {
+function initializeFAQ() {
 
     const questions =
         document.querySelectorAll(
             ".faq-question"
         );
 
-    questions.forEach(question => {
 
-        question.addEventListener(
-            "click",
-            () => {
+    questions.forEach(
+        question => {
 
-                const item =
-                    question.closest(
-                        ".faq-item"
+            question.addEventListener(
+                "click",
+                () => {
+
+                    const item =
+                        question.closest(
+                            ".faq-item"
+                        );
+
+
+                    const isOpen =
+                        item.classList.contains(
+                            "active"
+                        );
+
+
+                    // Close other FAQs
+
+                    document
+                        .querySelectorAll(
+                            ".faq-item.active"
+                        )
+                        .forEach(
+                            openItem => {
+
+                                if (
+                                    openItem !== item
+                                ) {
+
+                                    openItem.classList.remove(
+                                        "active"
+                                    );
+
+                                    const button =
+                                        openItem.querySelector(
+                                            ".faq-question"
+                                        );
+
+                                    button?.setAttribute(
+                                        "aria-expanded",
+                                        "false"
+                                    );
+
+                                }
+
+                            }
+                        );
+
+
+                    // Toggle current
+
+                    item.classList.toggle(
+                        "active",
+                        !isOpen
                     );
 
-                if (!item) return;
 
-
-                const wasActive =
-                    item.classList.contains(
-                        "active"
+                    question.setAttribute(
+                        "aria-expanded",
+                        String(!isOpen)
                     );
 
-
-                document
-                    .querySelectorAll(
-                        ".faq-item.active"
-                    )
-                    .forEach(active => {
-
-                        if (active !== item) {
-                            active.classList.remove(
-                                "active"
-                            );
-                        }
-
-                    });
-
-
-                item.classList.toggle(
-                    "active",
-                    !wasActive
-                );
-
-            }
-        );
-
-    });
-
-}
-
-
-// ============================================
-// SEARCH ENGINE
-// ============================================
-
-function initSearch() {
-
-    const search =
-        $("helpSearch");
-
-    if (!search) return;
-
-
-    search.addEventListener(
-        "input",
-        () => {
-
-            const term =
-                search.value
-                    .trim()
-                    .toLowerCase();
-
-
-            const faqItems =
-                document.querySelectorAll(
-                    ".faq-item"
-                );
-
-
-            const guides =
-                document.querySelectorAll(
-                    ".guide-card"
-                );
-
-
-            let found = false;
-
-
-            // FAQ SEARCH
-
-            faqItems.forEach(item => {
-
-                const text =
-                    item.textContent
-                        .toLowerCase();
-
-
-                const match =
-                    !term ||
-                    text.includes(term);
-
-
-                item.style.display =
-                    match
-                        ? ""
-                        : "none";
-
-
-                if (match && term)
-                    found = true;
-
-            });
-
-
-            // GUIDE SEARCH
-
-            guides.forEach(card => {
-
-                const text =
-                    card.textContent
-                        .toLowerCase();
-
-
-                const match =
-                    !term ||
-                    text.includes(term);
-
-
-                card.style.display =
-                    match
-                        ? ""
-                        : "none";
-
-
-                if (match && term)
-                    found = true;
-
-            });
-
-
-            console.log(
-                term
-                    ? `🔎 Search: ${term}`
-                    : "🔎 Search cleared"
+                }
             );
 
         }
@@ -201,35 +161,98 @@ function initSearch() {
 }
 
 
-// ============================================
-// KEYBOARD SEARCH
-// ============================================
+// =====================================
+// SEARCH
+// =====================================
 
-function initKeyboardSearch() {
+function initializeSearch() {
 
-    document.addEventListener(
-        "keydown",
-        event => {
+    const search =
+        document.getElementById(
+            "helpSearch"
+        );
 
-            if (
-                event.key === "/" &&
-                document.activeElement.tagName !== "INPUT" &&
-                document.activeElement.tagName !== "TEXTAREA"
-            ) {
 
-                event.preventDefault();
+    const results =
+        document.getElementById(
+            "searchResults"
+        );
 
-                $("helpSearch")?.focus();
+
+    const faqItems =
+        document.querySelectorAll(
+            ".faq-item"
+        );
+
+
+    const empty =
+        document.getElementById(
+            "faqEmpty"
+        );
+
+
+    if (!search) return;
+
+
+    search.addEventListener(
+        "input",
+        () => {
+
+            const query =
+                search.value
+                    .trim()
+                    .toLowerCase();
+
+
+            let matches = 0;
+
+
+            faqItems.forEach(
+                item => {
+
+                    const text =
+                        (
+                            item.textContent +
+                            " " +
+                            (
+                                item.dataset.search ||
+                                ""
+                            )
+                        ).toLowerCase();
+
+
+                    const match =
+                        !query ||
+                        text.includes(query);
+
+
+                    item.style.display =
+                        match
+                            ? ""
+                            : "none";
+
+
+                    if (match) {
+                        matches++;
+                    }
+
+                }
+            );
+
+
+            if (empty) {
+
+                empty.hidden =
+                    matches !== 0;
 
             }
 
-            if (
-                event.key === "Escape"
-            ) {
 
-                $("helpSearch")?.blur();
-
-            }
+            renderSearchResults(
+                query,
+                faqItems,
+                results
+            );
 
         }
     );
@@ -237,23 +260,323 @@ function initKeyboardSearch() {
 }
 
 
-// ============================================
-// SUPPORT MODAL
-// ============================================
+// =====================================
+// SEARCH RESULTS
+// =====================================
 
-function initSupportModal() {
+function renderSearchResults(
+    query,
+    faqItems,
+    container
+) {
+
+    if (!container) return;
+
+
+    container.innerHTML = "";
+
+
+    if (!query) return;
+
+
+    const matches = [];
+
+
+    faqItems.forEach(
+        item => {
+
+            const text =
+                (
+                    item.textContent +
+                    " " +
+                    (
+                        item.dataset.search ||
+                        ""
+                    )
+                ).toLowerCase();
+
+
+            if (
+                text.includes(query)
+            ) {
+
+                const question =
+                    item.querySelector(
+                        ".faq-question span"
+                    );
+
+
+                if (question) {
+
+                    matches.push(
+                        question.textContent.trim()
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+    matches
+        .slice(0, 5)
+        .forEach(
+            title => {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.type =
+                    "button";
+
+
+                button.className =
+                    "help-search-result";
+
+
+                button.innerHTML = `
+                    <strong>${escapeHTML(title)}</strong>
+                    <span>View answer</span>
+                `;
+
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const item =
+                            [...faqItems]
+                                .find(
+                                    faq => {
+
+                                        const span =
+                                            faq.querySelector(
+                                                ".faq-question span"
+                                            );
+
+                                        return (
+                                            span &&
+                                            span.textContent.trim() ===
+                                            title
+                                        );
+
+                                    }
+                                );
+
+
+                        if (item) {
+
+                            item.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center"
+                            });
+
+
+                            item.classList.add(
+                                "active"
+                            );
+
+
+                            item.querySelector(
+                                ".faq-question"
+                            )?.setAttribute(
+                                "aria-expanded",
+                                "true"
+                            );
+
+                        }
+
+
+                        container.innerHTML = "";
+
+                    }
+                );
+
+
+                container.appendChild(
+                    button
+                );
+
+            }
+        );
+
+}
+
+
+// =====================================
+// QUICK CATEGORIES
+// =====================================
+
+function initializeCategories() {
+
+    const buttons =
+        document.querySelectorAll(
+            ".help-action"
+        );
+
+
+    buttons.forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const category =
+                        button.dataset.category;
+
+
+                    const faqItems =
+                        document.querySelectorAll(
+                            ".faq-item"
+                        );
+
+
+                    let found = false;
+
+
+                    faqItems.forEach(
+                        item => {
+
+                            const matches =
+                                item.dataset.category ===
+                                category;
+
+
+                            item.style.display =
+                                matches
+                                    ? ""
+                                    : "none";
+
+
+                            if (matches) {
+                                found = true;
+                            }
+
+                        }
+                    );
+
+
+                    const faqEmpty =
+                        document.getElementById(
+                            "faqEmpty"
+                        );
+
+
+                    if (faqEmpty) {
+
+                        faqEmpty.hidden =
+                            found;
+
+                    }
+
+
+                    document
+                        .querySelector(
+                            ".faq-section"
+                        )
+                        ?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+// =====================================
+// GUIDES
+// =====================================
+
+function initializeGuides() {
+
+    const buttons =
+        document.querySelectorAll(
+            "[data-guide]"
+        );
+
+
+    buttons.forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const guide =
+                        button.dataset.guide;
+
+
+                    const messages = {
+
+                        "getting-started":
+                            "Start with your Dashboard, explore the Course Library, then enroll in a course to begin learning.",
+
+                        "courses":
+                            "Your Courses area lets you continue lessons, track progress and complete assignments.",
+
+                        "achievements":
+                            "Complete learning activities to earn XP, level up and unlock achievements and certificates.",
+
+                        "payments":
+                            "Payments and Premium subscriptions can be managed from the Payments and Premium sections of your student portal."
+
+                    };
+
+
+                    alert(
+                        messages[guide] ||
+                        "This guide is currently being prepared."
+                    );
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+// =====================================
+// SUPPORT
+// =====================================
+
+function initializeSupport() {
 
     const modal =
-        $("supportModal");
+        document.getElementById(
+            "supportModal"
+        );
 
-    const openBtn =
-        $("contactSupportBtn");
 
-    const reportBtn =
-        $("reportProblemBtn");
+    const contact =
+        document.getElementById(
+            "contactSupportBtn"
+        );
 
-    const closeBtn =
-        $("closeSupportModal");
+
+    const report =
+        document.getElementById(
+            "reportProblemBtn"
+        );
+
+
+    const close =
+        document.getElementById(
+            "closeSupportModal"
+        );
+
 
     const backdrop =
         modal?.querySelector(
@@ -261,78 +584,51 @@ function initSupportModal() {
         );
 
 
-    if (!modal) return;
-
-
-    const openModal = () => {
-
-        modal.classList.add(
-            "active"
+    const form =
+        document.getElementById(
+            "supportForm"
         );
 
-        document.body.style.overflow =
-            "hidden";
 
-        setTimeout(() => {
-
-            $("supportSubject")?.focus();
-
-        }, 100);
-
-    };
-
-
-    const closeModal = () => {
-
-        modal.classList.remove(
-            "active"
-        );
-
-        document.body.style.overflow =
-            "";
-
-    };
-
-
-    openBtn?.addEventListener(
-        "click",
-        openModal
-    );
-
-
-    reportBtn?.addEventListener(
+    contact?.addEventListener(
         "click",
         () => {
 
-            openModal();
-
-            setTimeout(() => {
-
-                const subject =
-                    $("supportSubject");
-
-                if (subject) {
-
-                    subject.value =
-                        "Report a Problem";
-
-                }
-
-            }, 50);
+            openSupportModal(
+                "Contact Spark Support"
+            );
 
         }
     );
 
 
-    closeBtn?.addEventListener(
+    report?.addEventListener(
         "click",
-        closeModal
+        () => {
+
+            openSupportModal(
+                "Report a Problem"
+            );
+
+        }
+    );
+
+
+    close?.addEventListener(
+        "click",
+        closeSupportModal
     );
 
 
     backdrop?.addEventListener(
         "click",
-        closeModal
+        closeSupportModal
+    );
+
+
+    form?.addEventListener(
+        "submit",
+        submitSupportRequest
     );
 
 
@@ -341,13 +637,10 @@ function initSupportModal() {
         event => {
 
             if (
-                event.key === "Escape" &&
-                modal.classList.contains(
-                    "active"
-                )
+                event.key === "Escape"
             ) {
 
-                closeModal();
+                closeSupportModal();
 
             }
 
@@ -357,26 +650,149 @@ function initSupportModal() {
 }
 
 
-// ============================================
-// SUPPORT REQUEST
-// ============================================
+// =====================================
+// OPEN SUPPORT MODAL
+// =====================================
 
-async function submitSupportRequest(event) {
+function openSupportModal(title) {
+
+    const modal =
+        document.getElementById(
+            "supportModal"
+        );
+
+
+    const subject =
+        document.getElementById(
+            "supportSubject"
+        );
+
+
+    const modalTitle =
+        document.getElementById(
+            "supportModalTitle"
+        );
+
+
+    if (!modal) return;
+
+
+    modal.classList.add(
+        "active"
+    );
+
+
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    if (modalTitle) {
+
+        modalTitle.textContent =
+            title;
+
+    }
+
+
+    if (
+        title.includes(
+            "Report"
+        )
+    ) {
+
+        if (subject) {
+
+            subject.value =
+                "Report a Problem";
+
+        }
+
+    }
+
+
+    setTimeout(
+        () => {
+
+            subject?.focus();
+
+        },
+        100
+    );
+
+}
+
+
+// =====================================
+// CLOSE MODAL
+// =====================================
+
+function closeSupportModal() {
+
+    const modal =
+        document.getElementById(
+            "supportModal"
+        );
+
+
+    if (!modal) return;
+
+
+    modal.classList.remove(
+        "active"
+    );
+
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+
+// =====================================
+// SUBMIT SUPPORT REQUEST
+// =====================================
+
+async function submitSupportRequest(
+    event
+) {
 
     event.preventDefault();
 
 
+    if (!currentUser) {
+
+        alert(
+            "Please sign in again before contacting support."
+        );
+
+        return;
+
+    }
+
+
     const subject =
-        $("supportSubject")?.value.trim();
+        document.getElementById(
+            "supportSubject"
+        )?.value.trim();
+
 
     const message =
-        $("supportMessage")?.value.trim();
+        document.getElementById(
+            "supportMessage"
+        )?.value.trim();
 
 
-    if (!subject || !message) {
+    if (
+        !subject ||
+        !message
+    ) {
 
         alert(
-            "Please complete all fields."
+            "Please complete both fields."
         );
 
         return;
@@ -384,38 +800,24 @@ async function submitSupportRequest(event) {
     }
 
 
-    const user =
-        auth.currentUser;
-
-
-    if (!user) {
-
-        alert(
-            "Please log in before contacting support."
-        );
-
-        return;
-
-    }
-
-
-    const submitBtn =
+    const submitButton =
         document.querySelector(
             ".submit-support"
         );
 
 
-    const originalHTML =
-        submitBtn?.innerHTML;
+    const original =
+        submitButton?.innerHTML;
 
 
     try {
 
-        if (submitBtn) {
+        if (submitButton) {
 
-            submitBtn.disabled = true;
+            submitButton.disabled =
+                true;
 
-            submitBtn.innerHTML =
+            submitButton.textContent =
                 "Sending...";
 
         }
@@ -429,17 +831,22 @@ async function submitSupportRequest(event) {
             {
 
                 userId:
-                    user.uid,
+                    currentUser.uid,
 
                 email:
-                    user.email || "",
+                    currentUser.email || "",
 
-                subject,
+                subject:
+                    subject,
 
-                message,
+                message:
+                    message,
 
                 status:
                     "open",
+
+                source:
+                    "student-help-center",
 
                 createdAt:
                     serverTimestamp()
@@ -448,62 +855,63 @@ async function submitSupportRequest(event) {
         );
 
 
-        if (submitBtn) {
+        if (submitButton) {
 
-            submitBtn.innerHTML =
-                "✓ Request Sent";
+            submitButton.textContent =
+                "Request Sent ✓";
 
         }
 
 
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            $("supportModal")
-                ?.classList
-                .remove("active");
+                closeSupportModal();
 
-            document.body.style.overflow =
-                "";
+                document
+                    .getElementById(
+                        "supportForm"
+                    )
+                    ?.reset();
 
-            $("supportForm")?.reset();
+                if (submitButton) {
 
+                    submitButton.innerHTML =
+                        original;
 
-            if (submitBtn) {
+                    submitButton.disabled =
+                        false;
 
-                submitBtn.disabled = false;
+                }
 
-                submitBtn.innerHTML =
-                    originalHTML ||
-                    "Send Request";
-
-            }
-
-        }, 1200);
+            },
+            1200
+        );
 
 
     }
 
-    catch(error) {
+    catch (error) {
 
         console.error(
-            "Support request error:",
+            "❌ Support request failed:",
             error
         );
 
 
-        if (submitBtn) {
+        if (submitButton) {
 
-            submitBtn.disabled = false;
+            submitButton.innerHTML =
+                original;
 
-            submitBtn.innerHTML =
-                originalHTML ||
-                "Send Request";
+            submitButton.disabled =
+                false;
 
         }
 
 
         alert(
-            "Something went wrong. Please try again."
+            "We couldn't send your request. Please try again."
         );
 
     }
@@ -511,77 +919,93 @@ async function submitSupportRequest(event) {
 }
 
 
-// ============================================
-// QUICK ACTIONS
-// ============================================
+// =====================================
+// KEYBOARD SHORTCUT
+// =====================================
 
-function initQuickActions() {
+function initializeKeyboard() {
 
-    const actions =
-        document.querySelectorAll(
-            ".help-action"
-        );
+    document.addEventListener(
+        "keydown",
+        event => {
 
-
-    actions.forEach(action => {
-
-        action.addEventListener(
-            "click",
-            () => {
-
-                const category =
-                    action.dataset.category;
+            const target =
+                event.target;
 
 
-                if (!category)
-                    return;
+            const typing =
+                target.tagName === "INPUT" ||
+                target.tagName === "TEXTAREA";
 
 
-                const search =
-                    $("helpSearch");
+            if (
+                event.key === "/" &&
+                !typing
+            ) {
 
+                event.preventDefault();
 
-                if (search) {
-
-                    search.value =
-                        category;
-
-                    search.dispatchEvent(
-                        new Event("input")
-                    );
-
-
-                    search.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
-                    });
-
-                    search.focus();
-
-                }
+                document
+                    .getElementById(
+                        "helpSearch"
+                    )
+                    ?.focus();
 
             }
-        );
 
-    });
+        }
+    );
 
 }
 
 
-// ============================================
-// FORM LISTENER
-// ============================================
+// =====================================
+// ICON REFRESH
+// =====================================
 
-const supportForm =
-    $("supportForm");
+function refreshIcons() {
+
+    if (
+        window.lucide &&
+        typeof lucide.createIcons ===
+            "function"
+    ) {
+
+        lucide.createIcons();
+
+    }
+
+}
 
 
-supportForm?.addEventListener(
-    "submit",
-    submitSupportRequest
-);
+// =====================================
+// SECURITY
+// =====================================
 
+function escapeHTML(
+    value
+) {
 
-console.log(
-    "🚀 Help Center Engine Loaded"
-);
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}

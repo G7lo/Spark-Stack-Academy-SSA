@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        My Students | Spark Stack Academy
+    </title>
+
+
+    <!-- CORE CSS -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/students.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- LUCIDE -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="instructor-app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside
+        id="instructorSidebar"
+        class="instructor-sidebar"
+    ></aside>
+
+
+    <!-- MOBILE OVERLAY -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- MAIN -->
+
+    <main class="instructor-main">
+
+
+        <!-- TOPBAR -->
+
+        <header
+            id="instructorTopbar"
+            class="instructor-topbar"
+        ></header>
+
+
+        <!-- STUDENTS PAGE -->
+
+        <section class="students-page">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-header">
+
+                <div class="page-header-content">
+
+                    <span class="page-eyebrow">
+                        STUDENTS
+                    </span>
+
+                    <h1>
+                        My Students
+                    </h1>
+
+                    <p>
+                        Manage and track the students
+                        learning through your courses.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <section class="student-stats">
+
+
+                <article class="student-stat">
+
+                    <div class="stat-icon blue">
+
+                        <i data-lucide="users"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Students
+                        </span>
+
+                        <strong id="totalStudents">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="student-stat">
+
+                    <div class="stat-icon green">
+
+                        <i data-lucide="user-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Active Students
+                        </span>
+
+                        <strong id="activeStudents">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="student-stat">
+
+                    <div class="stat-icon gold">
+
+                        <i data-lucide="graduation-cap"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Completed
+                        </span>
+
+                        <strong id="completedStudents">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="student-stat">
+
+                    <div class="stat-icon purple">
+
+                        <i data-lucide="trending-up"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Avg. Progress
+                        </span>
+
+                        <strong id="averageProgress">
+                            0%
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- STUDENTS CARD -->
+
+            <section class="students-card">
+
+
+                <!-- CARD HEADER -->
+
+                <div class="students-toolbar">
+
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            LEARNERS
+                        </span>
+
+                        <h2>
+                            Student Directory
+                        </h2>
+
+                    </div>
+
+
+                    <!-- SEARCH -->
+
+                    <div class="student-search">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            type="search"
+                            id="studentSearch"
+                            placeholder="Search students..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- FILTERS -->
+
+                <div class="student-filters">
+
+                    <button
+                        class="filter-btn active"
+                        data-filter="all"
+                    >
+                        All Students
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        data-filter="active"
+                    >
+                        Active
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        data-filter="completed"
+                    >
+                        Completed
+                    </button>
+
+                </div>
+
+
+                <!-- STUDENT LIST -->
+
+                <div
+                    id="studentList"
+                    class="student-list"
+                >
+
+
+                    <!-- LOADING -->
+
+                    <div
+                        id="studentsLoading"
+                        class="students-loading"
+                    >
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading students...
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- EMPTY STATE -->
+
+                <div
+                    id="studentsEmpty"
+                    class="students-empty hidden"
+                >
+
+                    <div class="empty-icon">
+
+                        <i data-lucide="users-round"></i>
+
+                    </div>
+
+                    <h3>
+                        No students found
+                    </h3>
+
+                    <p>
+                        Students enrolled in your
+                        courses will appear here.
+                    </p>
+
+                </div>
+
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- APP -->
+
+<script
+    type="module"
+    src="js/instructor-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/students.js"
+></script>
+
+
+<script>
+
+    lucide.createIcons();
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Settings | Spark Stack Academy
+    </title>
+
+
+    <!-- CORE -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/settings.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="instructor-app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside
+        id="instructorSidebar"
+        class="instructor-sidebar"
+    ></aside>
+
+
+    <!-- OVERLAY -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- MAIN -->
+
+    <main class="instructor-main">
+
+
+        <!-- TOPBAR -->
+
+        <header
+            id="instructorTopbar"
+            class="instructor-topbar"
+        ></header>
+
+
+        <!-- SETTINGS -->
+
+        <section class="settings-page">
+
+
+            <!-- HEADER -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        ACCOUNT
+                    </span>
+
+                    <h1>
+                        Settings
+                    </h1>
+
+                    <p>
+                        Manage your instructor account,
+                        teaching preferences and security.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="saveSettingsBtn"
+                    class="primary-btn"
+                    type="button"
+                >
+
+                    <i data-lucide="save"></i>
+
+                    Save Changes
+
+                </button>
+
+            </div>
+
+
+            <!-- SETTINGS LAYOUT -->
+
+            <div class="settings-layout">
+
+
+                <!-- SETTINGS NAV -->
+
+                <aside class="settings-nav">
+
+
+                    <button
+                        class="settings-nav-item active"
+                        data-section="account"
+                    >
+
+                        <i data-lucide="user"></i>
+
+                        <span>
+                            Account
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="settings-nav-item"
+                        data-section="notifications"
+                    >
+
+                        <i data-lucide="bell"></i>
+
+                        <span>
+                            Notifications
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="settings-nav-item"
+                        data-section="teaching"
+                    >
+
+                        <i data-lucide="graduation-cap"></i>
+
+                        <span>
+                            Teaching
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="settings-nav-item"
+                        data-section="payments"
+                    >
+
+                        <i data-lucide="wallet"></i>
+
+                        <span>
+                            Payments
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="settings-nav-item"
+                        data-section="pro"
+                    >
+
+                        <i data-lucide="crown"></i>
+
+                        <span>
+                            Instructor Pro
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="settings-nav-item"
+                        data-section="security"
+                    >
+
+                        <i data-lucide="shield-check"></i>
+
+                        <span>
+                            Security
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="settings-nav-item danger"
+                        data-section="danger"
+                    >
+
+                        <i data-lucide="triangle-alert"></i>
+
+                        <span>
+                            Danger Zone
+                        </span>
+
+                    </button>
+
+
+                </aside>
+
+
+                <!-- SETTINGS CONTENT -->
+
+                <div class="settings-content">
+
+
+                    <!-- =================================
+                         ACCOUNT
+                    ================================== -->
+
+                    <section
+                        class="settings-section active"
+                        data-panel="account"
+                    >
+
+                        <div class="settings-card">
+
+                            <div class="settings-card-header">
+
+                                <div>
+
+                                    <span class="card-eyebrow">
+                                        ACCOUNT
+                                    </span>
+
+                                    <h2>
+                                        Account Information
+                                    </h2>
+
+                                    <p>
+                                        Manage your basic
+                                        instructor account details.
+                                    </p>
+
+                                </div>
+
+                                <div class="settings-icon blue">
+
+                                    <i data-lucide="user"></i>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="settings-form-grid">
+
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Email Address
+                                    </label>
+
+                                    <input
+                                        id="settingsEmail"
+                                        type="email"
+                                        disabled
+                                    >
+
+                                    <small>
+                                        Your login email cannot
+                                        be changed here.
+                                    </small>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Phone Number
+                                    </label>
+
+                                    <input
+                                        id="settingsPhone"
+                                        type="tel"
+                                        placeholder="+254..."
+                                    >
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =================================
+                         NOTIFICATIONS
+                    ================================== -->
+
+                    <section
+                        class="settings-section"
+                        data-panel="notifications"
+                    >
+
+                        <div class="settings-card">
+
+                            <div class="settings-card-header">
+
+                                <div>
+
+                                    <span class="card-eyebrow">
+                                        NOTIFICATIONS
+                                    </span>
+
+                                    <h2>
+                                        Notification Preferences
+                                    </h2>
+
+                                    <p>
+                                        Choose what updates you
+                                        receive.
+                                    </p>
+
+                                </div>
+
+                                <div class="settings-icon purple">
+
+                                    <i data-lucide="bell"></i>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="settings-options">
+
+
+                                <label class="setting-option">
+
+                                    <div>
+
+                                        <strong>
+                                            New Student Enrollments
+                                        </strong>
+
+                                        <span>
+                                            Get notified when a
+                                            student joins your course.
+                                        </span>
+
+                                    </div>
+
+                                    <input
+                                        type="checkbox"
+                                        id="notifyEnrollment"
+                                        checked
+                                    >
+
+                                </label>
+
+
+                                <label class="setting-option">
+
+                                    <div>
+
+                                        <strong>
+                                            Assignment Submissions
+                                        </strong>
+
+                                        <span>
+                                            Know when students submit
+                                            assignments.
+                                        </span>
+
+                                    </div>
+
+                                    <input
+                                        type="checkbox"
+                                        id="notifyAssignments"
+                                        checked
+                                    >
+
+                                </label>
+
+
+                                <label class="setting-option">
+
+                                    <div>
+
+                                        <strong>
+                                            Student Messages
+                                        </strong>
+
+                                        <span>
+                                            Receive alerts for new
+                                            student messages.
+                                        </span>
+
+                                    </div>
+
+                                    <input
+                                        type="checkbox"
+                                        id="notifyMessages"
+                                        checked
+                                    >
+
+                                </label>
+
+
+                                <label class="setting-option">
+
+                                    <div>
+
+                                        <strong>
+                                            Earnings & Withdrawals
+                                        </strong>
+
+                                        <span>
+                                            Receive payment and
+                                            withdrawal updates.
+                                        </span>
+
+                                    </div>
+
+                                    <input
+                                        type="checkbox"
+                                        id="notifyEarnings"
+                                        checked
+                                    >
+
+                                </label>
+
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =================================
+                         TEACHING
+                    ================================== -->
+
+                    <section
+                        class="settings-section"
+                        data-panel="teaching"
+                    >
+
+                        <div class="settings-card">
+
+                            <div class="settings-card-header">
+
+                                <div>
+
+                                    <span class="card-eyebrow">
+                                        TEACHING
+                                    </span>
+
+                                    <h2>
+                                        Teaching Preferences
+                                    </h2>
+
+                                    <p>
+                                        Control how your courses
+                                        behave.
+                                    </p>
+
+                                </div>
+
+                                <div class="settings-icon green">
+
+                                    <i data-lucide="graduation-cap"></i>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="settings-options">
+
+
+                                <label class="setting-option">
+
+                                    <div>
+
+                                        <strong>
+                                            Student Reviews
+                                        </strong>
+
+                                        <span>
+                                            Allow students to rate
+                                            your courses.
+                                        </span>
+
+                                    </div>
+
+                                    <input
+                                        type="checkbox"
+                                        id="allowReviews"
+                                        checked
+                                    >
+
+                                </label>
+
+
+                                <label class="setting-option">
+
+                                    <div>
+
+                                        <strong>
+                                            Assignment Notifications
+                                        </strong>
+
+                                        <span>
+                                            Automatically notify you
+                                            about submissions.
+                                        </span>
+
+                                    </div>
+
+                                    <input
+                                        type="checkbox"
+                                        id="assignmentAlerts"
+                                        checked
+                                    >
+
+                                </label>
+
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Default Course Visibility
+                                    </label>
+
+                                    <select id="courseVisibility">
+
+                                        <option value="draft">
+                                            Draft
+                                        </option>
+
+                                        <option value="published">
+                                            Published
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =================================
+                         PAYMENTS
+                    ================================== -->
+
+                    <section
+                        class="settings-section"
+                        data-panel="payments"
+                    >
+
+                        <div class="settings-card">
+
+                            <div class="settings-card-header">
+
+                                <div>
+
+                                    <span class="card-eyebrow">
+                                        PAYMENTS
+                                    </span>
+
+                                    <h2>
+                                        Payment Settings
+                                    </h2>
+
+                                    <p>
+                                        View your instructor
+                                        payment configuration.
+                                    </p>
+
+                                </div>
+
+                                <div class="settings-icon gold">
+
+                                    <i data-lucide="wallet"></i>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="payment-notice">
+
+                                <i data-lucide="lock"></i>
+
+                                <div>
+
+                                    <strong>
+                                        Platform-controlled fees
+                                    </strong>
+
+                                    <span>
+                                        Platform tax and withdrawal
+                                        fees are controlled by the
+                                        Spark Stack Academy Founder.
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="settings-info-grid">
+
+
+                                <div>
+
+                                    <span>
+                                        Platform Tax
+                                    </span>
+
+                                    <strong id="platformTax">
+                                        0%
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Withdrawal Fee
+                                    </span>
+
+                                    <strong id="withdrawalFee">
+                                        0%
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Minimum Withdrawal
+                                    </span>
+
+                                    <strong id="minimumWithdrawal">
+                                        KSh 100
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <a
+                                href="earnings.html"
+                                class="secondary-btn"
+                            >
+
+                                <i data-lucide="wallet"></i>
+
+                                Manage Earnings
+
+                            </a>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =================================
+                         PRO
+                    ================================== -->
+
+                    <section
+                        class="settings-section"
+                        data-panel="pro"
+                    >
+
+                        <div class="settings-card pro-settings-card">
+
+                            <div class="settings-card-header">
+
+                                <div>
+
+                                    <span class="card-eyebrow">
+                                        PREMIUM
+                                    </span>
+
+                                    <h2>
+                                        Instructor Pro
+                                    </h2>
+
+                                    <p>
+                                        Unlock advanced tools and
+                                        premium instructor benefits.
+                                    </p>
+
+                                </div>
+
+                                <div class="settings-icon gold">
+
+                                    <i data-lucide="crown"></i>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="pro-status-box">
+
+                                <div>
+
+                                    <strong id="proSettingsStatus">
+                                        Instructor Pro
+                                    </strong>
+
+                                    <span id="proSettingsDescription">
+                                        Check your premium
+                                        subscription status.
+                                    </span>
+
+                                </div>
+
+
+                                <a
+                                    href="pro.html"
+                                    class="primary-btn"
+                                >
+
+                                    <i data-lucide="crown"></i>
+
+                                    Manage Pro
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =================================
+                         SECURITY
+                    ================================== -->
+
+                    <section
+                        class="settings-section"
+                        data-panel="security"
+                    >
+
+                        <div class="settings-card">
+
+                            <div class="settings-card-header">
+
+                                <div>
+
+                                    <span class="card-eyebrow">
+                                        SECURITY
+                                    </span>
+
+                                    <h2>
+                                        Account Security
+                                    </h2>
+
+                                    <p>
+                                        Keep your instructor account
+                                        protected.
+                                    </p>
+
+                                </div>
+
+                                <div class="settings-icon blue">
+
+                                    <i data-lucide="shield-check"></i>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                id="changePasswordBtn"
+                                class="security-action"
+                                type="button"
+                            >
+
+                                <i data-lucide="key-round"></i>
+
+                                <span>
+                                    Change Password
+                                </span>
+
+                                <i data-lucide="chevron-right"></i>
+
+                            </button>
+
+
+                            <button
+                                id="logoutAllBtn"
+                                class="security-action"
+                                type="button"
+                            >
+
+                                <i data-lucide="log-out"></i>
+
+                                <span>
+                                    Sign Out
+                                </span>
+
+                                <i data-lucide="chevron-right"></i>
+
+                            </button>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =================================
+                         DANGER
+                    ================================== -->
+
+                    <section
+                        class="settings-section"
+                        data-panel="danger"
+                    >
+
+                        <div class="settings-card danger-card">
+
+                            <div class="settings-card-header">
+
+                                <div>
+
+                                    <span class="card-eyebrow">
+                                        DANGER ZONE
+                                    </span>
+
+                                    <h2>
+                                        Account Actions
+                                    </h2>
+
+                                    <p>
+                                        These actions can affect
+                                        your instructor account.
+                                    </p>
+
+                                </div>
+
+                                <div class="settings-icon red">
+
+                                    <i data-lucide="triangle-alert"></i>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="danger-action">
+
+                                <div>
+
+                                    <strong>
+                                        Disable Instructor Account
+                                    </strong>
+
+                                    <span>
+                                        Temporarily stop teaching
+                                        without deleting your data.
+                                    </span>
+
+                                </div>
+
+                                <button
+                                    id="disableAccountBtn"
+                                    class="danger-btn"
+                                    type="button"
+                                >
+                                    Disable
+                                </button>
+
+                            </div>
+
+
+                            <div class="danger-action">
+
+                                <div>
+
+                                    <strong>
+                                        Delete Account
+                                    </strong>
+
+                                    <span>
+                                        Permanently remove your
+                                        instructor account.
+                                    </span>
+
+                                </div>
+
+                                <button
+                                    id="deleteAccountBtn"
+                                    class="danger-btn"
+                                    type="button"
+                                >
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- APP -->
+
+<script
+    type="module"
+    src="js/instructor-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/settings.js"
+></script>
+
+
+<script>
+
+    lucide.createIcons();
+
+</script>
+
+
+</body>
+
+</html>

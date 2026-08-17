@@ -316,31 +316,23 @@ function initializeActions() {
     // ---------------------------------
 
     document
-        .getElementById("helpBtn")
-        ?.addEventListener(
-            "click",
-            () => {
-
-                alert(
-                    "Help Center coming soon."
-                );
-
-            }
-        );
+    .getElementById("helpBtn")
+    ?.addEventListener(
+        "click",
+        () => {
+            window.location.href = "help-center.html";
+        }
+    );
 
 
-    document
-        .getElementById("reportBtn")
-        ?.addEventListener(
-            "click",
-            () => {
-
-                alert(
-                    "Please contact Spark Stack Academy support."
-                );
-
-            }
-        );
+document
+    .getElementById("reportBtn")
+    ?.addEventListener(
+        "click",
+        () => {
+            window.location.href = "help-center.html";
+        }
+    );
 
 
     // ---------------------------------

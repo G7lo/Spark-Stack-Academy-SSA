@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Analytics | Spark Stack Academy
+    </title>
+
+
+    <!-- CORE -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/analytics.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script
+        src="https://unpkg.com/lucide@latest">
+    </script>
+
+</head>
+
+
+<body>
+
+
+<div class="instructor-app">
+
+
+    <!-- =====================================
+         SIDEBAR
+    ====================================== -->
+
+    <aside
+        id="instructorSidebar"
+        class="instructor-sidebar"
+    ></aside>
+
+
+    <!-- =====================================
+         MOBILE OVERLAY
+    ====================================== -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- =====================================
+         MAIN
+    ====================================== -->
+
+    <main class="instructor-main">
+
+
+        <!-- TOPBAR -->
+
+        <header
+            id="instructorTopbar"
+            class="instructor-topbar"
+        ></header>
+
+
+        <!-- =================================
+             ANALYTICS PAGE
+        ================================== -->
+
+        <section class="analytics-page">
+
+
+            <!-- =================================
+                 HEADER
+            ================================== -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        PERFORMANCE
+                    </span>
+
+                    <h1>
+                        Analytics
+                    </h1>
+
+                    <p>
+                        Understand your students,
+                        courses and teaching performance.
+                    </p>
+
+                </div>
+
+
+                <div class="analytics-actions">
+
+                    <select
+                        id="analyticsCourseFilter"
+                        class="analytics-select"
+                    >
+
+                        <option value="all">
+                            All Courses
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 OVERVIEW STATS
+            ================================== -->
+
+            <section class="analytics-stats">
+
+
+                <!-- STUDENTS -->
+
+                <article class="analytics-stat">
+
+                    <div class="stat-icon purple">
+
+                        <i data-lucide="users"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Students
+                        </span>
+
+                        <strong id="analyticsStudents">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <!-- ENGAGEMENT -->
+
+                <article class="analytics-stat">
+
+                    <div class="stat-icon blue">
+
+                        <i data-lucide="activity"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Engagement
+                        </span>
+
+                        <strong id="analyticsEngagement">
+                            0%
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <!-- COMPLETION -->
+
+                <article class="analytics-stat">
+
+                    <div class="stat-icon green">
+
+                        <i data-lucide="circle-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Completion Rate
+                        </span>
+
+                        <strong id="analyticsCompletion">
+                            0%
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <!-- EARNINGS -->
+
+                <article class="analytics-stat">
+
+                    <div class="stat-icon gold">
+
+                        <i data-lucide="wallet"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Earnings
+                        </span>
+
+                        <strong id="analyticsEarnings">
+                            KSh 0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =================================
+                 MAIN ANALYTICS GRID
+            ================================== -->
+
+            <div class="analytics-grid">
+
+
+                <!-- =================================
+                     COURSE PERFORMANCE
+                ================================== -->
+
+                <section class="analytics-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                COURSES
+                            </span>
+
+                            <h2>
+                                Course Performance
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="coursePerformance"
+                        class="course-performance"
+                    >
+
+                        <div class="analytics-loading">
+
+                            <div class="loading-spinner"></div>
+
+                            <span>
+                                Loading performance...
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================
+                     STUDENT ENGAGEMENT
+                ================================== -->
+
+                <section class="analytics-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                STUDENTS
+                            </span>
+
+                            <h2>
+                                Student Engagement
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="engagementOverview"
+                        class="engagement-overview"
+                    >
+
+                        <div class="engagement-circle">
+
+                            <strong id="engagementScore">
+                                0%
+                            </strong>
+
+                            <span>
+                                Engagement
+                            </span>
+
+                        </div>
+
+
+                        <div class="engagement-details">
+
+                            <div>
+
+                                <span>
+                                    Active Students
+                                </span>
+
+                                <strong id="activeStudents">
+                                    0
+                                </strong>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Completed Courses
+                                </span>
+
+                                <strong id="completedCourses">
+                                    0
+                                </strong>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Assignments Submitted
+                                </span>
+
+                                <strong id="submittedAssignments">
+                                    0
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+
+            <!-- =================================
+                 COMPLETION + ASSIGNMENTS
+            ================================== -->
+
+            <div class="analytics-grid">
+
+
+                <!-- COMPLETION -->
+
+                <section class="analytics-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                PROGRESS
+                            </span>
+
+                            <h2>
+                                Course Completion
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="completionOverview"
+                        class="completion-list"
+                    >
+
+                        <div class="analytics-loading">
+
+                            <div class="loading-spinner"></div>
+
+                            <span>
+                                Loading completion data...
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ASSIGNMENTS -->
+
+                <section class="analytics-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                ASSESSMENTS
+                            </span>
+
+                            <h2>
+                                Assignment Performance
+                            </h2>
+
+                        </div>
+
+                        <a
+                            href="assignments.html"
+                            class="card-link"
+                        >
+
+                            View Assignments
+
+                            <i data-lucide="arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+
+                    <div
+                        id="assignmentPerformance"
+                        class="assignment-performance"
+                    >
+
+                        <div class="performance-row">
+
+                            <span>
+                                Submitted
+                            </span>
+
+                            <strong id="assignmentSubmitted">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="performance-row">
+
+                            <span>
+                                Graded
+                            </span>
+
+                            <strong id="assignmentGraded">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="performance-row">
+
+                            <span>
+                                Average Score
+                            </span>
+
+                            <strong id="assignmentAverage">
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="progress-track">
+
+                            <div
+                                id="assignmentProgress"
+                                class="progress-fill"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+
+            <!-- =================================
+                 EARNINGS
+            ================================== -->
+
+            <section class="analytics-card earnings-analytics">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            REVENUE
+                        </span>
+
+                        <h2>
+                            Earnings Overview
+                        </h2>
+
+                    </div>
+
+                    <a
+                        href="earnings.html"
+                        class="card-link"
+                    >
+
+                        View Earnings
+
+                        <i data-lucide="arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+
+                <div class="earnings-overview">
+
+
+                    <div class="earnings-main">
+
+                        <span>
+                            Total Earnings
+                        </span>
+
+                        <strong id="earningsTotal">
+                            KSh 0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="earnings-mini">
+
+                        <div>
+
+                            <span>
+                                This Month
+                            </span>
+
+                            <strong id="earningsMonth">
+                                KSh 0
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Transactions
+                            </span>
+
+                            <strong id="earningsTransactions">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script
+    type="module"
+    src="js/instructor-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/analytics.js"
+></script>
+
+
+<script>
+
+    lucide.createIcons();
+
+</script>
+
+
+</body>
+
+</html>

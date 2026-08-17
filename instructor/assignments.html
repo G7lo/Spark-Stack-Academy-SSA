@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Assignments | Spark Stack Academy
+    </title>
+
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/assignments.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="instructor-app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside
+        id="instructorSidebar"
+        class="instructor-sidebar"
+    ></aside>
+
+
+    <!-- OVERLAY -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- MAIN -->
+
+    <main class="instructor-main">
+
+
+        <!-- TOPBAR -->
+
+        <header
+            id="instructorTopbar"
+            class="instructor-topbar"
+        ></header>
+
+
+        <!-- PAGE -->
+
+        <section class="assignments-page">
+
+
+            <!-- HEADER -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        TEACHING
+                    </span>
+
+                    <h1>
+                        Assignments
+                    </h1>
+
+                    <p>
+                        Create assignments and review
+                        student submissions.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="createAssignmentBtn"
+                    class="primary-btn"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Create Assignment
+
+                </button>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <section class="assignment-stats">
+
+
+                <article class="assignment-stat">
+
+                    <div class="stat-icon blue">
+
+                        <i data-lucide="clipboard-list"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Assignments
+                        </span>
+
+                        <strong id="totalAssignments">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="assignment-stat">
+
+                    <div class="stat-icon gold">
+
+                        <i data-lucide="clock-3"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Pending Review
+                        </span>
+
+                        <strong id="pendingAssignments">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="assignment-stat">
+
+                    <div class="stat-icon green">
+
+                        <i data-lucide="check-circle"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Graded
+                        </span>
+
+                        <strong id="gradedAssignments">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="assignment-stat">
+
+                    <div class="stat-icon purple">
+
+                        <i data-lucide="users"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Submissions
+                        </span>
+
+                        <strong id="totalSubmissions">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- ASSIGNMENT CARD -->
+
+            <section class="assignments-card">
+
+
+                <div class="assignments-toolbar">
+
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            WORKSPACE
+                        </span>
+
+                        <h2>
+                            Your Assignments
+                        </h2>
+
+                    </div>
+
+
+                    <div class="assignment-search">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            type="search"
+                            id="assignmentSearch"
+                            placeholder="Search assignments..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- FILTERS -->
+
+                <div class="assignment-filters">
+
+                    <button
+                        class="assignment-filter active"
+                        data-filter="all"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        class="assignment-filter"
+                        data-filter="pending"
+                    >
+                        Pending
+                    </button>
+
+                    <button
+                        class="assignment-filter"
+                        data-filter="graded"
+                    >
+                        Graded
+                    </button>
+
+                </div>
+
+
+                <!-- LIST -->
+
+                <div
+                    id="assignmentList"
+                    class="assignment-list"
+                >
+
+                    <div class="assignment-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading assignments...
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMPTY -->
+
+                <div
+                    id="assignmentEmpty"
+                    class="assignment-empty hidden"
+                >
+
+                    <div class="empty-icon">
+
+                        <i data-lucide="clipboard-list"></i>
+
+                    </div>
+
+                    <h3>
+                        No assignments found
+                    </h3>
+
+                    <p>
+                        Create your first assignment
+                        for your students.
+                    </p>
+
+                    <button
+                        id="emptyCreateAssignmentBtn"
+                        class="empty-action"
+                    >
+
+                        <i data-lucide="plus"></i>
+
+                        Create Assignment
+
+                    </button>
+
+                </div>
+
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script
+    type="module"
+    src="js/instructor-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/assignments.js"
+></script>
+
+
+<script>
+
+    lucide.createIcons();
+
+</script>
+
+
+</body>
+
+</html>
