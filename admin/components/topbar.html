@@ -1,83 +1,189 @@
-<header class="topbar">
+<!-- ============================================================
+     SPARK STACK ACADEMY
+     ADMIN MODERATOR TOPBAR
+============================================================ -->
 
-    <div class="topbar-left">
+<div class="admin-topbar-inner">
+
+    <!-- LEFT -->
+
+    <div class="admin-topbar-left">
 
         <button
-        id="menuBtn"
-        class="menu-btn">
-
+            id="adminMenuToggle"
+            class="admin-menu-toggle"
+            type="button"
+            aria-label="Open menu"
+        >
             <i data-lucide="menu"></i>
-
         </button>
 
-        <div>
 
-            <h2 id="pageTitle">
+        <div class="admin-breadcrumb">
 
+            <span>
+                Moderator Console
+            </span>
+
+            <i data-lucide="chevron-right"></i>
+
+            <strong id="adminCurrentPage">
                 Dashboard
-
-            </h2>
-
-            <p>
-
-                Spark Stack Academy
-
-            </p>
+            </strong>
 
         </div>
 
     </div>
 
 
+    <!-- RIGHT -->
 
-    <div class="topbar-right">
+    <div class="admin-topbar-actions">
+
+
+        <!-- SEARCH -->
 
         <button
-        class="icon-btn"
-        id="notificationBtn">
+            id="adminSearchBtn"
+            class="topbar-icon-btn"
+            type="button"
+            aria-label="Search"
+        >
+
+            <i data-lucide="search"></i>
+
+        </button>
+
+
+        <!-- NOTIFICATIONS -->
+
+        <a
+            href="notifications.html"
+            class="topbar-icon-btn notification-trigger"
+            aria-label="Notifications"
+        >
 
             <i data-lucide="bell"></i>
 
-        </button>
+            <span
+                id="adminNotificationBadge"
+                class="notification-badge hidden"
+            >
+                0
+            </span>
+
+        </a>
 
 
+        <!-- DIVIDER -->
+
+        <span class="topbar-divider"></span>
+
+
+        <!-- PROFILE -->
 
         <button
-        class="icon-btn"
-        id="themeBtn">
+            id="adminProfileMenu"
+            class="admin-topbar-profile"
+            type="button"
+        >
 
-            <i data-lucide="moon"></i>
+            <div
+                id="adminTopbarAvatar"
+                class="admin-topbar-avatar"
+            >
+                A
+            </div>
+
+            <div class="admin-topbar-user">
+
+                <strong id="adminTopbarName">
+                    Administrator
+                </strong>
+
+                <span>
+                    Moderator
+                </span>
+
+            </div>
+
+            <i
+                data-lucide="chevron-down"
+                class="profile-chevron"
+            ></i>
 
         </button>
 
 
+        <!-- PROFILE DROPDOWN -->
 
-        <div class="admin-profile">
+        <div
+            id="adminProfileDropdown"
+            class="admin-profile-dropdown"
+        >
 
-            <div class="avatar">
+            <div class="dropdown-user">
 
-                A
+                <div
+                    id="dropdownAdminAvatar"
+                    class="dropdown-avatar"
+                >
+                    A
+                </div>
+
+                <div>
+
+                    <strong id="dropdownAdminName">
+                        Administrator
+                    </strong>
+
+                    <span>
+                        Moderator Account
+                    </span>
+
+                </div>
 
             </div>
 
-            <div>
 
-                <strong id="adminName">
+            <div class="dropdown-divider"></div>
 
-                    Administrator
 
-                </strong>
+            <a href="profile.html">
 
-                <small>
+                <i data-lucide="user-round"></i>
 
-                    Admin
+                My Profile
 
-                </small>
+            </a>
 
-            </div>
+
+            <a href="settings.html">
+
+                <i data-lucide="settings"></i>
+
+                Settings
+
+            </a>
+
+
+            <div class="dropdown-divider"></div>
+
+
+            <button
+                id="adminDropdownLogout"
+                type="button"
+                class="dropdown-danger"
+            >
+
+                <i data-lucide="log-out"></i>
+
+                Sign Out
+
+            </button>
 
         </div>
 
     </div>
 
-</header>
+</div>

@@ -1,295 +1,822 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 
-<head>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-<meta charset="UTF-8">
+<title>
+    Admin Dashboard | Spark Stack Academy
+</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- CORE -->
 
-<title>Admin Dashboard | Spark Stack Academy</title>
+<link
+    rel="stylesheet"
+    href="css/admin-core.css"
+>
 
+<link
+    rel="stylesheet"
+    href="css/components.css"
+>
 
-<link rel="stylesheet" href="dashboard.css">
+<link
+    rel="stylesheet"
+    href="css/dashboard.css"
+>
 
+<link
+    rel="stylesheet"
+    href="css/responsive.css"
+>
 
-<!-- Lucide Icons -->
-<script src="https://unpkg.com/lucide@latest"></script>
 
+<!-- FONT -->
 
-</head>
+<link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+>
 
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
 
-<body>
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
 
 
-<div class="dashboard-layout">
+<!-- ICONS -->
 
+<script
+    src="https://unpkg.com/lucide@latest"
+></script>
 
-<!-- SIDEBAR -->
+</head><body><div class="admin-app"><!-- =====================================
+     SIDEBAR
+====================================== -->
 
-<aside id="sidebarContainer"></aside>
+<aside
+    id="adminSidebar"
+    class="admin-sidebar"
+></aside>
 
 
-<div id="sidebarOverlay"></div>
+<!-- =====================================
+     MOBILE OVERLAY
+====================================== -->
 
+<div
+    id="sidebarOverlay"
+    class="sidebar-overlay"
+></div>
 
 
-<!-- MAIN -->
+<!-- =====================================
+     MAIN
+====================================== -->
 
-<main class="main-content">
+<main class="admin-main">
 
 
+    <!-- =================================
+         TOPBAR
+    ================================== -->
 
-<!-- TOPBAR -->
+    <header
+        id="adminTopbar"
+        class="admin-topbar"
+    ></header>
 
-<div id="topbarContainer"></div>
 
+    <!-- =================================
+         DASHBOARD
+    ================================== -->
 
+    <section class="dashboard-page">
 
 
-<section class="dashboard-page">
+        <!-- =================================
+             PAGE HEADER
+        ================================== -->
 
+        <div class="page-header">
 
+            <div>
 
-<div class="page-header">
+                <span class="page-eyebrow">
+                    MODERATOR OS
+                </span>
 
-<div>
+                <h1>
+                    Admin Dashboard
+                </h1>
 
-<h1 id="pageTitle">
-Admin Dashboard
-</h1>
+                <p>
+                    Monitor academy activity,
+                    review reports and keep the
+                    learning community safe.
+                </p>
 
-<p>
-Welcome back, <span id="adminName">Admin</span>
-</p>
+            </div>
 
-</div>
 
+            <div class="admin-role-badge">
 
-</div>
+                <i data-lucide="shield-check"></i>
 
+                Academy Moderator
 
+            </div>
 
+        </div>
 
 
-<!-- STAT CARDS -->
+        <!-- =================================
+             MODERATION ALERT
+        ================================== -->
 
-<div class="stats-grid">
+        <section
+            class="moderation-alert"
+            id="moderationAlert"
+        >
 
+            <div class="moderation-alert-icon">
 
+                <i data-lucide="shield-alert"></i>
 
-<div class="stat-card">
+            </div>
 
-<div class="icon">
-<i data-lucide="users"></i>
-</div>
 
+            <div class="moderation-alert-content">
 
-<div>
+                <strong>
+                    Moderation Center
+                </strong>
 
-<h3>
-Students
-</h3>
+                <span>
+                    Review flagged activity and
+                    pending administrative actions.
+                </span>
 
+            </div>
 
-<h2 id="studentCount">
-0
-</h2>
 
+            <a
+                href="reports.html"
+                class="primary-btn"
+            >
 
-</div>
+                Review Reports
 
+                <i data-lucide="arrow-right"></i>
 
-</div>
+            </a>
 
+        </section>
 
 
+        <!-- =================================
+             OVERVIEW STATS
+        ================================== -->
 
+        <section class="dashboard-stats">
 
 
-<div class="stat-card">
+            <article class="stat-card">
 
-<div class="icon">
-<i data-lucide="book-open"></i>
-</div>
+                <div class="stat-icon blue">
 
+                    <i data-lucide="users"></i>
 
-<div>
+                </div>
 
-<h3>
-Courses
-</h3>
+                <div class="stat-content">
 
+                    <span>
+                        Total Students
+                    </span>
 
-<h2 id="courseCount">
-0
-</h2>
+                    <strong id="totalStudents">
+                        0
+                    </strong>
 
+                    <small>
+                        Registered learners
+                    </small>
 
-</div>
+                </div>
 
+            </article>
 
-</div>
 
+            <article class="stat-card">
 
+                <div class="stat-icon purple">
 
+                    <i data-lucide="graduation-cap"></i>
 
+                </div>
 
+                <div class="stat-content">
 
+                    <span>
+                        Instructors
+                    </span>
 
-<div class="stat-card">
+                    <strong id="totalInstructors">
+                        0
+                    </strong>
 
-<div class="icon">
-<i data-lucide="user-plus"></i>
-</div>
+                    <small>
+                        Active teaching accounts
+                    </small>
 
+                </div>
 
-<div>
+            </article>
 
-<h3>
-Admissions
-</h3>
 
+            <article class="stat-card">
 
-<h2 id="applicationCount">
-0
-</h2>
+                <div class="stat-icon gold">
 
+                    <i data-lucide="book-open"></i>
 
-</div>
+                </div>
 
+                <div class="stat-content">
 
-</div>
+                    <span>
+                        Courses
+                    </span>
 
+                    <strong id="totalCourses">
+                        0
+                    </strong>
 
+                    <small>
+                        Academy courses
+                    </small>
 
+                </div>
 
+            </article>
 
 
-<div class="stat-card">
+            <article class="stat-card">
 
-<div class="icon">
-<i data-lucide="graduation-cap"></i>
-</div>
+                <div class="stat-icon red">
 
+                    <i data-lucide="flag"></i>
 
-<div>
+                </div>
 
-<h3>
-Instructors
-</h3>
+                <div class="stat-content">
 
+                    <span>
+                        Open Reports
+                    </span>
 
-<h2 id="instructorCount">
-0
-</h2>
+                    <strong id="openReports">
+                        0
+                    </strong>
 
+                    <small>
+                        Require attention
+                    </small>
 
-</div>
+                </div>
 
+            </article>
 
-</div>
 
+        </section>
 
 
-</div>
+        <!-- =================================
+             MODERATION QUEUE
+        ================================== -->
 
+        <section class="dashboard-grid">
 
 
+            <div class="dashboard-card moderation-card">
 
 
+                <div class="card-header">
 
-<!-- CONTENT GRID -->
+                    <div>
 
-<div class="dashboard-grid">
+                        <span class="card-eyebrow">
+                            MODERATION
+                        </span>
 
+                        <h2>
+                            Priority Queue
+                        </h2>
 
+                    </div>
 
-<div class="panel">
 
-<h2>
-Recent Admissions
-</h2>
+                    <a
+                        href="reports.html"
+                        class="text-link"
+                    >
+                        View All
+                    </a>
 
+                </div>
 
-<div id="recentAdmissions">
 
-<p>
-Loading...
-</p>
+                <div
+                    id="moderationQueue"
+                    class="moderation-queue"
+                >
 
-</div>
+                    <div class="dashboard-loading">
 
+                        <div class="loading-spinner"></div>
 
-</div>
+                        <span>
+                            Loading moderation queue...
+                        </span>
 
+                    </div>
 
+                </div>
 
 
+            </div>
 
 
-<div class="panel">
+            <!-- =================================
+                 PENDING ACTIONS
+            ================================== -->
 
-<h2>
-Quick Actions
-</h2>
+            <div class="dashboard-card">
 
 
-<div class="actions">
+                <div class="card-header">
 
+                    <div>
 
-<a href="admissions.html">
-<i data-lucide="clipboard-check"></i>
-Admissions
-</a>
+                        <span class="card-eyebrow">
+                            ACTIONS
+                        </span>
 
+                        <h2>
+                            Pending Reviews
+                        </h2>
 
-<a href="students.html">
-<i data-lucide="users"></i>
-Students
-</a>
+                    </div>
 
+                </div>
 
-<a href="courses.html">
-<i data-lucide="book"></i>
-Courses
-</a>
 
+                <div class="pending-actions">
 
 
-</div>
+                    <a
+                        href="instructors.html"
+                        class="pending-action"
+                    >
 
+                        <div class="pending-action-icon purple">
 
-</div>
+                            <i data-lucide="user-check"></i>
 
+                        </div>
 
+                        <div>
 
-</div>
+                            <strong>
+                                Instructor Approvals
+                            </strong>
 
+                            <span id="pendingInstructors">
+                                0 pending
+                            </span>
 
+                        </div>
 
+                        <i
+                            data-lucide="chevron-right"
+                        ></i>
 
-</section>
+                    </a>
 
 
+                    <a
+                        href="courses.html"
+                        class="pending-action"
+                    >
+
+                        <div class="pending-action-icon blue">
+
+                            <i data-lucide="book-check"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Course Reviews
+                            </strong>
+
+                            <span id="pendingCourses">
+                                0 pending
+                            </span>
+
+                        </div>
+
+                        <i
+                            data-lucide="chevron-right"
+                        ></i>
+
+                    </a>
+
+
+                    <a
+                        href="withdrawals.html"
+                        class="pending-action"
+                    >
+
+                        <div class="pending-action-icon gold">
+
+                            <i data-lucide="wallet-cards"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Withdrawal Reviews
+                            </strong>
+
+                            <span id="pendingWithdrawals">
+                                0 pending
+                            </span>
+
+                        </div>
+
+                        <i
+                            data-lucide="chevron-right"
+                        ></i>
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================
+             ACTIVITY + SYSTEM
+        ================================== -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- RECENT ACTIVITY -->
+
+            <div class="dashboard-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            ACTIVITY
+                        </span>
+
+                        <h2>
+                            Recent Platform Activity
+                        </h2>
+
+                    </div>
+
+
+                    <a
+                        href="notifications.html"
+                        class="text-link"
+                    >
+                        Notifications
+                    </a>
+
+                </div>
+
+
+                <div
+                    id="recentActivity"
+                    class="activity-list"
+                >
+
+                    <div class="dashboard-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading activity...
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- SYSTEM STATUS -->
+
+            <div class="dashboard-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            SYSTEM
+                        </span>
+
+                        <h2>
+                            Platform Status
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="system-status-list">
+
+
+                    <div class="system-status-item">
+
+                        <div>
+
+                            <span class="status-dot online"></span>
+
+                            <strong>
+                                Authentication
+                            </strong>
+
+                        </div>
+
+                        <span class="status-pill active">
+                            Operational
+                        </span>
+
+                    </div>
+
+
+                    <div class="system-status-item">
+
+                        <div>
+
+                            <span class="status-dot online"></span>
+
+                            <strong>
+                                Database
+                            </strong>
+
+                        </div>
+
+                        <span class="status-pill active">
+                            Operational
+                        </span>
+
+                    </div>
+
+
+                    <div class="system-status-item">
+
+                        <div>
+
+                            <span class="status-dot online"></span>
+
+                            <strong>
+                                Notifications
+                            </strong>
+
+                        </div>
+
+                        <span class="status-pill active">
+                            Operational
+                        </span>
+
+                    </div>
+
+
+                    <div class="system-status-item">
+
+                        <div>
+
+                            <span class="status-dot online"></span>
+
+                            <strong>
+                                Payments
+                            </strong>
+
+                        </div>
+
+                        <span class="status-pill active">
+                            Operational
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="system-note">
+
+                    <i data-lucide="info"></i>
+
+                    <span>
+                        System configuration is managed
+                        by the Founder Console.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================
+             QUICK ACTIONS
+        ================================== -->
+
+        <section class="dashboard-card quick-actions-card">
+
+
+            <div class="card-header">
+
+                <div>
+
+                    <span class="card-eyebrow">
+                        QUICK ACTIONS
+                    </span>
+
+                    <h2>
+                        Moderator Tools
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="quick-actions">
+
+
+                <a
+                    href="reports.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-action-icon red">
+
+                        <i data-lucide="flag"></i>
+
+                    </div>
+
+                    <span>
+                        Review Reports
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="students.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-action-icon blue">
+
+                        <i data-lucide="users"></i>
+
+                    </div>
+
+                    <span>
+                        Manage Students
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="instructors.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-action-icon purple">
+
+                        <i data-lucide="graduation-cap"></i>
+
+                    </div>
+
+                    <span>
+                        Review Instructors
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="announcements.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-action-icon gold">
+
+                        <i data-lucide="megaphone"></i>
+
+                    </div>
+
+                    <span>
+                        Announcements
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="certificates.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-action-icon green">
+
+                        <i data-lucide="badge-check"></i>
+
+                    </div>
+
+                    <span>
+                        Certificates
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="settings.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-action-icon slate">
+
+                        <i data-lucide="settings"></i>
+
+                    </div>
+
+                    <span>
+                        Admin Settings
+                    </span>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+    </section>
 
 </main>
 
+</div><!-- =========================================
+     APP
+========================================= --><script
+    type="module"
+    src="js/admin-app.js"
+></script>
+<script
+    type="module"
+    src="js/dashboard.js"
+></script>
 
+<script>
 
-</div>
+    lucide.createIcons();
 
-
-
-
-
-<script type="module" src="js/admin-app.js"></script>
-
-<script type="module" src="dashboard.js"></script>
-
-
-</body>
-
-</html>
+</script></body></html>

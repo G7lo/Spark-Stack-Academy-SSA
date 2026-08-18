@@ -1,40 +1,69 @@
-<div class="sidebar">
+<!-- ============================================================
+     SPARK STACK ACADEMY
+     ADMIN / MODERATOR SIDEBAR
+============================================================ -->
 
-    <div class="sidebar-header">
+<div class="admin-sidebar-inner">
 
-        <div class="logo">
+    <!-- BRAND -->
 
-            <div class="logo-icon">
+    <div class="admin-brand">
 
-                SSA
+        <div class="admin-brand-mark">
+            <span>SS</span>
+        </div>
 
-            </div>
-
-            <div>
-
-                <h2>
-
-                    Spark Stack
-
-                </h2>
-
-                <p>
-
-                    Admin Portal
-
-                </p>
-
-            </div>
-
+        <div class="admin-brand-text">
+            <strong>Spark Stack</strong>
+            <span>Moderator Console</span>
         </div>
 
     </div>
 
 
+    <!-- MODERATOR PROFILE -->
 
-    <nav class="sidebar-nav">
+    <div class="admin-profile-mini">
 
-        <a href="dashboard.html">
+        <div
+            class="admin-avatar"
+            id="adminSidebarAvatar"
+        >
+            A
+        </div>
+
+        <div class="admin-profile-info">
+
+            <strong id="adminSidebarName">
+                Administrator
+            </strong>
+
+            <span>
+                Moderator
+            </span>
+
+        </div>
+
+        <span class="admin-online-dot"></span>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="admin-navigation">
+
+
+        <span class="admin-nav-label">
+            OVERVIEW
+        </span>
+
+
+        <a
+            href="dashboard.html"
+            class="admin-nav-item"
+            data-page="dashboard"
+        >
 
             <i data-lucide="layout-dashboard"></i>
 
@@ -42,15 +71,17 @@
 
         </a>
 
-        <a href="admissions.html">
 
-            <i data-lucide="graduation-cap"></i>
+        <span class="admin-nav-label">
+            MODERATION
+        </span>
 
-            <span>Admissions</span>
 
-        </a>
-
-        <a href="students.html">
+        <a
+            href="students.html"
+            class="admin-nav-item"
+            data-page="students"
+        >
 
             <i data-lucide="users"></i>
 
@@ -58,15 +89,25 @@
 
         </a>
 
-        <a href="instructors.html">
 
-            <i data-lucide="user-check"></i>
+        <a
+            href="instructors.html"
+            class="admin-nav-item"
+            data-page="instructors"
+        >
+
+            <i data-lucide="graduation-cap"></i>
 
             <span>Instructors</span>
 
         </a>
 
-        <a href="courses.html">
+
+        <a
+            href="courses.html"
+            class="admin-nav-item"
+            data-page="courses"
+        >
 
             <i data-lucide="book-open"></i>
 
@@ -74,15 +115,94 @@
 
         </a>
 
-        <a href="reports.html">
 
-            <i data-lucide="bar-chart-3"></i>
+        <a
+            href="assignments.html"
+            class="admin-nav-item"
+            data-page="assignments"
+        >
 
-            <span>Reports</span>
+            <i data-lucide="clipboard-check"></i>
+
+            <span>Assignments</span>
 
         </a>
 
-        <a href="settings.html">
+
+        <a
+            href="reports.html"
+            class="admin-nav-item"
+            data-page="reports"
+        >
+
+            <i data-lucide="flag"></i>
+
+            <span>Reports</span>
+
+            <span
+                id="adminReportBadge"
+                class="admin-nav-badge hidden"
+            >
+                0
+            </span>
+
+        </a>
+
+
+        <span class="admin-nav-label">
+            COMMUNICATION
+        </span>
+
+
+        <a
+            href="announcements.html"
+            class="admin-nav-item"
+            data-page="announcements"
+        >
+
+            <i data-lucide="megaphone"></i>
+
+            <span>Announcements</span>
+
+        </a>
+
+
+        <a
+            href="notifications.html"
+            class="admin-nav-item"
+            data-page="notifications"
+        >
+
+            <i data-lucide="bell"></i>
+
+            <span>Notifications</span>
+
+        </a>
+
+
+        <span class="admin-nav-label">
+            ACCOUNT
+        </span>
+
+
+        <a
+            href="profile.html"
+            class="admin-nav-item"
+            data-page="profile"
+        >
+
+            <i data-lucide="user-round"></i>
+
+            <span>My Profile</span>
+
+        </a>
+
+
+        <a
+            href="settings.html"
+            class="admin-nav-item"
+            data-page="settings"
+        >
 
             <i data-lucide="settings"></i>
 
@@ -90,19 +210,56 @@
 
         </a>
 
+
     </nav>
 
 
+    <!-- BOTTOM -->
 
-    <div class="sidebar-footer">
+    <div class="admin-sidebar-bottom">
 
-        <button id="logoutBtn">
+
+        <div class="moderator-access-card">
+
+            <div class="access-icon">
+
+                <i data-lucide="shield-check"></i>
+
+            </div>
+
+            <div>
+
+                <strong>Moderator Access</strong>
+
+                <span>
+                    Operational controls only
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            id="adminLogoutBtn"
+            class="admin-logout-btn"
+            type="button"
+        >
 
             <i data-lucide="log-out"></i>
 
-            <span>Logout</span>
+            <span>
+                Sign Out
+            </span>
 
         </button>
+
+
+        <div class="admin-sidebar-footer">
+
+            Spark Stack Academy
+
+        </div>
 
     </div>
 
