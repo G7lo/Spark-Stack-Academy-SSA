@@ -3,202 +3,745 @@
 
 <head>
 
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <title>Courses Management | Spark Stack Academy</title>
+    <title>
+        Courses | Admin Console | Spark Stack Academy
+    </title>
 
-  <link rel="stylesheet"
-    href="courses.css">
+
+    <!-- =====================================================
+         CORE CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/admin-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/courses.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- =====================================================
+         FONT
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         ICONS
+    ====================================================== -->
+
+    <script
+        src="https://unpkg.com/lucide@latest"
+    ></script>
 
 </head>
 
+
 <body>
 
-  <div class="dashboard-layout">
 
-    <!-- SIDEBAR -->
-    <aside id="sidebarContainer"></aside>
+<div class="admin-app">
 
-    <div id="sidebarOverlay"></div>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-      <div id="topbarContainer"></div>
+    <aside
+        id="adminSidebar"
+        class="admin-sidebar"
+    ></aside>
 
-      <section class="page">
 
-        <div class="page-header">
+    <!-- =====================================================
+         MOBILE OVERLAY
+    ====================================================== -->
 
-          <div>
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
 
-            <h1>Courses Management</h1>
 
-            <p>
-              Manage all academy courses, instructors,
-              enrollments, and publication status.
-            </p>
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
 
-          </div>
+    <main class="admin-main">
 
-          <button class="add-course-btn"
-            id="addCourseBtn">
 
-            + New Course
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
 
-          </button>
+        <header
+            id="adminTopbar"
+            class="admin-topbar"
+        ></header>
 
-        </div>
 
+        <!-- =================================================
+             PAGE
+        ================================================== -->
 
-        <!-- COURSE STATS -->
+        <section class="admin-page courses-page">
 
-        <div class="stats-grid">
 
-          <div class="stat-card">
+            <!-- =================================================
+                 PAGE HEADER
+            ================================================== -->
 
-            <h3>Total Courses</h3>
+            <div class="page-header courses-page-header">
 
-            <p id="totalCourses">0</p>
+                <div>
 
-          </div>
+                    <span class="page-eyebrow">
+                        COURSE MANAGEMENT
+                    </span>
 
-          <div class="stat-card">
+                    <h1>
+                        Courses
+                    </h1>
 
-            <h3>Published</h3>
+                    <p>
+                        Manage academy courses, instructors,
+                        enrollments and course performance.
+                    </p>
 
-            <p id="publishedCourses">0</p>
+                </div>
 
-          </div>
 
-          <div class="stat-card">
+                <div class="courses-header-actions">
 
-            <h3>Drafts</h3>
+                    <button
+                        type="button"
+                        class="admin-btn secondary"
+                        id="refreshCoursesBtn"
+                    >
 
-            <p id="draftCourses">0</p>
+                        <i data-lucide="refresh-cw"></i>
 
-          </div>
+                        Refresh
 
-          <div class="stat-card">
+                    </button>
 
-            <h3>Total Enrollments</h3>
+                </div>
 
-            <p id="totalEnrollments">0</p>
+            </div>
 
-          </div>
 
-        </div>
+            <!-- =================================================
+                 COURSE STATS
+            ================================================== -->
 
+            <section class="admin-stat-grid courses-stats">
 
-        <!-- TABLE -->
 
-        <div class="table-card">
+                <!-- TOTAL -->
 
-          <div class="table-top">
+                <article class="admin-stat">
 
-            <h2>All Courses</h2>
+                    <div class="admin-stat-top">
 
-            <input type="text"
-              id="searchInput"
-              placeholder="Search courses, instructors, or categories...">
+                        <div class="admin-stat-icon blue">
 
-          </div>
+                            <i data-lucide="book-open"></i>
 
-          <div class="table-wrapper">
+                        </div>
 
-            <table class="courses-table">
+                    </div>
 
-              <thead>
+                    <span>
+                        Total Courses
+                    </span>
 
-                <tr>
+                    <strong id="totalCourses">
+                        0
+                    </strong>
 
-                  <th>Course</th>
+                </article>
 
-                  <th>Instructor</th>
 
-                  <th>Category</th>
+                <!-- PUBLISHED -->
 
-                  <th>Enrollments</th>
+                <article class="admin-stat">
 
-                  <th>Status</th>
+                    <div class="admin-stat-top">
 
-                  <th>Actions</th>
+                        <div class="admin-stat-icon green">
 
-                </tr>
+                            <i data-lucide="circle-check"></i>
 
-              </thead>
+                        </div>
 
-              <tbody id="coursesTableBody">
+                    </div>
 
-                <tr>
+                    <span>
+                        Published
+                    </span>
 
-                  <td colspan="6"
-                    class="loading-row">
+                    <strong id="publishedCourses">
+                        0
+                    </strong>
 
-                    Loading courses...
+                </article>
 
-                  </td>
 
-                </tr>
+                <!-- DRAFT -->
 
-              </tbody>
+                <article class="admin-stat">
 
-            </table>
+                    <div class="admin-stat-top">
 
-          </div>
+                        <div class="admin-stat-icon gold">
 
-        </div>
+                            <i data-lucide="file-pen-line"></i>
 
-      </section>
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Drafts
+                    </span>
+
+                    <strong id="draftCourses">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <!-- STUDENTS -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon purple">
+
+                            <i data-lucide="users"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Total Enrollments
+                    </span>
+
+                    <strong id="totalEnrollments">
+                        0
+                    </strong>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 COURSE MANAGEMENT CARD
+            ================================================== -->
+
+            <section class="admin-card courses-management-card">
+
+
+                <!-- =================================================
+                     TOOLBAR
+                ================================================== -->
+
+                <div class="courses-toolbar">
+
+
+                    <!-- SEARCH -->
+
+                    <div class="admin-search courses-search">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            type="search"
+                            id="courseSearch"
+                            placeholder="Search courses..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <!-- FILTERS -->
+
+                    <div class="courses-filters">
+
+
+                        <select
+                            id="courseStatusFilter"
+                            aria-label="Filter courses by status"
+                        >
+
+                            <option value="all">
+                                All Status
+                            </option>
+
+                            <option value="published">
+                                Published
+                            </option>
+
+                            <option value="draft">
+                                Draft
+                            </option>
+
+                        </select>
+
+
+                        <select
+                            id="courseInstructorFilter"
+                            aria-label="Filter courses by instructor"
+                        >
+
+                            <option value="all">
+                                All Instructors
+                            </option>
+
+                        </select>
+
+
+                        <select
+                            id="courseSort"
+                            aria-label="Sort courses"
+                        >
+
+                            <option value="newest">
+                                Newest First
+                            </option>
+
+                            <option value="oldest">
+                                Oldest First
+                            </option>
+
+                            <option value="name">
+                                Name A–Z
+                            </option>
+
+                            <option value="name-desc">
+                                Name Z–A
+                            </option>
+
+                            <option value="popular">
+                                Most Enrolled
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     RESULTS BAR
+                ================================================== -->
+
+                <div class="courses-results-bar">
+
+                    <div>
+
+                        <strong id="courseResultsCount">
+                            0
+                        </strong>
+
+                        <span>
+                            courses found
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="clearCourseFilters"
+                        class="text-link"
+                    >
+                        Clear Filters
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     TABLE
+                ================================================== -->
+
+                <div class="admin-table-wrap courses-table-wrap">
+
+                    <table class="admin-table courses-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Course
+                                </th>
+
+                                <th>
+                                    Instructor
+                                </th>
+
+                                <th>
+                                    Students
+                                </th>
+
+                                <th>
+                                    Price
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Created
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="coursesTableBody">
+
+
+                            <!-- LOADING -->
+
+                            <tr id="coursesLoadingRow">
+
+                                <td
+                                    colspan="7"
+                                    class="table-state-cell"
+                                >
+
+                                    <div class="table-loading">
+
+                                        <div class="loading-spinner"></div>
+
+                                        <span>
+                                            Loading courses...
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- =================================================
+                     EMPTY STATE
+                ================================================== -->
+
+                <div
+                    id="coursesEmptyState"
+                    class="admin-empty hidden"
+                >
+
+                    <i data-lucide="book-open"></i>
+
+                    <h3>
+                        No courses found
+                    </h3>
+
+                    <p>
+                        Try changing your search or filters.
+                    </p>
+
+                </div>
+
+
+                <!-- =================================================
+                     PAGINATION
+                ================================================== -->
+
+                <div
+                    id="coursesPagination"
+                    class="courses-pagination"
+                ></div>
+
+
+            </section>
+
+
+        </section>
 
     </main>
 
-  </div>
+</div>
 
 
-  <!-- COURSE MODAL -->
+<!-- =========================================================
+     COURSE DETAILS MODAL
+========================================================= -->
 
-  <div class="modal"
-    id="courseModal">
+<div
+    id="courseDetailsModal"
+    class="admin-modal hidden"
+    aria-hidden="true"
+>
 
-    <div class="modal-content">
 
-      <div class="modal-header">
+    <div class="admin-modal-backdrop"></div>
 
-        <h3 id="modalTitle">
-          Course Details
-        </h3>
 
-        <button class="close-btn"
-          id="closeModal">
+    <div
+        class="admin-modal-panel course-details-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="courseDetailsTitle"
+    >
 
-          &times;
 
-        </button>
+        <!-- HEADER -->
 
-      </div>
+        <div class="admin-modal-header">
 
-      <div class="modal-body"
-        id="modalBody">
+            <div>
 
-        Loading...
+                <span class="page-eyebrow">
+                    COURSE OVERVIEW
+                </span>
 
-      </div>
+                <h2 id="courseDetailsTitle">
+                    Course Details
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close-btn"
+                id="closeCourseDetails"
+                aria-label="Close"
+            >
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- COURSE SUMMARY -->
+
+        <div class="course-modal-summary">
+
+
+            <div
+                id="courseModalIcon"
+                class="course-modal-icon"
+            >
+
+                <i data-lucide="book-open"></i>
+
+            </div>
+
+
+            <div class="course-modal-info">
+
+                <h3 id="courseModalName">
+                    Course Name
+                </h3>
+
+                <span id="courseModalInstructor">
+                    Instructor
+                </span>
+
+                <span
+                    id="courseModalStatus"
+                    class="admin-badge published"
+                >
+                    Published
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- COURSE DETAILS -->
+
+        <div class="course-details-grid">
+
+
+            <div class="course-detail-item">
+
+                <span>
+                    Course ID
+                </span>
+
+                <strong id="courseModalId">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="course-detail-item">
+
+                <span>
+                    Students
+                </span>
+
+                <strong id="courseModalStudents">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="course-detail-item">
+
+                <span>
+                    Price
+                </span>
+
+                <strong id="courseModalPrice">
+                    KSh 0
+                </strong>
+
+            </div>
+
+
+            <div class="course-detail-item">
+
+                <span>
+                    Created
+                </span>
+
+                <strong id="courseModalCreated">
+                    —
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="course-modal-actions">
+
+            <button
+                type="button"
+                class="admin-btn secondary"
+                id="viewCourseProfileBtn"
+            >
+
+                <i data-lucide="external-link"></i>
+
+                View Course
+
+            </button>
+
+
+            <button
+                type="button"
+                class="admin-btn danger"
+                id="toggleCourseStatusBtn"
+            >
+
+                <i data-lucide="eye-off"></i>
+
+                Unpublish Course
+
+            </button>
+
+        </div>
+
 
     </div>
 
-  </div>
+</div>
 
 
-  <script type="module"
-    src="../js/admin-app.js"></script>
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
 
-  <script type="module"
-    src="courses.js"></script>
+<script
+    type="module"
+    src="js/admin-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/courses.js"
+></script>
+
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+
+        }
+    );
+
+</script>
+
 
 </body>
-
 </html>

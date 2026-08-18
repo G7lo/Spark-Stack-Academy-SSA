@@ -1,0 +1,934 @@
+/* ============================================================
+   SPARK STACK ACADEMY
+   ADMIN — ANNOUNCEMENTS
+============================================================ */
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+
+.announcements-page-header {
+    margin-bottom: 22px;
+}
+
+.announcements-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* ============================================================
+   STATS
+============================================================ */
+
+.announcements-stats {
+    margin-bottom: 24px;
+}
+
+
+/* ============================================================
+   QUICK BROADCAST
+============================================================ */
+
+.announcement-broadcast-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+    padding: 22px 24px;
+    border: 1px solid #dbe7f7;
+    background:
+        linear-gradient(
+            135deg,
+            #f7fbff 0%,
+            #ffffff 55%,
+            #f8faff 100%
+        );
+    overflow: hidden;
+    position: relative;
+}
+
+.announcement-broadcast-card::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    right: -70px;
+    top: -90px;
+    border-radius: 50%;
+    background: rgba(41,121,255,.06);
+    pointer-events: none;
+}
+
+.broadcast-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.broadcast-icon {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: #eaf2ff;
+    color: var(--admin-blue);
+}
+
+.broadcast-icon i {
+    width: 22px;
+    height: 22px;
+}
+
+.broadcast-content h2 {
+    margin-top: 3px;
+    color: var(--admin-navy);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.broadcast-content p {
+    margin-top: 3px;
+    color: var(--admin-muted);
+    font-size: 11px;
+}
+
+.announcement-broadcast-card > .admin-btn {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   MANAGEMENT CARD
+============================================================ */
+
+.announcements-management-card {
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   TOOLBAR
+============================================================ */
+
+.announcements-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--admin-border);
+    background: #fff;
+}
+
+.announcements-search {
+    width: min(430px, 100%);
+}
+
+.announcements-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.announcements-filters select {
+    min-width: 145px;
+    height: 42px;
+    padding: 0 34px 0 12px;
+    border: 1px solid var(--admin-border);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--admin-text);
+    outline: none;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: .18s ease;
+}
+
+.announcements-filters select:hover {
+    border-color: #c5cfdd;
+}
+
+.announcements-filters select:focus {
+    border-color: var(--admin-blue);
+    box-shadow: 0 0 0 3px rgba(41,121,255,.1);
+}
+
+
+/* ============================================================
+   RESULTS BAR
+============================================================ */
+
+.announcements-results-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 22px;
+    background: #fafbfd;
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.announcements-results-bar > div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.announcements-results-bar strong {
+    color: var(--admin-navy);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.announcements-results-bar span {
+    color: var(--admin-muted);
+    font-size: 12px;
+}
+
+.text-link {
+    border: 0;
+    background: transparent;
+    color: var(--admin-blue);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.text-link:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   TABLE
+============================================================ */
+
+.announcements-table-wrap {
+    min-height: 280px;
+}
+
+.announcements-table {
+    min-width: 950px;
+}
+
+.announcements-table th {
+    white-space: nowrap;
+}
+
+.announcements-table td {
+    vertical-align: middle;
+}
+
+
+/* ============================================================
+   ANNOUNCEMENT CELL
+============================================================ */
+
+.announcement-cell {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 230px;
+}
+
+.announcement-cell-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: #edf4ff;
+    color: var(--admin-blue);
+}
+
+.announcement-cell-icon.important {
+    background: #fff7df;
+    color: #b77900;
+}
+
+.announcement-cell-icon.urgent {
+    background: #fff0ef;
+    color: #d92d20;
+}
+
+.announcement-cell-icon i {
+    width: 17px;
+    height: 17px;
+}
+
+.announcement-cell-info {
+    min-width: 0;
+}
+
+.announcement-cell-info strong {
+    display: block;
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--admin-navy);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.announcement-cell-info span {
+    display: block;
+    margin-top: 3px;
+    color: var(--admin-muted);
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   AUDIENCE
+============================================================ */
+
+.announcement-audience {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: #f2f5f9;
+    color: #475467;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.announcement-audience i {
+    width: 12px;
+    height: 12px;
+}
+
+
+/* ============================================================
+   PRIORITY
+============================================================ */
+
+.announcement-priority {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.announcement-priority::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.announcement-priority.normal {
+    background: #f1f4f8;
+    color: #667085;
+}
+
+.announcement-priority.normal::before {
+    background: #98a2b3;
+}
+
+.announcement-priority.important {
+    background: #fff6d8;
+    color: #9a6700;
+}
+
+.announcement-priority.important::before {
+    background: #f59e0b;
+}
+
+.announcement-priority.urgent {
+    background: #ffe9e7;
+    color: #b42318;
+}
+
+.announcement-priority.urgent::before {
+    background: #ef4444;
+}
+
+
+/* ============================================================
+   STATUS
+============================================================ */
+
+.announcement-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.announcement-status::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.announcement-status.published {
+    color: #16803c;
+    background: #e9f8ef;
+}
+
+.announcement-status.published::before {
+    background: #22c55e;
+}
+
+.announcement-status.scheduled {
+    color: #8a5a00;
+    background: #fff6d8;
+}
+
+.announcement-status.scheduled::before {
+    background: #f59e0b;
+}
+
+.announcement-status.draft {
+    color: #667085;
+    background: #f2f4f7;
+}
+
+.announcement-status.draft::before {
+    background: #98a2b3;
+}
+
+
+/* ============================================================
+   REACH
+============================================================ */
+
+.announcement-reach {
+    min-width: 80px;
+}
+
+.announcement-reach strong {
+    display: block;
+    color: var(--admin-navy);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.announcement-reach span {
+    display: block;
+    margin-top: 2px;
+    color: var(--admin-muted);
+    font-size: 9px;
+}
+
+
+/* ============================================================
+   ROW ACTIONS
+============================================================ */
+
+.announcement-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.announcement-action-btn {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 9px;
+    background: #f5f7fb;
+    color: #667085;
+    cursor: pointer;
+    transition: .18s ease;
+}
+
+.announcement-action-btn:hover {
+    background: #eaf2ff;
+    color: var(--admin-blue);
+}
+
+.announcement-action-btn.danger:hover {
+    background: #fff0f0;
+    color: #d92d20;
+}
+
+.announcement-action-btn i {
+    width: 16px;
+    height: 16px;
+}
+
+
+/* ============================================================
+   TABLE LOADING
+============================================================ */
+
+.table-state-cell {
+    height: 260px;
+    text-align: center !important;
+}
+
+.table-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--admin-muted);
+    font-size: 12px;
+}
+
+.loading-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #dfe5ef;
+    border-top-color: var(--admin-blue);
+    border-radius: 50%;
+    animation: announcementSpin .7s linear infinite;
+}
+
+@keyframes announcementSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.announcements-page .admin-empty {
+    padding: 65px 20px;
+}
+
+.announcements-page .admin-empty i {
+    color: #aab4c3;
+}
+
+
+/* ============================================================
+   PAGINATION
+============================================================ */
+
+.announcements-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 17px 22px;
+    border-top: 1px solid var(--admin-border);
+}
+
+.announcement-page-btn {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 9px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    background: #fff;
+    color: #667085;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.announcement-page-btn:hover {
+    border-color: var(--admin-blue);
+    color: var(--admin-blue);
+}
+
+.announcement-page-btn.active {
+    background: var(--admin-blue);
+    border-color: var(--admin-blue);
+    color: #fff;
+}
+
+.announcement-page-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
+   ANALYTICS GRID
+============================================================ */
+
+.announcements-analytics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 24px;
+}
+
+.announcement-analytics-card {
+    min-width: 0;
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   DELIVERY METRICS
+============================================================ */
+
+.announcement-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 0 22px 22px;
+}
+
+.announcement-metrics > div {
+    padding: 15px;
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    background: #fafbfd;
+}
+
+.announcement-metrics span {
+    display: block;
+    color: var(--admin-muted);
+    font-size: 10px;
+}
+
+.announcement-metrics strong {
+    display: block;
+    margin-top: 5px;
+    color: var(--admin-navy);
+    font-size: 18px;
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   AUDIENCE BREAKDOWN
+============================================================ */
+
+.announcement-audience-breakdown {
+    padding: 0 22px 22px;
+}
+
+.audience-breakdown-item {
+    margin-bottom: 15px;
+}
+
+.audience-breakdown-item:last-child {
+    margin-bottom: 0;
+}
+
+.audience-breakdown-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.audience-breakdown-head span {
+    color: #475467;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.audience-breakdown-head strong {
+    color: var(--admin-navy);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.audience-breakdown-bar {
+    height: 7px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #edf1f6;
+}
+
+.audience-breakdown-bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(
+        90deg,
+        var(--admin-blue),
+        #6d5dfc
+    );
+}
+
+
+/* ============================================================
+   MODAL
+============================================================ */
+
+.announcement-modal {
+    width: min(680px, 100%);
+}
+
+.announcement-modal form {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ============================================================
+   FORM BODY
+============================================================ */
+
+.announcement-form-body {
+    padding: 24px 25px;
+}
+
+.form-field {
+    margin-bottom: 18px;
+}
+
+.form-field:last-child {
+    margin-bottom: 0;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--admin-navy);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+    width: 100%;
+    border: 1px solid var(--admin-border);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--admin-text);
+    outline: none;
+    font-family: inherit;
+    font-size: 12px;
+    transition: .18s ease;
+}
+
+.form-field input,
+.form-field select {
+    height: 43px;
+    padding: 0 12px;
+}
+
+.form-field textarea {
+    min-height: 130px;
+    padding: 12px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+    color: #98a2b3;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+    border-color: var(--admin-blue);
+    box-shadow: 0 0 0 3px rgba(41,121,255,.1);
+}
+
+
+/* ============================================================
+   FORM GRID
+============================================================ */
+
+.announcement-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+
+/* ============================================================
+   FORM OPTIONS
+============================================================ */
+
+.announcement-form-options {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    padding: 15px;
+    margin-top: 2px;
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    background: #fafbfd;
+}
+
+.announcement-check {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #475467;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.announcement-check input {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    accent-color: var(--admin-blue);
+}
+
+
+/* ============================================================
+   MODAL ACTIONS
+============================================================ */
+
+.announcement-modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 9px;
+    padding: 18px 25px;
+    border-top: 1px solid var(--admin-border);
+    background: #fafbfd;
+}
+
+.announcement-modal-actions .admin-btn {
+    min-height: 40px;
+}
+
+
+/* ============================================================
+   HIDDEN
+============================================================ */
+
+.announcements-page .hidden {
+    display: none !important;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 1050px) {
+
+    .announcements-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .announcements-search {
+        width: 100%;
+    }
+
+    .announcements-filters {
+        width: 100%;
+    }
+
+    .announcements-filters select {
+        flex: 1;
+        min-width: 0;
+    }
+
+}
+
+
+@media (max-width: 850px) {
+
+    .announcements-analytics-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .announcements-page-header {
+        gap: 15px;
+    }
+
+    .announcements-header-actions {
+        width: 100%;
+    }
+
+    .announcements-header-actions .admin-btn {
+        flex: 1;
+    }
+
+    .announcement-broadcast-card {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 18px;
+    }
+
+    .announcement-broadcast-card > .admin-btn {
+        width: 100%;
+    }
+
+    .announcements-toolbar {
+        padding: 16px;
+    }
+
+    .announcements-filters {
+        flex-direction: column;
+    }
+
+    .announcements-filters select {
+        width: 100%;
+    }
+
+    .announcements-results-bar {
+        padding: 12px 16px;
+    }
+
+    .announcements-pagination {
+        justify-content: center;
+        padding: 15px;
+    }
+
+    .announcement-metrics {
+        grid-template-columns: 1fr;
+        padding: 0 16px 18px;
+    }
+
+    .announcement-audience-breakdown {
+        padding: 0 16px 18px;
+    }
+
+    .announcement-form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .announcement-form-body {
+        padding: 20px 18px;
+    }
+
+    .announcement-modal-actions {
+        flex-direction: column-reverse;
+        padding: 16px 18px;
+    }
+
+    .announcement-modal-actions .admin-btn {
+        width: 100%;
+    }
+
+    .admin-modal-header {
+        padding: 20px 18px;
+    }
+
+}

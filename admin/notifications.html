@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Notifications | Admin Console | Spark Stack Academy
+    </title>
+
+
+    <!-- =====================================================
+         CORE CSS
+    ====================================================== -->
+
+    <link rel="stylesheet" href="css/admin-core.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+
+    <!-- =====================================================
+         FONT
+    ====================================================== -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         ICONS
+    ====================================================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="admin-app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="adminSidebar"
+        class="admin-sidebar"
+    ></aside>
+
+
+    <!-- MOBILE OVERLAY -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="admin-main">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header
+            id="adminTopbar"
+            class="admin-topbar"
+        ></header>
+
+
+        <!-- =================================================
+             PAGE
+        ================================================== -->
+
+        <section class="admin-page notifications-page">
+
+
+            <!-- =================================================
+                 PAGE HEADER
+            ================================================== -->
+
+            <div class="page-header notifications-page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        COMMUNICATION CENTER
+                    </span>
+
+                    <h1>
+                        Notifications
+                    </h1>
+
+                    <p>
+                        Monitor system alerts, user notifications
+                        and academy communication activity.
+                    </p>
+
+                </div>
+
+
+                <div class="notifications-header-actions">
+
+                    <button
+                        type="button"
+                        class="admin-btn secondary"
+                        id="refreshNotificationsBtn"
+                    >
+
+                        <i data-lucide="refresh-cw"></i>
+
+                        Refresh
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="admin-btn primary"
+                        id="createNotificationBtn"
+                    >
+
+                        <i data-lucide="send"></i>
+
+                        Send Notification
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 STATS
+            ================================================== -->
+
+            <section class="admin-stat-grid notifications-stats">
+
+
+                <!-- TOTAL -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon blue">
+
+                            <i data-lucide="bell"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Total Notifications
+                    </span>
+
+                    <strong id="totalNotifications">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <!-- UNREAD -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon gold">
+
+                            <i data-lucide="bell-ring"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Unread
+                    </span>
+
+                    <strong id="unreadNotifications">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <!-- SENT -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon green">
+
+                            <i data-lucide="send"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Sent
+                    </span>
+
+                    <strong id="sentNotifications">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <!-- SYSTEM -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon purple">
+
+                            <i data-lucide="cpu"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        System Alerts
+                    </span>
+
+                    <strong id="systemNotifications">
+                        0
+                    </strong>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 NOTIFICATION HEALTH
+            ================================================== -->
+
+            <section class="admin-card notification-health-card">
+
+                <div class="notification-health-content">
+
+
+                    <div class="notification-health-icon">
+
+                        <i data-lucide="activity"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="page-eyebrow">
+                            DELIVERY HEALTH
+                        </span>
+
+                        <h2>
+                            Notification System
+                        </h2>
+
+                        <p>
+                            Monitor notification delivery and
+                            communication activity across the academy.
+                        </p>
+
+                    </div>
+
+
+                    <div class="notification-health-status">
+
+                        <span class="health-dot"></span>
+
+                        <strong>
+                            Operational
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 MANAGEMENT
+            ================================================== -->
+
+            <section class="admin-card notifications-management-card">
+
+
+                <!-- =================================================
+                     TOOLBAR
+                ================================================== -->
+
+                <div class="notifications-toolbar">
+
+
+                    <!-- SEARCH -->
+
+                    <div class="admin-search notifications-search">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            type="search"
+                            id="notificationSearch"
+                            placeholder="Search notifications..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <!-- FILTERS -->
+
+                    <div class="notifications-filters">
+
+
+                        <select
+                            id="notificationTypeFilter"
+                            aria-label="Filter notifications by type"
+                        >
+
+                            <option value="all">
+                                All Types
+                            </option>
+
+                            <option value="system">
+                                System
+                            </option>
+
+                            <option value="announcement">
+                                Announcement
+                            </option>
+
+                            <option value="report">
+                                Report
+                            </option>
+
+                            <option value="warning">
+                                Warning
+                            </option>
+
+                            <option value="course">
+                                Course
+                            </option>
+
+                            <option value="account">
+                                Account
+                            </option>
+
+                        </select>
+
+
+                        <select
+                            id="notificationStatusFilter"
+                            aria-label="Filter notifications by status"
+                        >
+
+                            <option value="all">
+                                All Status
+                            </option>
+
+                            <option value="unread">
+                                Unread
+                            </option>
+
+                            <option value="read">
+                                Read
+                            </option>
+
+                            <option value="sent">
+                                Sent
+                            </option>
+
+                        </select>
+
+
+                        <select
+                            id="notificationSort"
+                            aria-label="Sort notifications"
+                        >
+
+                            <option value="newest">
+                                Newest First
+                            </option>
+
+                            <option value="oldest">
+                                Oldest First
+                            </option>
+
+                            <option value="priority">
+                                Highest Priority
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     RESULTS BAR
+                ================================================== -->
+
+                <div class="notifications-results-bar">
+
+                    <div>
+
+                        <strong id="notificationResultsCount">
+                            0
+                        </strong>
+
+                        <span>
+                            notifications
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="text-link"
+                        id="markAllNotificationsRead"
+                    >
+
+                        Mark All as Read
+
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     NOTIFICATION LIST
+                ================================================== -->
+
+                <div
+                    id="notificationsList"
+                    class="notifications-list"
+                >
+
+
+                    <!-- LOADING -->
+
+                    <div class="notification-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading notifications...
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     EMPTY STATE
+                ================================================== -->
+
+                <div
+                    id="notificationsEmptyState"
+                    class="admin-empty hidden"
+                >
+
+                    <i data-lucide="bell-off"></i>
+
+                    <h3>
+                        No notifications found
+                    </h3>
+
+                    <p>
+                        There are no notifications matching
+                        your current filters.
+                    </p>
+
+                </div>
+
+
+                <!-- =================================================
+                     PAGINATION
+                ================================================== -->
+
+                <div
+                    id="notificationsPagination"
+                    class="notifications-pagination"
+                ></div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 NOTIFICATION ANALYTICS
+            ================================================== -->
+
+            <section class="notifications-analytics-grid">
+
+
+                <!-- DELIVERY -->
+
+                <div class="admin-card notification-analytics-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                DELIVERY
+                            </span>
+
+                            <h2>
+                                Delivery Performance
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="notification-metrics">
+
+
+                        <div>
+
+                            <span>
+                                Delivered
+                            </span>
+
+                            <strong id="notificationsDelivered">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Read
+                            </span>
+
+                            <strong id="notificationsRead">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Read Rate
+                            </span>
+
+                            <strong id="notificationReadRate">
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- TYPES -->
+
+                <div class="admin-card notification-analytics-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                ACTIVITY
+                            </span>
+
+                            <h2>
+                                Notification Breakdown
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="notificationTypeBreakdown"
+                        class="notification-type-breakdown"
+                    ></div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 RECENT ACTIVITY
+            ================================================== -->
+
+            <section class="admin-card notification-activity-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="page-eyebrow">
+                            ACTIVITY LOG
+                        </span>
+
+                        <h2>
+                            Recent Notification Activity
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="notificationActivityLog"
+                    class="notification-activity-log"
+                >
+
+                    <div class="notification-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading activity...
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<!-- =========================================================
+     SEND NOTIFICATION MODAL
+========================================================= -->
+
+<div
+    id="notificationModal"
+    class="admin-modal hidden"
+    aria-hidden="true"
+>
+
+
+    <div class="admin-modal-backdrop"></div>
+
+
+    <div
+        class="admin-modal-panel notification-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="notificationModalTitle"
+    >
+
+
+        <!-- HEADER -->
+
+        <div class="admin-modal-header">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    COMMUNICATION
+                </span>
+
+                <h2 id="notificationModalTitle">
+                    Send Notification
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close-btn"
+                id="closeNotificationModal"
+                aria-label="Close"
+            >
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form id="notificationForm">
+
+
+            <div class="notification-form-body">
+
+
+                <!-- RECIPIENT -->
+
+                <div class="form-field">
+
+                    <label for="notificationRecipient">
+
+                        Recipient
+
+                    </label>
+
+
+                    <select
+                        id="notificationRecipient"
+                        required
+                    >
+
+                        <option value="all-users">
+                            Everyone
+                        </option>
+
+                        <option value="students">
+                            All Students
+                        </option>
+
+                        <option value="instructors">
+                            All Instructors
+                        </option>
+
+                        <option value="specific-user">
+                            Specific User
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- SPECIFIC USER -->
+
+                <div
+                    id="specificUserField"
+                    class="form-field hidden"
+                >
+
+                    <label for="notificationUserSearch">
+
+                        User
+
+                    </label>
+
+
+                    <div class="admin-search">
+
+                        <i data-lucide="user-search"></i>
+
+                        <input
+                            type="text"
+                            id="notificationUserSearch"
+                            placeholder="Search user..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <div
+                        id="notificationUserResults"
+                        class="notification-user-results"
+                    ></div>
+
+                </div>
+
+
+                <!-- TYPE + PRIORITY -->
+
+                <div class="notification-form-grid">
+
+
+                    <div class="form-field">
+
+                        <label for="notificationType">
+
+                            Notification Type
+
+                        </label>
+
+
+                        <select
+                            id="notificationType"
+                            required
+                        >
+
+                            <option value="system">
+                                System
+                            </option>
+
+                            <option value="announcement">
+                                Announcement
+                            </option>
+
+                            <option value="warning">
+                                Warning
+                            </option>
+
+                            <option value="course">
+                                Course
+                            </option>
+
+                            <option value="account">
+                                Account
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="notificationPriority">
+
+                            Priority
+
+                        </label>
+
+
+                        <select id="notificationPriority">
+
+                            <option value="normal">
+                                Normal
+                            </option>
+
+                            <option value="important">
+                                Important
+                            </option>
+
+                            <option value="urgent">
+                                Urgent
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- TITLE -->
+
+                <div class="form-field">
+
+                    <label for="notificationTitle">
+
+                        Title
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="notificationTitle"
+                        maxlength="120"
+                        placeholder="Notification title"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- MESSAGE -->
+
+                <div class="form-field">
+
+                    <label for="notificationMessage">
+
+                        Message
+
+                    </label>
+
+
+                    <textarea
+                        id="notificationMessage"
+                        rows="5"
+                        maxlength="2000"
+                        placeholder="Write your notification..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- OPTIONS -->
+
+                <div class="notification-form-options">
+
+
+                    <label class="notification-check">
+
+                        <input
+                            type="checkbox"
+                            id="sendPushNotification"
+                            checked
+                        >
+
+                        <span>
+                            Send push notification
+                        </span>
+
+                    </label>
+
+
+                    <label class="notification-check">
+
+                        <input
+                            type="checkbox"
+                            id="saveNotificationHistory"
+                            checked
+                        >
+
+                        <span>
+                            Save to notification history
+                        </span>
+
+                    </label>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="notification-modal-actions">
+
+
+                <button
+                    type="button"
+                    class="admin-btn secondary"
+                    id="cancelNotificationBtn"
+                >
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="admin-btn primary"
+                    id="sendNotificationBtn"
+                >
+
+                    <i data-lucide="send"></i>
+
+                    Send Notification
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
+
+<script
+    type="module"
+    src="js/admin-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/notifications.js"
+></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (window.lucide) {
+
+            lucide.createIcons();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

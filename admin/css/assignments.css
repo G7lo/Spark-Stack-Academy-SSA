@@ -1,0 +1,700 @@
+/* ============================================================
+   SPARK STACK ACADEMY
+   ADMIN — ASSIGNMENTS
+============================================================ */
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+
+.assignments-page-header {
+    margin-bottom: 22px;
+}
+
+.assignments-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* ============================================================
+   STATISTICS
+============================================================ */
+
+.assignments-stats {
+    margin-bottom: 24px;
+}
+
+
+/* ============================================================
+   MANAGEMENT CARD
+============================================================ */
+
+.assignments-management-card {
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   TOOLBAR
+============================================================ */
+
+.assignments-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--admin-border);
+    background: #fff;
+}
+
+.assignments-search {
+    width: min(430px, 100%);
+}
+
+.assignments-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.assignments-filters select {
+    min-width: 145px;
+    height: 42px;
+    padding: 0 34px 0 12px;
+    border: 1px solid var(--admin-border);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--admin-text);
+    outline: none;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.assignments-filters select:focus {
+    border-color: var(--admin-blue);
+    box-shadow: 0 0 0 3px rgba(41,121,255,.1);
+}
+
+
+/* ============================================================
+   RESULTS BAR
+============================================================ */
+
+.assignments-results-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 22px;
+    background: #fafbfd;
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.assignments-results-bar > div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.assignments-results-bar strong {
+    color: var(--admin-navy);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.assignments-results-bar span {
+    color: var(--admin-muted);
+    font-size: 12px;
+}
+
+.assignments-page .text-link {
+    color: var(--admin-blue);
+    font-size: 11px;
+    font-weight: 700;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.assignments-page .text-link:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   TABLE
+============================================================ */
+
+.assignments-table-wrap {
+    min-height: 300px;
+    overflow-x: auto;
+}
+
+.assignments-table {
+    min-width: 1000px;
+}
+
+.assignments-table th {
+    white-space: nowrap;
+}
+
+.assignments-table td {
+    vertical-align: middle;
+}
+
+
+/* ============================================================
+   ASSIGNMENT CELL
+============================================================ */
+
+.assignment-cell {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 210px;
+}
+
+.assignment-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #eaf2ff;
+    color: var(--admin-blue);
+}
+
+.assignment-icon i {
+    width: 17px;
+    height: 17px;
+}
+
+.assignment-cell-info {
+    min-width: 0;
+}
+
+.assignment-cell-info strong {
+    display: block;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--admin-navy);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.assignment-cell-info span {
+    display: block;
+    margin-top: 2px;
+    color: var(--admin-muted);
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   COURSE CELL
+============================================================ */
+
+.assignment-course {
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #475467;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   INSTRUCTOR
+============================================================ */
+
+.assignment-instructor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 150px;
+}
+
+.assignment-instructor-avatar {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        var(--admin-blue),
+        #6d5dfc
+    );
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.assignment-instructor span {
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--admin-navy);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   COUNTS
+============================================================ */
+
+.assignment-count {
+    color: var(--admin-navy);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.assignment-count-label {
+    display: block;
+    margin-top: 2px;
+    color: var(--admin-muted);
+    font-size: 9px;
+}
+
+
+/* ============================================================
+   DUE DATE
+============================================================ */
+
+.assignment-due-date {
+    color: #475467;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.assignment-due-date.overdue {
+    color: #d92d20;
+}
+
+.assignment-due-date.today {
+    color: #b54708;
+}
+
+.assignment-due-date i {
+    width: 13px;
+    height: 13px;
+    margin-right: 4px;
+    vertical-align: -2px;
+}
+
+
+/* ============================================================
+   STATUS
+============================================================ */
+
+.assignment-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.assignment-status::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.assignment-status.active {
+    color: #16803c;
+    background: #e9f8ef;
+}
+
+.assignment-status.active::before {
+    background: #22c55e;
+}
+
+.assignment-status.closed {
+    color: #667085;
+    background: #f1f3f6;
+}
+
+.assignment-status.closed::before {
+    background: #98a2b3;
+}
+
+.assignment-status.draft {
+    color: #9a6700;
+    background: #fff6d8;
+}
+
+.assignment-status.draft::before {
+    background: #f59e0b;
+}
+
+
+/* ============================================================
+   ROW ACTIONS
+============================================================ */
+
+.assignment-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.assignment-action-btn {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 9px;
+    background: #f5f7fb;
+    color: #667085;
+    cursor: pointer;
+    transition: .18s ease;
+}
+
+.assignment-action-btn:hover {
+    background: #eaf2ff;
+    color: var(--admin-blue);
+}
+
+.assignment-action-btn.danger:hover {
+    background: #fff0f0;
+    color: #d92d20;
+}
+
+.assignment-action-btn i {
+    width: 16px;
+    height: 16px;
+}
+
+
+/* ============================================================
+   TABLE STATES
+============================================================ */
+
+.assignments-page .table-state-cell {
+    height: 270px;
+    text-align: center !important;
+}
+
+.assignments-page .table-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--admin-muted);
+    font-size: 12px;
+}
+
+.assignments-page .loading-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #dfe5ef;
+    border-top-color: var(--admin-blue);
+    border-radius: 50%;
+    animation: assignmentSpin .7s linear infinite;
+}
+
+@keyframes assignmentSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.assignments-page .admin-empty {
+    padding: 65px 20px;
+}
+
+.assignments-page .admin-empty i {
+    width: 40px;
+    height: 40px;
+    color: #aab4c3;
+}
+
+
+/* ============================================================
+   PAGINATION
+============================================================ */
+
+.assignments-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 17px 22px;
+    border-top: 1px solid var(--admin-border);
+}
+
+.assignment-page-btn {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 9px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    background: #fff;
+    color: #667085;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .18s ease;
+}
+
+.assignment-page-btn:hover {
+    border-color: var(--admin-blue);
+    color: var(--admin-blue);
+}
+
+.assignment-page-btn.active {
+    background: var(--admin-blue);
+    border-color: var(--admin-blue);
+    color: #fff;
+}
+
+.assignment-page-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
+   MODAL
+============================================================ */
+
+.assignment-details-modal {
+    width: min(650px, 100%);
+}
+
+
+/* ============================================================
+   MODAL SUMMARY
+============================================================ */
+
+.assignment-modal-summary {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 24px 25px;
+}
+
+.assignment-modal-icon {
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: #eaf2ff;
+    color: var(--admin-blue);
+}
+
+.assignment-modal-icon i {
+    width: 25px;
+    height: 25px;
+}
+
+.assignment-modal-info {
+    min-width: 0;
+}
+
+.assignment-modal-info h3 {
+    color: var(--admin-navy);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.assignment-modal-info > span:not(.admin-badge) {
+    display: block;
+    margin-top: 3px;
+    color: var(--admin-muted);
+    font-size: 11px;
+}
+
+.assignment-modal-info .admin-badge {
+    display: inline-flex;
+    margin-top: 8px;
+}
+
+
+/* ============================================================
+   DETAILS GRID
+============================================================ */
+
+.assignment-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0 25px 24px;
+}
+
+.assignment-detail-item {
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    background: #fafbfd;
+}
+
+.assignment-detail-item span {
+    display: block;
+    color: var(--admin-muted);
+    font-size: 10px;
+}
+
+.assignment-detail-item strong {
+    display: block;
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--admin-navy);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   MODAL ACTIONS
+============================================================ */
+
+.assignment-modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding: 18px 25px;
+    border-top: 1px solid var(--admin-border);
+    background: #fafbfd;
+}
+
+.assignment-modal-actions .admin-btn {
+    min-height: 40px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 1050px) {
+
+    .assignments-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .assignments-search {
+        width: 100%;
+    }
+
+    .assignments-filters {
+        width: 100%;
+    }
+
+    .assignments-filters select {
+        flex: 1;
+        min-width: 0;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .assignments-page-header {
+        gap: 14px;
+    }
+
+    .assignments-header-actions {
+        width: 100%;
+    }
+
+    .assignments-header-actions .admin-btn {
+        width: 100%;
+    }
+
+    .assignments-toolbar {
+        padding: 16px;
+    }
+
+    .assignments-filters {
+        flex-direction: column;
+    }
+
+    .assignments-filters select {
+        width: 100%;
+    }
+
+    .assignments-results-bar {
+        padding: 12px 16px;
+    }
+
+    .assignments-pagination {
+        justify-content: center;
+        padding: 15px;
+    }
+
+    .assignment-details-grid {
+        grid-template-columns: 1fr;
+        padding: 0 18px 20px;
+    }
+
+    .assignment-modal-summary {
+        padding: 20px 18px;
+    }
+
+    .assignment-modal-actions {
+        flex-direction: column;
+        padding: 16px 18px;
+    }
+
+    .assignment-modal-actions .admin-btn {
+        width: 100%;
+    }
+
+}
+
+
+@media (max-width: 450px) {
+
+    .assignment-cell {
+        min-width: 180px;
+    }
+
+    .assignment-icon {
+        width: 34px;
+        height: 34px;
+    }
+
+    .assignment-cell-info strong {
+        max-width: 150px;
+    }
+
+    .assignment-modal-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+}

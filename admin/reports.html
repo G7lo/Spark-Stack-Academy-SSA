@@ -3,179 +3,1186 @@
 
 <head>
 
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <title>Reports Dashboard | Spark Stack Academy</title>
+    <title>
+        Reports | Admin Console | Spark Stack Academy
+    </title>
 
-  <link rel="stylesheet"
-    href="reports.css">
+    <link rel="stylesheet" href="css/admin-core.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/reports.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
 
+
 <body>
 
-  <div class="dashboard-layout">
+<div class="admin-app">
 
-    <aside id="sidebarContainer"></aside>
 
-    <div id="sidebarOverlay"></div>
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-    <main class="main-content">
+    <aside
+        id="adminSidebar"
+        class="admin-sidebar"
+    ></aside>
 
-      <div id="topbarContainer"></div>
 
-      <section class="page">
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
 
-        <div class="page-header">
 
-          <h1>Reports Dashboard</h1>
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
 
-          <p>
-            Founder analytics for students, instructors,
-            courses, and enrollments.
-          </p>
+    <main class="admin-main">
 
-        </div>
 
+        <header
+            id="adminTopbar"
+            class="admin-topbar"
+        ></header>
 
-        <!-- STATS -->
 
-        <div class="stats-grid">
+        <section class="admin-page reports-page">
 
-          <div class="stat-card">
-            <h3>Total Students</h3>
-            <p id="totalStudents">0</p>
-          </div>
 
-          <div class="stat-card">
-            <h3>Total Instructors</h3>
-            <p id="totalInstructors">0</p>
-          </div>
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
 
-          <div class="stat-card">
-            <h3>Total Courses</h3>
-            <p id="totalCourses">0</p>
-          </div>
+            <div class="page-header reports-page-header">
 
-          <div class="stat-card">
-            <h3>Total Enrollments</h3>
-            <p id="totalEnrollments">0</p>
-          </div>
+                <div>
 
-        </div>
+                    <span class="page-eyebrow">
+                        SECURITY & MODERATION
+                    </span>
 
+                    <h1>
+                        Reports & Moderation
+                    </h1>
 
-        <!-- REPORT CARDS -->
+                    <p>
+                        Investigate reports, protect the academy
+                        and manage moderation cases.
+                    </p>
 
-        <div class="report-grid">
+                </div>
 
-          <div class="report-card">
 
-            <h2>📚 Published Courses</h2>
+                <div class="reports-header-actions">
 
-            <p id="publishedCourses">0</p>
+                    <button
+                        type="button"
+                        class="admin-btn secondary"
+                        id="refreshReportsBtn"
+                    >
 
-          </div>
+                        <i data-lucide="refresh-cw"></i>
 
-          <div class="report-card">
+                        Refresh
 
-            <h2>📝 Draft Courses</h2>
+                    </button>
 
-            <p id="draftCourses">0</p>
+                </div>
 
-          </div>
+            </div>
 
-          <div class="report-card">
 
-            <h2>👨‍🏫 Active Instructors</h2>
+            <!-- =================================================
+                 SECURITY BANNER
+            ================================================== -->
 
-            <p id="activeInstructors">0</p>
+            <section class="reports-security-banner">
 
-          </div>
+                <div class="security-banner-icon">
 
-          <div class="report-card">
+                    <i data-lucide="shield-check"></i>
 
-            <h2>🎓 Active Students</h2>
+                </div>
 
-            <p id="activeStudents">0</p>
+                <div>
 
-          </div>
+                    <strong>
+                        Moderation Control Center
+                    </strong>
 
-        </div>
+                    <span>
+                        Review reports carefully before taking
+                        action. All moderation actions are logged.
+                    </span>
 
+                </div>
 
-        <!-- TOP COURSES -->
+            </section>
 
-        <div class="table-card">
 
-          <div class="table-top">
+            <!-- =================================================
+                 COMMAND STATS
+            ================================================== -->
 
-            <h2>Top Courses by Enrollment</h2>
+            <section class="admin-stat-grid reports-stats">
 
-          </div>
 
-          <div id="topCoursesList"
-            class="top-list">
+                <article class="admin-stat">
 
-            Loading...
+                    <div class="admin-stat-top">
 
-          </div>
+                        <div class="admin-stat-icon blue">
+                            <i data-lucide="flag"></i>
+                        </div>
 
-        </div>
+                    </div>
 
+                    <span>
+                        Total Reports
+                    </span>
 
-        <!-- EXPORTS -->
+                    <strong id="totalReports">
+                        0
+                    </strong>
 
-        <div class="table-card">
+                </article>
 
-          <div class="table-top">
 
-            <h2>Export Reports</h2>
+                <article class="admin-stat">
 
-          </div>
+                    <div class="admin-stat-top">
 
-          <div class="export-actions">
+                        <div class="admin-stat-icon gold">
+                            <i data-lucide="clock-3"></i>
+                        </div>
 
-            <button id="exportStudents"
-              class="export-btn">
+                    </div>
 
-              Export Students
+                    <span>
+                        Pending
+                    </span>
 
-            </button>
+                    <strong id="pendingReports">
+                        0
+                    </strong>
 
-            <button id="exportCourses"
-              class="export-btn">
+                </article>
 
-              Export Courses
 
-            </button>
+                <article class="admin-stat">
 
-            <button id="exportEnrollments"
-              class="export-btn">
+                    <div class="admin-stat-top">
 
-              Export Enrollments
+                        <div class="admin-stat-icon purple">
+                            <i data-lucide="search-check"></i>
+                        </div>
 
-            </button>
+                    </div>
 
-          </div>
+                    <span>
+                        Under Review
+                    </span>
 
-        </div>
+                    <strong id="reviewingReports">
+                        0
+                    </strong>
 
-      </section>
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon green">
+                            <i data-lucide="circle-check"></i>
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Resolved
+                    </span>
+
+                    <strong id="resolvedReports">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon red">
+                            <i data-lucide="siren"></i>
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Critical
+                    </span>
+
+                    <strong id="criticalReports">
+                        0
+                    </strong>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 PRIORITY QUEUE
+            ================================================== -->
+
+            <section class="admin-card reports-priority-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="page-eyebrow">
+                            PRIORITY QUEUE
+                        </span>
+
+                        <h2>
+                            Reports Requiring Attention
+                        </h2>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="text-link"
+                        id="viewCriticalBtn"
+                    >
+                        View Critical
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="priorityReportsList"
+                    class="priority-reports-list"
+                >
+
+                    <div class="profile-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading priority reports...
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 REPORT MANAGEMENT
+            ================================================== -->
+
+            <section class="admin-card reports-management-card">
+
+
+                <!-- TOOLBAR -->
+
+                <div class="reports-toolbar">
+
+
+                    <div class="admin-search reports-search">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            type="search"
+                            id="reportSearch"
+                            placeholder="Search reports, users or reasons..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <div class="reports-filters">
+
+                        <select
+                            id="reportStatusFilter"
+                            aria-label="Filter reports by status"
+                        >
+
+                            <option value="all">
+                                All Status
+                            </option>
+
+                            <option value="pending">
+                                Pending
+                            </option>
+
+                            <option value="reviewing">
+                                Under Review
+                            </option>
+
+                            <option value="resolved">
+                                Resolved
+                            </option>
+
+                            <option value="dismissed">
+                                Dismissed
+                            </option>
+
+                        </select>
+
+
+                        <select
+                            id="reportPriorityFilter"
+                            aria-label="Filter reports by priority"
+                        >
+
+                            <option value="all">
+                                All Priority
+                            </option>
+
+                            <option value="critical">
+                                Critical
+                            </option>
+
+                            <option value="high">
+                                High
+                            </option>
+
+                            <option value="medium">
+                                Medium
+                            </option>
+
+                            <option value="low">
+                                Low
+                            </option>
+
+                        </select>
+
+
+                        <select
+                            id="reportTypeFilter"
+                            aria-label="Filter reports by type"
+                        >
+
+                            <option value="all">
+                                All Types
+                            </option>
+
+                            <option value="student">
+                                Student
+                            </option>
+
+                            <option value="instructor">
+                                Instructor
+                            </option>
+
+                            <option value="course">
+                                Course
+                            </option>
+
+                            <option value="content">
+                                Content
+                            </option>
+
+                        </select>
+
+
+                        <select
+                            id="reportSort"
+                            aria-label="Sort reports"
+                        >
+
+                            <option value="newest">
+                                Newest First
+                            </option>
+
+                            <option value="oldest">
+                                Oldest First
+                            </option>
+
+                            <option value="critical">
+                                Highest Priority
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESULTS -->
+
+                <div class="reports-results-bar">
+
+                    <div>
+
+                        <strong id="reportResultsCount">
+                            0
+                        </strong>
+
+                        <span>
+                            reports found
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="text-link"
+                        id="clearReportFilters"
+                    >
+                        Clear Filters
+                    </button>
+
+                </div>
+
+
+                <!-- TABLE -->
+
+                <div class="admin-table-wrap reports-table-wrap">
+
+                    <table class="admin-table reports-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Report
+                                </th>
+
+                                <th>
+                                    Reported User
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Priority
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Submitted
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="reportsTableBody">
+
+                            <tr>
+
+                                <td
+                                    colspan="7"
+                                    class="table-state-cell"
+                                >
+
+                                    <div class="table-loading">
+
+                                        <div class="loading-spinner"></div>
+
+                                        <span>
+                                            Loading reports...
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- EMPTY -->
+
+                <div
+                    id="reportsEmptyState"
+                    class="admin-empty hidden"
+                >
+
+                    <i data-lucide="shield-check"></i>
+
+                    <h3>
+                        No reports found
+                    </h3>
+
+                    <p>
+                        There are no reports matching
+                        your current filters.
+                    </p>
+
+                </div>
+
+
+                <!-- PAGINATION -->
+
+                <div
+                    id="reportsPagination"
+                    class="reports-pagination"
+                ></div>
+
+            </section>
+
+
+            <!-- =================================================
+                 MODERATION ANALYTICS
+            ================================================== -->
+
+            <section class="reports-analytics-grid">
+
+
+                <div class="admin-card report-analytics-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                MODERATION
+                            </span>
+
+                            <h2>
+                                Resolution Overview
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="moderation-metrics">
+
+                        <div>
+
+                            <span>
+                                Resolution Rate
+                            </span>
+
+                            <strong id="resolutionRate">
+                                0%
+                            </strong>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Avg. Resolution Time
+                            </span>
+
+                            <strong id="averageResolutionTime">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-card report-analytics-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                CATEGORIES
+                            </span>
+
+                            <h2>
+                                Report Breakdown
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="reportCategoryBreakdown"
+                        class="report-category-breakdown"
+                    ></div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 AUDIT LOG
+            ================================================== -->
+
+            <section class="admin-card reports-audit-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="page-eyebrow">
+                            SECURITY
+                        </span>
+
+                        <h2>
+                            Moderation Audit Trail
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="moderationAuditLog"
+                    class="moderation-audit-log"
+                >
+
+                    <div class="profile-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading audit activity...
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </section>
 
     </main>
 
-  </div>
+</div>
 
-  <script type="module"
-    src="../js/admin-app.js"></script>
 
-  <script type="module"
-    src="reports.js"></script>
+<!-- =========================================================
+     REPORT DETAILS / INVESTIGATION MODAL
+========================================================= -->
+
+<div
+    id="reportDetailsModal"
+    class="admin-modal hidden"
+    aria-hidden="true"
+>
+
+    <div class="admin-modal-backdrop"></div>
+
+
+    <div
+        class="admin-modal-panel report-details-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="reportDetailsTitle"
+    >
+
+
+        <!-- HEADER -->
+
+        <div class="admin-modal-header">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    INVESTIGATION CENTER
+                </span>
+
+                <h2 id="reportDetailsTitle">
+                    Report Details
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close-btn"
+                id="closeReportDetails"
+                aria-label="Close"
+            >
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- CASE HEADER -->
+
+        <div class="report-case-header">
+
+            <div class="report-case-icon">
+
+                <i data-lucide="flag"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong id="reportModalTitle">
+                    Report
+                </strong>
+
+                <span id="reportModalId">
+                    —
+                </span>
+
+            </div>
+
+
+            <span
+                id="reportModalPriority"
+                class="report-priority critical"
+            >
+                Critical
+            </span>
+
+        </div>
+
+
+        <!-- REPORT INFORMATION -->
+
+        <div class="report-investigation-grid">
+
+
+            <div class="investigation-item">
+
+                <span>
+                    Reporter
+                </span>
+
+                <strong id="reportModalReporter">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="investigation-item">
+
+                <span>
+                    Reported User
+                </span>
+
+                <strong id="reportModalReportedUser">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="investigation-item">
+
+                <span>
+                    Category
+                </span>
+
+                <strong id="reportModalCategory">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="investigation-item">
+
+                <span>
+                    Submitted
+                </span>
+
+                <strong id="reportModalDate">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="report-description-box">
+
+            <span>
+                Report Description
+            </span>
+
+            <p id="reportModalDescription">
+                No description provided.
+            </p>
+
+        </div>
+
+
+        <!-- EVIDENCE -->
+
+        <div class="report-evidence-section">
+
+            <div class="section-mini-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        EVIDENCE VAULT
+                    </span>
+
+                    <h3>
+                        Submitted Evidence
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="reportEvidenceList"
+                class="report-evidence-list"
+            >
+
+                <div class="evidence-empty">
+
+                    <i data-lucide="paperclip"></i>
+
+                    <span>
+                        No evidence attached.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MODERATION NOTES -->
+
+        <div class="report-notes-section">
+
+            <div class="section-mini-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        INTERNAL
+                    </span>
+
+                    <h3>
+                        Moderator Notes
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <textarea
+                id="moderatorNotes"
+                rows="4"
+                placeholder="Add private investigation notes..."
+            ></textarea>
+
+
+            <button
+                type="button"
+                class="admin-btn secondary"
+                id="saveModeratorNotesBtn"
+            >
+
+                <i data-lucide="save"></i>
+
+                Save Notes
+
+            </button>
+
+        </div>
+
+
+        <!-- REPLY -->
+
+        <div class="report-response-section">
+
+            <div class="section-mini-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        COMMUNICATION
+                    </span>
+
+                    <h3>
+                        Reply to Reporter
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <textarea
+                id="reportResponse"
+                rows="5"
+                placeholder="Write a response to the reporter..."
+            ></textarea>
+
+
+            <div class="response-options">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        id="sendReportNotification"
+                        checked
+                    >
+
+                    <span>
+                        Send notification to reporter
+                    </span>
+
+                </label>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="admin-btn primary"
+                id="sendReportResponseBtn"
+            >
+
+                <i data-lucide="send"></i>
+
+                Send Response
+
+            </button>
+
+        </div>
+
+
+        <!-- ACCOUNT ACTIONS -->
+
+        <div class="report-account-actions">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    MODERATION ACTIONS
+                </span>
+
+                <h3>
+                    Account Controls
+                </h3>
+
+            </div>
+
+
+            <div class="report-action-buttons">
+
+                <button
+                    type="button"
+                    class="admin-btn secondary"
+                    id="warnReportedUserBtn"
+                >
+
+                    <i data-lucide="triangle-alert"></i>
+
+                    Warn User
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="admin-btn danger"
+                    id="suspendReportedUserBtn"
+                >
+
+                    <i data-lucide="ban"></i>
+
+                    Suspend
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESOLUTION -->
+
+        <div class="report-resolution-section">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    CASE RESOLUTION
+                </span>
+
+                <h3>
+                    Resolve This Report
+                </h3>
+
+            </div>
+
+
+            <div class="resolution-actions">
+
+                <button
+                    type="button"
+                    class="admin-btn secondary"
+                    id="dismissReportBtn"
+                >
+
+                    <i data-lucide="x-circle"></i>
+
+                    Dismiss
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="admin-btn success"
+                    id="resolveReportBtn"
+                >
+
+                    <i data-lucide="check-circle"></i>
+
+                    Resolve Report
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIVITY TIMELINE -->
+
+        <div class="report-timeline-section">
+
+            <div class="section-mini-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        CASE HISTORY
+                    </span>
+
+                    <h3>
+                        Activity Timeline
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="reportActivityTimeline"
+                class="report-activity-timeline"
+            ></div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
+
+<script
+    type="module"
+    src="js/admin-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/reports.js"
+></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+    }
+);
+
+</script>
+
 
 </body>
-
 </html>

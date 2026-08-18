@@ -3,147 +3,853 @@
 
 <head>
 
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <title>Announcements | Spark Stack Academy</title>
+    <title>
+        Announcements | Admin Console | Spark Stack Academy
+    </title>
 
-  <link rel="stylesheet"
-    href="announcements.css">
+    <link rel="stylesheet" href="css/admin-core.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/announcements.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
 
+
 <body>
 
-  <div class="dashboard-layout">
-
-    <aside id="sidebarContainer"></aside>
-
-    <div id="sidebarOverlay"></div>
-
-    <main class="main-content">
-
-      <div id="topbarContainer"></div>
-
-      <section class="page">
-
-        <div class="page-header">
-
-          <h1>Announcements Center</h1>
-
-          <p>
-            Send announcements to students,
-            instructors, or the entire academy.
-          </p>
-
-        </div>
+<div class="admin-app">
 
 
-        <!-- CREATE ANNOUNCEMENT -->
+    <!-- SIDEBAR -->
 
-        <div class="table-card">
-
-          <div class="table-top">
-
-            <h2>Create Announcement</h2>
-
-          </div>
-
-          <form id="announcementForm"
-            class="announcement-form">
-
-            <input type="text"
-              id="title"
-              placeholder="Announcement title"
-              required>
-
-            <select id="audience"
-              required>
-
-              <option value="">
-                Select audience
-              </option>
-
-              <option value="students">
-                All Students
-              </option>
-
-              <option value="instructors">
-                All Instructors
-              </option>
-
-              <option value="all">
-                Everyone
-              </option>
-
-            </select>
-
-            <select id="priority">
-
-              <option value="normal">
-                Normal
-              </option>
-
-              <option value="important">
-                Important
-              </option>
-
-              <option value="urgent">
-                Urgent
-              </option>
-
-            </select>
-
-            <textarea id="message"
-              rows="6"
-              placeholder="Write your announcement message..."
-              required></textarea>
-
-            <button type="submit"
-              class="publish-btn">
-
-              Publish Announcement
-
-            </button>
-
-          </form>
-
-        </div>
+    <aside
+        id="adminSidebar"
+        class="admin-sidebar"
+    ></aside>
 
 
-        <!-- ANNOUNCEMENTS LIST -->
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
 
-        <div class="table-card">
 
-          <div class="table-top">
+    <!-- MAIN -->
 
-            <h2>Recent Announcements</h2>
+    <main class="admin-main">
 
-          </div>
 
-          <div id="announcementsList"
-            class="announcement-list">
+        <!-- TOPBAR -->
 
-            Loading announcements...
+        <header
+            id="adminTopbar"
+            class="admin-topbar"
+        ></header>
 
-          </div>
 
-        </div>
+        <section class="admin-page announcements-page">
 
-      </section>
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-header announcements-page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        COMMUNICATION CENTER
+                    </span>
+
+                    <h1>
+                        Announcements
+                    </h1>
+
+                    <p>
+                        Broadcast important academy updates,
+                        notices and messages to your community.
+                    </p>
+
+                </div>
+
+
+                <div class="announcements-header-actions">
+
+                    <button
+                        type="button"
+                        class="admin-btn secondary"
+                        id="refreshAnnouncementsBtn"
+                    >
+
+                        <i data-lucide="refresh-cw"></i>
+
+                        Refresh
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="admin-btn primary"
+                        id="createAnnouncementBtn"
+                    >
+
+                        <i data-lucide="megaphone"></i>
+
+                        New Announcement
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <section class="admin-stat-grid announcements-stats">
+
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon blue">
+
+                            <i data-lucide="megaphone"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Total Announcements
+                    </span>
+
+                    <strong id="totalAnnouncements">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon green">
+
+                            <i data-lucide="send"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Published
+                    </span>
+
+                    <strong id="publishedAnnouncements">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon gold">
+
+                            <i data-lucide="clock-3"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Scheduled
+                    </span>
+
+                    <strong id="scheduledAnnouncements">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon purple">
+
+                            <i data-lucide="users"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Recipients
+                    </span>
+
+                    <strong id="announcementRecipients">
+                        0
+                    </strong>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- QUICK BROADCAST -->
+
+            <section class="admin-card announcement-broadcast-card">
+
+                <div class="broadcast-content">
+
+                    <div class="broadcast-icon">
+
+                        <i data-lucide="radio"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span class="page-eyebrow">
+                            QUICK BROADCAST
+                        </span>
+
+                        <h2>
+                            Need to notify everyone?
+                        </h2>
+
+                        <p>
+                            Send an important announcement directly
+                            to the academy community.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="admin-btn primary"
+                    id="quickBroadcastBtn"
+                >
+
+                    <i data-lucide="send"></i>
+
+                    Broadcast Now
+
+                </button>
+
+            </section>
+
+
+            <!-- MANAGEMENT -->
+
+            <section class="admin-card announcements-management-card">
+
+
+                <!-- TOOLBAR -->
+
+                <div class="announcements-toolbar">
+
+                    <div class="admin-search announcements-search">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            type="search"
+                            id="announcementSearch"
+                            placeholder="Search announcements..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <div class="announcements-filters">
+
+                        <select id="announcementStatusFilter">
+
+                            <option value="all">
+                                All Status
+                            </option>
+
+                            <option value="published">
+                                Published
+                            </option>
+
+                            <option value="scheduled">
+                                Scheduled
+                            </option>
+
+                            <option value="draft">
+                                Draft
+                            </option>
+
+                        </select>
+
+
+                        <select id="announcementAudienceFilter">
+
+                            <option value="all">
+                                All Audiences
+                            </option>
+
+                            <option value="all-users">
+                                Everyone
+                            </option>
+
+                            <option value="students">
+                                Students
+                            </option>
+
+                            <option value="instructors">
+                                Instructors
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESULTS -->
+
+                <div class="announcements-results-bar">
+
+                    <div>
+
+                        <strong id="announcementResultsCount">
+                            0
+                        </strong>
+
+                        <span>
+                            announcements
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="text-link"
+                        id="clearAnnouncementFilters"
+                    >
+                        Clear Filters
+                    </button>
+
+                </div>
+
+
+                <!-- TABLE -->
+
+                <div class="admin-table-wrap announcements-table-wrap">
+
+                    <table class="admin-table announcements-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Announcement
+                                </th>
+
+                                <th>
+                                    Audience
+                                </th>
+
+                                <th>
+                                    Priority
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Published
+                                </th>
+
+                                <th>
+                                    Reach
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="announcementsTableBody">
+
+                            <tr>
+
+                                <td
+                                    colspan="7"
+                                    class="table-state-cell"
+                                >
+
+                                    <div class="table-loading">
+
+                                        <div class="loading-spinner"></div>
+
+                                        <span>
+                                            Loading announcements...
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- EMPTY -->
+
+                <div
+                    id="announcementsEmptyState"
+                    class="admin-empty hidden"
+                >
+
+                    <i data-lucide="megaphone"></i>
+
+                    <h3>
+                        No announcements found
+                    </h3>
+
+                    <p>
+                        Create an announcement or change your filters.
+                    </p>
+
+                </div>
+
+
+                <!-- PAGINATION -->
+
+                <div
+                    id="announcementsPagination"
+                    class="announcements-pagination"
+                ></div>
+
+            </section>
+
+
+            <!-- DELIVERY ANALYTICS -->
+
+            <section class="announcements-analytics-grid">
+
+
+                <div class="admin-card announcement-analytics-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                DELIVERY
+                            </span>
+
+                            <h2>
+                                Notification Performance
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="announcement-metrics">
+
+                        <div>
+
+                            <span>
+                                Delivered
+                            </span>
+
+                            <strong id="deliveredCount">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Read
+                            </span>
+
+                            <strong id="readCount">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Read Rate
+                            </span>
+
+                            <strong id="readRate">
+                                0%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-card announcement-analytics-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                AUDIENCE
+                            </span>
+
+                            <h2>
+                                Audience Breakdown
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="announcementAudienceBreakdown"
+                        class="announcement-audience-breakdown"
+                    ></div>
+
+                </div>
+
+            </section>
+
+
+        </section>
 
     </main>
 
-  </div>
+</div>
 
-  <script type="module"
-    src="../js/admin-app.js"></script>
 
-  <script type="module"
-    src="announcements.js"></script>
+<!-- =========================================================
+     CREATE / EDIT MODAL
+========================================================= -->
+
+<div
+    id="announcementModal"
+    class="admin-modal hidden"
+    aria-hidden="true"
+>
+
+    <div class="admin-modal-backdrop"></div>
+
+
+    <div
+        class="admin-modal-panel announcement-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="announcementModalTitle"
+    >
+
+
+        <!-- HEADER -->
+
+        <div class="admin-modal-header">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    COMMUNICATION
+                </span>
+
+                <h2 id="announcementModalTitle">
+                    New Announcement
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close-btn"
+                id="closeAnnouncementModal"
+                aria-label="Close"
+            >
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form id="announcementForm">
+
+
+            <div class="announcement-form-body">
+
+
+                <div class="form-field">
+
+                    <label for="announcementTitle">
+                        Title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="announcementTitle"
+                        maxlength="120"
+                        placeholder="Enter announcement title"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="announcementMessage">
+                        Message
+                    </label>
+
+                    <textarea
+                        id="announcementMessage"
+                        rows="6"
+                        maxlength="2000"
+                        placeholder="Write your announcement..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="announcement-form-grid">
+
+
+                    <div class="form-field">
+
+                        <label for="announcementAudience">
+                            Audience
+                        </label>
+
+                        <select
+                            id="announcementAudience"
+                            required
+                        >
+
+                            <option value="all-users">
+                                Everyone
+                            </option>
+
+                            <option value="students">
+                                Students
+                            </option>
+
+                            <option value="instructors">
+                                Instructors
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="announcementPriority">
+                            Priority
+                        </label>
+
+                        <select id="announcementPriority">
+
+                            <option value="normal">
+                                Normal
+                            </option>
+
+                            <option value="important">
+                                Important
+                            </option>
+
+                            <option value="urgent">
+                                Urgent
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="announcement-form-options">
+
+
+                    <label class="announcement-check">
+
+                        <input
+                            type="checkbox"
+                            id="sendAnnouncementNotification"
+                            checked
+                        >
+
+                        <span>
+                            Send notification to recipients
+                        </span>
+
+                    </label>
+
+
+                    <label class="announcement-check">
+
+                        <input
+                            type="checkbox"
+                            id="publishImmediately"
+                            checked
+                        >
+
+                        <span>
+                            Publish immediately
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <div
+                    id="announcementScheduleField"
+                    class="form-field hidden"
+                >
+
+                    <label for="announcementSchedule">
+                        Schedule Date & Time
+                    </label>
+
+                    <input
+                        type="datetime-local"
+                        id="announcementSchedule"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="announcement-modal-actions">
+
+                <button
+                    type="button"
+                    class="admin-btn secondary"
+                    id="cancelAnnouncementBtn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="admin-btn primary"
+                    id="saveAnnouncementBtn"
+                >
+
+                    <i data-lucide="send"></i>
+
+                    Publish Announcement
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script
+    type="module"
+    src="js/admin-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/announcements.js"
+></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+    }
+);
+
+</script>
 
 </body>
-
 </html>

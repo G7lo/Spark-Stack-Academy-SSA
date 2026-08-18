@@ -1,0 +1,820 @@
+/* ============================================================
+   SPARK STACK ACADEMY
+   ADMIN — MODERATOR PROFILE
+============================================================ */
+
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+
+.profile-page-header {
+    margin-bottom: 22px;
+}
+
+.profile-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* ============================================================
+   PROFILE HERO
+============================================================ */
+
+.profile-hero-card {
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.profile-hero {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 26px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(41,121,255,.045),
+            rgba(8,28,58,.02)
+        );
+}
+
+
+/* ============================================================
+   AVATAR
+============================================================ */
+
+.profile-avatar-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.profile-avatar {
+    width: 82px;
+    height: 82px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--admin-blue),
+            #6d5dfc
+        );
+
+    color: #fff;
+
+    font-size: 25px;
+    font-weight: 800;
+
+    box-shadow:
+        0 10px 25px rgba(41,121,255,.18);
+}
+
+.profile-avatar-edit {
+    position: absolute;
+    right: -7px;
+    bottom: -7px;
+
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border: 3px solid #fff;
+    border-radius: 10px;
+
+    background: var(--admin-navy);
+    color: #fff;
+
+    cursor: pointer;
+
+    transition: .18s ease;
+}
+
+.profile-avatar-edit:hover {
+    background: var(--admin-blue);
+    transform: translateY(-2px);
+}
+
+.profile-avatar-edit i {
+    width: 14px;
+    height: 14px;
+}
+
+
+/* ============================================================
+   HERO INFO
+============================================================ */
+
+.profile-hero-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.profile-hero-info h2 {
+    margin-top: 3px;
+
+    color: var(--admin-navy);
+
+    font-size: 22px;
+    font-weight: 800;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.profile-hero-info p {
+    margin-top: 3px;
+
+    color: var(--admin-muted);
+
+    font-size: 12px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   PROFILE META
+============================================================ */
+
+.profile-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 10px;
+}
+
+.profile-role-badge,
+.profile-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 6px 10px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.profile-role-badge {
+    background: #eaf2ff;
+    color: var(--admin-blue);
+}
+
+.profile-role-badge i {
+    width: 13px;
+    height: 13px;
+}
+
+.profile-status-badge {
+    background: #e9f8ef;
+    color: #16803c;
+}
+
+.profile-status-badge > span {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+}
+
+
+/* ============================================================
+   ACCOUNT ID
+============================================================ */
+
+.profile-hero-side {
+    flex-shrink: 0;
+
+    min-width: 155px;
+
+    padding-left: 22px;
+
+    border-left: 1px solid var(--admin-border);
+}
+
+.profile-hero-side span {
+    display: block;
+
+    color: var(--admin-muted);
+
+    font-size: 9px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.profile-hero-side strong {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--admin-navy);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    word-break: break-all;
+}
+
+
+/* ============================================================
+   MAIN CONTENT GRID
+============================================================ */
+
+.profile-content-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.35fr)
+        minmax(300px, .85fr);
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+.profile-section-card {
+    min-width: 0;
+}
+
+
+/* ============================================================
+   FORM
+============================================================ */
+
+.profile-section-card form {
+    padding: 0 24px 24px;
+}
+
+.profile-form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+.profile-section-card .form-field {
+    margin-bottom: 16px;
+}
+
+.profile-section-card .form-field:last-child {
+    margin-bottom: 0;
+}
+
+.profile-section-card .form-field label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--admin-navy);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.profile-section-card input,
+.profile-section-card textarea,
+.password-modal input {
+    width: 100%;
+
+    border: 1px solid var(--admin-border);
+    border-radius: 10px;
+
+    background: #fff;
+    color: var(--admin-text);
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 12px;
+
+    transition: .18s ease;
+}
+
+.profile-section-card input,
+.password-modal input {
+    height: 42px;
+    padding: 0 12px;
+}
+
+.profile-section-card textarea {
+    min-height: 105px;
+
+    padding: 11px 12px;
+
+    resize: vertical;
+}
+
+.profile-section-card input:focus,
+.profile-section-card textarea:focus,
+.password-modal input:focus {
+    border-color: var(--admin-blue);
+
+    box-shadow:
+        0 0 0 3px rgba(41,121,255,.09);
+}
+
+.profile-section-card input:disabled {
+    background: #f5f7fa;
+    color: #98a2b3;
+    cursor: not-allowed;
+}
+
+.form-help {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--admin-muted);
+
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+.profile-form-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 20px;
+}
+
+
+/* ============================================================
+   ACCOUNT INFORMATION
+============================================================ */
+
+.profile-info-list {
+    padding: 0 24px;
+}
+
+.profile-info-row {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.profile-info-row:last-child {
+    border-bottom: 0;
+}
+
+.profile-info-icon {
+    width: 36px;
+    height: 36px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: #f3f6fb;
+    color: var(--admin-blue);
+}
+
+.profile-info-icon i {
+    width: 16px;
+    height: 16px;
+}
+
+.profile-info-row > div:last-child {
+    min-width: 0;
+}
+
+.profile-info-row span {
+    display: block;
+
+    color: var(--admin-muted);
+
+    font-size: 9px;
+}
+
+.profile-info-row strong {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--admin-navy);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.profile-active-text {
+    color: #16803c !important;
+}
+
+
+/* ============================================================
+   ACCESS NOTICE
+============================================================ */
+
+.profile-access-notice {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin: 20px 24px 24px;
+
+    padding: 13px;
+
+    border: 1px solid #dce8ff;
+    border-radius: 12px;
+
+    background: #f5f8ff;
+}
+
+.profile-access-notice > i {
+    width: 17px;
+    height: 17px;
+
+    flex-shrink: 0;
+
+    margin-top: 1px;
+
+    color: var(--admin-blue);
+}
+
+.profile-access-notice strong {
+    display: block;
+
+    color: var(--admin-navy);
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.profile-access-notice p {
+    margin-top: 3px;
+
+    color: var(--admin-muted);
+
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   SECURITY CARD
+============================================================ */
+
+.profile-security-card {
+    margin-bottom: 20px;
+}
+
+.security-actions {
+    padding: 0 24px 24px;
+}
+
+.security-action {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 17px 0;
+
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.security-action:last-child {
+    border-bottom: 0;
+}
+
+.security-action-icon {
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 11px;
+
+    background: #f3f6fb;
+    color: var(--admin-blue);
+}
+
+.security-action-icon i {
+    width: 18px;
+    height: 18px;
+}
+
+.security-action-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.security-action-info strong {
+    display: block;
+
+    color: var(--admin-navy);
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.security-action-info span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--admin-muted);
+
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   ACTIVITY
+============================================================ */
+
+.profile-activity-card {
+    overflow: hidden;
+}
+
+.profile-activity-list {
+    min-height: 120px;
+
+    padding: 0 24px 10px;
+}
+
+.profile-activity-item {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.profile-activity-item:last-child {
+    border-bottom: 0;
+}
+
+.profile-activity-icon {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 9px;
+
+    background: #f3f6fb;
+    color: var(--admin-blue);
+}
+
+.profile-activity-icon i {
+    width: 15px;
+    height: 15px;
+}
+
+.profile-activity-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.profile-activity-info strong {
+    display: block;
+
+    color: var(--admin-navy);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.profile-activity-info span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--admin-muted);
+
+    font-size: 9px;
+}
+
+.profile-activity-time {
+    flex-shrink: 0;
+
+    color: var(--admin-muted);
+
+    font-size: 9px;
+}
+
+
+/* ============================================================
+   LOADING
+============================================================ */
+
+.profile-loading {
+    min-height: 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    color: var(--admin-muted);
+
+    font-size: 11px;
+}
+
+
+/* ============================================================
+   PASSWORD MODAL
+============================================================ */
+
+.password-modal {
+    width: min(500px, 100%);
+}
+
+.password-form-body {
+    padding: 22px 25px 5px;
+}
+
+.password-form-body .form-field {
+    margin-bottom: 17px;
+}
+
+.password-form-body label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--admin-navy);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.password-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    padding: 18px 25px;
+
+    border-top: 1px solid var(--admin-border);
+
+    background: #fafbfd;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 900px) {
+
+    .profile-content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-hero-side {
+        display: none;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .profile-page-header {
+        gap: 14px;
+    }
+
+    .profile-header-actions {
+        width: 100%;
+    }
+
+    .profile-header-actions .admin-btn {
+        width: 100%;
+    }
+
+    .profile-hero {
+        align-items: flex-start;
+
+        padding: 20px;
+
+        gap: 15px;
+    }
+
+    .profile-avatar {
+        width: 64px;
+        height: 64px;
+
+        border-radius: 18px;
+
+        font-size: 20px;
+    }
+
+    .profile-avatar-edit {
+        width: 28px;
+        height: 28px;
+
+        border-radius: 8px;
+    }
+
+    .profile-hero-info h2 {
+        font-size: 18px;
+    }
+
+    .profile-hero-info p {
+        font-size: 10px;
+    }
+
+    .profile-form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .profile-section-card form {
+        padding: 0 18px 20px;
+    }
+
+    .profile-info-list {
+        padding: 0 18px;
+    }
+
+    .profile-access-notice {
+        margin: 18px;
+    }
+
+    .profile-form-actions .admin-btn {
+        width: 100%;
+    }
+
+    .security-actions {
+        padding: 0 18px 18px;
+    }
+
+    .security-action {
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+    }
+
+    .security-action-info {
+        min-width: calc(100% - 54px);
+    }
+
+    .security-action > .admin-btn {
+        width: 100%;
+        margin-left: 54px;
+    }
+
+    .profile-activity-list {
+        padding: 0 18px 8px;
+    }
+
+    .password-form-body {
+        padding: 20px 18px 4px;
+    }
+
+    .password-modal-actions {
+        flex-direction: column;
+
+        padding: 16px 18px;
+    }
+
+    .password-modal-actions .admin-btn {
+        width: 100%;
+    }
+
+}

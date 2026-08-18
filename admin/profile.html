@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        My Profile | Admin Console | Spark Stack Academy
+    </title>
+
+    <link rel="stylesheet" href="css/admin-core.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+<div class="admin-app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="adminSidebar"
+        class="admin-sidebar"
+    ></aside>
+
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="admin-main">
+
+
+        <!-- TOPBAR -->
+
+        <header
+            id="adminTopbar"
+            class="admin-topbar"
+        ></header>
+
+
+        <!-- =================================================
+             PAGE
+        ================================================== -->
+
+        <section class="admin-page profile-page">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <div class="page-header profile-page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        ACCOUNT
+                    </span>
+
+                    <h1>
+                        My Profile
+                    </h1>
+
+                    <p>
+                        Manage your moderator identity,
+                        account information and security.
+                    </p>
+
+                </div>
+
+
+                <div class="profile-header-actions">
+
+                    <button
+                        type="button"
+                        class="admin-btn secondary"
+                        id="refreshProfileBtn"
+                    >
+
+                        <i data-lucide="refresh-cw"></i>
+
+                        Refresh
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PROFILE HERO
+            ================================================== -->
+
+            <section class="admin-card profile-hero-card">
+
+
+                <div class="profile-hero">
+
+
+                    <div class="profile-avatar-wrapper">
+
+                        <div
+                            class="profile-avatar"
+                            id="profileAvatar"
+                        >
+                            A
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="profile-avatar-edit"
+                            id="changeAvatarBtn"
+                            aria-label="Change profile photo"
+                        >
+
+                            <i data-lucide="camera"></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="profile-hero-info">
+
+                        <span class="page-eyebrow">
+                            MODERATOR ACCOUNT
+                        </span>
+
+                        <h2 id="profileDisplayName">
+                            Administrator
+                        </h2>
+
+                        <p id="profileEmail">
+                            Loading email...
+                        </p>
+
+
+                        <div class="profile-meta">
+
+                            <span class="profile-role-badge">
+
+                                <i data-lucide="shield-check"></i>
+
+                                Moderator
+
+                            </span>
+
+
+                            <span class="profile-status-badge">
+
+                                <span></span>
+
+                                Active
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-hero-side">
+
+                        <span>
+                            Account ID
+                        </span>
+
+                        <strong id="profileAccountId">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 PROFILE GRID
+            ================================================== -->
+
+            <section class="profile-content-grid">
+
+
+                <!-- =================================================
+                     PERSONAL INFORMATION
+                ================================================== -->
+
+                <div class="admin-card profile-section-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                IDENTITY
+                            </span>
+
+                            <h2>
+                                Personal Information
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <form id="profileForm">
+
+
+                        <div class="profile-form-grid">
+
+
+                            <div class="form-field">
+
+                                <label for="profileFirstName">
+                                    First Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="profileFirstName"
+                                    placeholder="First name"
+                                    autocomplete="given-name"
+                                >
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="profileLastName">
+                                    Last Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="profileLastName"
+                                    placeholder="Last name"
+                                    autocomplete="family-name"
+                                >
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="profileEmailInput">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="profileEmailInput"
+                                placeholder="Email address"
+                                disabled
+                            >
+
+                            <span class="form-help">
+                                Your authentication email cannot
+                                be changed here.
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="profilePhone">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="profilePhone"
+                                placeholder="Phone number"
+                                autocomplete="tel"
+                            >
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="profileBio">
+                                Bio
+                            </label>
+
+                            <textarea
+                                id="profileBio"
+                                rows="4"
+                                maxlength="500"
+                                placeholder="Tell the academy team a little about yourself..."
+                            ></textarea>
+
+                        </div>
+
+
+                        <div class="profile-form-actions">
+
+                            <button
+                                type="submit"
+                                class="admin-btn primary"
+                                id="saveProfileBtn"
+                            >
+
+                                <i data-lucide="save"></i>
+
+                                Save Changes
+
+                            </button>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACCOUNT INFORMATION
+                ================================================== -->
+
+                <div class="admin-card profile-section-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                ACCOUNT
+                            </span>
+
+                            <h2>
+                                Account Information
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-info-list">
+
+
+                        <div class="profile-info-row">
+
+                            <div class="profile-info-icon">
+
+                                <i data-lucide="shield"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Account Role
+                                </span>
+
+                                <strong>
+                                    Moderator
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="profile-info-row">
+
+                            <div class="profile-info-icon">
+
+                                <i data-lucide="calendar"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Joined
+                                </span>
+
+                                <strong id="profileJoinedDate">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="profile-info-row">
+
+                            <div class="profile-info-icon">
+
+                                <i data-lucide="clock"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Last Sign In
+                                </span>
+
+                                <strong id="profileLastLogin">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="profile-info-row">
+
+                            <div class="profile-info-icon">
+
+                                <i data-lucide="activity"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Account Status
+                                </span>
+
+                                <strong class="profile-active-text">
+                                    Active
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- ACCESS NOTICE -->
+
+                    <div class="profile-access-notice">
+
+                        <i data-lucide="info"></i>
+
+                        <div>
+
+                            <strong>
+                                Moderator Permissions
+                            </strong>
+
+                            <p>
+                                Your account has operational
+                                moderation access. Sensitive
+                                academy configuration remains
+                                restricted.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 SECURITY
+            ================================================== -->
+
+            <section class="admin-card profile-security-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="page-eyebrow">
+                            SECURITY
+                        </span>
+
+                        <h2>
+                            Account Security
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="security-actions">
+
+
+                    <div class="security-action">
+
+                        <div class="security-action-icon">
+
+                            <i data-lucide="key-round"></i>
+
+                        </div>
+
+                        <div class="security-action-info">
+
+                            <strong>
+                                Password
+                            </strong>
+
+                            <span>
+                                Keep your password secure
+                                and up to date.
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="admin-btn secondary"
+                            id="changePasswordBtn"
+                        >
+
+                            Change Password
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="security-action">
+
+                        <div class="security-action-icon">
+
+                            <i data-lucide="log-out"></i>
+
+                        </div>
+
+                        <div class="security-action-info">
+
+                            <strong>
+                                Sign Out
+                            </strong>
+
+                            <span>
+                                End your current moderator session.
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="admin-btn danger"
+                            id="profileLogoutBtn"
+                        >
+
+                            Sign Out
+
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ACTIVITY
+            ================================================== -->
+
+            <section class="admin-card profile-activity-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="page-eyebrow">
+                            SECURITY LOG
+                        </span>
+
+                        <h2>
+                            Recent Account Activity
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="profileActivityList"
+                    class="profile-activity-list"
+                >
+
+                    <div class="profile-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading account activity...
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     CHANGE PASSWORD MODAL
+========================================================= -->
+
+<div
+    id="passwordModal"
+    class="admin-modal hidden"
+    aria-hidden="true"
+>
+
+
+    <div class="admin-modal-backdrop"></div>
+
+
+    <div
+        class="admin-modal-panel password-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="passwordModalTitle"
+    >
+
+
+        <div class="admin-modal-header">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    SECURITY
+                </span>
+
+                <h2 id="passwordModalTitle">
+                    Change Password
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close-btn"
+                id="closePasswordModal"
+                aria-label="Close"
+            >
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+        </div>
+
+
+        <form id="passwordForm">
+
+
+            <div class="password-form-body">
+
+
+                <div class="form-field">
+
+                    <label for="currentPassword">
+                        Current Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="currentPassword"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="newPassword">
+                        New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="newPassword"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <span class="form-help">
+                        Use at least 8 characters.
+                    </span>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="confirmPassword">
+                        Confirm New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <div class="password-modal-actions">
+
+                <button
+                    type="button"
+                    class="admin-btn secondary"
+                    id="cancelPasswordBtn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="admin-btn primary"
+                    id="savePasswordBtn"
+                >
+
+                    <i data-lucide="key-round"></i>
+
+                    Update Password
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
+
+<script
+    type="module"
+    src="js/admin-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/profile.js"
+></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

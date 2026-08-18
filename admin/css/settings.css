@@ -1,0 +1,822 @@
+/* ============================================================
+   SPARK STACK ACADEMY
+   ADMIN — MODERATOR SETTINGS
+============================================================ */
+
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+
+.settings-page-header {
+    margin-bottom: 22px;
+}
+
+.settings-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* ============================================================
+   SECURITY BANNER
+============================================================ */
+
+.settings-security-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding: 17px 20px;
+    border: 1px solid #dbe8ff;
+    border-radius: 14px;
+    background: linear-gradient(
+        135deg,
+        #f7faff,
+        #eef5ff
+    );
+}
+
+.settings-security-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: #e3efff;
+    color: var(--admin-blue);
+}
+
+.settings-security-icon i {
+    width: 20px;
+    height: 20px;
+}
+
+.settings-security-banner > div:nth-child(2) {
+    min-width: 0;
+    flex: 1;
+}
+
+.settings-security-banner strong {
+    display: block;
+    color: var(--admin-navy);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.settings-security-banner span {
+    display: block;
+    margin-top: 3px;
+    color: var(--admin-muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.security-status {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #e9f8ef;
+    color: #16803c !important;
+    font-size: 10px !important;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.security-status i {
+    width: 13px;
+    height: 13px;
+}
+
+
+/* ============================================================
+   SETTINGS LAYOUT
+============================================================ */
+
+.settings-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    align-items: start;
+    gap: 22px;
+}
+
+
+/* ============================================================
+   SETTINGS NAVIGATION
+============================================================ */
+
+.settings-navigation {
+    position: sticky;
+    top: 86px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 9px;
+    border: 1px solid var(--admin-border);
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 5px 18px rgba(8, 28, 58, .035);
+}
+
+.settings-nav-item {
+    width: 100%;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 0 11px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: #667085;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: .18s ease;
+}
+
+.settings-nav-item i {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.settings-nav-item:hover {
+    background: #f5f8fc;
+    color: var(--admin-navy);
+}
+
+.settings-nav-item.active {
+    background: #eaf2ff;
+    color: var(--admin-blue);
+    font-weight: 700;
+}
+
+.settings-nav-item.danger {
+    color: #b42318;
+}
+
+.settings-nav-item.danger:hover,
+.settings-nav-item.danger.active {
+    background: #fff0ef;
+    color: #d92d20;
+}
+
+.settings-nav-divider {
+    height: 1px;
+    margin: 7px 5px;
+    background: var(--admin-border);
+}
+
+
+/* ============================================================
+   SETTINGS CONTENT
+============================================================ */
+
+.settings-content {
+    min-width: 0;
+}
+
+.settings-section {
+    display: none;
+    animation: settingsFade .18s ease;
+}
+
+.settings-section.active {
+    display: block;
+}
+
+@keyframes settingsFade {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ============================================================
+   SECTION HEADER
+============================================================ */
+
+.settings-section-header {
+    margin-bottom: 14px;
+}
+
+.settings-section-header h2 {
+    margin-top: 3px;
+    color: var(--admin-navy);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.settings-section-header p {
+    margin-top: 4px;
+    color: var(--admin-muted);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   SETTINGS CARD
+============================================================ */
+
+.settings-card {
+    overflow: hidden;
+    border: 1px solid var(--admin-border);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 7px 24px rgba(8, 28, 58, .035);
+}
+
+
+/* ============================================================
+   PROFILE PREVIEW
+============================================================ */
+
+.settings-profile-preview {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 21px 23px;
+    border-bottom: 1px solid var(--admin-border);
+    background: #fafbfd;
+}
+
+.settings-avatar {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        var(--admin-blue),
+        #6d5dfc
+    );
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.settings-profile-preview strong {
+    display: block;
+    color: var(--admin-navy);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.settings-profile-preview span {
+    display: block;
+    margin-top: 2px;
+    color: var(--admin-muted);
+    font-size: 10px;
+}
+
+.settings-profile-preview small {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 3px 7px;
+    border-radius: 999px;
+    background: #eaf2ff;
+    color: var(--admin-blue);
+    font-size: 9px;
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   FORM GRID
+============================================================ */
+
+.settings-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+    padding: 22px 23px;
+}
+
+
+/* ============================================================
+   FORM FIELDS
+============================================================ */
+
+.settings-card .form-field {
+    padding: 20px 23px 0;
+}
+
+.settings-card .settings-form-grid .form-field {
+    padding: 0;
+}
+
+.settings-card .form-field label,
+.settings-password-body .form-field label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--admin-navy);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.settings-card .form-field input,
+.settings-card .form-field select,
+.settings-password-body input {
+    width: 100%;
+    height: 42px;
+    padding: 0 12px;
+    border: 1px solid var(--admin-border);
+    border-radius: 9px;
+    outline: none;
+    background: #fff;
+    color: var(--admin-text);
+    font-family: inherit;
+    font-size: 11px;
+    transition: .18s ease;
+}
+
+.settings-card .form-field select {
+    cursor: pointer;
+}
+
+.settings-card .form-field input:focus,
+.settings-card .form-field select:focus,
+.settings-password-body input:focus {
+    border-color: var(--admin-blue);
+    box-shadow: 0 0 0 3px rgba(41, 121, 255, .09);
+}
+
+.settings-card .form-field input:disabled {
+    background: #f5f7fa;
+    color: #98a2b3;
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
+   OPTION ROW
+============================================================ */
+
+.settings-option-row {
+    min-height: 78px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 14px 23px;
+}
+
+.settings-option-icon {
+    width: 37px;
+    height: 37px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 10px;
+}
+
+.settings-option-icon i {
+    width: 17px;
+    height: 17px;
+}
+
+.settings-option-icon.blue {
+    background: #eaf2ff;
+    color: var(--admin-blue);
+}
+
+.settings-option-icon.green {
+    background: #e9f8ef;
+    color: #16803c;
+}
+
+.settings-option-icon.gold {
+    background: #fff6d8;
+    color: #9a6700;
+}
+
+.settings-option-icon.purple {
+    background: #f0ebff;
+    color: #6941c6;
+}
+
+.settings-option-icon.red {
+    background: #fff0ef;
+    color: #d92d20;
+}
+
+.settings-option-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.settings-option-info strong {
+    display: block;
+    color: var(--admin-navy);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.settings-option-info span {
+    display: block;
+    margin-top: 3px;
+    color: var(--admin-muted);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   DIVIDER
+============================================================ */
+
+.settings-divider {
+    height: 1px;
+    margin: 0 23px;
+    background: var(--admin-border);
+}
+
+
+/* ============================================================
+   SWITCH
+============================================================ */
+
+.settings-switch {
+    position: relative;
+    width: 42px;
+    height: 23px;
+    display: block;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.settings-switch input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.settings-switch span {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: #d0d5dd;
+    transition: .2s ease;
+}
+
+.settings-switch span::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,.15);
+    transition: .2s ease;
+}
+
+.settings-switch input:checked + span {
+    background: var(--admin-blue);
+}
+
+.settings-switch input:checked + span::after {
+    transform: translateX(19px);
+}
+
+
+/* ============================================================
+   CARD ACTIONS
+============================================================ */
+
+.settings-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    padding: 17px 23px;
+    border-top: 1px solid var(--admin-border);
+    background: #fafbfd;
+}
+
+.settings-card-actions .admin-btn {
+    min-height: 39px;
+}
+
+
+/* ============================================================
+   ACTIVE SESSIONS
+============================================================ */
+
+.active-sessions-list {
+    min-height: 150px;
+}
+
+.active-session {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 17px 23px;
+}
+
+.active-session + .active-session {
+    border-top: 1px solid var(--admin-border);
+}
+
+.active-session-icon {
+    width: 39px;
+    height: 39px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #f2f4f7;
+    color: #667085;
+}
+
+.active-session-icon i {
+    width: 18px;
+    height: 18px;
+}
+
+.active-session-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.active-session-info strong {
+    display: block;
+    color: var(--admin-navy);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.active-session-info span {
+    display: block;
+    margin-top: 3px;
+    color: var(--admin-muted);
+    font-size: 9px;
+}
+
+.active-session-current {
+    padding: 4px 7px;
+    border-radius: 999px;
+    background: #e9f8ef;
+    color: #16803c;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   DANGER ZONE
+============================================================ */
+
+.danger-eyebrow {
+    color: #d92d20;
+}
+
+.settings-danger-card {
+    overflow: hidden;
+    border: 1px solid #f3c6c3;
+    border-radius: 16px;
+    background: #fffafa;
+}
+
+.danger-action {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 21px 23px;
+}
+
+.danger-action > div {
+    min-width: 0;
+    flex: 1;
+}
+
+.danger-action strong {
+    display: block;
+    color: #b42318;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.danger-action span {
+    display: block;
+    margin-top: 4px;
+    color: #8d5b58;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   PASSWORD MODAL
+============================================================ */
+
+.settings-password-modal {
+    width: min(500px, 100%);
+}
+
+.settings-password-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 23px;
+}
+
+.settings-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    padding: 17px 23px;
+    border-top: 1px solid var(--admin-border);
+    background: #fafbfd;
+}
+
+
+/* ============================================================
+   LOADING
+============================================================ */
+
+.settings-page .profile-loading {
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--admin-muted);
+    font-size: 11px;
+}
+
+.settings-page .loading-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #dfe5ef;
+    border-top-color: var(--admin-blue);
+    border-radius: 50%;
+    animation: settingsSpin .7s linear infinite;
+}
+
+@keyframes settingsSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 1000px) {
+
+    .settings-layout {
+        grid-template-columns: 190px minmax(0, 1fr);
+        gap: 16px;
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .settings-security-banner {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .security-status {
+        margin-left: 56px;
+    }
+
+    .settings-layout {
+        display: block;
+    }
+
+    .settings-navigation {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-bottom: 18px;
+    }
+
+    .settings-nav-divider {
+        display: none;
+    }
+
+    .settings-nav-item {
+        min-height: 40px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .settings-page-header {
+        gap: 14px;
+    }
+
+    .settings-header-actions {
+        width: 100%;
+    }
+
+    .settings-header-actions .admin-btn {
+        width: 100%;
+    }
+
+    .settings-security-banner {
+        padding: 15px;
+    }
+
+    .settings-security-banner > div:nth-child(2) {
+        flex: 1 1 calc(100% - 60px);
+    }
+
+    .security-status {
+        margin-left: 0;
+    }
+
+    .settings-navigation {
+        grid-template-columns: 1fr;
+        padding: 7px;
+    }
+
+    .settings-form-grid {
+        grid-template-columns: 1fr;
+        padding: 18px;
+    }
+
+    .settings-card .form-field {
+        padding: 18px 18px 0;
+    }
+
+    .settings-card .form-field:first-child {
+        padding-top: 18px;
+    }
+
+    .settings-option-row {
+        padding: 14px 18px;
+    }
+
+    .settings-divider {
+        margin: 0 18px;
+    }
+
+    .settings-profile-preview {
+        padding: 18px;
+    }
+
+    .settings-card-actions {
+        flex-direction: column;
+        padding: 15px 18px;
+    }
+
+    .settings-card-actions .admin-btn {
+        width: 100%;
+    }
+
+    .active-session {
+        padding: 15px 18px;
+    }
+
+    .active-session-current {
+        display: none;
+    }
+
+    .danger-action {
+        align-items: stretch;
+        flex-direction: column;
+        padding: 18px;
+    }
+
+    .danger-action .admin-btn {
+        width: 100%;
+    }
+
+    .settings-password-body {
+        padding: 18px;
+    }
+
+    .settings-modal-actions {
+        flex-direction: column;
+        padding: 15px 18px;
+    }
+
+    .settings-modal-actions .admin-btn {
+        width: 100%;
+    }
+
+}

@@ -11,7 +11,7 @@
     >
 
     <title>
-        Students | Admin Console | Spark Stack Academy
+        Assignments | Admin Console | Spark Stack Academy
     </title>
 
 
@@ -31,7 +31,7 @@
 
     <link
         rel="stylesheet"
-        href="css/students.css"
+        href="css/assignments.css"
     >
 
     <link
@@ -119,39 +119,39 @@
              PAGE
         ================================================== -->
 
-        <section class="admin-page students-page">
+        <section class="admin-page assignments-page">
 
 
             <!-- =================================================
                  PAGE HEADER
             ================================================== -->
 
-            <div class="page-header students-page-header">
+            <div class="page-header assignments-page-header">
 
                 <div>
 
                     <span class="page-eyebrow">
-                        STUDENT MANAGEMENT
+                        ASSIGNMENT MANAGEMENT
                     </span>
 
                     <h1>
-                        Students
+                        Assignments
                     </h1>
 
                     <p>
-                        View, monitor and manage students
-                        across Spark Stack Academy.
+                        Monitor assignments, submissions,
+                        grading and student performance.
                     </p>
 
                 </div>
 
 
-                <div class="students-header-actions">
+                <div class="assignments-header-actions">
 
                     <button
                         type="button"
                         class="admin-btn secondary"
-                        id="refreshStudentsBtn"
+                        id="refreshAssignmentsBtn"
                     >
 
                         <i data-lucide="refresh-cw"></i>
@@ -166,35 +166,10 @@
 
 
             <!-- =================================================
-                 MODERATOR NOTICE
-            ================================================== -->
-
-            <div class="moderator-notice">
-
-                <i data-lucide="shield-check"></i>
-
-                <div>
-
-                    <strong>
-                        Moderator Access
-                    </strong>
-
-                    <span>
-                        Student account actions should only
-                        be used when necessary and according
-                        to academy policy.
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
                  STATISTICS
             ================================================== -->
 
-            <section class="admin-stat-grid students-stats">
+            <section class="admin-stat-grid assignments-stats">
 
 
                 <!-- TOTAL -->
@@ -205,17 +180,17 @@
 
                         <div class="admin-stat-icon blue">
 
-                            <i data-lucide="users"></i>
+                            <i data-lucide="clipboard-list"></i>
 
                         </div>
 
                     </div>
 
                     <span>
-                        Total Students
+                        Total Assignments
                     </span>
 
-                    <strong id="totalStudents">
+                    <strong id="totalAssignments">
                         0
                     </strong>
 
@@ -230,49 +205,24 @@
 
                         <div class="admin-stat-icon green">
 
-                            <i data-lucide="user-check"></i>
+                            <i data-lucide="clipboard-check"></i>
 
                         </div>
 
                     </div>
 
                     <span>
-                        Active Students
+                        Active
                     </span>
 
-                    <strong id="activeStudents">
+                    <strong id="activeAssignments">
                         0
                     </strong>
 
                 </article>
 
 
-                <!-- SUSPENDED -->
-
-                <article class="admin-stat">
-
-                    <div class="admin-stat-top">
-
-                        <div class="admin-stat-icon gold">
-
-                            <i data-lucide="user-round-x"></i>
-
-                        </div>
-
-                    </div>
-
-                    <span>
-                        Suspended
-                    </span>
-
-                    <strong id="suspendedStudents">
-                        0
-                    </strong>
-
-                </article>
-
-
-                <!-- NEW -->
+                <!-- SUBMISSIONS -->
 
                 <article class="admin-stat">
 
@@ -280,17 +230,42 @@
 
                         <div class="admin-stat-icon purple">
 
-                            <i data-lucide="user-plus"></i>
+                            <i data-lucide="files"></i>
 
                         </div>
 
                     </div>
 
                     <span>
-                        New This Month
+                        Submissions
                     </span>
 
-                    <strong id="newStudents">
+                    <strong id="totalSubmissions">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <!-- PENDING -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon gold">
+
+                            <i data-lucide="clock-3"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Pending Review
+                    </span>
+
+                    <strong id="pendingReviews">
                         0
                     </strong>
 
@@ -301,29 +276,29 @@
 
 
             <!-- =================================================
-                 STUDENT MANAGEMENT CARD
+                 MANAGEMENT CARD
             ================================================== -->
 
-            <section class="admin-card students-management-card">
+            <section class="admin-card assignments-management-card">
 
 
                 <!-- =================================================
                      TOOLBAR
                 ================================================== -->
 
-                <div class="students-toolbar">
+                <div class="assignments-toolbar">
 
 
                     <!-- SEARCH -->
 
-                    <div class="admin-search students-search">
+                    <div class="admin-search assignments-search">
 
                         <i data-lucide="search"></i>
 
                         <input
                             type="search"
-                            id="studentSearch"
-                            placeholder="Search students by name or email..."
+                            id="assignmentSearch"
+                            placeholder="Search assignments..."
                             autocomplete="off"
                         >
 
@@ -332,12 +307,12 @@
 
                     <!-- FILTERS -->
 
-                    <div class="students-filters">
+                    <div class="assignments-filters">
 
 
                         <select
-                            id="studentStatusFilter"
-                            aria-label="Filter students by status"
+                            id="assignmentStatusFilter"
+                            aria-label="Filter assignments by status"
                         >
 
                             <option value="all">
@@ -348,16 +323,32 @@
                                 Active
                             </option>
 
-                            <option value="suspended">
-                                Suspended
+                            <option value="closed">
+                                Closed
+                            </option>
+
+                            <option value="draft">
+                                Draft
                             </option>
 
                         </select>
 
 
                         <select
-                            id="studentSort"
-                            aria-label="Sort students"
+                            id="assignmentCourseFilter"
+                            aria-label="Filter assignments by course"
+                        >
+
+                            <option value="all">
+                                All Courses
+                            </option>
+
+                        </select>
+
+
+                        <select
+                            id="assignmentSort"
+                            aria-label="Sort assignments"
                         >
 
                             <option value="newest">
@@ -366,6 +357,10 @@
 
                             <option value="oldest">
                                 Oldest First
+                            </option>
+
+                            <option value="due-soon">
+                                Due Soon
                             </option>
 
                             <option value="name">
@@ -385,19 +380,19 @@
 
 
                 <!-- =================================================
-                     RESULTS INFO
+                     RESULTS BAR
                 ================================================== -->
 
-                <div class="students-results-bar">
+                <div class="assignments-results-bar">
 
                     <div>
 
-                        <strong id="studentResultsCount">
+                        <strong id="assignmentResultsCount">
                             0
                         </strong>
 
                         <span>
-                            students found
+                            assignments found
                         </span>
 
                     </div>
@@ -405,7 +400,7 @@
 
                     <button
                         type="button"
-                        id="clearStudentFilters"
+                        id="clearAssignmentFilters"
                         class="text-link"
                     >
                         Clear Filters
@@ -418,32 +413,36 @@
                      TABLE
                 ================================================== -->
 
-                <div class="admin-table-wrap students-table-wrap">
+                <div class="admin-table-wrap assignments-table-wrap">
 
-                    <table class="admin-table students-table">
+                    <table class="admin-table assignments-table">
 
                         <thead>
 
                             <tr>
 
                                 <th>
-                                    Student
+                                    Assignment
                                 </th>
 
                                 <th>
-                                    Email
+                                    Course
                                 </th>
 
                                 <th>
-                                    Courses
+                                    Instructor
+                                </th>
+
+                                <th>
+                                    Submissions
+                                </th>
+
+                                <th>
+                                    Due Date
                                 </th>
 
                                 <th>
                                     Status
-                                </th>
-
-                                <th>
-                                    Joined
                                 </th>
 
                                 <th>
@@ -455,15 +454,15 @@
                         </thead>
 
 
-                        <tbody id="studentsTableBody">
+                        <tbody id="assignmentsTableBody">
 
 
                             <!-- LOADING -->
 
-                            <tr id="studentsLoadingRow">
+                            <tr id="assignmentsLoadingRow">
 
                                 <td
-                                    colspan="6"
+                                    colspan="7"
                                     class="table-state-cell"
                                 >
 
@@ -472,7 +471,7 @@
                                         <div class="loading-spinner"></div>
 
                                         <span>
-                                            Loading students...
+                                            Loading assignments...
                                         </span>
 
                                     </div>
@@ -494,14 +493,14 @@
                 ================================================== -->
 
                 <div
-                    id="studentsEmptyState"
+                    id="assignmentsEmptyState"
                     class="admin-empty hidden"
                 >
 
-                    <i data-lucide="users-round"></i>
+                    <i data-lucide="clipboard-list"></i>
 
                     <h3>
-                        No students found
+                        No assignments found
                     </h3>
 
                     <p>
@@ -516,8 +515,8 @@
                 ================================================== -->
 
                 <div
-                    id="studentsPagination"
-                    class="students-pagination"
+                    id="assignmentsPagination"
+                    class="assignments-pagination"
                 ></div>
 
 
@@ -532,11 +531,11 @@
 
 
 <!-- =========================================================
-     STUDENT DETAILS MODAL
+     ASSIGNMENT DETAILS MODAL
 ========================================================= -->
 
 <div
-    id="studentDetailsModal"
+    id="assignmentDetailsModal"
     class="admin-modal hidden"
     aria-hidden="true"
 >
@@ -546,10 +545,10 @@
 
 
     <div
-        class="admin-modal-panel student-details-modal"
+        class="admin-modal-panel assignment-details-modal"
         role="dialog"
         aria-modal="true"
-        aria-labelledby="studentDetailsTitle"
+        aria-labelledby="assignmentDetailsTitle"
     >
 
 
@@ -560,11 +559,11 @@
             <div>
 
                 <span class="page-eyebrow">
-                    STUDENT PROFILE
+                    ASSIGNMENT OVERVIEW
                 </span>
 
-                <h2 id="studentDetailsTitle">
-                    Student Details
+                <h2 id="assignmentDetailsTitle">
+                    Assignment Details
                 </h2>
 
             </div>
@@ -573,7 +572,7 @@
             <button
                 type="button"
                 class="modal-close-btn"
-                id="closeStudentDetails"
+                id="closeAssignmentDetails"
                 aria-label="Close"
             >
 
@@ -584,30 +583,35 @@
         </div>
 
 
-        <!-- PROFILE -->
+        <!-- SUMMARY -->
 
-        <div class="student-profile-summary">
+        <div class="assignment-modal-summary">
 
 
             <div
-                id="studentModalAvatar"
-                class="student-modal-avatar"
+                id="assignmentModalIcon"
+                class="assignment-modal-icon"
             >
-                S
+
+                <i data-lucide="clipboard-check"></i>
+
             </div>
 
 
-            <div class="student-modal-info">
+            <div class="assignment-modal-info">
 
-                <h3 id="studentModalName">
-                    Student
+                <h3 id="assignmentModalName">
+                    Assignment
                 </h3>
 
-                <span id="studentModalEmail">
-                    student@example.com
+                <span id="assignmentModalCourse">
+                    Course
                 </span>
 
-                <span id="studentModalStatus">
+                <span
+                    id="assignmentModalStatus"
+                    class="admin-badge active"
+                >
                     Active
                 </span>
 
@@ -618,56 +622,82 @@
 
         <!-- DETAILS -->
 
-        <div class="student-details-grid">
+        <div class="assignment-details-grid">
 
 
-            <div class="student-detail-item">
+            <div class="assignment-detail-item">
 
                 <span>
-                    Student ID
+                    Assignment ID
                 </span>
 
-                <strong id="studentModalId">
+                <strong id="assignmentModalId">
                     —
                 </strong>
 
             </div>
 
 
-            <div class="student-detail-item">
+            <div class="assignment-detail-item">
 
                 <span>
-                    Joined
+                    Instructor
                 </span>
 
-                <strong id="studentModalJoined">
+                <strong id="assignmentModalInstructor">
                     —
                 </strong>
 
             </div>
 
 
-            <div class="student-detail-item">
+            <div class="assignment-detail-item">
 
                 <span>
-                    Courses
+                    Submissions
                 </span>
 
-                <strong id="studentModalCourses">
+                <strong id="assignmentModalSubmissions">
                     0
                 </strong>
 
             </div>
 
 
-            <div class="student-detail-item">
+            <div class="assignment-detail-item">
 
                 <span>
-                    Certificates
+                    Pending Review
                 </span>
 
-                <strong id="studentModalCertificates">
+                <strong id="assignmentModalPending">
                     0
+                </strong>
+
+            </div>
+
+
+            <div class="assignment-detail-item">
+
+                <span>
+                    Due Date
+                </span>
+
+                <strong id="assignmentModalDueDate">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="assignment-detail-item">
+
+                <span>
+                    Created
+                </span>
+
+                <strong id="assignmentModalCreated">
+                    —
                 </strong>
 
             </div>
@@ -678,17 +708,17 @@
 
         <!-- ACTIONS -->
 
-        <div class="student-modal-actions">
+        <div class="assignment-modal-actions">
 
             <button
                 type="button"
                 class="admin-btn secondary"
-                id="viewStudentProfileBtn"
+                id="viewAssignmentBtn"
             >
 
                 <i data-lucide="external-link"></i>
 
-                View Profile
+                View Assignment
 
             </button>
 
@@ -696,12 +726,12 @@
             <button
                 type="button"
                 class="admin-btn danger"
-                id="suspendStudentBtn"
+                id="toggleAssignmentStatusBtn"
             >
 
-                <i data-lucide="user-round-x"></i>
+                <i data-lucide="circle-pause"></i>
 
-                Suspend Student
+                Close Assignment
 
             </button>
 
@@ -724,7 +754,7 @@
 
 <script
     type="module"
-    src="js/students.js"
+    src="js/assignments.js"
 ></script>
 
 

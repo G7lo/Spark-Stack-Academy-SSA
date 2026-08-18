@@ -3,139 +3,805 @@
 
 <head>
 
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <title>Instructors Management | Spark Stack Academy</title>
+    <title>
+        Instructors | Admin Console | Spark Stack Academy
+    </title>
 
-  <link rel="stylesheet"
-    href="instructors.css">
+
+    <!-- =====================================================
+         CORE CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/admin-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/instructors.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- =====================================================
+         FONT
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         ICONS
+    ====================================================== -->
+
+    <script
+        src="https://unpkg.com/lucide@latest"
+    ></script>
 
 </head>
 
+
 <body>
 
-  <div class="dashboard-layout">
 
-    <!-- SIDEBAR -->
-    <aside id="sidebarContainer"></aside>
+<div class="admin-app">
 
-    <div id="sidebarOverlay"></div>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-      <div id="topbarContainer"></div>
+    <aside
+        id="adminSidebar"
+        class="admin-sidebar"
+    ></aside>
 
-      <section class="page">
 
-        <div class="page-header">
+    <!-- =====================================================
+         MOBILE OVERLAY
+    ====================================================== -->
 
-          <h1>Instructors Management</h1>
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
 
-          <p>
-            Manage all Spark Stack Academy instructors,
-            courses, and teaching activity.
-          </p>
 
-        </div>
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
 
-        <div class="table-card">
+    <main class="admin-main">
 
-          <div class="table-top">
 
-            <h2>Registered Instructors</h2>
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
 
-            <input type="text"
-              id="searchInput"
-              placeholder="Search instructors by name, email, or expertise...">
+        <header
+            id="adminTopbar"
+            class="admin-topbar"
+        ></header>
 
-          </div>
 
-          <div class="table-wrapper">
+        <!-- =================================================
+             PAGE
+        ================================================== -->
 
-            <table class="instructors-table">
+        <section class="admin-page instructors-page">
 
-              <thead>
 
-                <tr>
+            <!-- =================================================
+                 PAGE HEADER
+            ================================================== -->
 
-                  <th>Instructor</th>
+            <div class="page-header instructors-page-header">
 
-                  <th>Expertise</th>
+                <div>
 
-                  <th>Email</th>
+                    <span class="page-eyebrow">
+                        INSTRUCTOR MANAGEMENT
+                    </span>
 
-                  <th>Courses</th>
+                    <h1>
+                        Instructors
+                    </h1>
 
-                  <th>Status</th>
+                    <p>
+                        Review, monitor and manage
+                        academy instructors.
+                    </p>
 
-                  <th>Actions</th>
+                </div>
 
-                </tr>
 
-              </thead>
+                <div class="instructors-header-actions">
 
-              <tbody id="instructorsTableBody">
+                    <button
+                        type="button"
+                        class="admin-btn secondary"
+                        id="refreshInstructorsBtn"
+                    >
 
-                <tr>
+                        <i data-lucide="refresh-cw"></i>
 
-                  <td colspan="6"
-                    class="loading-row">
+                        Refresh
 
-                    Loading instructors...
+                    </button>
 
-                  </td>
+                </div>
 
-                </tr>
+            </div>
 
-              </tbody>
 
-            </table>
+            <!-- =================================================
+                 MODERATOR NOTICE
+            ================================================== -->
 
-          </div>
+            <div class="moderator-notice">
 
-        </div>
+                <i data-lucide="shield-check"></i>
 
-      </section>
+                <div>
+
+                    <strong>
+                        Instructor Management
+                    </strong>
+
+                    <span>
+                        Review instructor accounts,
+                        course activity and account status
+                        before taking administrative action.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================== -->
+
+            <section class="admin-stat-grid instructors-stats">
+
+
+                <!-- TOTAL -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon blue">
+
+                            <i data-lucide="graduation-cap"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Total Instructors
+                    </span>
+
+                    <strong id="totalInstructors">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <!-- ACTIVE -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon green">
+
+                            <i data-lucide="user-check"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Active Instructors
+                    </span>
+
+                    <strong id="activeInstructors">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <!-- PENDING -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon gold">
+
+                            <i data-lucide="clock-3"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Pending Approval
+                    </span>
+
+                    <strong id="pendingInstructors">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <!-- SUSPENDED -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon purple">
+
+                            <i data-lucide="user-round-x"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Suspended
+                    </span>
+
+                    <strong id="suspendedInstructors">
+                        0
+                    </strong>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 INSTRUCTOR MANAGEMENT
+            ================================================== -->
+
+            <section class="admin-card instructors-management-card">
+
+
+                <!-- =================================================
+                     TOOLBAR
+                ================================================== -->
+
+                <div class="instructors-toolbar">
+
+
+                    <!-- SEARCH -->
+
+                    <div class="admin-search instructors-search">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            type="search"
+                            id="instructorSearch"
+                            placeholder="Search instructors by name or email..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <!-- FILTERS -->
+
+                    <div class="instructors-filters">
+
+
+                        <select
+                            id="instructorStatusFilter"
+                            aria-label="Filter instructors by status"
+                        >
+
+                            <option value="all">
+                                All Status
+                            </option>
+
+                            <option value="active">
+                                Active
+                            </option>
+
+                            <option value="pending">
+                                Pending
+                            </option>
+
+                            <option value="suspended">
+                                Suspended
+                            </option>
+
+                        </select>
+
+
+                        <select
+                            id="instructorSort"
+                            aria-label="Sort instructors"
+                        >
+
+                            <option value="newest">
+                                Newest First
+                            </option>
+
+                            <option value="oldest">
+                                Oldest First
+                            </option>
+
+                            <option value="name">
+                                Name A–Z
+                            </option>
+
+                            <option value="name-desc">
+                                Name Z–A
+                            </option>
+
+                            <option value="courses">
+                                Most Courses
+                            </option>
+
+                            <option value="students">
+                                Most Students
+                            </option>
+
+                        </select>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     RESULTS BAR
+                ================================================== -->
+
+                <div class="instructors-results-bar">
+
+                    <div>
+
+                        <strong id="instructorResultsCount">
+                            0
+                        </strong>
+
+                        <span>
+                            instructors found
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="clearInstructorFilters"
+                        class="text-link"
+                    >
+                        Clear Filters
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     TABLE
+                ================================================== -->
+
+                <div class="admin-table-wrap instructors-table-wrap">
+
+                    <table class="admin-table instructors-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Instructor
+                                </th>
+
+                                <th>
+                                    Email
+                                </th>
+
+                                <th>
+                                    Courses
+                                </th>
+
+                                <th>
+                                    Students
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Joined
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="instructorsTableBody">
+
+
+                            <!-- LOADING -->
+
+                            <tr id="instructorsLoadingRow">
+
+                                <td
+                                    colspan="7"
+                                    class="table-state-cell"
+                                >
+
+                                    <div class="table-loading">
+
+                                        <div class="loading-spinner"></div>
+
+                                        <span>
+                                            Loading instructors...
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- =================================================
+                     EMPTY STATE
+                ================================================== -->
+
+                <div
+                    id="instructorsEmptyState"
+                    class="admin-empty hidden"
+                >
+
+                    <i data-lucide="graduation-cap"></i>
+
+                    <h3>
+                        No instructors found
+                    </h3>
+
+                    <p>
+                        Try changing your search or filters.
+                    </p>
+
+                </div>
+
+
+                <!-- =================================================
+                     PAGINATION
+                ================================================== -->
+
+                <div
+                    id="instructorsPagination"
+                    class="instructors-pagination"
+                ></div>
+
+
+            </section>
+
+
+        </section>
 
     </main>
 
-  </div>
+</div>
 
-  <!-- INSTRUCTOR MODAL -->
-  <div class="modal" id="instructorModal">
 
-    <div class="modal-content">
+<!-- =========================================================
+     INSTRUCTOR DETAILS MODAL
+========================================================= -->
 
-      <div class="modal-header">
+<div
+    id="instructorDetailsModal"
+    class="admin-modal hidden"
+    aria-hidden="true"
+>
 
-        <h3 id="modalTitle">Instructor Details</h3>
 
-        <button class="close-btn"
-          id="closeModal">&times;</button>
+    <div class="admin-modal-backdrop"></div>
 
-      </div>
 
-      <div class="modal-body"
-        id="modalBody">
+    <div
+        class="admin-modal-panel instructor-details-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="instructorDetailsTitle"
+    >
 
-        Loading...
 
-      </div>
+        <!-- HEADER -->
+
+        <div class="admin-modal-header">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    INSTRUCTOR PROFILE
+                </span>
+
+                <h2 id="instructorDetailsTitle">
+                    Instructor Details
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close-btn"
+                id="closeInstructorDetails"
+                aria-label="Close"
+            >
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- PROFILE -->
+
+        <div class="instructor-profile-summary">
+
+
+            <div
+                id="instructorModalAvatar"
+                class="instructor-modal-avatar"
+            >
+                I
+            </div>
+
+
+            <div class="instructor-modal-info">
+
+                <h3 id="instructorModalName">
+                    Instructor
+                </h3>
+
+                <span id="instructorModalEmail">
+                    instructor@example.com
+                </span>
+
+                <span id="instructorModalStatus">
+                    Active
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="instructor-details-grid">
+
+
+            <div class="instructor-detail-item">
+
+                <span>
+                    Instructor ID
+                </span>
+
+                <strong id="instructorModalId">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="instructor-detail-item">
+
+                <span>
+                    Joined
+                </span>
+
+                <strong id="instructorModalJoined">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="instructor-detail-item">
+
+                <span>
+                    Courses
+                </span>
+
+                <strong id="instructorModalCourses">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="instructor-detail-item">
+
+                <span>
+                    Students
+                </span>
+
+                <strong id="instructorModalStudents">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="instructor-detail-item">
+
+                <span>
+                    Earnings
+                </span>
+
+                <strong id="instructorModalEarnings">
+                    KSh 0
+                </strong>
+
+            </div>
+
+
+            <div class="instructor-detail-item">
+
+                <span>
+                    Rating
+                </span>
+
+                <strong id="instructorModalRating">
+                    0.0
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="instructor-modal-actions">
+
+
+            <button
+                type="button"
+                class="admin-btn secondary"
+                id="viewInstructorProfileBtn"
+            >
+
+                <i data-lucide="external-link"></i>
+
+                View Profile
+
+            </button>
+
+
+            <button
+                type="button"
+                class="admin-btn primary"
+                id="approveInstructorBtn"
+            >
+
+                <i data-lucide="user-check"></i>
+
+                Approve Instructor
+
+            </button>
+
+
+            <button
+                type="button"
+                class="admin-btn danger"
+                id="suspendInstructorBtn"
+            >
+
+                <i data-lucide="user-round-x"></i>
+
+                Suspend Instructor
+
+            </button>
+
+
+        </div>
+
 
     </div>
 
-  </div>
+</div>
 
-  <script type="module"
-    src="../js/admin-app.js"></script>
 
-  <script type="module"
-    src="instructors.js"></script>
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
+
+<script
+    type="module"
+    src="js/admin-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/instructors.js"
+></script>
+
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            if (window.lucide) {
+
+                lucide.createIcons();
+
+            }
+
+        }
+    );
+
+</script>
+
 
 </body>
-
 </html>

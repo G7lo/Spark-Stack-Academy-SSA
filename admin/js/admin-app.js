@@ -3,7 +3,7 @@
 // ADMIN / MODERATOR APP ENGINE
 // ============================================================
 
-console.log("🛡️🛡️ ADMIN APP JS LOADED");
+console.log("🛡️ ADMIN APP JS LOADED");
 
 import {
     auth,
@@ -22,68 +22,141 @@ import {
 
 
 // ============================================================
-// CONFIG
+// COMPONENT PATHS
 // ============================================================
 
-const COMPONENT_PATHS = {
-
-    sidebar:
-        "components/sidebar.html",
-
-    topbar:
-        "components/topbar.html"
-
+const COMPONENTS = {
+    sidebar: "components/sidebar.html",
+    topbar: "components/topbar.html"
 };
 
 
 // ============================================================
-// ELEMENTS
+// DOM
 // ============================================================
 
 const sidebar =
-    document.getElementById(
-        "adminSidebar"
-    );
+    document.getElementById("adminSidebar");
 
 const topbar =
-    document.getElementById(
-        "adminTopbar"
-    );
+    document.getElementById("adminTopbar");
 
 
 // ============================================================
-// LOAD COMPONENT
+// LOAD HTML COMPONENT
 // ============================================================
 
-async function loadComponent(
-    element,
-    path
-) {
+async function fetchComponent(path) {
 
-    if (!element) return false;
+    const response = await fetch(path);
+
+    if (!response.ok) {
+
+        throw new Error(
+            `Failed to load ${path} (${response.status})`
+        );
+
+    }
+
+    return response.text();
+
+}
+
+
+// ============================================================
+// INJECT ADMIN SHELL
+// ============================================================
+
+async function loadAdminShell() {
+
+    console.log("🚀 Injecting admin shell...");
 
     try {
 
-        const response =
-            await fetch(path);
+        // Load BOTH components simultaneously
+        const [
+            sidebarHTML,
+            topbarHTML
+        ] = await Promise.all([
 
-        if (!response.ok) {
+            fetchComponent(
+                COMPONENTS.sidebar
+            ),
 
-            throw new Error(
-                `HTTP ${response.status}`
-            );
+            fetchComponent(
+                COMPONENTS.topbar
+            )
+
+        ]);
+
+
+        // Inject immediately
+        if (sidebar) {
+
+            sidebar.innerHTML =
+                sidebarHTML;
 
         }
 
-        element.innerHTML =
-            await response.text();
+
+        if (topbar) {
+
+            topbar.innerHTML =
+                topbarHTML;
+
+        }
+
+
+        console.log(
+            "✓ Admin HTML shell injected"
+        );
+
+
+        // Load component engines simultaneously
+        await Promise.all([
+
+            import("../components/sidebar.js"),
+
+            import("../components/topbar.js")
+
+        ]);
+
+
+        // Initialize sidebar
+        if (
+            window.AdminSidebar &&
+            typeof window.AdminSidebar.init ===
+            "function"
+        ) {
+
+            window.AdminSidebar.init();
+
+        }
+
+
+        // Initialize topbar
+        if (
+            window.AdminTopbar &&
+            typeof window.AdminTopbar.init ===
+            "function"
+        ) {
+
+            window.AdminTopbar.init();
+
+        }
+
+
+        console.log(
+            "✓ Admin shell initialized"
+        );
+
 
         return true;
 
     } catch (error) {
 
         console.error(
-            `❌ Failed loading ${path}`,
+            "❌ Admin shell failed:",
             error
         );
 
@@ -95,90 +168,14 @@ async function loadComponent(
 
 
 // ============================================================
-// LOAD ADMIN SHELL
+// ADMIN PROFILE
 // ============================================================
 
-async function loadAdminShell() {
-
-    console.log(
-        "🚀 Loading admin shell..."
-    );
-
-
-    const sidebarLoaded =
-        await loadComponent(
-            sidebar,
-            COMPONENT_PATHS.sidebar
-        );
-
-
-    if (sidebarLoaded) {
-
-        console.log(
-            "✓ Loaded: components/sidebar.html"
-        );
-
-    }
-
-
-    const topbarLoaded =
-        await loadComponent(
-            topbar,
-            COMPONENT_PATHS.topbar
-        );
-
-
-    if (topbarLoaded) {
-
-        console.log(
-            "✓ Loaded: components/topbar.html"
-        );
-
-    }
-
-
-    // Initialize component engines
-
-    if (
-        window.AdminSidebar &&
-        typeof window.AdminSidebar.init ===
-        "function"
-    ) {
-
-        window.AdminSidebar.init();
-
-    }
-
-
-    if (
-        window.AdminTopbar &&
-        typeof window.AdminTopbar.init ===
-        "function"
-    ) {
-
-        window.AdminTopbar.init();
-
-    }
-
-
-    console.log(
-        "✓ Admin shell ready"
-    );
-
-}
-
-
-// ============================================================
-// GET ADMIN PROFILE
-// ============================================================
-
-async function getAdminProfile(
-    uid
-) {
+async function getAdminProfile(uid) {
 
     try {
 
-        const userRef =
+        const reference =
             doc(
                 db,
                 "users",
@@ -186,7 +183,7 @@ async function getAdminProfile(
             );
 
         const snapshot =
-            await getDoc(userRef);
+            await getDoc(reference);
 
 
         if (!snapshot.exists()) {
@@ -218,12 +215,10 @@ async function getAdminProfile(
 
 
 // ============================================================
-// ROLE CHECK
+// AUTHORIZATION
 // ============================================================
 
-function isAuthorized(
-    profile
-) {
+function isAuthorized(profile) {
 
     if (!profile) return false;
 
@@ -246,38 +241,35 @@ function isAuthorized(
 
 
 // ============================================================
+// SYNC PROFILE
+// ============================================================
+
+function syncAdminProfile(profile) {
+
+    window.AdminSidebar?.updateProfile?.(
+        profile
+    );
+
+    window.AdminTopbar?.updateProfile?.(
+        profile
+    );
+
+}
+
+
+// ============================================================
 // ACCESS DENIED
 // ============================================================
 
 function denyAccess() {
 
-    console.warn(
-        "⛔ Unauthorized admin access"
-    );
-
-
     document.body.innerHTML = `
 
-        <main
-            style="
-                min-height:100vh;
-                display:grid;
-                place-items:center;
-                padding:30px;
-                font-family:Poppins,Arial,sans-serif;
-                background:#f7f9fc;
-                text-align:center;
-            "
-        >
+        <main class="admin-access-denied">
 
-            <div>
+            <div class="access-denied-content">
 
-                <div
-                    style="
-                        font-size:52px;
-                        margin-bottom:15px;
-                    "
-                >
+                <div class="access-denied-icon">
                     🛡️
                 </div>
 
@@ -285,28 +277,14 @@ function denyAccess() {
                     Access Restricted
                 </h1>
 
-                <p
-                    style="
-                        color:#667085;
-                        max-width:420px;
-                        margin:10px auto 25px;
-                    "
-                >
+                <p>
                     You don't have permission to access
                     the Spark Stack Academy moderator console.
                 </p>
 
                 <a
                     href="../login.html"
-                    style="
-                        display:inline-flex;
-                        padding:11px 18px;
-                        border-radius:10px;
-                        background:#2979ff;
-                        color:white;
-                        text-decoration:none;
-                        font-weight:600;
-                    "
+                    class="access-denied-btn"
                 >
                     Return to Login
                 </a>
@@ -316,38 +294,6 @@ function denyAccess() {
         </main>
 
     `;
-
-}
-
-
-// ============================================================
-// UPDATE GLOBAL PROFILE
-// ============================================================
-
-function syncAdminProfile(
-    profile
-) {
-
-    if (
-        window.AdminSidebar?.updateProfile
-    ) {
-
-        window.AdminSidebar.updateProfile(
-            profile
-        );
-
-    }
-
-
-    if (
-        window.AdminTopbar?.updateProfile
-    ) {
-
-        window.AdminTopbar.updateProfile(
-            profile
-        );
-
-    }
 
 }
 
@@ -368,7 +314,7 @@ async function logoutAdmin() {
     } catch (error) {
 
         console.error(
-            "❌ Admin logout failed:",
+            "❌ Logout failed:",
             error
         );
 
@@ -391,12 +337,16 @@ function initLogout() {
         "click",
         event => {
 
-            const logoutButton =
+            const button =
                 event.target.closest(
-                    "#adminDropdownLogout"
+                    "#adminLogoutBtn, #adminDropdownLogout"
                 );
 
-            if (!logoutButton) return;
+
+            if (!button) return;
+
+
+            event.preventDefault();
 
             logoutAdmin();
 
@@ -432,6 +382,39 @@ window.AdminApp = {
 
 async function bootAdminApp() {
 
+    // --------------------------------------------------------
+    // STEP 1
+    // SHELL LOADS IMMEDIATELY
+    // --------------------------------------------------------
+
+    const shellReady =
+        await loadAdminShell();
+
+
+    if (!shellReady) {
+
+        console.error(
+            "❌ Admin shell could not start."
+        );
+
+        return;
+
+    }
+
+
+    // --------------------------------------------------------
+    // STEP 2
+    // LOGOUT
+    // --------------------------------------------------------
+
+    initLogout();
+
+
+    // --------------------------------------------------------
+    // STEP 3
+    // AUTHENTICATION
+    // --------------------------------------------------------
+
     console.log(
         "🔐 Checking admin authentication..."
     );
@@ -441,87 +424,127 @@ async function bootAdminApp() {
         auth,
         async user => {
 
-            if (!user) {
+            try {
 
-                console.warn(
-                    "⛔ No authenticated user"
+                // --------------------------------------------
+                // NOT AUTHENTICATED
+                // --------------------------------------------
+
+                if (!user) {
+
+                    console.warn(
+                        "⛔ No authenticated user"
+                    );
+
+                    window.location.href =
+                        "../login.html";
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "✓ Authenticated:",
+                    user.email
                 );
 
-                window.location.href =
-                    "../login.html";
 
-                return;
+                // --------------------------------------------
+                // FIRESTORE PROFILE
+                // --------------------------------------------
 
-            }
-
-
-            console.log(
-                "✓ Authenticated:",
-                user.email
-            );
+                const profile =
+                    await getAdminProfile(
+                        user.uid
+                    );
 
 
-            const profile =
-                await getAdminProfile(
-                    user.uid
+                // --------------------------------------------
+                // ROLE CHECK
+                // --------------------------------------------
+
+                if (!isAuthorized(profile)) {
+
+                    console.warn(
+                        "⛔ Unauthorized role"
+                    );
+
+                    denyAccess();
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "✓ Authorized:",
+                    profile.role
                 );
 
 
-            if (!isAuthorized(profile)) {
+                // --------------------------------------------
+                // PROFILE SYNC
+                // --------------------------------------------
 
-                denyAccess();
+                syncAdminProfile({
 
-                return;
+                    ...profile,
 
-            }
+                    email:
+                        user.email ||
+                        profile.email,
 
+                    photoURL:
+                        user.photoURL ||
+                        profile.photoURL
 
-            console.log(
-                "✓ Authorized admin:",
-                profile.role
-            );
-
-
-            await loadAdminShell();
-
-
-            syncAdminProfile({
-
-                ...profile,
-
-                email:
-                    user.email ||
-                    profile.email,
-
-                photoURL:
-                    user.photoURL ||
-                    profile.photoURL
-
-            });
+                });
 
 
-            initLogout();
+                // --------------------------------------------
+                // PAGE READY
+                // --------------------------------------------
 
+                document.dispatchEvent(
+                    new CustomEvent(
+                        "admin:ready",
+                        {
+                            detail: {
 
-            // Tell page-specific scripts
-            // that the admin shell is ready.
+                                user,
 
-            document.dispatchEvent(
-                new CustomEvent(
-                    "admin:ready",
-                    {
-                        detail: {
-                            user,
-                            profile
+                                profile
+
+                            }
+
                         }
-                    }
-                )
-            );
+                    )
+                );
+
+
+                console.log(
+                    "🔥 ADMIN CONSOLE READY"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "❌ Admin authentication failed:",
+                    error
+                );
+
+            }
 
         }
     );
 
 }
 
+
+// ============================================================
+// START
+// ============================================================
 
 bootAdminApp();

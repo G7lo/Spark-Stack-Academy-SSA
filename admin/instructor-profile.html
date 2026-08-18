@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Instructor Profile | Admin Console | Spark Stack Academy
+    </title>
+
+
+    <!-- =====================================================
+         CORE CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/admin-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-profile.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- =====================================================
+         FONT
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         ICONS
+    ====================================================== -->
+
+    <script
+        src="https://unpkg.com/lucide@latest"
+    ></script>
+
+</head>
+
+
+<body>
+
+
+<div class="admin-app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="adminSidebar"
+        class="admin-sidebar"
+    ></aside>
+
+
+    <!-- =====================================================
+         MOBILE OVERLAY
+    ====================================================== -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="admin-main">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header
+            id="adminTopbar"
+            class="admin-topbar"
+        ></header>
+
+
+        <!-- =================================================
+             PAGE
+        ================================================== -->
+
+        <section class="admin-page instructor-profile-page">
+
+
+            <!-- =================================================
+                 BACK
+            ================================================== -->
+
+            <a
+                href="instructors.html"
+                class="profile-back-link"
+            >
+
+                <i data-lucide="arrow-left"></i>
+
+                Back to Instructors
+
+            </a>
+
+
+            <!-- =================================================
+                 PROFILE HERO
+            ================================================== -->
+
+            <section class="instructor-profile-hero admin-card">
+
+
+                <div class="instructor-profile-main">
+
+
+                    <div
+                        id="instructorAvatar"
+                        class="instructor-profile-avatar"
+                    >
+                        I
+                    </div>
+
+
+                    <div class="instructor-profile-info">
+
+                        <div class="instructor-name-row">
+
+                            <h1 id="instructorName">
+                                Instructor Name
+                            </h1>
+
+                            <span
+                                id="instructorVerification"
+                                class="admin-badge active"
+                            >
+
+                                <i data-lucide="badge-check"></i>
+
+                                Verified
+
+                            </span>
+
+                        </div>
+
+
+                        <p id="instructorEmail">
+                            instructor@example.com
+                        </p>
+
+
+                        <div class="instructor-meta">
+
+                            <span>
+
+                                <i data-lucide="calendar"></i>
+
+                                Joined
+                                <strong id="instructorJoined">
+                                    —
+                                </strong>
+
+                            </span>
+
+
+                            <span>
+
+                                <i data-lucide="id-card"></i>
+
+                                ID:
+                                <strong id="instructorId">
+                                    —
+                                </strong>
+
+                            </span>
+
+
+                            <span>
+
+                                <i data-lucide="circle-check"></i>
+
+                                <strong id="instructorStatus">
+                                    Active
+                                </strong>
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="instructor-profile-actions">
+
+                    <button
+                        type="button"
+                        class="admin-btn secondary"
+                        id="editInstructorBtn"
+                    >
+
+                        <i data-lucide="pencil"></i>
+
+                        Edit
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="admin-btn danger"
+                        id="suspendInstructorBtn"
+                    >
+
+                        <i data-lucide="user-round-x"></i>
+
+                        Suspend
+
+                    </button>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================== -->
+
+            <section class="admin-stat-grid instructor-profile-stats">
+
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon blue">
+
+                            <i data-lucide="book-open"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Courses
+                    </span>
+
+                    <strong id="instructorCourses">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon purple">
+
+                            <i data-lucide="users"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Students
+                    </span>
+
+                    <strong id="instructorStudents">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon green">
+
+                            <i data-lucide="wallet"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Total Earnings
+                    </span>
+
+                    <strong id="instructorEarnings">
+                        KSh 0
+                    </strong>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon gold">
+
+                            <i data-lucide="star"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Average Rating
+                    </span>
+
+                    <strong id="instructorRating">
+                        0.0
+                    </strong>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 CONTENT GRID
+            ================================================== -->
+
+            <section class="instructor-profile-grid">
+
+
+                <!-- =================================================
+                     COURSES
+                ================================================== -->
+
+                <div class="admin-card profile-section-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                EDUCATION
+                            </span>
+
+                            <h2>
+                                Instructor Courses
+                            </h2>
+
+                        </div>
+
+
+                        <a
+                            href="courses.html"
+                            class="text-link"
+                        >
+                            View All
+                        </a>
+
+                    </div>
+
+
+                    <div
+                        id="instructorCoursesList"
+                        class="profile-course-list"
+                    >
+
+                        <div class="profile-loading">
+
+                            <div class="loading-spinner"></div>
+
+                            <span>
+                                Loading courses...
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     PERFORMANCE
+                ================================================== -->
+
+                <div class="admin-card profile-section-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                PERFORMANCE
+                            </span>
+
+                            <h2>
+                                Instructor Performance
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="performance-list">
+
+
+                        <div class="performance-item">
+
+                            <div>
+
+                                <span>
+                                    Student Satisfaction
+                                </span>
+
+                                <strong id="satisfactionRate">
+                                    0%
+                                </strong>
+
+                            </div>
+
+                            <div class="performance-bar">
+
+                                <span
+                                    id="satisfactionBar"
+                                    style="width:0%"
+                                ></span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="performance-item">
+
+                            <div>
+
+                                <span>
+                                    Course Completion
+                                </span>
+
+                                <strong id="completionRate">
+                                    0%
+                                </strong>
+
+                            </div>
+
+                            <div class="performance-bar">
+
+                                <span
+                                    id="completionBar"
+                                    style="width:0%"
+                                ></span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="performance-item">
+
+                            <div>
+
+                                <span>
+                                    Student Retention
+                                </span>
+
+                                <strong id="retentionRate">
+                                    0%
+                                </strong>
+
+                            </div>
+
+                            <div class="performance-bar">
+
+                                <span
+                                    id="retentionBar"
+                                    style="width:0%"
+                                ></span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     RECENT ACTIVITY
+                ================================================== -->
+
+                <div class="admin-card profile-section-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                ACTIVITY
+                            </span>
+
+                            <h2>
+                                Recent Activity
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="instructorActivity"
+                        class="profile-activity-list"
+                    >
+
+                        <div class="profile-loading">
+
+                            <div class="loading-spinner"></div>
+
+                            <span>
+                                Loading activity...
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACCOUNT INFORMATION
+                ================================================== -->
+
+                <div class="admin-card profile-section-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                ACCOUNT
+                            </span>
+
+                            <h2>
+                                Account Information
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="account-info-list">
+
+
+                        <div class="account-info-row">
+
+                            <span>
+                                Account Status
+                            </span>
+
+                            <strong
+                                id="accountStatus"
+                                class="status-text active"
+                            >
+                                Active
+                            </strong>
+
+                        </div>
+
+
+                        <div class="account-info-row">
+
+                            <span>
+                                Verification
+                            </span>
+
+                            <strong id="accountVerification">
+                                Verified
+                            </strong>
+
+                        </div>
+
+
+                        <div class="account-info-row">
+
+                            <span>
+                                Last Login
+                            </span>
+
+                            <strong id="lastLogin">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="account-info-row">
+
+                            <span>
+                                Instructor Since
+                            </span>
+
+                            <strong id="instructorSince">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 ADMIN ACTIONS
+            ================================================== -->
+
+            <section class="admin-card instructor-admin-actions">
+
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        ADMINISTRATION
+                    </span>
+
+                    <h2>
+                        Instructor Account Actions
+                    </h2>
+
+                    <p>
+                        Manage this instructor's access
+                        and academy permissions.
+                    </p>
+
+                </div>
+
+
+                <div class="admin-action-buttons">
+
+                    <button
+                        type="button"
+                        class="admin-btn secondary"
+                        id="verifyInstructorBtn"
+                    >
+
+                        <i data-lucide="badge-check"></i>
+
+                        Verify Instructor
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="admin-btn danger"
+                        id="deleteInstructorBtn"
+                    >
+
+                        <i data-lucide="trash-2"></i>
+
+                        Delete Account
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
+
+<script
+    type="module"
+    src="js/admin-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/instructor-profile.js"
+></script>
+
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Course Profile | Admin Console | Spark Stack Academy
+    </title>
+
+    <!-- CORE -->
+
+    <link
+        rel="stylesheet"
+        href="css/admin-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/course-profile.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script
+        src="https://unpkg.com/lucide@latest"
+    ></script>
+
+</head>
+
+
+<body>
+
+
+<div class="admin-app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="adminSidebar"
+        class="admin-sidebar"
+    ></aside>
+
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="admin-main">
+
+
+        <!-- TOPBAR -->
+
+        <header
+            id="adminTopbar"
+            class="admin-topbar"
+        ></header>
+
+
+        <!-- =================================================
+             PAGE
+        ================================================== -->
+
+        <section class="admin-page course-profile-page">
+
+
+            <!-- =================================================
+                 BACK
+            ================================================== -->
+
+            <a
+                href="courses.html"
+                class="course-profile-back"
+            >
+
+                <i data-lucide="arrow-left"></i>
+
+                Back to Courses
+
+            </a>
+
+
+            <!-- =================================================
+                 COURSE HERO
+            ================================================== -->
+
+            <section
+                class="course-profile-hero admin-card"
+            >
+
+
+                <div class="course-profile-main">
+
+
+                    <!-- COURSE ICON -->
+
+                    <div
+                        id="courseProfileIcon"
+                        class="course-profile-icon"
+                    >
+
+                        <i data-lucide="book-open"></i>
+
+                    </div>
+
+
+                    <!-- COURSE INFO -->
+
+                    <div class="course-profile-info">
+
+
+                        <div class="course-profile-title-row">
+
+                            <span
+                                id="courseProfileStatus"
+                                class="course-status published"
+                            >
+                                Published
+                            </span>
+
+                        </div>
+
+
+                        <h1 id="courseProfileName">
+                            Course Name
+                        </h1>
+
+
+                        <p
+                            id="courseProfileDescription"
+                            class="course-profile-description"
+                        >
+                            Course description will appear here.
+                        </p>
+
+
+                        <div class="course-profile-meta">
+
+
+                            <span>
+
+                                <i data-lucide="user"></i>
+
+                                Instructor:
+
+                                <strong id="courseProfileInstructor">
+                                    —
+                                </strong>
+
+                            </span>
+
+
+                            <span>
+
+                                <i data-lucide="calendar"></i>
+
+                                Created:
+
+                                <strong id="courseProfileCreated">
+                                    —
+                                </strong>
+
+                            </span>
+
+
+                            <span>
+
+                                <i data-lucide="tag"></i>
+
+                                Course ID:
+
+                                <strong id="courseProfileId">
+                                    —
+                                </strong>
+
+                            </span>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACTIONS
+                ================================================== -->
+
+                <div class="course-profile-actions">
+
+
+                    <button
+                        type="button"
+                        class="admin-btn secondary"
+                        id="editCourseBtn"
+                    >
+
+                        <i data-lucide="pencil"></i>
+
+                        Edit Course
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="admin-btn danger"
+                        id="toggleCourseStatusBtn"
+                    >
+
+                        <i data-lucide="eye-off"></i>
+
+                        Unpublish
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 COURSE STATS
+            ================================================== -->
+
+            <section class="admin-stat-grid course-profile-stats">
+
+
+                <!-- STUDENTS -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon purple">
+
+                            <i data-lucide="users"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Enrolled Students
+                    </span>
+
+                    <strong id="courseProfileStudents">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <!-- LESSONS -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon blue">
+
+                            <i data-lucide="layers"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Lessons
+                    </span>
+
+                    <strong id="courseProfileLessons">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <!-- COMPLETION -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon green">
+
+                            <i data-lucide="chart-no-axes-combined"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Completion Rate
+                    </span>
+
+                    <strong id="courseProfileCompletion">
+                        0%
+                    </strong>
+
+                </article>
+
+
+                <!-- REVENUE -->
+
+                <article class="admin-stat">
+
+                    <div class="admin-stat-top">
+
+                        <div class="admin-stat-icon gold">
+
+                            <i data-lucide="wallet"></i>
+
+                        </div>
+
+                    </div>
+
+                    <span>
+                        Course Revenue
+                    </span>
+
+                    <strong id="courseProfileRevenue">
+                        KSh 0
+                    </strong>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 CONTENT GRID
+            ================================================== -->
+
+            <section class="course-profile-grid">
+
+
+                <!-- =================================================
+                     COURSE OVERVIEW
+                ================================================== -->
+
+                <div class="admin-card course-section-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                COURSE
+                            </span>
+
+                            <h2>
+                                Course Overview
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="course-overview-content">
+
+
+                        <div class="course-overview-item">
+
+                            <span>
+                                Category
+                            </span>
+
+                            <strong id="courseProfileCategory">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="course-overview-item">
+
+                            <span>
+                                Level
+                            </span>
+
+                            <strong id="courseProfileLevel">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="course-overview-item">
+
+                            <span>
+                                Duration
+                            </span>
+
+                            <strong id="courseProfileDuration">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="course-overview-item">
+
+                            <span>
+                                Price
+                            </span>
+
+                            <strong id="courseProfilePrice">
+                                KSh 0
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     INSTRUCTOR
+                ================================================== -->
+
+                <div class="admin-card course-section-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                INSTRUCTOR
+                            </span>
+
+                            <h2>
+                                Course Instructor
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="courseInstructorCard"
+                        class="course-instructor-card"
+                    >
+
+                        <div
+                            id="courseInstructorAvatar"
+                            class="course-instructor-avatar"
+                        >
+                            I
+                        </div>
+
+
+                        <div class="course-instructor-info">
+
+                            <strong id="courseInstructorName">
+                                Instructor
+                            </strong>
+
+                            <span id="courseInstructorEmail">
+                                instructor@example.com
+                            </span>
+
+                            <span
+                                id="courseInstructorStatus"
+                                class="course-instructor-status"
+                            >
+                                Active
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="course-view-instructor"
+                            id="viewInstructorBtn"
+                            title="View instructor"
+                        >
+
+                            <i data-lucide="arrow-up-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     LESSONS
+                ================================================== -->
+
+                <div class="admin-card course-section-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                CONTENT
+                            </span>
+
+                            <h2>
+                                Course Lessons
+                            </h2>
+
+                        </div>
+
+
+                        <span
+                            id="lessonCountLabel"
+                            class="card-count"
+                        >
+                            0 lessons
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="courseLessonsList"
+                        class="course-lessons-list"
+                    >
+
+                        <div class="profile-loading">
+
+                            <div class="loading-spinner"></div>
+
+                            <span>
+                                Loading lessons...
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     STUDENTS
+                ================================================== -->
+
+                <div class="admin-card course-section-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                ENROLLMENTS
+                            </span>
+
+                            <h2>
+                                Enrolled Students
+                            </h2>
+
+                        </div>
+
+
+                        <span
+                            id="studentCountLabel"
+                            class="card-count"
+                        >
+                            0 students
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="courseStudentsList"
+                        class="course-students-list"
+                    >
+
+                        <div class="profile-loading">
+
+                            <div class="loading-spinner"></div>
+
+                            <span>
+                                Loading students...
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     PERFORMANCE
+                ================================================== -->
+
+                <div class="admin-card course-section-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                PERFORMANCE
+                            </span>
+
+                            <h2>
+                                Course Performance
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="course-performance-list">
+
+
+                        <div class="course-performance-item">
+
+                            <div>
+
+                                <span>
+                                    Completion Rate
+                                </span>
+
+                                <strong id="courseCompletionRate">
+                                    0%
+                                </strong>
+
+                            </div>
+
+                            <div class="course-performance-bar">
+
+                                <span
+                                    id="courseCompletionBar"
+                                    style="width:0%"
+                                ></span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="course-performance-item">
+
+                            <div>
+
+                                <span>
+                                    Average Progress
+                                </span>
+
+                                <strong id="courseProgressRate">
+                                    0%
+                                </strong>
+
+                            </div>
+
+                            <div class="course-performance-bar">
+
+                                <span
+                                    id="courseProgressBar"
+                                    style="width:0%"
+                                ></span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="course-performance-item">
+
+                            <div>
+
+                                <span>
+                                    Student Satisfaction
+                                </span>
+
+                                <strong id="courseSatisfactionRate">
+                                    0%
+                                </strong>
+
+                            </div>
+
+                            <div class="course-performance-bar">
+
+                                <span
+                                    id="courseSatisfactionBar"
+                                    style="width:0%"
+                                ></span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACCOUNT / COURSE STATUS
+                ================================================== -->
+
+                <div class="admin-card course-section-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="page-eyebrow">
+                                COURSE STATUS
+                            </span>
+
+                            <h2>
+                                Course Information
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="course-info-list">
+
+
+                        <div class="course-info-row">
+
+                            <span>
+                                Status
+                            </span>
+
+                            <strong
+                                id="courseAccountStatus"
+                                class="status-text active"
+                            >
+                                Published
+                            </strong>
+
+                        </div>
+
+
+                        <div class="course-info-row">
+
+                            <span>
+                                Visibility
+                            </span>
+
+                            <strong id="courseVisibility">
+                                Public
+                            </strong>
+
+                        </div>
+
+
+                        <div class="course-info-row">
+
+                            <span>
+                                Created
+                            </span>
+
+                            <strong id="courseCreatedAt">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="course-info-row">
+
+                            <span>
+                                Last Updated
+                            </span>
+
+                            <strong id="courseUpdatedAt">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ADMIN ACTIONS
+            ================================================== -->
+
+            <section class="admin-card course-admin-actions">
+
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        ADMINISTRATION
+                    </span>
+
+                    <h2>
+                        Course Account Actions
+                    </h2>
+
+                    <p>
+                        Manage this course's publishing status
+                        and academy visibility.
+                    </p>
+
+                </div>
+
+
+                <div class="course-admin-action-buttons">
+
+
+                    <button
+                        type="button"
+                        class="admin-btn secondary"
+                        id="editCourseBottomBtn"
+                    >
+
+                        <i data-lucide="pencil"></i>
+
+                        Edit Course
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="admin-btn danger"
+                        id="deleteCourseBtn"
+                    >
+
+                        <i data-lucide="trash-2"></i>
+
+                        Delete Course
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
+
+<script
+    type="module"
+    src="js/admin-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/course-profile.js"
+></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+</html>

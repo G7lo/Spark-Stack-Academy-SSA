@@ -5,9 +5,7 @@
 
 console.log("📊 ADMIN DASHBOARD JS LOADED");
 
-import {
-    db
-} from "../../js/firebase.js";
+import { db } from "../../js/firebase.js";
 
 import {
     collection,
@@ -19,7 +17,7 @@ import {
 
 
 // ============================================================
-// ELEMENT HELPER
+// SET TEXT
 // ============================================================
 
 function setText(id, value) {
@@ -28,31 +26,24 @@ function setText(id, value) {
         document.getElementById(id);
 
     if (element) {
-
         element.textContent =
             value ?? "0";
-
     }
 
 }
 
 
 // ============================================================
-// SAFE COUNT
+// COUNT COLLECTION
 // ============================================================
 
-async function getCollectionCount(
-    collectionName
-) {
+async function countCollection(name) {
 
     try {
 
         const snapshot =
             await getDocs(
-                collection(
-                    db,
-                    collectionName
-                )
+                collection(db, name)
             );
 
         return snapshot.size;
@@ -60,7 +51,7 @@ async function getCollectionCount(
     } catch (error) {
 
         console.warn(
-            `⚠️ Unable to count ${collectionName}:`,
+            `Unable to count ${name}:`,
             error
         );
 
@@ -72,7 +63,59 @@ async function getCollectionCount(
 
 
 // ============================================================
-// LOAD PLATFORM STATS
+// COUNT REPORTS
+// ============================================================
+
+async function countOpenReports() {
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(db, "reports")
+            );
+
+        let count = 0;
+
+        snapshot.forEach(doc => {
+
+            const data = doc.data();
+
+            const status =
+                String(
+                    data.status || "open"
+                ).toLowerCase();
+
+            if (
+                status === "open" ||
+                status === "pending" ||
+                status === "review"
+            ) {
+
+                count++;
+
+            }
+
+        });
+
+        return count;
+
+    } catch (error) {
+
+        console.warn(
+            "Unable to count reports:",
+            error
+        );
+
+        return 0;
+
+    }
+
+}
+
+
+// ============================================================
+// PLATFORM STATS
 // ============================================================
 
 async function loadPlatformStats() {
@@ -86,24 +129,16 @@ async function loadPlatformStats() {
         students,
         instructors,
         courses,
-        assignments
+        reports
     ] = await Promise.all([
 
-        getCollectionCount(
-            "users"
-        ),
+        countCollection("users"),
 
-        getCollectionCount(
-            "instructors"
-        ),
+        countCollection("instructors"),
 
-        getCollectionCount(
-            "courses"
-        ),
+        countCollection("courses"),
 
-        getCollectionCount(
-            "assignments"
-        )
+        countOpenReports()
 
     ]);
 
@@ -127,8 +162,8 @@ async function loadPlatformStats() {
 
 
     setText(
-        "totalAssignments",
-        assignments
+        "openReports",
+        reports
     );
 
 
@@ -140,7 +175,7 @@ async function loadPlatformStats() {
 
 
 // ============================================================
-// LOAD RECENT ACTIVITY
+// RECENT ACTIVITY
 // ============================================================
 
 async function loadRecentActivity() {
@@ -149,7 +184,6 @@ async function loadRecentActivity() {
         document.getElementById(
             "recentActivity"
         );
-
 
     if (!container) return;
 
@@ -190,70 +224,61 @@ async function loadRecentActivity() {
         container.innerHTML = "";
 
 
-        snapshot.forEach(
-            notification => {
+        snapshot.forEach(notification => {
 
-                const data =
-                    notification.data();
-
-
-                const item =
-                    document.createElement(
-                        "div"
-                    );
+            const data =
+                notification.data();
 
 
-                item.className =
-                    "activity-item";
+            const item =
+                document.createElement("div");
 
 
-                item.innerHTML = `
-
-                    <div class="activity-icon">
-
-                        <i data-lucide="bell"></i>
-
-                    </div>
-
-                    <div class="activity-content">
-
-                        <strong>
-                            ${escapeHTML(
-                                data.title ||
-                                "Academy Activity"
-                            )}
-                        </strong>
-
-                        <span>
-                            ${escapeHTML(
-                                data.message ||
-                                "New platform activity."
-                            )}
-                        </span>
-
-                    </div>
-
-                `;
+            item.className =
+                "activity-item";
 
 
-                container.appendChild(
-                    item
-                );
+            item.innerHTML = `
 
-            }
-        );
+                <div class="activity-icon">
+
+                    <i data-lucide="bell"></i>
+
+                </div>
+
+                <div class="activity-content">
+
+                    <strong>
+                        ${escapeHTML(
+                            data.title ||
+                            "Academy Activity"
+                        )}
+                    </strong>
+
+                    <span>
+                        ${escapeHTML(
+                            data.message ||
+                            "New platform activity."
+                        )}
+                    </span>
+
+                </div>
+
+            `;
 
 
-        if (window.lucide) {
+            container.appendChild(item);
 
-            window.lucide.createIcons();
+        });
 
-        }
+
+        refreshIcons();
+
 
     } catch (error) {
 
         console.warn(
-            "⚠️ Failed loading recent activity:",
+            "⚠️ Activity loading failed:",
             error
         );
 
@@ -271,9 +296,7 @@ async function loadRecentActivity() {
 // EMPTY ACTIVITY
 // ============================================================
 
-function renderEmptyActivity(
-    container
-) {
+function renderEmptyActivity(container) {
 
     container.innerHTML = `
 
@@ -290,7 +313,22 @@ function renderEmptyActivity(
     `;
 
 
-    if (window.lucide) {
+    refreshIcons();
+
+}
+
+
+// ============================================================
+// LUCIDE
+// ============================================================
+
+function refreshIcons() {
+
+    if (
+        window.lucide &&
+        typeof window.lucide.createIcons ===
+        "function"
+    ) {
 
         window.lucide.createIcons();
 
@@ -300,7 +338,7 @@ function renderEmptyActivity(
 
 
 // ============================================================
-// LOAD DASHBOARD
+// DASHBOARD
 // ============================================================
 
 async function loadDashboard() {
@@ -319,58 +357,43 @@ async function loadDashboard() {
     ]);
 
 
+    refreshIcons();
+
+
     console.log(
-        "✓ Moderator dashboard ready"
+        "🔥 Moderator dashboard ready"
     );
 
 }
 
 
 // ============================================================
-// HTML ESCAPE
+// ESCAPE HTML
 // ============================================================
 
-function escapeHTML(
-    value
-) {
+function escapeHTML(value) {
 
     return String(value)
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
 }
 
 
 // ============================================================
-// WAIT FOR ADMIN APP
+// ADMIN READY
 // ============================================================
 
 document.addEventListener(
     "admin:ready",
-    event => {
+    () => {
 
         console.log(
             "✓ Admin authentication confirmed"
         );
-
 
         loadDashboard();
 
