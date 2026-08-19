@@ -1,6 +1,6 @@
 // ============================================
 // SPARK STACK ACADEMY
-// COURSE DETAILS CONTROLLER V2
+// COURSE DETAILS CONTROLLER V3
 // ============================================
 
 import {
@@ -38,7 +38,7 @@ const params = new URLSearchParams(
 
 const courseId = params.get("id");
 
-console.log("🚀 Course Details V2 Loaded");
+console.log("🚀 Course Details V3 Loaded");
 console.log("🎯 Course ID:", courseId);
 
 
@@ -72,11 +72,17 @@ document.addEventListener(
 
         document
             .getElementById("backBtn")
-            ?.addEventListener("click", goBack);
+            ?.addEventListener(
+                "click",
+                goBack
+            );
 
         document
             .getElementById("errorBackBtn")
-            ?.addEventListener("click", goBack);
+            ?.addEventListener(
+                "click",
+                goBack
+            );
 
         initialize();
 
@@ -106,6 +112,7 @@ onAuthStateChanged(
             );
 
             return;
+
         }
 
         await loadCourse();
@@ -118,7 +125,7 @@ onAuthStateChanged(
 // INITIALIZE
 // ============================================
 
-async function initialize() {
+function initialize() {
 
     if (!courseId) {
 
@@ -127,6 +134,7 @@ async function initialize() {
         );
 
         return;
+
     }
 
     showLoading();
@@ -144,15 +152,15 @@ async function loadCourse() {
 
         showLoading();
 
-        const courseRef = doc(
-            db,
-            "courses",
-            courseId
-        );
+        const courseRef =
+            doc(
+                db,
+                "courses",
+                courseId
+            );
 
-        const snapshot = await getDoc(
-            courseRef
-        );
+        const snapshot =
+            await getDoc(courseRef);
 
         if (!snapshot.exists()) {
 
@@ -161,11 +169,16 @@ async function loadCourse() {
             );
 
             return;
+
         }
 
         course = {
-            id: snapshot.id,
+
+            id:
+                snapshot.id,
+
             ...snapshot.data()
+
         };
 
         console.log(
@@ -173,15 +186,22 @@ async function loadCourse() {
             course
         );
 
+
         await loadLessons();
 
         renderCourse();
 
+
         if (currentUser) {
+
             await checkEnrollment();
+
         } else {
+
             setGuestState();
+
         }
+
 
         showContent();
 
@@ -206,11 +226,6 @@ async function loadCourse() {
 // ============================================
 // LOAD LESSONS
 // ============================================
-// Lessons are stored in:
-// courseLessons
-//
-// NOT inside courses.
-// ============================================
 
 async function loadLessons() {
 
@@ -218,34 +233,48 @@ async function loadLessons() {
 
     try {
 
-        const lessonsQuery = query(
-            collection(
-                db,
-                "courseLessons"
-            ),
-            where(
-                "courseId",
-                "==",
-                courseId
-            )
-        );
+        const lessonsQuery =
+            query(
+                collection(
+                    db,
+                    "courseLessons"
+                ),
+                where(
+                    "courseId",
+                    "==",
+                    courseId
+                )
+            );
 
-        const snapshot = await getDocs(
-            lessonsQuery
-        );
+        const snapshot =
+            await getDocs(
+                lessonsQuery
+            );
 
-        lessons = snapshot.docs.map(
-            lessonDoc => ({
-                id: lessonDoc.id,
-                ...lessonDoc.data()
-            })
-        );
+
+        lessons =
+            snapshot.docs.map(
+                lessonDoc => ({
+
+                    id:
+                        lessonDoc.id,
+
+                    ...lessonDoc.data()
+
+                })
+            );
+
 
         lessons.sort(
             (a, b) =>
-                Number(a.order || 0) -
-                Number(b.order || 0)
+                Number(
+                    a.order || 0
+                ) -
+                Number(
+                    b.order || 0
+                )
         );
+
 
         console.log(
             "🎥 COURSE LESSONS:",
@@ -276,14 +305,17 @@ function renderCourse() {
 
     setText(
         "courseTitle",
-        course.title || "Untitled Course"
+        course.title ||
+        "Untitled Course"
     );
+
 
     setText(
         "courseDescription",
         course.description ||
         "Start your learning journey with Spark Stack Academy."
     );
+
 
     setText(
         "aboutCourse",
@@ -292,21 +324,23 @@ function renderCourse() {
     );
 
 
-    // Category
     setText(
         "courseCategory",
-        course.category || "Technology"
+        course.category ||
+        "Technology"
     );
 
 
-    // Level
     const level =
-        course.level || "Beginner";
+        course.level ||
+        "Beginner";
+
 
     setText(
         "courseLevel",
         level
     );
+
 
     setText(
         "courseLevelInfo",
@@ -314,16 +348,17 @@ function renderCourse() {
     );
 
 
-    // Instructor
     const instructor =
         course.instructorName ||
         course.instructor ||
         "Spark Stack Academy";
 
+
     setText(
         "instructorName",
         instructor
     );
+
 
     setText(
         "sideInstructorName",
@@ -336,22 +371,23 @@ function renderCourse() {
         instructor
     );
 
+
     setInitial(
         "sideInstructorAvatar",
         instructor
     );
 
 
-    // Duration
     setText(
         "courseDuration",
         course.duration
-            ? formatDuration(course.duration)
+            ? formatDuration(
+                course.duration
+            )
             : "Self-paced"
     );
 
 
-    // Students
     setText(
         "studentCount",
         Number(
@@ -362,22 +398,16 @@ function renderCourse() {
     );
 
 
-    // Lessons
     setText(
         "lessonCount",
         lessons.length
     );
 
 
-    // Price
     renderPricing();
 
-
-    // Learning points
     renderLearningPoints();
 
-
-    // Curriculum
     renderCurriculum();
 
 }
@@ -390,10 +420,14 @@ function renderCourse() {
 function renderPricing() {
 
     const price =
-        Number(course.price || 0);
+        Number(
+            course.price || 0
+        );
 
     const discount =
-        Number(course.discountPrice || 0);
+        Number(
+            course.discountPrice || 0
+        );
 
     const isFree =
         course.isFree === true ||
@@ -418,19 +452,29 @@ function renderPricing() {
 
     if (isFree) {
 
-        if (priceElement)
+        if (priceElement) {
+
             priceElement.textContent =
                 "Free";
 
-        if (freeBadge)
+        }
+
+        if (freeBadge) {
+
             freeBadge.style.display =
                 "inline-flex";
 
-        if (discountElement)
+        }
+
+        if (discountElement) {
+
             discountElement.style.display =
                 "none";
 
+        }
+
         return;
+
     }
 
 
@@ -439,9 +483,13 @@ function renderPricing() {
         discount < price
     ) {
 
-        if (priceElement)
+        if (priceElement) {
+
             priceElement.textContent =
                 `KSh ${discount.toLocaleString()}`;
+
+        }
+
 
         if (discountElement) {
 
@@ -454,6 +502,7 @@ function renderPricing() {
         }
 
         return;
+
     }
 
 
@@ -483,7 +532,9 @@ function renderLearningPoints() {
 
 
     const points =
-        Array.isArray(course.learningPoints)
+        Array.isArray(
+            course.learningPoints
+        )
             ? course.learningPoints
             : [];
 
@@ -512,24 +563,28 @@ function renderLearningPoints() {
         refreshIcons();
 
         return;
+
     }
 
 
-    list.innerHTML = points
-        .map(point => `
+    list.innerHTML =
+        points
+            .map(
+                point => `
 
-            <li>
+                    <li>
 
-                <i data-lucide="check"></i>
+                        <i data-lucide="check"></i>
 
-                <span>
-                    ${escapeHTML(point)}
-                </span>
+                        <span>
+                            ${escapeHTML(point)}
+                        </span>
 
-            </li>
+                    </li>
 
-        `)
-        .join("");
+                `
+            )
+            .join("");
 
 
     refreshIcons();
@@ -575,67 +630,77 @@ function renderCurriculum() {
         refreshIcons();
 
         return;
+
     }
 
 
-    box.innerHTML = lessons
-        .map((lesson, index) => {
+    box.innerHTML =
+        lessons
+            .map(
+                (lesson, index) => {
 
-            const type =
-                lesson.type || "lesson";
+                    const type =
+                        lesson.type ||
+                        "lesson";
 
-            const duration =
-                lesson.duration
-                    ? `${lesson.duration} min`
-                    : "";
 
-            return `
+                    const duration =
+                        lesson.duration
+                            ? `${lesson.duration} min`
+                            : "";
 
-                <div class="curriculum-item">
 
-                    <div class="lesson-number">
-                        ${index + 1}
-                    </div>
+                    return `
 
-                    <div class="lesson-icon">
+                        <div class="curriculum-item">
 
-                        <i data-lucide="${
-                            type === "video"
-                                ? "play-circle"
-                                : "file-text"
-                        }"></i>
+                            <div class="lesson-number">
+                                ${index + 1}
+                            </div>
 
-                    </div>
 
-                    <div class="lesson-info">
+                            <div class="lesson-icon">
 
-                        <strong>
-                            ${escapeHTML(
-                                lesson.title ||
-                                `Lesson ${index + 1}`
-                            )}
-                        </strong>
+                                <i data-lucide="${
+                                    type === "video"
+                                        ? "play-circle"
+                                        : "file-text"
+                                }"></i>
 
-                        <span>
-                            ${
-                                duration ||
-                                "Lesson"
-                            }
-                        </span>
+                            </div>
 
-                    </div>
 
-                    <i
-                        class="lesson-lock"
-                        data-lucide="lock">
-                    </i>
+                            <div class="lesson-info">
 
-                </div>
+                                <strong>
+                                    ${escapeHTML(
+                                        lesson.title ||
+                                        `Lesson ${index + 1}`
+                                    )}
+                                </strong>
 
-            `;
+                                <span>
+                                    ${
+                                        duration ||
+                                        "Lesson"
+                                    }
+                                </span>
 
-        })
-        .join("");
+                            </div>
+
+
+                            <i
+                                class="lesson-lock"
+                                data-lucide="lock">
+                            </i>
+
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join("");
 
 
     refreshIcons();
@@ -655,81 +720,48 @@ async function checkEnrollment() {
 
     try {
 
-        // ----------------------------------------
-        // MAIN ENROLLMENTS
-        // ----------------------------------------
-
-        const mainQuery = query(
-            collection(
-                db,
-                "enrollments"
-            ),
-            where(
-                "userId",
-                "==",
-                currentUser.uid
-            ),
-            where(
-                "courseId",
-                "==",
-                courseId
-            )
-        );
-
-        const mainSnapshot =
-            await getDocs(mainQuery);
+        const mainQuery =
+            query(
+                collection(
+                    db,
+                    "enrollments"
+                ),
+                where(
+                    "userId",
+                    "==",
+                    currentUser.uid
+                ),
+                where(
+                    "courseId",
+                    "==",
+                    courseId
+                )
+            );
 
 
-        if (!mainSnapshot.empty) {
+        const snapshot =
+            await getDocs(
+                mainQuery
+            );
+
+
+        if (!snapshot.empty) {
 
             const enrollment =
-                mainSnapshot.docs[0].data();
+                snapshot.docs[0].data();
+
 
             console.log(
-                "✅ MAIN ENROLLMENT:",
+                "✅ ENROLLMENT FOUND:",
                 enrollment
             );
 
-            if (hasAccess(enrollment)) {
 
-                setEnrolledState(
+            if (
+                hasAccess(
                     enrollment
-                );
-
-                return enrollment;
-
-            }
-
-        }
-
-
-        // ----------------------------------------
-        // LEGACY / FREE ENROLLMENT
-        // ----------------------------------------
-
-        const legacyRef = doc(
-            db,
-            "students",
-            currentUser.uid,
-            "enrollments",
-            courseId
-        );
-
-        const legacySnapshot =
-            await getDoc(legacyRef);
-
-
-        if (legacySnapshot.exists()) {
-
-            const enrollment =
-                legacySnapshot.data();
-
-            console.log(
-                "✅ STUDENT ENROLLMENT:",
-                enrollment
-            );
-
-            if (hasAccess(enrollment)) {
+                )
+            ) {
 
                 setEnrolledState(
                     enrollment
@@ -771,12 +803,19 @@ async function checkEnrollment() {
 function hasAccess(enrollment) {
 
     return (
+
         enrollment.paymentStatus === "paid" ||
+
         enrollment.paymentStatus === "free" ||
+
         enrollment.status === "active" ||
+
         enrollment.status === "approved" ||
+
         enrollment.status === "paid" ||
+
         enrollment.status === "completed"
+
     );
 
 }
@@ -800,25 +839,30 @@ enrollBtn?.addEventListener(
         }
 
 
-        if (!course) {
+        if (!course)
             return;
-        }
 
 
         const price =
-            Number(course.price || 0);
+            Number(
+                course.price || 0
+            );
+
 
         const isFree =
             course.isFree === true ||
             price <= 0;
 
 
-        enrollBtn.disabled = true;
+        enrollBtn.disabled =
+            true;
+
 
         enrollBtn.innerHTML = `
 
             <span class="button-spinner"></span>
-            Processing...
+
+            Enrolling...
 
         `;
 
@@ -832,7 +876,9 @@ enrollBtn?.addEventListener(
             } else {
 
                 window.location.href =
-                    `payments.html?courseId=${courseId}`;
+                    `payments.html?courseId=${encodeURIComponent(
+                        courseId
+                    )}`;
 
             }
 
@@ -845,12 +891,17 @@ enrollBtn?.addEventListener(
                 error
             );
 
-            enrollBtn.disabled = false;
+
+            enrollBtn.disabled =
+                false;
+
 
             setAvailableState();
 
-            alert(
-                "Unable to complete enrollment. Please try again."
+
+            showToast(
+                "Enrollment failed. Please try again.",
+                "error"
             );
 
         }
@@ -865,57 +916,65 @@ enrollBtn?.addEventListener(
 
 async function enrollFree() {
 
+    if (!currentUser || !course)
+        return;
+
+
     const enrollmentData = {
 
         userId:
             currentUser.uid,
 
-        courseId,
+        courseId:
+
+            courseId,
+
+        courseTitle:
+
+            course.title ||
+            "Untitled Course",
 
         paymentStatus:
+
             "free",
 
         status:
+
             "active",
 
         progress:
+
             0,
 
         completedLessons:
+
             [],
 
         enrolledAt:
+
             serverTimestamp(),
 
         updatedAt:
+
             serverTimestamp()
 
     };
 
 
-    // Main enrollment
-    await setDoc(
+    // ========================================
+    // SAVE MAIN ENROLLMENT
+    // ========================================
+
+    const enrollmentRef =
         doc(
             db,
             "enrollments",
             `${currentUser.uid}_${courseId}`
-        ),
-        enrollmentData,
-        {
-            merge: true
-        }
-    );
+        );
 
 
-    // Legacy enrollment
     await setDoc(
-        doc(
-            db,
-            "students",
-            currentUser.uid,
-            "enrollments",
-            courseId
-        ),
+        enrollmentRef,
         enrollmentData,
         {
             merge: true
@@ -924,12 +983,40 @@ async function enrollFree() {
 
 
     console.log(
-        "🎉 FREE COURSE ENROLLED"
+        "🎉 FREE COURSE ENROLLED:",
+        course.title
     );
 
 
+    // ========================================
+    // SUCCESS STATE
+    // ========================================
+
     setEnrolledState(
         enrollmentData
+    );
+
+
+    showToast(
+        `Enrollment successful! You're now enrolled in ${course.title || "this course"}.`,
+        "success"
+    );
+
+
+    // ========================================
+    // GIVE USER TIME TO SEE TOAST
+    // ========================================
+
+    setTimeout(
+        () => {
+
+            window.location.href =
+                `course-player.html?id=${encodeURIComponent(
+                    courseId
+                )}`;
+
+        },
+        1400
     );
 
 }
@@ -946,14 +1033,19 @@ function setAvailableState() {
 
 
     const price =
-        Number(course?.price || 0);
+        Number(
+            course?.price || 0
+        );
+
 
     const isFree =
         course?.isFree === true ||
         price <= 0;
 
 
-    enrollBtn.disabled = false;
+    enrollBtn.disabled =
+        false;
+
 
     enrollBtn.innerHTML = `
 
@@ -971,6 +1063,7 @@ function setAvailableState() {
 
     `;
 
+
     setText(
         "enrollmentNote",
         isFree
@@ -978,22 +1071,32 @@ function setAvailableState() {
             : "Secure your place in this course."
     );
 
+
     refreshIcons();
 
 }
 
 
-function setEnrolledState(enrollment) {
+// ============================================
+// ENROLLED STATE
+// ============================================
+
+function setEnrolledState(
+    enrollment
+) {
 
     if (!enrollBtn)
         return;
 
 
-    enrollBtn.disabled = false;
+    enrollBtn.disabled =
+        false;
+
 
     enrollBtn.innerHTML = `
 
         <i data-lucide="play"></i>
+
         Start Learning
 
     `;
@@ -1002,7 +1105,9 @@ function setEnrolledState(enrollment) {
     enrollBtn.onclick = () => {
 
         window.location.href =
-            `course-player.html?id=${courseId}`;
+            `course-player.html?id=${encodeURIComponent(
+                courseId
+            )}`;
 
     };
 
@@ -1026,15 +1131,24 @@ function setEnrolledState(enrollment) {
 }
 
 
+// ============================================
+// GUEST STATE
+// ============================================
+
 function setGuestState() {
 
     if (!enrollBtn)
         return;
 
 
+    enrollBtn.disabled =
+        false;
+
+
     enrollBtn.innerHTML = `
 
         <i data-lucide="log-in"></i>
+
         Login to Enroll
 
     `;
@@ -1054,6 +1168,113 @@ function setGuestState() {
 
 
 // ============================================
+// PREMIUM TOAST
+// ============================================
+
+function showToast(
+    message,
+    type = "success"
+) {
+
+    let toast =
+        document.getElementById(
+            "enrollmentToast"
+        );
+
+
+    // Create toast if HTML doesn't already have one
+    if (!toast) {
+
+        toast =
+            document.createElement(
+                "div"
+            );
+
+        toast.id =
+            "enrollmentToast";
+
+        toast.className =
+            "enrollment-toast";
+
+
+        document.body.appendChild(
+            toast
+        );
+
+    }
+
+
+    toast.className =
+        `enrollment-toast ${type}`;
+
+
+    toast.innerHTML = `
+
+        <div class="enrollment-toast-icon">
+
+            <i data-lucide="${
+                type === "success"
+                    ? "check-circle-2"
+                    : "alert-circle"
+            }"></i>
+
+        </div>
+
+
+        <div class="enrollment-toast-content">
+
+            <strong>
+                ${
+                    type === "success"
+                        ? "Enrollment Successful"
+                        : "Something went wrong"
+                }
+            </strong>
+
+            <span>
+                ${escapeHTML(message)}
+            </span>
+
+        </div>
+
+    `;
+
+
+    refreshIcons();
+
+
+    requestAnimationFrame(
+        () => {
+
+            toast.classList.add(
+                "show"
+            );
+
+        }
+    );
+
+
+    clearTimeout(
+        window.enrollmentToastTimer
+    );
+
+
+    window.enrollmentToastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            1800
+        );
+
+}
+
+
+// ============================================
 // UI STATES
 // ============================================
 
@@ -1063,9 +1284,11 @@ function showLoading() {
         loading.style.display =
             "flex";
 
+
     if (content)
         content.style.display =
             "none";
+
 
     if (errorBox)
         errorBox.style.display =
@@ -1080,6 +1303,7 @@ function showContent() {
         loading.style.display =
             "none";
 
+
     if (content)
         content.style.display =
             "block";
@@ -1087,23 +1311,29 @@ function showContent() {
 }
 
 
-function showError(message) {
+function showError(
+    message
+) {
 
     if (loading)
         loading.style.display =
             "none";
 
+
     if (content)
         content.style.display =
             "none";
+
 
     if (errorBox)
         errorBox.style.display =
             "flex";
 
+
     if (errorMessage)
         errorMessage.textContent =
             message;
+
 
     refreshIcons();
 
@@ -1114,54 +1344,86 @@ function showError(message) {
 // HELPERS
 // ============================================
 
-function setText(id, value) {
+function setText(
+    id,
+    value
+) {
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
 
-    if (element)
+
+    if (element) {
+
         element.textContent =
             value;
+
+    }
 
 }
 
 
-function setInitial(id, name) {
+function setInitial(
+    id,
+    name
+) {
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
+
 
     if (!element)
         return;
 
+
     element.textContent =
-        String(name || "S")
+        String(
+            name || "S"
+        )
             .charAt(0)
             .toUpperCase();
 
 }
 
 
-function formatDuration(value) {
+function formatDuration(
+    value
+) {
 
-    if (typeof value === "number") {
+    if (
+        typeof value ===
+        "number"
+    ) {
 
         return `${value} hours`;
 
     }
+
 
     return String(value);
 
 }
 
 
-function escapeHTML(value) {
+function escapeHTML(
+    value
+) {
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     div.textContent =
-        String(value ?? "");
+        String(
+            value ?? ""
+        );
+
 
     return div.innerHTML;
 
@@ -1173,7 +1435,7 @@ function refreshIcons() {
     if (
         window.lucide &&
         typeof window.lucide.createIcons ===
-        "function"
+            "function"
     ) {
 
         window.lucide.createIcons();
