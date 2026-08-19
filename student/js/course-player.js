@@ -23,6 +23,18 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+import {
+    awardXP,
+    XP_REWARDS
+} from "./xp-engine.js";
+
+import {
+    issueCertificate
+} from "./certificate-engine.js";
+
+import {
+    updateLearningStreak
+} from "./achievement.js";
 
 // ============================================================
 // STATE
@@ -1240,62 +1252,204 @@ completeLessonBtn?.addEventListener(
     "click",
     async () => {
 
-        if (!lessons.length)
+        if (!lessons.length || !currentUser)
             return;
-
 
         const lesson =
             lessons[currentLessonIndex];
 
+        if (!lesson)
+            return;
 
+        // Already completed
         if (
             completedLessons.includes(
                 lesson.id
             )
         ) {
-
             return;
+        }
+
+        try {
+
+            // --------------------------------------------
+            // MARK LESSON COMPLETE LOCALLY
+            // --------------------------------------------
+
+            completedLessons.push(
+                lesson.id
+            );
+
+            updateProgress();
+            renderLessons();
+            updateNavigation();
+
+            // --------------------------------------------
+            // SAVE COURSE PROGRESS
+            // --------------------------------------------
+
+            await saveProgress(true);
+            const courseCompleted =
+    lessons.length > 0 &&
+    completedLessons.length === lessons.length;
+    
+    if (courseCompleted) {
+
+    console.log("🎓 COURSE COMPLETED!");
+
+    // Award course completion XP
+    await awardXP(
+        currentUser.uid,
+        XP_REWARDS.course || 50,
+        `Completed course: ${course.title || "Course"}`,
+        `course_${courseId}`
+    );
+
+    // Update learning streak
+    await updateLearningStreak(
+        currentUser.uid
+    );
+
+    // Issue certificate
+    const certificateResult =
+        await issueCertificate(
+            currentUser.uid,
+            course
+        );
+
+    showToast(
+        certificateResult.alreadyExists
+            ? "Course completed! 🎓"
+            : "Course completed! 🎓 Certificate earned!"
+    );
+
+    setTimeout(() => {
+
+        window.location.href =
+            "certificates.html";
+
+    }, 1200);
+
+    return;
+}
+    
+
+            // --------------------------------------------
+            // UPDATE STUDENT ACTIVITY
+            // --------------------------------------------
+
+            const studentRef =
+                doc(
+                    db,
+                    "students",
+                    currentUser.uid
+                );
+
+            const studentSnap =
+                await getDoc(studentRef);
+
+            if (studentSnap.exists()) {
+
+                const student =
+                    studentSnap.data();
+
+                const currentCompleted =
+                    Number(
+                        student.lessonsCompleted ||
+                        student.completedLessonsCount ||
+                        0
+                    );
+
+                await setDoc(
+                    studentRef,
+                    {
+                        lessonsCompleted:
+                            currentCompleted + 1,
+
+                        completedLessonsCount:
+                            currentCompleted + 1,
+
+                        lastLessonCompleted:
+                            lesson.id,
+
+                        lastLessonCompletedAt:
+                            serverTimestamp()
+                    },
+                    {
+                        merge: true
+                    }
+                );
+
+            }
+
+            // --------------------------------------------
+            // AWARD XP
+            // --------------------------------------------
+
+            await awardXP(
+    currentUser.uid,
+    XP_REWARDS.lesson,
+    `Completed lesson: ${
+        lesson.title || "Lesson"
+    }`,
+    `lesson_${courseId}_${lesson.id}`
+);
+
+            // --------------------------------------------
+            // UPDATE STREAK
+            // --------------------------------------------
+
+            await updateLearningStreak(
+                currentUser.uid
+            );
+
+            // --------------------------------------------
+            // SUCCESS
+            // --------------------------------------------
+
+            showToast(
+                "Lesson completed! ⚡ +20 XP"
+            );
+
+            // --------------------------------------------
+            // MOVE TO NEXT LESSON
+            // --------------------------------------------
+
+            if (
+                currentLessonIndex <
+                lessons.length - 1
+            ) {
+
+                setTimeout(
+                    () => {
+
+                        showLesson(
+                            currentLessonIndex + 1
+                        );
+
+                    },
+                    700
+                );
+
+            }
 
         }
 
+        catch (error) {
 
-        completedLessons.push(
-            lesson.id
-        );
+            console.error(
+                "❌ LESSON COMPLETION ERROR:",
+                error
+            );
 
-
-        updateProgress();
-
-        renderLessons();
-
-        updateNavigation();
-
-        await saveProgress(true);
-
-
-        // Automatically move forward
-        if (
-            currentLessonIndex <
-            lessons.length - 1
-        ) {
-
-            setTimeout(
-                () => {
-
-                    showLesson(
-                        currentLessonIndex + 1
-                    );
-
-                },
-                500
+            showToast(
+                "Couldn't complete the lesson."
             );
 
         }
 
     }
 );
-
-
 // ============================================================
 // PROGRESS
 // ============================================================

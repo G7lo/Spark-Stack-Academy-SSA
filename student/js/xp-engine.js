@@ -1,7 +1,7 @@
 // ============================================================
 // SPARK STACK ACADEMY
 // ACHIEVEMENT OS V3
-// CORE GAMIFICATION ENGINE
+// BADGES • STREAKS • LEADERBOARD • ACTIVITY
 // ============================================================
 
 import {
@@ -12,8 +12,8 @@ import {
 import {
     doc,
     getDoc,
+    setDoc,
     updateDoc,
-    increment,
     serverTimestamp,
     collection,
     query,
@@ -37,8 +37,7 @@ import {
 // DOM HELPER
 // ============================================================
 
-const $ = id =>
-    document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 
 // ============================================================
@@ -111,294 +110,17 @@ const BADGES = {
 
 
 // ============================================================
-// RENDER LEVEL
+// ACTIVITY ENGINE
 // ============================================================
 
-function renderLevel(student) {
+async function createActivity(userId, data) {
 
-    const xp =
-        Number(student.xp || 0);
+    if (!userId)
+        return;
 
-    const data =
-        getLevelData(xp);
+    try {
 
-    const title =
-        getLevelTitle(data.level);
-
-
-    // LEVEL
-
-    if ($("studentLevel")) {
-
-        $("studentLevel").textContent =
-            data.level;
-
-    }
-
-
-    // CURRENT XP
-
-    if ($("studentXP")) {
-
-        $("studentXP").textContent =
-            xp.toLocaleString();
-
-    }
-
-
-    // NEXT LEVEL XP
-
-    if ($("nextXP")) {
-
-        $("nextXP").textContent =
-            data.nextLevelXP.toLocaleString();
-
-    }
-
-
-    // XP BAR
-
-    if ($("xpProgress")) {
-
-        $("xpProgress").style.width =
-            `${data.progress}%`;
-
-    }
-
-
-    // TOTAL XP
-
-    if ($("statXP")) {
-
-        $("statXP").textContent =
-            xp.toLocaleString();
-
-    }
-
-
-    // RANK / LEVEL TITLE
-
-    if ($("studentRank")) {
-
-        $("studentRank").textContent =
-            title;
-
-    }
-
-
-    console.log(
-        `⚡ Level ${data.level} — ${title} — ${xp} XP`
-    );
-
-}
-
-
-// ============================================================
-// AWARD XP
-// ============================================================
-
-export async function awardXP(
-    userId,
-    amount,
-    reason = "Learning activity",
-    source = "system"
-) {
-
-    if (!userId) {
-
-        throw new Error(
-            "Missing user ID."
-        );
-
-    }
-
-
-    amount =
-        Number(amount);
-
-
-    if (
-        !Number.isFinite(amount) ||
-        amount <= 0
-    ) {
-
-        throw new Error(
-            "Invalid XP amount."
-        );
-
-    }
-
-
-    const studentRef =
-        doc(
-            db,
-            "students",
-            userId
-        );
-
-
-    const snapshot =
-        await getDoc(
-            studentRef
-        );
-
-
-    if (!snapshot.exists()) {
-
-        throw new Error(
-            "Student profile not found."
-        );
-
-    }
-
-
-    const student =
-        snapshot.data();
-
-
-    const oldXP =
-        Number(student.xp || 0);
-
-    const oldLevel =
-        calculateLevel(oldXP);
-
-
-    const newXP =
-        oldXP + amount;
-
-    const newLevel =
-        calculateLevel(newXP);
-
-
-    // ========================================================
-    // UPDATE STUDENT XP
-    // ========================================================
-
-    await updateDoc(
-        studentRef,
-        {
-
-            xp:
-                increment(amount),
-
-            lastXPReward:
-                serverTimestamp(),
-
-            lastXPReason:
-                reason
-
-        }
-    );
-
-
-    // ========================================================
-    // XP ACTIVITY
-    // ========================================================
-
-    await createActivity(
-        userId,
-        {
-
-            type:
-                "xp_earned",
-
-            amount,
-
-            reason,
-
-            source,
-
-            previousXP:
-                oldXP,
-
-            newXP,
-
-            previousLevel:
-                oldLevel,
-
-            newLevel
-
-        }
-    );
-
-
-    // ========================================================
-    // LEVEL UP
-    // ========================================================
-
-    if (newLevel > oldLevel) {
-
-        await handleLevelUp(
-            userId,
-            oldLevel,
-            newLevel
-        );
-
-    }
-
-
-    // ========================================================
-    // BADGES
-    // ========================================================
-
-    await processBadges(
-        userId,
-        {
-            ...student,
-            xp: newXP
-        }
-    );
-
-
-    return {
-
-        xpAdded:
-            amount,
-
-        oldXP,
-
-        newXP,
-
-        oldLevel,
-
-        newLevel,
-
-        levelUp:
-            newLevel > oldLevel
-
-    };
-
-}
-
-
-// ============================================================
-// ACTIVITY CREATOR
-// ============================================================
-
-async function createActivity(
-    userId,
-    data
-) {
-
-    await updateActivityCollection(
-        userId,
-        data
-    );
-
-}
-
-
-// ============================================================
-// WRITE ACTIVITY
-// ============================================================
-
-async function updateActivityCollection(
-    userId,
-    data
-) {
-
-    const activityRef =
-        doc(
+        const activityRef = doc(
             collection(
                 db,
                 "students",
@@ -407,233 +129,176 @@ async function updateActivityCollection(
             )
         );
 
+        await setDoc(
+            activityRef,
+            {
+                ...data,
+                createdAt: serverTimestamp()
+            }
+        );
 
-    await updateDocSafe(
-        activityRef,
-        {
+    }
 
-            ...data,
+    catch (error) {
 
-            createdAt:
-                serverTimestamp()
+        console.error(
+            "❌ Activity write failed:",
+            error
+        );
 
-        }
-    );
-
-}
-
-
-// ============================================================
-// SAFE ACTIVITY WRITE
-// ============================================================
-
-async function updateDocSafe(
-    reference,
-    data
-) {
-
-    const {
-        setDoc
-    } = await import(
-        "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
-    );
-
-
-    await setDoc(
-        reference,
-        data
-    );
+    }
 
 }
 
 
 // ============================================================
-// LEVEL UP
+// STREAK ENGINE
 // ============================================================
 
-async function handleLevelUp(
-    userId,
-    oldLevel,
-    newLevel
-) {
+export async function updateLearningStreak(userId) {
 
-    const studentRef =
-        doc(
+    if (!userId)
+        return 0;
+
+    try {
+
+        const studentRef = doc(
             db,
             "students",
             userId
         );
 
-
-    await updateDoc(
-        studentRef,
-        {
-
-            lastLevelUp:
-                newLevel,
-
-            lastLevelUpAt:
-                serverTimestamp()
-
-        }
-    );
-
-
-    await createActivity(
-        userId,
-        {
-
-            type:
-                "level_up",
-
-            from:
-                oldLevel,
-
-            to:
-                newLevel
-
-        }
-    );
-
-
-    console.log(
-        `🎉 LEVEL UP: ${oldLevel} → ${newLevel}`
-    );
-
-}
-
-
-// ============================================================
-// LEARNING STREAK
-// ============================================================
-
-export async function updateLearningStreak(
-    userId
-) {
-
-    const studentRef =
-        doc(
-            db,
-            "students",
-            userId
-        );
-
-
-    const snapshot =
-        await getDoc(
+        const snapshot = await getDoc(
             studentRef
         );
 
+        if (!snapshot.exists())
+            return 0;
 
-    if (!snapshot.exists())
-        return 0;
+        const student = snapshot.data();
 
+        const today =
+            new Date()
+                .toISOString()
+                .split("T")[0];
 
-    const student =
-        snapshot.data();
+        const lastActive =
+            student.lastActiveDate || null;
 
-
-    const today =
-        new Date()
-            .toISOString()
-            .split("T")[0];
-
-
-    const lastActive =
-        student.lastActiveDate || null;
+        let streak =
+            Number(student.streak || 0);
 
 
-    let streak =
-        Number(
-            student.streak || 0
-        );
+        // ----------------------------------------------------
+        // FIRST ACTIVITY
+        // ----------------------------------------------------
 
-
-    // First activity
-
-    if (!lastActive) {
-
-        streak = 1;
-
-    }
-
-
-    // Already active today
-
-    else if (
-        lastActive === today
-    ) {
-
-        return streak;
-
-    }
-
-
-    // New day
-
-    else {
-
-        const previous =
-            new Date(
-                `${lastActive}T00:00:00`
-            );
-
-        const current =
-            new Date(
-                `${today}T00:00:00`
-            );
-
-
-        const difference =
-            Math.floor(
-                (
-                    current -
-                    previous
-                ) / 86400000
-            );
-
-
-        if (difference === 1) {
-
-            streak++;
-
-        }
-
-        else {
+        if (!lastActive) {
 
             streak = 1;
 
         }
 
+
+        // ----------------------------------------------------
+        // ALREADY ACTIVE TODAY
+        // ----------------------------------------------------
+
+        else if (
+            lastActive === today
+        ) {
+
+            return streak;
+
+        }
+
+
+        // ----------------------------------------------------
+        // NEW DAY
+        // ----------------------------------------------------
+
+        else {
+
+            const previous =
+                new Date(
+                    `${lastActive}T00:00:00`
+                );
+
+            const current =
+                new Date(
+                    `${today}T00:00:00`
+                );
+
+            const difference =
+                Math.floor(
+                    (
+                        current - previous
+                    ) / 86400000
+                );
+
+
+            if (difference === 1) {
+
+                streak++;
+
+            }
+
+            else {
+
+                streak = 1;
+
+            }
+
+        }
+
+
+        // ----------------------------------------------------
+        // SAVE STREAK
+        // ----------------------------------------------------
+
+        await updateDoc(
+            studentRef,
+            {
+
+                streak,
+
+                lastActiveDate:
+                    today,
+
+                lastActiveAt:
+                    serverTimestamp()
+
+            }
+        );
+
+
+        // ----------------------------------------------------
+        // BADGES
+        // ----------------------------------------------------
+
+        await processBadges(
+            userId,
+            {
+                ...student,
+                streak
+            }
+        );
+
+
+        return streak;
+
     }
 
+    catch (error) {
 
-    await updateDoc(
-        studentRef,
-        {
+        console.error(
+            "❌ Streak update failed:",
+            error
+        );
 
-            streak,
+        return 0;
 
-            lastActiveDate:
-                today,
-
-            lastActiveAt:
-                serverTimestamp()
-
-        }
-    );
-
-
-    await processBadges(
-        userId,
-        {
-            ...student,
-            streak
-        }
-    );
-
-
-    return streak;
+    }
 
 }
 
@@ -652,7 +317,6 @@ function getEligibleBadges(student) {
 
     const level =
         calculateLevel(xp);
-
 
     const streak =
         Number(student.streak || 0);
@@ -692,46 +356,26 @@ function getEligibleBadges(student) {
 
     // FIRST LESSON
 
-    if (lessons >= 1) {
-
-        eligible.push(
-            "first_lesson"
-        );
-
-    }
+    if (lessons >= 1)
+        eligible.push("first_lesson");
 
 
     // FIRST QUIZ
 
-    if (quizzes >= 1) {
-
-        eligible.push(
-            "first_quiz"
-        );
-
-    }
+    if (quizzes >= 1)
+        eligible.push("first_quiz");
 
 
     // QUIZ MASTER
 
-    if (quizzes >= 10) {
-
-        eligible.push(
-            "quiz_master"
-        );
-
-    }
+    if (quizzes >= 10)
+        eligible.push("quiz_master");
 
 
     // FIRST COURSE
 
-    if (courses >= 1) {
-
-        eligible.push(
-            "first_course"
-        );
-
-    }
+    if (courses >= 1)
+        eligible.push("first_course");
 
 
     // CODER
@@ -741,62 +385,33 @@ function getEligibleBadges(student) {
         student.skill === "coding"
     ) {
 
-        eligible.push(
-            "coder"
-        );
+        eligible.push("coder");
 
     }
 
 
-    // PROJECT
+    // PROJECT BUILDER
 
-    if (projects >= 1) {
-
-        eligible.push(
-            "project_builder"
-        );
-
-    }
+    if (projects >= 1)
+        eligible.push("project_builder");
 
 
     // STREAKS
 
-    if (streak >= 7) {
+    if (streak >= 7)
+        eligible.push("streak_7");
 
-        eligible.push(
-            "streak_7"
-        );
-
-    }
-
-
-    if (streak >= 30) {
-
-        eligible.push(
-            "streak_30"
-        );
-
-    }
+    if (streak >= 30)
+        eligible.push("streak_30");
 
 
     // LEVELS
 
-    if (level >= 5) {
+    if (level >= 5)
+        eligible.push("level_5");
 
-        eligible.push(
-            "level_5"
-        );
-
-    }
-
-
-    if (level >= 10) {
-
-        eligible.push(
-            "level_10"
-        );
-
-    }
+    if (level >= 10)
+        eligible.push("level_10");
 
 
     return eligible;
@@ -805,7 +420,7 @@ function getEligibleBadges(student) {
 
 
 // ============================================================
-// PROCESS BADGES
+// BADGE PROCESSOR
 // ============================================================
 
 async function processBadges(
@@ -826,24 +441,18 @@ async function processBadges(
     const newBadges =
         eligible.filter(
             badge =>
-                !existing.includes(
-                    badge
-                )
+                !existing.includes(badge)
         );
 
 
-    if (!newBadges.length) {
-
+    if (!newBadges.length)
         return existing;
 
-    }
 
-
-    const updated =
-        [
-            ...existing,
-            ...newBadges
-        ];
+    const updatedBadges = [
+        ...existing,
+        ...newBadges
+    ];
 
 
     const studentRef =
@@ -857,26 +466,15 @@ async function processBadges(
     await updateDoc(
         studentRef,
         {
-
-            badges:
-                updated
-
+            badges: updatedBadges
         }
     );
 
 
-    // ========================================================
-    // CREATE BADGE ACTIVITY
-    // ========================================================
-
-    for (
-        const badgeId
-        of newBadges
-    ) {
+    for (const badgeId of newBadges) {
 
         const badge =
             BADGES[badgeId];
-
 
         if (!badge)
             continue;
@@ -899,13 +497,81 @@ async function processBadges(
 
 
         console.log(
-            `🏆 BADGE UNLOCKED: ${badge.name}`
+            `🏆 Badge unlocked: ${badge.name}`
         );
 
     }
 
 
-    return updated;
+    return updatedBadges;
+
+}
+
+
+// ============================================================
+// RENDER LEVEL
+// ============================================================
+
+function renderLevel(student) {
+
+    const xp =
+        Number(student.xp || 0);
+
+    const levelData =
+        getLevelData(xp);
+
+    const title =
+        getLevelTitle(
+            levelData.level
+        );
+
+
+    if ($("studentLevel")) {
+
+        $("studentLevel").textContent =
+            levelData.level;
+
+    }
+
+
+    if ($("studentXP")) {
+
+        $("studentXP").textContent =
+            xp.toLocaleString();
+
+    }
+
+
+    if ($("nextXP")) {
+
+        $("nextXP").textContent =
+            levelData.nextLevelXP.toLocaleString();
+
+    }
+
+
+    if ($("xpProgress")) {
+
+        $("xpProgress").style.width =
+            `${levelData.progress}%`;
+
+    }
+
+
+    if ($("statXP")) {
+
+        $("statXP").textContent =
+            xp.toLocaleString();
+
+    }
+
+
+    if ($("studentRank")) {
+
+        $("studentRank").textContent =
+            title;
+
+    }
 
 }
 
@@ -918,7 +584,6 @@ function renderBadges(student) {
 
     const container =
         $("badgeContainer");
-
 
     if (!container)
         return;
@@ -933,79 +598,76 @@ function renderBadges(student) {
     container.innerHTML = "";
 
 
-    Object.entries(BADGES)
-        .forEach(
-            ([id, badge]) => {
+    Object.entries(BADGES).forEach(
+        ([id, badge]) => {
 
-                const isUnlocked =
-                    unlocked.includes(id);
-
-
-                const card =
-                    document.createElement(
-                        "article"
-                    );
+            const isUnlocked =
+                unlocked.includes(id);
 
 
-                card.className =
-                    `badge-item ${
-                        isUnlocked
-                            ? "unlocked"
-                            : "locked"
-                    }`;
-
-
-                card.innerHTML = `
-
-                    <div class="badge-icon">
-
-                        ${
-                            isUnlocked
-                                ? badge.icon
-                                : "🔒"
-                        }
-
-                    </div>
-
-                    <h3>
-
-                        ${
-                            isUnlocked
-                                ? badge.name
-                                : "Locked Achievement"
-                        }
-
-                    </h3>
-
-                    <p>
-
-                        ${
-                            isUnlocked
-                                ? badge.description
-                                : "Keep learning to unlock this."
-                        }
-
-                    </p>
-
-                    <small>
-
-                        ${
-                            isUnlocked
-                                ? "✓ UNLOCKED"
-                                : "LOCKED"
-                        }
-
-                    </small>
-
-                `;
-
-
-                container.appendChild(
-                    card
+            const card =
+                document.createElement(
+                    "article"
                 );
 
-            }
-        );
+
+            card.className =
+                `badge-item ${
+                    isUnlocked
+                        ? "unlocked"
+                        : "locked"
+                }`;
+
+
+            card.innerHTML = `
+
+                <div class="badge-icon">
+
+                    ${
+                        isUnlocked
+                            ? badge.icon
+                            : "🔒"
+                    }
+
+                </div>
+
+                <h3>
+
+                    ${
+                        isUnlocked
+                            ? badge.name
+                            : "Locked Achievement"
+                    }
+
+                </h3>
+
+                <p>
+
+                    ${
+                        isUnlocked
+                            ? badge.description
+                            : "Keep learning to unlock this."
+                    }
+
+                </p>
+
+                <small>
+
+                    ${
+                        isUnlocked
+                            ? "✓ UNLOCKED"
+                            : "LOCKED"
+                    }
+
+                </small>
+
+            `;
+
+
+            container.appendChild(card);
+
+        }
+    );
 
 
     if ($("statBadges")) {
@@ -1026,7 +688,6 @@ function renderFeaturedBadge(student) {
 
     const element =
         $("featuredBadgeName");
-
 
     if (!element)
         return;
@@ -1050,7 +711,6 @@ function renderFeaturedBadge(student) {
 
     const latestBadge =
         badges[badges.length - 1];
-
 
     const badge =
         BADGES[latestBadge];
@@ -1143,7 +803,7 @@ async function loadLeaderboard() {
 
     }
 
-    catch(error) {
+    catch (error) {
 
         console.error(
             "❌ Leaderboard error:",
@@ -1164,94 +824,96 @@ async function renderCurrentUserRank() {
     const user =
         auth.currentUser;
 
-
     if (!user)
         return;
 
 
-    const currentStudentRef =
-        doc(
-            db,
-            "students",
-            user.uid
-        );
+    try {
+
+        const currentStudent =
+            await getDoc(
+                doc(
+                    db,
+                    "students",
+                    user.uid
+                )
+            );
 
 
-    const currentSnapshot =
-        await getDoc(
-            currentStudentRef
-        );
+        if (!currentStudent.exists())
+            return;
 
 
-    if (!currentSnapshot.exists())
-        return;
+        const currentXP =
+            Number(
+                currentStudent.data().xp || 0
+            );
 
 
-    const currentXP =
-        Number(
-            currentSnapshot.data().xp || 0
-        );
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "students"
+                )
+            );
 
 
-    const studentsRef =
-        collection(
-            db,
-            "students"
-        );
+        let rank = 1;
 
 
-    const snapshot =
-        await getDocs(
-            studentsRef
-        );
+        snapshot.forEach(
+            studentDoc => {
+
+                if (
+                    studentDoc.id ===
+                    user.uid
+                ) {
+
+                    return;
+
+                }
 
 
-    let rank = 1;
+                const xp =
+                    Number(
+                        studentDoc.data().xp || 0
+                    );
 
 
-    snapshot.forEach(
-        studentDoc => {
+                if (xp > currentXP) {
 
-            if (
-                studentDoc.id ===
-                user.uid
-            ) {
+                    rank++;
 
-                return;
-
-            }
-
-
-            const xp =
-                Number(
-                    studentDoc.data().xp || 0
-                );
-
-
-            if (
-                xp > currentXP
-            ) {
-
-                rank++;
+                }
 
             }
+        );
+
+
+        if ($("rankPosition")) {
+
+            $("rankPosition").textContent =
+                `#${rank}`;
 
         }
-    );
 
 
-    if ($("rankPosition")) {
+        if ($("rankNumber")) {
 
-        $("rankPosition").textContent =
-            `#${rank}`;
+            $("rankNumber").textContent =
+                `#${rank}`;
+
+        }
 
     }
 
+    catch (error) {
 
-    if ($("rankNumber")) {
-
-        $("rankNumber").textContent =
-            `#${rank}`;
+        console.error(
+            "❌ Rank calculation failed:",
+            error
+        );
 
     }
 
@@ -1262,9 +924,7 @@ async function renderCurrentUserRank() {
 // RENDER LEADERBOARD
 // ============================================================
 
-function renderLeaderboard(
-    leaders
-) {
+function renderLeaderboard(leaders) {
 
     const container =
         document.querySelector(
@@ -1337,22 +997,17 @@ function renderLeaderboard(
 
                 </span>
 
-
                 <div class="leader-avatar">
 
                     ${avatar}
 
                 </div>
 
-
                 <span>
 
-                    ${escapeHTML(
-                        name
-                    )}
+                    ${escapeHTML(name)}
 
                 </span>
-
 
                 <strong>
 
@@ -1367,9 +1022,7 @@ function renderLeaderboard(
             `;
 
 
-            container.appendChild(
-                card
-            );
+            container.appendChild(card);
 
         }
     );
@@ -1381,13 +1034,10 @@ function renderLeaderboard(
 // RECENT ACTIVITY
 // ============================================================
 
-async function loadRecentActivity(
-    userId
-) {
+async function loadRecentActivity(userId) {
 
     const container =
         $("recentUnlocks");
-
 
     if (!container)
         return;
@@ -1463,52 +1113,49 @@ async function loadRecentActivity(
                 let description = "";
 
 
-                if (
-                    activity.type ===
-                    "xp_earned"
+                switch (
+                    activity.type
                 ) {
 
-                    icon = "⚡";
+                    case "xp_earned":
 
-                    title =
-                        `+${activity.amount} XP`;
+                        icon = "⚡";
 
-                    description =
-                        activity.reason ||
-                        "Learning activity";
+                        title =
+                            `+${activity.amount} XP`;
 
-                }
+                        description =
+                            activity.reason ||
+                            "Learning activity";
 
-
-                else if (
-                    activity.type ===
-                    "level_up"
-                ) {
-
-                    icon = "🎉";
-
-                    title =
-                        `Level ${activity.to} reached`;
-
-                    description =
-                        `You advanced from Level ${activity.from}.`;
-
-                }
+                        break;
 
 
-                else if (
-                    activity.type ===
-                    "badge_unlocked"
-                ) {
+                    case "level_up":
 
-                    icon = "🏆";
+                        icon = "🎉";
 
-                    title =
-                        activity.badgeName ||
-                        "Badge unlocked";
+                        title =
+                            `Level ${activity.to} reached`;
 
-                    description =
-                        "New achievement unlocked.";
+                        description =
+                            `You advanced from Level ${activity.from}.`;
+
+                        break;
+
+
+                    case "badge_unlocked":
+
+                        icon = "🏆";
+
+                        title =
+                            activity.badgeName ||
+                            "Badge unlocked";
+
+                        description =
+                            "New achievement unlocked.";
+
+                        break;
 
                 }
 
@@ -1521,23 +1168,17 @@ async function loadRecentActivity(
 
                     </span>
 
-
                     <div>
 
                         <strong>
 
-                            ${escapeHTML(
-                                title
-                            )}
+                            ${escapeHTML(title)}
 
                         </strong>
 
-
                         <p>
 
-                            ${escapeHTML(
-                                description
-                            )}
+                            ${escapeHTML(description)}
 
                         </p>
 
@@ -1546,16 +1187,14 @@ async function loadRecentActivity(
                 `;
 
 
-                container.appendChild(
-                    item
-                );
+                container.appendChild(item);
 
             }
         );
 
     }
 
-    catch(error) {
+    catch (error) {
 
         console.error(
             "❌ Recent activity error:",
@@ -1571,9 +1210,7 @@ async function loadRecentActivity(
 // LOAD ACHIEVEMENT OS
 // ============================================================
 
-async function loadAchievementOS(
-    user
-) {
+async function loadAchievementOS(user) {
 
     try {
 
@@ -1599,7 +1236,7 @@ async function loadAchievementOS(
         if (!snapshot.exists()) {
 
             console.warn(
-                "Student profile not found."
+                "⚠️ Student profile not found."
             );
 
             return;
@@ -1611,36 +1248,24 @@ async function loadAchievementOS(
             snapshot.data();
 
 
-        // CORE
-
         renderLevel(
             student
         );
-
 
         renderStreak(
             student
         );
 
-
-        // BADGES
-
         renderBadges(
             student
         );
-
 
         renderFeaturedBadge(
             student
         );
 
 
-        // RANKINGS
-
         await loadLeaderboard();
-
-
-        // ACTIVITY
 
         await loadRecentActivity(
             user.uid
@@ -1653,7 +1278,7 @@ async function loadAchievementOS(
 
     }
 
-    catch(error) {
+    catch (error) {
 
         console.error(
             "❌ Achievement OS failed:",
@@ -1698,8 +1323,6 @@ onAuthStateChanged(
 
 window.SparkAchievements = {
 
-    awardXP,
-
     updateLearningStreak,
 
     calculateLevel,
@@ -1710,22 +1333,21 @@ window.SparkAchievements = {
 
     reload: () => {
 
-        if (
+        if (!auth.currentUser)
+            return null;
+
+        return loadAchievementOS(
             auth.currentUser
-        ) {
-
-            return loadAchievementOS(
-                auth.currentUser
-            );
-
-        }
-
-        return null;
+        );
 
     }
 
 };
 
+
+// ============================================================
+// READY
+// ============================================================
 
 console.log(
     "🚀 Spark Achievement OS V3 loaded"
