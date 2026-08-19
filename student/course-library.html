@@ -3,35 +3,78 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
+    <meta
+        name="description"
+        content="Explore technology courses at Spark Stack Academy."
+    >
 
-<title>
-Course Library | Spark Stack Academy
-</title>
-
-
-
-<link rel="stylesheet" href="css/student-core.css">
-
-<link rel="stylesheet" href="css/components.css">
-
-<link rel="stylesheet" href="css/course-library.css">
-
-<link rel="stylesheet" href="css/responsive.css">
+    <title>
+        Course Library | Spark Stack Academy
+    </title>
 
 
+    <!-- =========================================
+         CORE STYLES
+    ========================================== -->
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        rel="stylesheet"
+        href="css/student-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/course-library.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
 
 
-<script src="https://unpkg.com/lucide@latest"></script>
+    <!-- =========================================
+         FONT
+    ========================================== -->
 
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =========================================
+         ICONS
+    ========================================== -->
+
+    <script
+        src="https://unpkg.com/lucide@latest"
+    ></script>
 
 </head>
-
 
 
 <body>
@@ -40,241 +83,389 @@ Course Library | Spark Stack Academy
 <div class="student-layout">
 
 
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
 
-<!-- SIDEBAR -->
-
-<aside 
-id="sidebarContainer"
-class="sidebar-container">
-
-</aside>
+    <aside
+        id="sidebarContainer"
+        class="sidebar-container"
+        aria-label="Student navigation"
+    ></aside>
 
 
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
 
-<div 
-id="sidebarOverlay"
-class="sidebar-overlay">
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="student-main">
+
+
+        <!-- TOPBAR -->
+
+        <div
+            id="topbarContainer"
+            class="topbar-container"
+        ></div>
+
+
+
+        <!-- =====================================
+             PAGE CONTENT
+        ====================================== -->
+
+        <section
+            class="dashboard-content course-library-page"
+        >
+
+
+            <!-- =================================
+                 HERO
+            ================================== -->
+
+            <header class="library-hero">
+
+
+                <div class="library-hero-content">
+
+
+                    <span class="page-badge">
+
+                        <i data-lucide="library"></i>
+
+                        Learning Library
+
+                    </span>
+
+
+                    <h1>
+
+                        Explore Courses
+
+                        <span
+                            id="libraryPremiumBadge"
+                            class="premium-badge"
+                            title="SSA Premium Verified"
+                            aria-label="SSA Premium Verified"
+                            hidden
+                        >
+                            ✓
+                        </span>
+
+                    </h1>
+
+
+                    <p>
+
+                        Discover courses, build real skills,
+                        and become future-ready.
+
+                    </p>
+
+
+                </div>
+
+
+
+                <!-- SEARCH -->
+
+                <div
+                    class="library-search"
+                    role="search"
+                >
+
+                    <i
+                        data-lucide="search"
+                        aria-hidden="true"
+                    ></i>
+
+
+                    <input
+                        id="courseSearch"
+                        type="search"
+                        autocomplete="off"
+                        placeholder="Search courses..."
+                        aria-label="Search courses"
+                    >
+
+
+                    <button
+                        type="button"
+                        id="clearCourseSearch"
+                        class="search-clear"
+                        aria-label="Clear search"
+                        hidden
+                    >
+
+                        <i data-lucide="x"></i>
+
+                    </button>
+
+                </div>
+
+
+            </header>
+
+
+
+            <!-- =================================
+                 LIBRARY TOOLBAR
+            ================================== -->
+
+            <div class="library-toolbar">
+
+
+                <div class="course-filters">
+
+
+                    <button
+                        type="button"
+                        class="filter-btn active"
+                        data-filter="all"
+                        aria-pressed="true"
+                    >
+
+                        All
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="filter-btn"
+                        data-filter="free"
+                        aria-pressed="false"
+                    >
+
+                        Free
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="filter-btn"
+                        data-filter="paid"
+                        aria-pressed="false"
+                    >
+
+                        Premium
+
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- COURSE COUNT -->
+
+                <div
+                    id="courseLibraryCount"
+                    class="library-course-count"
+                    aria-live="polite"
+                >
+                    0 courses
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================
+                 COURSE GRID
+            ================================== -->
+
+            <section
+                class="library-courses-section"
+                aria-label="Available courses"
+            >
+
+
+                <div
+                    id="libraryCourses"
+                    class="library-grid"
+                    aria-live="polite"
+                >
+
+
+                    <!-- INITIAL LOADING -->
+
+                    <div
+                        class="library-state loading-card"
+                    >
+
+                        <div class="state-icon">
+
+                            <i
+                                data-lucide="loader-circle"
+                            ></i>
+
+                        </div>
+
+
+                        <h3>
+                            Loading courses...
+                        </h3>
+
+
+                        <p>
+                            Preparing your learning library.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================
+                 EMPTY STATE
+            ================================== -->
+
+            <div
+                id="libraryEmptyState"
+                class="library-state empty-state"
+                hidden
+            >
+
+                <div class="state-icon">
+
+                    <i data-lucide="book-open"></i>
+
+                </div>
+
+
+                <h3>
+                    No courses found
+                </h3>
+
+
+                <p>
+                    Try another search or browse
+                    a different category.
+                </p>
+
+
+                <button
+                    type="button"
+                    id="resetCourseFilters"
+                    class="primary-btn"
+                >
+
+                    <i data-lucide="rotate-ccw"></i>
+
+                    Reset Filters
+
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================
+                 ERROR STATE
+            ================================== -->
+
+            <div
+                id="libraryErrorState"
+                class="library-state error-state"
+                hidden
+            >
+
+                <div class="state-icon">
+
+                    <i data-lucide="circle-alert"></i>
+
+                </div>
+
+
+                <h3>
+                    Couldn't load courses
+                </h3>
+
+
+                <p>
+                    Something went wrong while
+                    loading the course library.
+                </p>
+
+
+                <button
+                    type="button"
+                    id="retryCoursesBtn"
+                    class="primary-btn"
+                >
+
+                    <i data-lucide="refresh-cw"></i>
+
+                    Try Again
+
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
 
 </div>
 
 
 
+<!-- =========================================
+     STUDENT PORTAL ENGINE
+========================================== -->
 
+<script
+    type="module"
+    src="js/student-app.js"
+></script>
 
 
-<main class="student-main">
+<!-- =========================================
+     COURSE LIBRARY ENGINE
+========================================== -->
 
+<script
+    type="module"
+    src="js/course-library.js"
+></script>
 
 
-<!-- TOPBAR -->
-
-<div 
-id="topbarContainer"
-class="topbar-container">
-
-</div>
-
-
-
-
-
-
-
-
-<section class="dashboard-content course-library-page">
-
-
-
-
-
-<!-- HERO -->
-
-
-<div class="library-hero">
-
-
-
-<div>
-
-
-<span class="page-badge">
-
-<i data-lucide="library"></i>
-
-Learning Library
-
-</span>
-
-
-
-
-<h1>
-
-    Explore Courses
-
-    <span
-        id="libraryPremiumBadge"
-        class="premium-badge"
-        title="SSA Premium Verified"
-        style="display:none;"
-    >
-        ✓
-    </span>
-
-</h1>
-
-
-
-
-<p>
-
-Build future-ready skills with premium technology courses.
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-<div class="library-search">
-
-
-<i data-lucide="search"></i>
-
-
-<input 
-id="courseSearch"
-type="search"
-placeholder="Search courses...">
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-<!-- FILTERS -->
-
-
-<div class="course-filters">
-
-
-<button class="filter-btn active"
-data-filter="all">
-
-All
-
-</button>
-
-
-
-<button class="filter-btn"
-data-filter="free">
-
-Free
-
-</button>
-
-
-
-
-<button class="filter-btn"
-data-filter="paid">
-
-Premium
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- COURSE GRID -->
-
-
-<div 
-class="library-grid"
-id="libraryCourses">
-
-
-
-<!-- JS LOADS COURSES -->
-
-
-
-<div class="loading-card">
-
-<i data-lucide="loader"></i>
-
-
-<p>
-
-Loading courses...
-
-</p>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-</section>
-
-
-
-</main>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<script type="module" src="js/student-app.js"></script>
-
-<script type="module" src="js/course-library.js"></script>
-
+<!-- =========================================
+     ICON INITIALIZATION
+========================================== -->
 
 <script>
 
-lucide.createIcons();
+    document.addEventListener("DOMContentLoaded", () => {
+
+        if (
+            window.lucide &&
+            typeof window.lucide.createIcons === "function"
+        ) {
+
+            window.lucide.createIcons();
+
+        }
+
+    });
 
 </script>
 

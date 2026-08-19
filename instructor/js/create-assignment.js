@@ -31,18 +31,44 @@ document.addEventListener(
     "DOMContentLoaded",
     async () => {
 
-        await waitForInstructor();
+        try {
 
-        instructor =
-            window.currentInstructor;
+            await waitForInstructor();
 
-        if (!instructor) return;
+            instructor =
+                window.currentInstructor;
 
-        await loadCourses();
+            if (!instructor) {
 
-        setupForm();
+                console.error(
+                    "❌ Instructor authentication unavailable."
+                );
 
-        refreshIcons();
+                return;
+
+            }
+
+
+            await loadCourses();
+
+            setupForm();
+
+            refreshIcons();
+
+
+            console.log(
+                "✓ Create Assignment loaded"
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "❌ Create Assignment boot error:",
+                error
+            );
+
+        }
 
     }
 );
@@ -63,6 +89,7 @@ function waitForInstructor() {
 
                 attempts++;
 
+
                 if (
                     window.currentInstructor
                 ) {
@@ -71,9 +98,14 @@ function waitForInstructor() {
 
                     resolve();
 
+                    return;
+
                 }
 
-                if (attempts >= 100) {
+
+                if (
+                    attempts >= 100
+                ) {
 
                     clearInterval(timer);
 
@@ -89,7 +121,7 @@ function waitForInstructor() {
 
 
 // ============================================================
-// LOAD COURSES
+// LOAD INSTRUCTOR COURSES
 // ============================================================
 
 async function loadCourses() {
@@ -97,12 +129,13 @@ async function loadCourses() {
     const select =
         $("courseSelect");
 
+
     if (!select) return;
 
 
     try {
 
-        const ref =
+        const coursesRef =
             collection(
                 db,
                 "courses"
@@ -111,7 +144,7 @@ async function loadCourses() {
 
         const q =
             query(
-                ref,
+                coursesRef,
                 where(
                     "instructorId",
                     "==",
@@ -124,7 +157,12 @@ async function loadCourses() {
             await getDocs(q);
 
 
-        if (snapshot.empty) {
+        select.innerHTML = "";
+
+
+        if (
+            snapshot.empty
+        ) {
 
             select.innerHTML = `
                 <option value="">
@@ -137,8 +175,42 @@ async function loadCourses() {
         }
 
 
-        snapshot.docs.forEach(
-            courseDoc => {
+        const defaultOption =
+            document.createElement(
+                "option"
+            );
+
+
+        defaultOption.value = "";
+
+        defaultOption.textContent =
+            "Select a course";
+
+
+        select.appendChild(
+            defaultOption
+        );
+
+
+        snapshot.docs
+            .sort((a, b) => {
+
+                const titleA =
+                    String(
+                        a.data().title || ""
+                    );
+
+                const titleB =
+                    String(
+                        b.data().title || ""
+                    );
+
+                return titleA.localeCompare(
+                    titleB
+                );
+
+            })
+            .forEach(courseDoc => {
 
                 const data =
                     courseDoc.data();
@@ -168,8 +240,7 @@ async function loadCourses() {
                     option
                 );
 
-            }
-        );
+            });
 
 
     } catch (error) {
@@ -178,6 +249,13 @@ async function loadCourses() {
             "❌ Failed to load courses:",
             error
         );
+
+
+        select.innerHTML = `
+            <option value="">
+                Unable to load courses
+            </option>
+        `;
 
     }
 
@@ -206,7 +284,7 @@ function setupForm() {
 
 
 // ============================================================
-// CREATE
+// CREATE ASSIGNMENT
 // ============================================================
 
 async function createAssignment(
@@ -218,12 +296,14 @@ async function createAssignment(
 
     const title =
         $("assignmentTitle")
-            ?.value.trim();
+            ?.value
+            .trim();
 
 
     const description =
         $("assignmentDescription")
-            ?.value.trim();
+            ?.value
+            .trim();
 
 
     const courseSelect =
@@ -234,31 +314,78 @@ async function createAssignment(
         courseSelect?.value;
 
 
-    const courseName =
+    const selectedCourse =
         courseSelect
-            ?.selectedOptions[0]
+            ?.selectedOptions[0];
+
+
+    const courseName =
+        selectedCourse
             ?.dataset.courseName ||
+        selectedCourse
+            ?.textContent ||
         "";
 
 
     const dueDate =
-        $("dueDate")?.value;
+        $("dueDate")
+            ?.value || null;
 
 
     const maxScore =
         Number(
-            $("maxScore")?.value || 100
+            $("maxScore")
+                ?.value || 100
         );
 
 
+    // ========================================================
+    // VALIDATION
+    // ========================================================
+
+    if (!title) {
+
+        showMessage(
+            "Please enter an assignment title.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (!description) {
+
+        showMessage(
+            "Please enter assignment instructions.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (!courseId) {
+
+        showMessage(
+            "Please select a course.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
     if (
-        !title ||
-        !description ||
-        !courseId
+        !Number.isFinite(maxScore) ||
+        maxScore <= 0
     ) {
 
         showMessage(
-            "Please complete all required fields.",
+            "Maximum score must be greater than 0.",
             "error"
         );
 
@@ -273,55 +400,110 @@ async function createAssignment(
 
     try {
 
-        button.disabled = true;
+        if (button) {
+
+            button.disabled = true;
+
+            button.innerHTML = `
+                <span class="loading-spinner"></span>
+                Creating...
+            `;
+
+        }
 
 
-        button.innerHTML = `
-            <span class="loading-spinner"></span>
-            Creating...
-        `;
+        // ====================================================
+        // ASSIGNMENT DOCUMENT
+        // ====================================================
+
+        const assignmentData = {
+
+            // OWNERSHIP
+
+            instructorId:
+                instructor.uid,
+
+            instructorName:
+                instructor.displayName ||
+                instructor.name ||
+                "Instructor",
 
 
-        await addDoc(
-            collection(
-                db,
-                "assignments"
-            ),
-            {
+            // COURSE RELATIONSHIP
 
-                instructorId:
-                    instructor.uid,
+            courseId,
 
-                instructorName:
-                    instructor.displayName ||
-                    "Instructor",
+            courseName,
 
-                title,
 
-                description,
+            // CONTENT
 
-                courseId,
+            title,
 
-                courseName,
+            description,
 
-                dueDate:
-                    dueDate || null,
 
-                maxScore,
+            // ASSESSMENT
 
-                status:
-                    "pending",
+            maxScore,
 
-                submissionCount:
-                    0,
 
-                createdAt:
-                    serverTimestamp(),
+            // DEADLINE
 
-                updatedAt:
-                    serverTimestamp()
+            dueDate,
 
-            }
+
+            // PUBLICATION STATE
+
+            status:
+                "published",
+
+            published:
+                true,
+
+
+            // SUBMISSION TRACKING
+
+            submissionCount:
+                0,
+
+            submissionStatus:
+                "none",
+
+
+            // GRADING
+
+            gradedCount:
+                0,
+
+            averageScore:
+                0,
+
+
+            // TIMESTAMPS
+
+            createdAt:
+                serverTimestamp(),
+
+            updatedAt:
+                serverTimestamp()
+
+        };
+
+
+        const assignmentRef =
+            await addDoc(
+                collection(
+                    db,
+                    "assignments"
+                ),
+                assignmentData
+            );
+
+
+        console.log(
+            "✓ Assignment created:",
+            assignmentRef.id
         );
 
 
@@ -331,12 +513,16 @@ async function createAssignment(
         );
 
 
+        // ====================================================
+        // REDIRECT
+        // ====================================================
+
         setTimeout(() => {
 
             window.location.href =
                 "assignments.html";
 
-        }, 800);
+        }, 700);
 
 
     } catch (error) {
@@ -353,16 +539,18 @@ async function createAssignment(
         );
 
 
-        button.disabled = false;
+        if (button) {
 
+            button.disabled = false;
 
-        button.innerHTML = `
-            <i data-lucide="save"></i>
-            Create Assignment
-        `;
+            button.innerHTML = `
+                <i data-lucide="save"></i>
+                Create Assignment
+            `;
 
+            refreshIcons();
 
-        refreshIcons();
+        }
 
     }
 

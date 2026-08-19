@@ -1,9 +1,3 @@
-// ============================================================
-// SPARK STACK ACADEMY
-// INSTRUCTOR PORTAL
-// ASSIGNMENTS ENGINE
-// ============================================================
-
 import {
     db
 } from "../../js/firebase.js";
@@ -12,8 +6,7 @@ import {
     collection,
     query,
     where,
-    getDocs,
-    orderBy
+    getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -27,11 +20,92 @@ let activeFilter = "all";
 
 
 // ============================================================
-// DOM HELPER
+// HELPERS
 // ============================================================
 
-const $ = id =>
-    document.getElementById(id);
+const $ = id => document.getElementById(id);
+
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+function setText(id, value) {
+
+    const element = $(id);
+
+    if (element) {
+        element.textContent = value;
+    }
+
+}
+
+
+function getTime(value) {
+
+    if (!value) return 0;
+
+    if (typeof value?.toMillis === "function") {
+        return value.toMillis();
+    }
+
+    if (typeof value?.toDate === "function") {
+        return value.toDate().getTime();
+    }
+
+    const time = new Date(value).getTime();
+
+    return Number.isNaN(time) ? 0 : time;
+
+}
+
+
+function formatDate(value) {
+
+    if (!value) return "";
+
+    let date;
+
+    if (typeof value?.toDate === "function") {
+        date = value.toDate();
+    } else {
+        date = new Date(value);
+    }
+
+    if (Number.isNaN(date.getTime())) {
+        return "";
+    }
+
+    return date.toLocaleDateString(
+        "en-KE",
+        {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+function refreshIcons() {
+
+    if (
+        window.lucide &&
+        typeof window.lucide.createIcons === "function"
+    ) {
+        window.lucide.createIcons();
+    }
+
+}
 
 
 // ============================================================
@@ -46,17 +120,15 @@ document.addEventListener(
 
             await waitForInstructor();
 
-            instructor =
-                window.currentInstructor;
+            instructor = window.currentInstructor;
 
             if (!instructor) {
 
                 console.error(
-                    "❌ Instructor not available"
+                    "❌ Instructor authentication unavailable."
                 );
 
                 return;
-
             }
 
             setupEvents();
@@ -66,13 +138,13 @@ document.addEventListener(
             refreshIcons();
 
             console.log(
-                "✓ Assignments page loaded"
+                "✓ Assignments engine loaded"
             );
 
         } catch (error) {
 
             console.error(
-                "❌ Assignments error:",
+                "❌ Assignments engine error:",
                 error
             );
 
@@ -92,32 +164,28 @@ function waitForInstructor() {
 
         let attempts = 0;
 
-        const timer =
-            setInterval(() => {
+        const timer = setInterval(() => {
 
-                attempts++;
+            attempts++;
 
-                if (
-                    window.currentInstructor
-                ) {
+            if (window.currentInstructor) {
 
-                    clearInterval(timer);
+                clearInterval(timer);
 
-                    resolve();
+                resolve();
 
-                    return;
+                return;
+            }
 
-                }
+            if (attempts >= 100) {
 
-                if (attempts >= 100) {
+                clearInterval(timer);
 
-                    clearInterval(timer);
+                resolve();
 
-                    resolve();
+            }
 
-                }
-
-            }, 100);
+        }, 100);
 
     });
 
@@ -129,8 +197,6 @@ function waitForInstructor() {
 // ============================================================
 
 function setupEvents() {
-
-    // CREATE BUTTON
 
     $("createAssignmentBtn")
         ?.addEventListener(
@@ -146,8 +212,6 @@ function setupEvents() {
         );
 
 
-    // SEARCH
-
     $("assignmentSearch")
         ?.addEventListener(
             "input",
@@ -155,12 +219,8 @@ function setupEvents() {
         );
 
 
-    // FILTERS
-
     document
-        .querySelectorAll(
-            ".assignment-filter"
-        )
+        .querySelectorAll(".assignment-filter")
         .forEach(button => {
 
             button.addEventListener(
@@ -168,8 +228,7 @@ function setupEvents() {
                 () => {
 
                     activeFilter =
-                        button.dataset.filter ||
-                        "all";
+                        button.dataset.filter || "all";
 
 
                     document
@@ -206,9 +265,7 @@ function setupEvents() {
 
 async function loadAssignments() {
 
-    const list =
-        $("assignmentList");
-
+    const list = $("assignmentList");
 
     try {
 
@@ -235,23 +292,23 @@ async function loadAssignments() {
 
 
         assignments =
-            snapshot.docs.map(doc => ({
+            snapshot.docs.map(item => ({
 
-                id: doc.id,
+                id: item.id,
 
-                ...doc.data()
+                ...item.data()
 
             }));
 
-
-        // Newest first locally.
-        // Avoids requiring a Firestore composite index.
 
         assignments.sort(
             (a, b) =>
                 getTime(b.createdAt) -
                 getTime(a.createdAt)
         );
+
+
+        await loadSubmissionStats();
 
 
         calculateStats();
@@ -273,9 +330,7 @@ async function loadAssignments() {
 
                 <div class="assignment-loading">
 
-                    <i
-                        data-lucide="alert-circle"
-                    ></i>
+                    <i data-lucide="alert-circle"></i>
 
                     <span>
                         Unable to load assignments.
@@ -285,9 +340,167 @@ async function loadAssignments() {
 
             `;
 
-            refreshIcons();
-
         }
+
+        refreshIcons();
+
+    }
+
+}
+
+
+// ============================================================
+// LOAD SUBMISSION STATS
+// ============================================================
+
+async function loadSubmissionStats() {
+
+    try {
+
+        const submissionsRef =
+            collection(
+                db,
+                "assignmentSubmissions"
+            );
+
+
+        const q =
+            query(
+                submissionsRef,
+                where(
+                    "instructorId",
+                    "==",
+                    instructor.uid
+                )
+            );
+
+
+        const snapshot =
+            await getDocs(q);
+
+
+        const stats = {};
+
+
+        snapshot.forEach(doc => {
+
+            const data = doc.data();
+
+            const assignmentId =
+                data.assignmentId;
+
+
+            if (!assignmentId) return;
+
+
+            if (!stats[assignmentId]) {
+
+                stats[assignmentId] = {
+
+                    total: 0,
+
+                    pending: 0,
+
+                    graded: 0
+
+                };
+
+            }
+
+
+            stats[assignmentId].total++;
+
+
+            const status =
+                String(
+                    data.status || ""
+                ).toLowerCase();
+
+
+            if (
+                status === "pending_review" ||
+                status === "submitted"
+            ) {
+
+                stats[assignmentId].pending++;
+
+            }
+
+
+            if (
+                status === "graded"
+            ) {
+
+                stats[assignmentId].graded++;
+
+            }
+
+        });
+
+
+        assignments =
+            assignments.map(
+                assignment => {
+
+                    const data =
+                        stats[assignment.id] || {
+
+                            total: 0,
+
+                            pending: 0,
+
+                            graded: 0
+
+                        };
+
+
+                    return {
+
+                        ...assignment,
+
+                        submissionCount:
+                            data.total,
+
+                        pendingReviewCount:
+                            data.pending,
+
+                        gradedSubmissionCount:
+                            data.graded
+
+                    };
+
+                }
+            );
+
+
+    } catch (error) {
+
+        console.warn(
+            "⚠ Submission statistics unavailable:",
+            error
+        );
+
+
+        assignments =
+            assignments.map(
+                assignment => ({
+
+                    ...assignment,
+
+                    submissionCount:
+                        Number(
+                            assignment.submissionCount ||
+                            0
+                        ),
+
+                    pendingReviewCount:
+                        0,
+
+                    gradedSubmissionCount:
+                        0
+
+                })
+            );
 
     }
 
@@ -304,35 +517,42 @@ function calculateStats() {
         assignments.length;
 
 
-    const pending =
+    const published =
         assignments.filter(
             assignment =>
-                getStatus(assignment) ===
-                "pending"
+                getAssignmentStatus(
+                    assignment
+                ) === "published"
         ).length;
 
 
-    const graded =
+    const drafts =
         assignments.filter(
             assignment =>
-                getStatus(assignment) ===
-                "graded"
+                getAssignmentStatus(
+                    assignment
+                ) === "draft"
         ).length;
+
+
+    const pendingReviews =
+        assignments.reduce(
+            (total, assignment) =>
+                total +
+                Number(
+                    assignment.pendingReviewCount || 0
+                ),
+            0
+        );
 
 
     const submissions =
         assignments.reduce(
-            (total, assignment) => {
-
-                return total +
-                    Number(
-                        assignment.submissionCount ||
-                        assignment.submissionsCount ||
-                        assignment.submissions ||
-                        0
-                    );
-
-            },
+            (total, assignment) =>
+                total +
+                Number(
+                    assignment.submissionCount || 0
+                ),
             0
         );
 
@@ -345,13 +565,20 @@ function calculateStats() {
 
     setText(
         "pendingAssignments",
-        pending
+        pendingReviews
     );
 
 
     setText(
         "gradedAssignments",
-        graded
+        assignments.reduce(
+            (total, assignment) =>
+                total +
+                Number(
+                    assignment.gradedSubmissionCount || 0
+                ),
+            0
+        )
     );
 
 
@@ -359,6 +586,42 @@ function calculateStats() {
         "totalSubmissions",
         submissions
     );
+
+}
+
+
+// ============================================================
+// ASSIGNMENT STATUS
+// ============================================================
+
+function getAssignmentStatus(assignment) {
+
+    const status =
+        String(
+            assignment.status || ""
+        ).toLowerCase();
+
+
+    if (status === "published") {
+        return "published";
+    }
+
+
+    if (status === "draft") {
+        return "draft";
+    }
+
+
+    // Legacy assignments created with
+    // the old "pending" status are treated
+    // as published.
+
+    if (status === "pending") {
+        return "published";
+    }
+
+
+    return "draft";
 
 }
 
@@ -385,12 +648,14 @@ function renderAssignments() {
             .toLowerCase();
 
 
-    let filtered =
+    const filtered =
         assignments.filter(
             assignment => {
 
                 const status =
-                    getStatus(assignment);
+                    getAssignmentStatus(
+                        assignment
+                    );
 
 
                 const matchesFilter =
@@ -448,48 +713,54 @@ function renderAssignments() {
 
 
     list.innerHTML =
-        filtered.map(
-            assignment =>
-                createAssignmentHTML(
-                    assignment
-                )
-        ).join("");
+        filtered
+            .map(
+                createAssignmentHTML
+            )
+            .join("");
 
 
     refreshIcons();
 
 
-    // OPEN ASSIGNMENT
+    list
+        .querySelectorAll(
+            "[data-assignment-id]"
+        )
+        .forEach(item => {
 
-    list.querySelectorAll(
-        "[data-assignment-id]"
-    ).forEach(item => {
+            item.addEventListener(
+                "click",
+                () => {
 
-        item.addEventListener(
-            "click",
-            () => {
+                    const id =
+                        item.dataset.assignmentId;
 
-                const id =
-                    item.dataset.assignmentId;
 
-                window.location.href =
-                    `assignment.html?id=${encodeURIComponent(id)}`;
+                    window.location.href =
+                        `assignment.html?id=${encodeURIComponent(id)}`;
 
-            }
-        );
+                }
+            );
 
-    });
+        });
 
 }
 
 
 // ============================================================
-// ASSIGNMENT HTML
+// ASSIGNMENT CARD
 // ============================================================
 
 function createAssignmentHTML(
     assignment
 ) {
+
+    const status =
+        getAssignmentStatus(
+            assignment
+        );
+
 
     const title =
         escapeHTML(
@@ -506,22 +777,15 @@ function createAssignmentHTML(
         );
 
 
-    const status =
-        getStatus(assignment);
-
-
-    const statusLabel =
-        status === "graded"
-            ? "Graded"
-            : "Pending";
-
-
     const submissions =
         Number(
-            assignment.submissionCount ||
-            assignment.submissionsCount ||
-            assignment.submissions ||
-            0
+            assignment.submissionCount || 0
+        );
+
+
+    const pending =
+        Number(
+            assignment.pendingReviewCount || 0
         );
 
 
@@ -529,6 +793,24 @@ function createAssignmentHTML(
         formatDate(
             assignment.dueDate
         );
+
+
+    const statusLabel =
+        status === "published"
+            ? "Published"
+            : "Draft";
+
+
+    let submissionText =
+        `${submissions} submission${submissions === 1 ? "" : "s"}`;
+
+
+    if (pending > 0) {
+
+        submissionText +=
+            ` • ${pending} pending review`;
+
+    }
 
 
     return `
@@ -556,11 +838,21 @@ function createAssignmentHTML(
                         ${title}
                     </h3>
 
+
                     <p>
+
                         ${course}
+
                         •
-                        ${submissions} submission${submissions === 1 ? "" : "s"}
-                        ${dueDate ? ` • Due ${dueDate}` : ""}
+                        
+                        ${submissionText}
+
+                        ${
+                            dueDate
+                                ? ` • Due ${dueDate}`
+                                : ""
+                        }
+
                     </p>
 
                 </div>
@@ -573,47 +865,19 @@ function createAssignmentHTML(
                 <span
                     class="assignment-status ${status}"
                 >
+
                     ${statusLabel}
+
                 </span>
 
-                <i
-                    data-lucide="chevron-right"
-                ></i>
+
+                <i data-lucide="chevron-right"></i>
 
             </div>
 
         </div>
 
     `;
-
-}
-
-
-// ============================================================
-// STATUS
-// ============================================================
-
-function getStatus(
-    assignment
-) {
-
-    const status =
-        String(
-            assignment.status || ""
-        ).toLowerCase();
-
-
-    if (
-        status === "graded" ||
-        status === "completed"
-    ) {
-
-        return "graded";
-
-    }
-
-
-    return "pending";
 
 }
 
@@ -631,173 +895,9 @@ function openCreateAssignment() {
 
 
 // ============================================================
-// DATE
+// START
 // ============================================================
 
-function formatDate(
-    value
-) {
-
-    if (!value) return "";
-
-
-    let date;
-
-
-    if (
-        typeof value?.toDate ===
-        "function"
-    ) {
-
-        date = value.toDate();
-
-    } else {
-
-        date = new Date(value);
-
-    }
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
-        return "";
-
-    }
-
-
-    return date.toLocaleDateString(
-        "en-KE",
-        {
-            day: "numeric",
-            month: "short",
-            year: "numeric"
-        }
-    );
-
-}
-
-
-// ============================================================
-// TIMESTAMP
-// ============================================================
-
-function getTime(
-    value
-) {
-
-    if (!value) return 0;
-
-
-    if (
-        typeof value?.toMillis ===
-        "function"
-    ) {
-
-        return value.toMillis();
-
-    }
-
-
-    if (
-        typeof value?.toDate ===
-        "function"
-    ) {
-
-        return value.toDate().getTime();
-
-    }
-
-
-    const time =
-        new Date(value).getTime();
-
-
-    return Number.isNaN(time)
-        ? 0
-        : time;
-
-}
-
-
-// ============================================================
-// TEXT
-// ============================================================
-
-function setText(
-    id,
-    value
-) {
-
-    const element =
-        $(id);
-
-
-    if (element) {
-
-        element.textContent =
-            value;
-
-    }
-
-}
-
-
-// ============================================================
-// ESCAPE HTML
-// ============================================================
-
-function escapeHTML(
-    value
-) {
-
-    return String(value)
-
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-
-}
-
-
-// ============================================================
-// ICONS
-// ============================================================
-
-function refreshIcons() {
-
-    if (
-        window.lucide &&
-        typeof window.lucide.createIcons ===
-            "function"
-    ) {
-
-        window.lucide.createIcons();
-
-    }
-
-}
+console.log(
+    "🔥 Instructor Assignments Engine V2 loaded"
+);

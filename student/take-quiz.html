@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Take Quiz | Spark Stack Academy
+    </title>
+
+
+    <!-- =====================================================
+         CORE CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/student-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/take-quiz.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- =====================================================
+         FONT
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         LUCIDE
+    ====================================================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="student-layout">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="sidebarContainer"
+        class="sidebar-container"
+    ></aside>
+
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="student-main">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <div
+            id="topbarContainer"
+            class="topbar-container"
+        ></div>
+
+
+        <!-- =================================================
+             QUIZ PAGE
+        ================================================== -->
+
+        <section class="dashboard-content take-quiz-page">
+
+
+            <!-- =================================================
+                 QUIZ HEADER
+            ================================================== -->
+
+            <header class="take-quiz-header">
+
+
+                <div class="quiz-header-left">
+
+
+                    <button
+                        type="button"
+                        class="back-btn"
+                        id="backToQuizzesBtn"
+                    >
+
+                        <i data-lucide="arrow-left"></i>
+
+                        <span>
+                            Quizzes
+                        </span>
+
+                    </button>
+
+
+                    <div class="quiz-heading">
+
+
+                        <span class="quiz-label">
+
+                            <i data-lucide="brain"></i>
+
+                            Quiz
+
+                        </span>
+
+
+                        <h1 id="quizTitle">
+                            Loading quiz...
+                        </h1>
+
+
+                        <p id="quizDescription">
+                            Loading quiz information...
+                        </p>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- TIMER -->
+
+                <div class="quiz-timer-card">
+
+
+                    <span>
+                        Time Remaining
+                    </span>
+
+
+                    <strong id="quizTimer">
+                        --:--
+                    </strong>
+
+
+                    <small id="timerStatus">
+                        Ready
+                    </small>
+
+
+                </div>
+
+
+            </header>
+
+
+
+            <!-- =================================================
+                 QUIZ META
+            ================================================== -->
+
+            <section class="quiz-meta-bar">
+
+
+                <div class="quiz-meta-item">
+
+                    <i data-lucide="book-open"></i>
+
+                    <div>
+
+                        <span>
+                            Course
+                        </span>
+
+                        <strong id="courseName">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quiz-meta-item">
+
+                    <i data-lucide="layers-3"></i>
+
+                    <div>
+
+                        <span>
+                            Module
+                        </span>
+
+                        <strong id="moduleName">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quiz-meta-item">
+
+                    <i data-lucide="play-circle"></i>
+
+                    <div>
+
+                        <span>
+                            Lesson
+                        </span>
+
+                        <strong id="lessonName">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quiz-meta-item">
+
+                    <i data-lucide="repeat-2"></i>
+
+                    <div>
+
+                        <span>
+                            Attempt
+                        </span>
+
+                        <strong>
+
+                            <span id="attemptNumber">
+                                —
+                            </span>
+
+                            /
+
+                            <span id="maxAttempts">
+                                —
+                            </span>
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quiz-meta-item">
+
+                    <i data-lucide="target"></i>
+
+                    <div>
+
+                        <span>
+                            Pass Mark
+                        </span>
+
+                        <strong id="passingScore">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PROGRESS
+            ================================================== -->
+
+            <section class="quiz-progress-section">
+
+
+                <div class="quiz-progress-top">
+
+                    <span>
+                        Quiz Progress
+                    </span>
+
+
+                    <strong id="questionProgress">
+                        0 / 0
+                    </strong>
+
+                </div>
+
+
+                <div class="quiz-progress-track">
+
+                    <div
+                        class="quiz-progress-fill"
+                        id="quizProgress"
+                    ></div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 MAIN QUIZ GRID
+            ================================================== -->
+
+            <section class="take-quiz-grid">
+
+
+                <!-- =============================================
+                     QUESTION AREA
+                ============================================== -->
+
+                <div class="quiz-question-panel">
+
+
+                    <!-- QUESTION HEADER -->
+
+                    <div class="question-header">
+
+
+                        <div>
+
+                            <span
+                                class="question-number"
+                                id="questionNumber"
+                            >
+                                Question 1
+                            </span>
+
+
+                            <span
+                                class="question-type"
+                                id="questionType"
+                            >
+                                Multiple Choice
+                            </span>
+
+                        </div>
+
+
+                        <span
+                            class="question-points"
+                            id="questionPoints"
+                        >
+                            1 point
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- QUESTION -->
+
+                    <div class="question-content">
+
+
+                        <h2 id="questionText">
+                            Loading question...
+                        </h2>
+
+
+                        <!-- ANSWERS -->
+
+                        <div
+                            class="answers-container"
+                            id="answersContainer"
+                        >
+
+                            <!-- JS renders answers -->
+
+                        </div>
+
+
+                        <!-- SHORT ANSWER -->
+
+                        <div
+                            class="short-answer-container hidden"
+                            id="shortAnswerContainer"
+                        >
+
+                            <label for="shortAnswer">
+                                Your Answer
+                            </label>
+
+
+                            <textarea
+                                id="shortAnswer"
+                                rows="6"
+                                placeholder="Type your answer here..."
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- CODE ANSWER -->
+
+                        <div
+                            class="code-answer-container hidden"
+                            id="codeAnswerContainer"
+                        >
+
+                            <label for="codeAnswer">
+                                Your Code
+                            </label>
+
+
+                            <textarea
+                                id="codeAnswer"
+                                rows="10"
+                                placeholder="Write your solution here..."
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- QUESTION ACTIONS -->
+
+                    <div class="question-actions">
+
+
+                        <button
+                            type="button"
+                            class="secondary-btn"
+                            id="previousQuestionBtn"
+                        >
+
+                            <i data-lucide="arrow-left"></i>
+
+                            Previous
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="warning-btn"
+                            id="flagQuestionBtn"
+                        >
+
+                            <i data-lucide="flag"></i>
+
+                            <span id="flagText">
+                                Flag
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="primary-btn"
+                            id="nextQuestionBtn"
+                        >
+
+                            Next
+
+                            <i data-lucide="arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     QUESTION NAVIGATOR
+                ============================================== -->
+
+                <aside class="quiz-navigation-panel">
+
+
+                    <div class="navigation-card">
+
+
+                        <div class="navigation-header">
+
+                            <div>
+
+                                <h3>
+                                    Questions
+                                </h3>
+
+                                <p>
+                                    Track your progress
+                                </p>
+
+                            </div>
+
+
+                            <span id="answeredCount">
+                                0/0
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="question-palette"
+                            id="questionPalette"
+                        >
+
+                            <!-- JS renders question buttons -->
+
+                        </div>
+
+
+                        <div class="palette-legend">
+
+
+                            <div>
+
+                                <span class="legend-dot current"></span>
+
+                                Current
+
+                            </div>
+
+
+                            <div>
+
+                                <span class="legend-dot answered"></span>
+
+                                Answered
+
+                            </div>
+
+
+                            <div>
+
+                                <span class="legend-dot flagged"></span>
+
+                                Flagged
+
+                            </div>
+
+
+                            <div>
+
+                                <span class="legend-dot unanswered"></span>
+
+                                Unanswered
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- QUIZ INFO -->
+
+                    <div class="navigation-card quiz-rules-card">
+
+
+                        <div class="navigation-header">
+
+                            <h3>
+                                Quiz Rules
+                            </h3>
+
+                            <i data-lucide="shield-check"></i>
+
+                        </div>
+
+
+                        <ul>
+
+
+                            <li>
+
+                                <i data-lucide="check"></i>
+
+                                Complete all questions before submitting.
+
+                            </li>
+
+
+                            <li>
+
+                                <i data-lucide="check"></i>
+
+                                Your attempt is saved automatically.
+
+                            </li>
+
+
+                            <li>
+
+                                <i data-lucide="check"></i>
+
+                                Leaving may affect your attempt.
+
+                            </li>
+
+
+                            <li>
+
+                                <i data-lucide="check"></i>
+
+                                You cannot retake after attempts are exhausted.
+
+                            </li>
+
+
+                        </ul>
+
+                    </div>
+
+                </aside>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SUBMIT BAR
+            ================================================== -->
+
+            <section class="quiz-submit-section">
+
+
+                <div class="submit-warning">
+
+
+                    <div class="submit-warning-icon">
+
+                        <i data-lucide="info"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Ready to submit?
+                        </strong>
+
+
+                        <p id="submitMessage">
+                            Make sure you've answered every question.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="submit-quiz-btn"
+                    id="submitQuizBtn"
+                >
+
+                    <i data-lucide="send"></i>
+
+                    Submit Quiz
+
+                </button>
+
+            </section>
+
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<!-- =========================================================
+     SUBMIT CONFIRMATION MODAL
+========================================================= -->
+
+<div
+    class="quiz-modal hidden"
+    id="submitModal"
+>
+
+
+    <div class="quiz-modal-backdrop"></div>
+
+
+    <div class="quiz-modal-card">
+
+
+        <div class="modal-icon">
+
+            <i data-lucide="send"></i>
+
+        </div>
+
+
+        <h2>
+            Submit Quiz?
+        </h2>
+
+
+        <p>
+            Once submitted, this attempt will be recorded and
+            cannot be continued.
+        </p>
+
+
+        <div class="submit-summary">
+
+
+            <div>
+
+                <span>
+                    Answered
+                </span>
+
+                <strong id="modalAnswered">
+                    0 / 0
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Remaining
+                </span>
+
+                <strong id="modalRemaining">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+
+            <button
+                type="button"
+                class="secondary-btn"
+                id="cancelSubmitBtn"
+            >
+                Continue Quiz
+            </button>
+
+
+            <button
+                type="button"
+                class="primary-btn"
+                id="confirmSubmitBtn"
+            >
+
+                <i data-lucide="check"></i>
+
+                Submit Attempt
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     ACCESS LOCK
+========================================================= -->
+
+<div
+    class="quiz-access-screen hidden"
+    id="quizAccessScreen"
+>
+
+
+    <div class="access-card">
+
+
+        <div class="access-icon">
+
+            <i data-lucide="lock"></i>
+
+        </div>
+
+
+        <h2 id="accessTitle">
+            Quiz Locked
+        </h2>
+
+
+        <p id="accessMessage">
+            Complete the previous quiz before accessing this one.
+        </p>
+
+
+        <div
+            class="access-details"
+            id="accessDetails"
+        ></div>
+
+
+        <button
+            type="button"
+            class="primary-btn"
+            id="accessBackBtn"
+        >
+
+            <i data-lucide="arrow-left"></i>
+
+            Back to Quizzes
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     LOADING SCREEN
+========================================================= -->
+
+<div
+    class="quiz-loading-screen"
+    id="quizLoadingScreen"
+>
+
+
+    <div class="loading-card">
+
+
+        <div class="loading-spinner"></div>
+
+
+        <h2>
+            Preparing your quiz...
+        </h2>
+
+
+        <p id="loadingMessage">
+            Checking quiz access.
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     RESULT SCREEN
+========================================================= -->
+
+<div
+    class="quiz-result-screen hidden"
+    id="quizResultScreen"
+>
+
+
+    <div class="result-card">
+
+
+        <div class="result-icon" id="resultIcon">
+
+            🏆
+
+        </div>
+
+
+        <span class="result-label">
+            Quiz Complete
+        </span>
+
+
+        <h1 id="resultTitle">
+            Great Work!
+        </h1>
+
+
+        <p id="resultMessage">
+            Your attempt has been submitted.
+        </p>
+
+
+        <div class="result-score">
+
+            <strong id="resultScore">
+                0%
+            </strong>
+
+            <span>
+                Final Score
+            </span>
+
+        </div>
+
+
+        <div class="result-stats">
+
+
+            <div>
+
+                <strong id="resultCorrect">
+                    0
+                </strong>
+
+                <span>
+                    Correct
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong id="resultTotal">
+                    0
+                </strong>
+
+                <span>
+                    Questions
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong id="resultXP">
+                    0
+                </strong>
+
+                <span>
+                    XP Earned
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="result-next-step"
+            id="resultNextStep"
+        ></div>
+
+
+        <div class="result-actions">
+
+
+            <button
+                type="button"
+                class="secondary-btn hidden"
+                id="retryQuizBtn"
+            >
+
+                <i data-lucide="rotate-ccw"></i>
+
+                Retry
+
+            </button>
+
+
+            <button
+                type="button"
+                class="primary-btn"
+                id="continueLearningBtn"
+            >
+
+                Continue Learning
+
+                <i data-lucide="arrow-right"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div
+    class="quiz-toast"
+    id="quizToast"
+>
+</div>
+
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
+
+<script
+    type="module"
+    src="js/student-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/take-quiz.js"
+></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (
+            window.lucide &&
+            typeof window.lucide.createIcons ===
+                "function"
+        ) {
+
+            window.lucide.createIcons();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

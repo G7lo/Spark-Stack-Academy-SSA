@@ -1,8 +1,7 @@
-// ============================================
+// ============================================================
 // SPARK STACK ACADEMY
-// MASTERCLASS COURSE PLAYER
-// course-player.js
-// ============================================
+// MASTERCLASS COURSE PLAYER V2
+// ============================================================
 
 import {
     auth,
@@ -17,7 +16,6 @@ import {
     doc,
     getDoc,
     setDoc,
-    updateDoc,
     collection,
     query,
     where,
@@ -26,9 +24,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-// ============================================
+// ============================================================
 // STATE
-// ============================================
+// ============================================================
 
 let currentUser = null;
 let course = null;
@@ -38,20 +36,20 @@ let currentLessonIndex = 0;
 let completedLessons = [];
 
 
-// ============================================
+// ============================================================
 // COURSE ID
-// ============================================
+// ============================================================
 
-const params =
-    new URLSearchParams(window.location.search);
+const params = new URLSearchParams(
+    window.location.search
+);
 
-const courseId =
-    params.get("id");
+const courseId = params.get("id");
 
 
-// ============================================
+// ============================================================
 // DOM
-// ============================================
+// ============================================================
 
 const courseLocked =
     document.getElementById("courseLocked");
@@ -110,23 +108,29 @@ const courseResources =
 const classAnnouncement =
     document.getElementById("classAnnouncement");
 
+const videoBox =
+    document.querySelector(".video-box");
 
-// ============================================
+
+// ============================================================
 // START
-// ============================================
+// ============================================================
 
-console.log("🎓 Masterclass Classroom Loaded");
+console.log(
+    "🎓 SSA MASTERCLASS COURSE PLAYER V2 LOADED"
+);
 
 
-// ============================================
+// ============================================================
 // AUTH
-// ============================================
+// ============================================================
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, async user => {
 
     if (!user) {
 
-        window.location.href = "../login.html";
+        window.location.href =
+            "../login.html";
 
         return;
     }
@@ -135,7 +139,7 @@ onAuthStateChanged(auth, async (user) => {
 
     console.log(
         "👨‍🎓 Student:",
-        user.email
+        user.uid
     );
 
     await initializeClassroom();
@@ -143,9 +147,9 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 
-// ============================================
+// ============================================================
 // INITIALIZE
-// ============================================
+// ============================================================
 
 async function initializeClassroom() {
 
@@ -154,23 +158,21 @@ async function initializeClassroom() {
         if (!courseId) {
 
             showError(
-                "No course selected."
+                "No course was selected."
             );
 
             return;
         }
 
 
-        // Load course
         await loadCourse();
 
 
-        // Check access
-        const hasAccess =
+        const access =
             await checkCourseAccess();
 
 
-        if (!hasAccess) {
+        if (!access) {
 
             showLockedState();
 
@@ -178,22 +180,27 @@ async function initializeClassroom() {
         }
 
 
-        // Student has access
         showClassroom();
 
 
-        // Load classroom data
         await loadLessons();
+
 
         await loadStudentProgress();
 
+
         renderLessons();
 
-        if (lessons.length > 0) {
+
+        if (lessons.length) {
 
             showLesson(
                 currentLessonIndex
             );
+
+        } else {
+
+            showNoLessons();
 
         }
 
@@ -202,12 +209,12 @@ async function initializeClassroom() {
     catch (error) {
 
         console.error(
-            "❌ Classroom initialization failed:",
+            "❌ CLASSROOM ERROR:",
             error
         );
 
         showError(
-            "Unable to load this classroom."
+            "We couldn't load this classroom."
         );
 
     }
@@ -215,52 +222,47 @@ async function initializeClassroom() {
 }
 
 
-// ============================================
+// ============================================================
 // LOAD COURSE
-// ============================================
+// ============================================================
 
 async function loadCourse() {
 
-    const courseRef =
+    const ref =
         doc(
             db,
             "courses",
             courseId
         );
 
-    const snapshot =
-        await getDoc(courseRef);
+    const snap =
+        await getDoc(ref);
 
-
-    if (!snapshot.exists()) {
+    if (!snap.exists()) {
 
         throw new Error(
-            "Course not found"
+            "Course not found."
         );
 
     }
 
-
     course = {
-
-        id: snapshot.id,
-
-        ...snapshot.data()
-
+        id: snap.id,
+        ...snap.data()
     };
 
 
     console.log(
-        "📚 Course:",
-        course.title
+        "📚 COURSE:",
+        course
     );
 
 
-    // Header
     if (courseTitle) {
 
         courseTitle.textContent =
-            course.title || "Course";
+            course.title ||
+            "Course";
 
     }
 
@@ -274,7 +276,6 @@ async function loadCourse() {
     }
 
 
-    // Instructor
     if (instructorName) {
 
         instructorName.textContent =
@@ -288,7 +289,7 @@ async function loadCourse() {
 
         const name =
             course.instructorName ||
-            "I";
+            "S";
 
         instructorAvatar.textContent =
             name.charAt(0).toUpperCase();
@@ -296,7 +297,6 @@ async function loadCourse() {
     }
 
 
-    // Announcement
     if (classAnnouncement) {
 
         classAnnouncement.textContent =
@@ -308,34 +308,94 @@ async function loadCourse() {
 }
 
 
-// ============================================
-// CHECK COURSE ACCESS
-// ============================================
+// ============================================================
+// CHECK ACCESS
+// ============================================================
 
 async function checkCourseAccess() {
 
     const price =
         Number(course.price || 0);
 
+    const isFree =
+        course.isFree === true ||
+        price <= 0;
 
-    // ========================================
-    // FREE COURSE
-    // ========================================
+    if (isFree) {
 
-    if (price <= 0) {
-
-        console.log("🆓 Free course");
+        console.log(
+            "🆓 FREE COURSE"
+        );
 
         return true;
 
     }
 
 
-    // ========================================
-    // CHECK STUDENT ENROLLMENT
-    // ========================================
+    // --------------------------------------------------------
+    // MAIN ENROLLMENTS
+    // --------------------------------------------------------
 
-    const enrollmentRef =
+    try {
+
+        const q =
+            query(
+                collection(
+                    db,
+                    "enrollments"
+                ),
+                where(
+                    "userId",
+                    "==",
+                    currentUser.uid
+                ),
+                where(
+                    "courseId",
+                    "==",
+                    courseId
+                )
+            );
+
+
+        const snap =
+            await getDocs(q);
+
+
+        if (!snap.empty) {
+
+            const enrollment =
+                snap.docs[0].data();
+
+            if (
+                enrollment.paymentStatus === "paid" ||
+                enrollment.status === "active" ||
+                enrollment.status === "approved" ||
+                enrollment.status === "paid"
+            ) {
+
+                return true;
+
+            }
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.warn(
+            "Enrollment collection check failed:",
+            error
+        );
+
+    }
+
+
+    // --------------------------------------------------------
+    // LEGACY / FREE ENROLLMENT PATH
+    // --------------------------------------------------------
+
+    const legacyRef =
         doc(
             db,
             "students",
@@ -345,73 +405,30 @@ async function checkCourseAccess() {
         );
 
 
-    const enrollmentSnapshot =
+    const legacySnap =
         await getDoc(
-            enrollmentRef
+            legacyRef
         );
 
 
-    console.log(
-        "🔎 Checking enrollment:",
-        `students/${currentUser.uid}/enrollments/${courseId}`
-    );
+    if (legacySnap.exists()) {
 
+        const enrollment =
+            legacySnap.data();
 
-    if (!enrollmentSnapshot.exists()) {
+        if (
+            enrollment.paymentStatus === "paid" ||
+            enrollment.paymentStatus === "free" ||
+            enrollment.status === "active" ||
+            enrollment.status === "approved" ||
+            enrollment.status === "paid"
+        ) {
 
-        console.log(
-            "❌ Enrollment does not exist"
-        );
+            return true;
 
-        return false;
+        }
 
     }
-
-
-    const enrollment =
-        enrollmentSnapshot.data();
-
-
-    console.log(
-        "📦 Enrollment found:",
-        enrollment
-    );
-
-
-    // ========================================
-    // VERIFY PAYMENT
-    // ========================================
-
-    if (
-
-        enrollment.paymentStatus === "paid"
-
-        ||
-
-        enrollment.status === "active"
-
-        ||
-
-        enrollment.status === "approved"
-
-        ||
-
-        enrollment.status === "paid"
-
-    ) {
-
-        console.log(
-            "✅ Course access granted"
-        );
-
-        return true;
-
-    }
-
-
-    console.log(
-        "❌ Enrollment exists but payment not confirmed"
-    );
 
 
     return false;
@@ -419,26 +436,17 @@ async function checkCourseAccess() {
 }
 
 
-// ============================================
+// ============================================================
 // LOCKED STATE
-// ============================================
+// ============================================================
 
 function showLockedState() {
 
-    if (courseLocked) {
+    if (courseLocked)
+        courseLocked.style.display = "block";
 
-        courseLocked.style.display =
-            "block";
-
-    }
-
-
-    if (courseContent) {
-
-        courseContent.style.display =
-            "none";
-
-    }
+    if (courseContent)
+        courseContent.style.display = "none";
 
 
     if (unlockCourseBtn) {
@@ -452,116 +460,128 @@ function showLockedState() {
 
     }
 
-
-    console.log(
-        "🔒 Course locked"
-    );
-
 }
 
 
-// ============================================
-// UNLOCK CLASSROOM
-// ============================================
+// ============================================================
+// CLASSROOM
+// ============================================================
 
 function showClassroom() {
 
-    if (courseLocked) {
+    if (courseLocked)
+        courseLocked.style.display = "none";
 
-        courseLocked.style.display =
-            "none";
-
-    }
-
-
-    if (courseContent) {
-
-        courseContent.style.display =
-            "block";
-
-    }
-
-
-    console.log(
-        "🔓 Classroom unlocked"
-    );
+    if (courseContent)
+        courseContent.style.display = "block";
 
 }
 
 
-// ============================================
+// ============================================================
 // LOAD LESSONS
-// ============================================
+// IMPORTANT: courseLessons collection
+// ============================================================
 
 async function loadLessons() {
 
-    lessonList.innerHTML = "";
+    console.log(
+        "🔎 Loading courseLessons..."
+    );
+
+    lessons = [];
 
 
-    // ----------------------------------------
-    // Expected Firestore structure:
-    //
-    // courses
-    //   └── courseId
-    //       └── lessons[]
-    //
-    // ----------------------------------------
+    const q =
+        query(
+            collection(
+                db,
+                "courseLessons"
+            ),
+            where(
+                "courseId",
+                "==",
+                courseId
+            )
+        );
 
-    if (
-        Array.isArray(
-            course.lessons
-        )
-    ) {
 
-        lessons =
-            course.lessons;
-
-    }
-
-    else {
-
-        lessons = [];
-
-    }
+    const snap =
+        await getDocs(q);
 
 
     console.log(
-        "🎥 Lessons:",
-        lessons.length
+        `📦 Found ${snap.size} course lessons`
+    );
+
+
+    snap.forEach(docSnap => {
+
+        const data =
+            docSnap.data();
+
+
+        lessons.push({
+
+            id:
+                docSnap.id,
+
+            ...data
+
+        });
+
+    });
+
+
+    // --------------------------------------------------------
+    // SORT BY ORDER
+    // --------------------------------------------------------
+
+    lessons.sort(
+        (a, b) =>
+            Number(a.order ?? 0) -
+            Number(b.order ?? 0)
+    );
+
+
+    console.log(
+        "🎯 LESSONS:",
+        lessons
     );
 
 }
 
 
-// ============================================
-// RENDER LESSONS
-// ============================================
+// ============================================================
+// RENDER LESSON LIST
+// ============================================================
 
 function renderLessons() {
+
+    if (!lessonList)
+        return;
+
 
     lessonList.innerHTML = "";
 
 
     if (!lessons.length) {
 
-        lessonList.innerHTML = `
-
-            <div class="empty-state">
-
-                <p>
-                    No lessons available yet.
-                </p>
-
-            </div>
-
-        `;
+        showNoLessons();
 
         return;
+
     }
 
 
     lessons.forEach(
         (lesson, index) => {
+
+            const completed =
+                completedLessons.includes(
+                    lesson.id
+                );
+
 
             const button =
                 document.createElement(
@@ -569,13 +589,14 @@ function renderLessons() {
                 );
 
 
+            button.type = "button";
+
             button.className =
                 "lesson-item";
 
 
             if (
-                index ===
-                currentLessonIndex
+                index === currentLessonIndex
             ) {
 
                 button.classList.add(
@@ -585,11 +606,7 @@ function renderLessons() {
             }
 
 
-            if (
-                completedLessons.includes(
-                    index
-                )
-            ) {
+            if (completed) {
 
                 button.classList.add(
                     "completed"
@@ -600,16 +617,38 @@ function renderLessons() {
 
             button.innerHTML = `
 
+                <span class="lesson-number">
+                    ${
+                        completed
+                            ? "✓"
+                            : index + 1
+                    }
+                </span>
+
+                <span class="lesson-info">
+
+                    <strong>
+                        ${
+                            lesson.title ||
+                            `Lesson ${index + 1}`
+                        }
+                    </strong>
+
+                    <small>
+                        ${
+                            lesson.duration
+                                ? lesson.duration + " min"
+                                : lesson.type || "Lesson"
+                        }
+                    </small>
+
+                </span>
+
                 <i data-lucide="${
-                    completedLessons.includes(index)
+                    completed
                         ? "check-circle"
                         : "play-circle"
                 }"></i>
-
-                <span>
-                    ${index + 1}.
-                    ${lesson.title || "Lesson"}
-                </span>
 
             `;
 
@@ -632,22 +671,16 @@ function renderLessons() {
     );
 
 
-    if (
-        window.lucide
-    ) {
-
-        lucide.createIcons();
-
-    }
+    refreshIcons();
 
 }
 
 
-// ============================================
+// ============================================================
 // SHOW LESSON
-// ============================================
+// ============================================================
 
-function showLesson(index) {
+async function showLesson(index) {
 
     if (
         index < 0 ||
@@ -655,6 +688,7 @@ function showLesson(index) {
     ) {
 
         return;
+
     }
 
 
@@ -666,172 +700,292 @@ function showLesson(index) {
         lessons[index];
 
 
-    lessonTitle.textContent =
-        lesson.title ||
-        `Lesson ${index + 1}`;
+    console.log(
+        "🎬 CURRENT LESSON:",
+        lesson
+    );
 
 
-    lessonDescription.textContent =
-        lesson.description ||
-        "";
+    if (lessonTitle) {
+
+        lessonTitle.textContent =
+            lesson.title ||
+            `Lesson ${index + 1}`;
+
+    }
 
 
-    // ----------------------------------------
-    // VIDEO
-    // ----------------------------------------
+    if (lessonDescription) {
 
-    renderVideo(lesson);
+        lessonDescription.textContent =
+            lesson.description ||
+            "";
 
-
-    // ----------------------------------------
-    // RESOURCES
-    // ----------------------------------------
-
-    renderResources(lesson);
+    }
 
 
-    // ----------------------------------------
-    // NOTES
-    // ----------------------------------------
-
-    loadNotes(lesson);
+    renderVideo(
+        lesson
+    );
 
 
-    // ----------------------------------------
-    // BUTTONS
-    // ----------------------------------------
-
-    previousLessonBtn.disabled =
-        index === 0;
+    renderResources(
+        lesson
+    );
 
 
-    nextLessonBtn.disabled =
-        index === lessons.length - 1;
+    await loadNotes(
+        lesson
+    );
 
 
-    completeLessonBtn.disabled =
-        completedLessons.includes(index);
-
-
-    completeLessonBtn.innerHTML =
-        completedLessons.includes(index)
-
-            ? `Completed ✓`
-
-            : `Mark Complete <i data-lucide="check"></i>`;
-
+    updateNavigation();
 
     updateProgress();
 
-
     renderLessons();
 
+    refreshIcons();
 
-    if (
-        window.lucide
-    ) {
 
-        lucide.createIcons();
-
-    }
+    // Save current lesson
+    saveProgress(false);
 
 }
 
 
-// ============================================
-// EMBED VIDEO
-// ============================================
+// ============================================================
+// VIDEO ENGINE
+// ============================================================
 
 function renderVideo(lesson) {
 
-    const videoBox =
-        document.querySelector(
-            ".video-box"
+    if (!videoBox)
+        return;
+
+
+    const youtubeId =
+        lesson.youtubeId ||
+        extractYouTubeId(
+            lesson.videoUrl ||
+            lesson.youtubeUrl ||
+            ""
         );
 
 
-    if (!videoBox) return;
+    const directVideo =
+        lesson.videoUrl &&
+        !youtubeId;
 
 
-    const url =
-        lesson.videoUrl ||
-        lesson.youtubeUrl ||
-        "";
+    // --------------------------------------------------------
+    // YOUTUBE
+    // --------------------------------------------------------
 
-
-    if (!url) {
+    if (youtubeId) {
 
         videoBox.innerHTML = `
 
-            <div class="video-placeholder">
+            <div class="video-frame-wrapper">
 
-                <i data-lucide="play-circle"></i>
+                <iframe
+                    id="lessonVideo"
+                    src="https://www.youtube.com/embed/${youtubeId}?rel=0&modestbranding=1&playsinline=1"
+                    title="${escapeHTML(
+                        lesson.title ||
+                        "SSA Lesson"
+                    )}"
+                    allow="
+                        accelerometer;
+                        autoplay;
+                        clipboard-write;
+                        encrypted-media;
+                        gyroscope;
+                        picture-in-picture;
+                        web-share
+                    "
+                    allowfullscreen>
+                </iframe>
 
-                <h3>
-                    Video coming soon
-                </h3>
+                <button
+                    class="video-fullscreen-btn"
+                    id="fullscreenVideoBtn"
+                    type="button"
+                    title="Fullscreen">
 
-                <p>
-                    This lesson does not have
-                    a video yet.
-                </p>
+                    <i data-lucide="maximize"></i>
+
+                    Fullscreen
+
+                </button>
 
             </div>
 
         `;
 
+
+        setupFullscreenButton();
+
+        refreshIcons();
+
         return;
+
     }
 
 
-    const videoId =
-        extractYouTubeId(url);
+    // --------------------------------------------------------
+    // DIRECT VIDEO
+    // --------------------------------------------------------
 
-
-    if (!videoId) {
+    if (directVideo) {
 
         videoBox.innerHTML = `
 
-            <div class="video-placeholder">
+            <div class="video-frame-wrapper">
 
-                <h3>
-                    Invalid video link
-                </h3>
+                <video
+                    id="lessonVideo"
+                    class="lesson-video"
+                    controls
+                    playsinline
+                    preload="metadata">
+
+                    <source
+                        src="${escapeAttribute(
+                            lesson.videoUrl
+                        )}">
+
+                    Your browser does not support
+                    video playback.
+
+                </video>
+
+                <button
+                    class="video-fullscreen-btn"
+                    id="fullscreenVideoBtn"
+                    type="button">
+
+                    <i data-lucide="maximize"></i>
+
+                    Fullscreen
+
+                </button>
 
             </div>
 
         `;
 
+
+        setupFullscreenButton();
+
+        refreshIcons();
+
         return;
+
     }
 
+
+    // --------------------------------------------------------
+    // NO VIDEO
+    // --------------------------------------------------------
 
     videoBox.innerHTML = `
 
-        <iframe
+        <div class="video-placeholder">
 
-            src="https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1"
+            <div class="video-placeholder-icon">
+                <i data-lucide="play-circle"></i>
+            </div>
 
-            title="${lesson.title || "SSA Lesson"}"
+            <h3>
+                Lesson content ready
+            </h3>
 
-            allow="accelerometer; autoplay; clipboard-write;
-                   encrypted-media; gyroscope; picture-in-picture;
-                   web-share"
+            <p>
+                This lesson does not have a video yet.
+                Start with the lesson content below.
+            </p>
 
-            allowfullscreen>
-
-        </iframe>
+        </div>
 
     `;
+
+
+    refreshIcons();
 
 }
 
 
-// ============================================
+// ============================================================
+// FULLSCREEN
+// ============================================================
+
+function setupFullscreenButton() {
+
+    const button =
+        document.getElementById(
+            "fullscreenVideoBtn"
+        );
+
+
+    const frame =
+        document.querySelector(
+            ".video-frame-wrapper"
+        );
+
+
+    if (!button || !frame)
+        return;
+
+
+    button.onclick = async () => {
+
+        try {
+
+            if (
+                document.fullscreenElement
+            ) {
+
+                await document.exitFullscreen();
+
+                return;
+
+            }
+
+
+            if (
+                frame.requestFullscreen
+            ) {
+
+                await frame.requestFullscreen();
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.warn(
+                "Fullscreen unavailable:",
+                error
+            );
+
+        }
+
+    };
+
+}
+
+
+// ============================================================
 // YOUTUBE ID
-// ============================================
+// ============================================================
 
 function extractYouTubeId(url) {
+
+    if (!url)
+        return null;
+
 
     try {
 
@@ -846,7 +1000,10 @@ function extractYouTubeId(url) {
         ) {
 
             return parsed.pathname
-                .replace("/", "");
+                .replace(
+                    "/",
+                    ""
+                );
 
         }
 
@@ -857,8 +1014,13 @@ function extractYouTubeId(url) {
             )
         ) {
 
-            return parsed.searchParams.get(
-                "v"
+            return (
+                parsed.searchParams.get(
+                    "v"
+                ) ||
+                parsed.pathname
+                    .split("/")
+                    .pop()
             );
 
         }
@@ -877,173 +1039,157 @@ function extractYouTubeId(url) {
 }
 
 
-// ============================================
+// ============================================================
 // RESOURCES
-// ============================================
+// ============================================================
 
 function renderResources(lesson) {
 
-    if (!courseResources) return;
+    if (!courseResources)
+        return;
 
 
     const resources =
-        lesson.resources || [];
+        Array.isArray(
+            lesson.resources
+        )
+            ? lesson.resources
+            : [];
 
 
     if (!resources.length) {
 
         courseResources.innerHTML = `
 
-            <p>
-                No resources available.
-            </p>
+            <div class="resource-empty">
+
+                <i data-lucide="folder-open"></i>
+
+                <p>
+                    No learning resources for this lesson yet.
+                </p>
+
+            </div>
 
         `;
 
+        refreshIcons();
+
         return;
+
     }
 
 
     courseResources.innerHTML = "";
 
 
-    resources.forEach(
-        resource => {
+    resources.forEach(resource => {
 
-            const link =
-                document.createElement(
-                    "a"
-                );
-
-
-            link.href =
-                resource.url || "#";
-
-
-            link.target =
-                "_blank";
-
-
-            link.rel =
-                "noopener noreferrer";
-
-
-            link.className =
-                "resource-item";
-
-
-            link.innerHTML = `
-
-                <span>
-                    ${resource.title || "Resource"}
-                </span>
-
-                <i data-lucide="external-link"></i>
-
-            `;
-
-
-            courseResources.appendChild(
-                link
+        const link =
+            document.createElement(
+                "a"
             );
 
-        }
-    );
+
+        link.className =
+            "resource-item";
 
 
-    if (window.lucide) {
-
-        lucide.createIcons();
-
-    }
-
-}
+        link.href =
+            resource.url || "#";
 
 
-// ============================================
-// PROGRESS
-// ============================================
-
-function updateProgress() {
-
-    if (!lessons.length) {
-
-        courseProgressText.textContent =
-            "0%";
-
-        courseProgressBar.style.width =
-            "0%";
-
-        return;
-
-    }
+        link.target =
+            "_blank";
 
 
-    const percentage =
-        Math.round(
+        link.rel =
+            "noopener noreferrer";
 
-            (
-                completedLessons.length /
-                lessons.length
-            ) * 100
 
+        link.innerHTML = `
+
+            <span>
+
+                <i data-lucide="file-text"></i>
+
+                <strong>
+                    ${
+                        resource.title ||
+                        "Learning Resource"
+                    }
+                </strong>
+
+            </span>
+
+            <i data-lucide="external-link"></i>
+
+        `;
+
+
+        courseResources.appendChild(
+            link
         );
 
-
-    courseProgressText.textContent =
-        `${percentage}%`;
+    });
 
 
-    courseProgressBar.style.width =
-        `${percentage}%`;
+    refreshIcons();
 
 }
 
 
-// ============================================
-// COMPLETE LESSON
-// ============================================
+// ============================================================
+// NAVIGATION
+// ============================================================
 
-completeLessonBtn?.addEventListener(
-    "click",
-    async () => {
+function updateNavigation() {
 
-        if (
+    if (previousLessonBtn) {
+
+        previousLessonBtn.disabled =
+            currentLessonIndex === 0;
+
+    }
+
+
+    if (nextLessonBtn) {
+
+        nextLessonBtn.disabled =
+            currentLessonIndex ===
+            lessons.length - 1;
+
+    }
+
+
+    if (completeLessonBtn) {
+
+        const completed =
             completedLessons.includes(
-                currentLessonIndex
-            )
-        ) {
+                lessons[currentLessonIndex]?.id
+            );
 
-            return;
-
-        }
-
-
-        completedLessons.push(
-            currentLessonIndex
-        );
-
-
-        updateProgress();
-
-        renderLessons();
 
         completeLessonBtn.disabled =
-            true;
+            completed;
+
 
         completeLessonBtn.innerHTML =
-            "Completed ✓";
-
-
-        await saveProgress();
+            completed
+                ? "Completed ✓"
+                : `
+                    Mark Complete
+                    <i data-lucide="check"></i>
+                  `;
 
     }
-);
+
+}
 
 
-// ============================================
+// ============================================================
 // NEXT
-// ============================================
+// ============================================================
 
 nextLessonBtn?.addEventListener(
     "click",
@@ -1064,9 +1210,9 @@ nextLessonBtn?.addEventListener(
 );
 
 
-// ============================================
+// ============================================================
 // PREVIOUS
-// ============================================
+// ============================================================
 
 previousLessonBtn?.addEventListener(
     "click",
@@ -1086,25 +1232,140 @@ previousLessonBtn?.addEventListener(
 );
 
 
-// ============================================
-// SAVE PROGRESS + SYNC ENROLLMENT
-// ============================================
+// ============================================================
+// COMPLETE LESSON
+// ============================================================
 
-async function saveProgress() {
+completeLessonBtn?.addEventListener(
+    "click",
+    async () => {
+
+        if (!lessons.length)
+            return;
+
+
+        const lesson =
+            lessons[currentLessonIndex];
+
+
+        if (
+            completedLessons.includes(
+                lesson.id
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        completedLessons.push(
+            lesson.id
+        );
+
+
+        updateProgress();
+
+        renderLessons();
+
+        updateNavigation();
+
+        await saveProgress(true);
+
+
+        // Automatically move forward
+        if (
+            currentLessonIndex <
+            lessons.length - 1
+        ) {
+
+            setTimeout(
+                () => {
+
+                    showLesson(
+                        currentLessonIndex + 1
+                    );
+
+                },
+                500
+            );
+
+        }
+
+    }
+);
+
+
+// ============================================================
+// PROGRESS
+// ============================================================
+
+function updateProgress() {
+
+    if (
+        !courseProgressText ||
+        !courseProgressBar
+    ) {
+
+        return;
+
+    }
+
+
+    if (!lessons.length) {
+
+        courseProgressText.textContent =
+            "0%";
+
+        courseProgressBar.style.width =
+            "0%";
+
+        return;
+
+    }
+
+
+    const percentage =
+        Math.round(
+            (
+                completedLessons.length /
+                lessons.length
+            ) * 100
+        );
+
+
+    courseProgressText.textContent =
+        `${percentage}%`;
+
+
+    courseProgressBar.style.width =
+        `${percentage}%`;
+
+}
+
+
+// ============================================================
+// SAVE PROGRESS
+// ============================================================
+
+async function saveProgress(showMessage = false) {
+
+    if (!currentUser || !courseId)
+        return;
+
 
     try {
 
         const percentage =
             lessons.length
                 ? Math.round(
-                    (completedLessons.length / lessons.length) * 100
+                    (
+                        completedLessons.length /
+                        lessons.length
+                    ) * 100
                 )
                 : 0;
 
-
-        // ========================================
-        // SAVE DETAILED COURSE PROGRESS
-        // ========================================
 
         const progressRef =
             doc(
@@ -1125,6 +1386,9 @@ async function saveProgress() {
 
                 completedLessons,
 
+                currentLessonId:
+                    lessons[currentLessonIndex]?.id || null,
+
                 currentLesson:
                     currentLessonIndex,
 
@@ -1141,37 +1405,99 @@ async function saveProgress() {
         );
 
 
-        // ========================================
-        // SYNC STUDENT ENROLLMENT
-        // ========================================
+        // ----------------------------------------------------
+        // MAIN ENROLLMENT
+        // ----------------------------------------------------
 
-        const enrollmentRef =
+        try {
+
+            const q =
+                query(
+                    collection(
+                        db,
+                        "enrollments"
+                    ),
+                    where(
+                        "userId",
+                        "==",
+                        currentUser.uid
+                    ),
+                    where(
+                        "courseId",
+                        "==",
+                        courseId
+                    )
+                );
+
+
+            const snap =
+                await getDocs(q);
+
+
+            if (!snap.empty) {
+
+                await setDoc(
+                    snap.docs[0].ref,
+                    {
+
+                        progress:
+                            percentage,
+
+                        lastLesson:
+                            lessons[currentLessonIndex]?.id || null,
+
+                        status:
+                            percentage >= 100
+                                ? "completed"
+                                : "active",
+
+                        updatedAt:
+                            serverTimestamp()
+
+                    },
+                    {
+                        merge: true
+                    }
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.warn(
+                "Enrollment progress update failed:",
+                error
+            );
+
+        }
+
+
+        // ----------------------------------------------------
+        // LEGACY ENROLLMENT
+        // ----------------------------------------------------
+
+        await setDoc(
             doc(
                 db,
                 "students",
                 currentUser.uid,
                 "enrollments",
                 courseId
-            );
-
-
-        await setDoc(
-            enrollmentRef,
+            ),
             {
 
                 progress:
                     percentage,
 
+                lastLesson:
+                    lessons[currentLessonIndex]?.id || null,
+
                 status:
                     percentage >= 100
                         ? "completed"
                         : "active",
-
-                paymentStatus:
-                    "paid",
-
-                lastLesson:
-                    currentLessonIndex,
 
                 updatedAt:
                     serverTimestamp()
@@ -1183,16 +1509,22 @@ async function saveProgress() {
         );
 
 
-        console.log(
-            `💾 Progress synced: ${percentage}%`
-        );
+        if (showMessage) {
+
+            showToast(
+                percentage >= 100
+                    ? "Course completed 🎉"
+                    : "Lesson completed ✓"
+            );
+
+        }
 
     }
 
     catch (error) {
 
         console.error(
-            "❌ Progress save failed:",
+            "❌ PROGRESS SAVE FAILED:",
             error
         );
 
@@ -1201,13 +1533,13 @@ async function saveProgress() {
 }
 
 
-// ============================================
+// ============================================================
 // LOAD PROGRESS
-// ============================================
+// ============================================================
 
 async function loadStudentProgress() {
 
-    const progressRef =
+    const ref =
         doc(
             db,
             "courseProgress",
@@ -1215,15 +1547,14 @@ async function loadStudentProgress() {
         );
 
 
-    const snapshot =
-        await getDoc(
-            progressRef
-        );
+    const snap =
+        await getDoc(ref);
 
 
-    if (
-        !snapshot.exists()
-    ) {
+    if (!snap.exists()) {
+
+        completedLessons = [];
+        currentLessonIndex = 0;
 
         return;
 
@@ -1231,7 +1562,7 @@ async function loadStudentProgress() {
 
 
     const data =
-        snapshot.data();
+        snap.data();
 
 
     completedLessons =
@@ -1242,37 +1573,72 @@ async function loadStudentProgress() {
             : [];
 
 
+    // --------------------------------------------------------
+    // Prefer lesson ID
+    // --------------------------------------------------------
+
+    if (data.currentLessonId) {
+
+        const found =
+            lessons.findIndex(
+                lesson =>
+                    lesson.id ===
+                    data.currentLessonId
+            );
+
+
+        if (found >= 0) {
+
+            currentLessonIndex =
+                found;
+
+            return;
+
+        }
+
+    }
+
+
     currentLessonIndex =
         Number(
             data.currentLesson || 0
         );
 
 
-    console.log(
-        "📈 Progress loaded:",
-        completedLessons
-    );
+    if (
+        currentLessonIndex < 0 ||
+        currentLessonIndex >= lessons.length
+    ) {
+
+        currentLessonIndex = 0;
+
+    }
 
 }
 
 
-// ============================================
+// ============================================================
 // NOTES
-// ============================================
+// ============================================================
 
 async function loadNotes(lesson) {
 
-    if (!lessonNotes) return;
+    if (!lessonNotes)
+        return;
 
 
     lessonNotes.value = "";
 
 
+    if (!currentUser)
+        return;
+
+
     const noteId =
-        `${currentUser.uid}_${courseId}_${currentLessonIndex}`;
+        `${currentUser.uid}_${courseId}_${lesson.id}`;
 
 
-    const noteRef =
+    const ref =
         doc(
             db,
             "courseNotes",
@@ -1280,42 +1646,52 @@ async function loadNotes(lesson) {
         );
 
 
-    const snapshot =
-        await getDoc(
-            noteRef
-        );
+    const snap =
+        await getDoc(ref);
 
 
-    if (
-        snapshot.exists()
-    ) {
+    if (snap.exists()) {
 
         lessonNotes.value =
-            snapshot.data().notes || "";
+            snap.data().notes || "";
 
     }
 
 }
 
 
+// ============================================================
+// SAVE NOTES
+// ============================================================
+
 saveNotesBtn?.addEventListener(
     "click",
     async () => {
 
+        if (!lessonNotes)
+            return;
+
+
+        const lesson =
+            lessons[currentLessonIndex];
+
+
+        if (!lesson)
+            return;
+
+
         try {
 
             const noteId =
-                `${currentUser.uid}_${courseId}_${currentLessonIndex}`;
+                `${currentUser.uid}_${courseId}_${lesson.id}`;
 
 
             await setDoc(
-
                 doc(
                     db,
                     "courseNotes",
                     noteId
                 ),
-
                 {
 
                     userId:
@@ -1323,8 +1699,8 @@ saveNotesBtn?.addEventListener(
 
                     courseId,
 
-                    lessonIndex:
-                        currentLessonIndex,
+                    lessonId:
+                        lesson.id,
 
                     notes:
                         lessonNotes.value,
@@ -1333,23 +1709,25 @@ saveNotesBtn?.addEventListener(
                         serverTimestamp()
 
                 },
-
                 {
                     merge: true
                 }
-
             );
 
 
-            saveNotesBtn.textContent =
+            saveNotesBtn.innerHTML =
                 "Saved ✓";
 
 
             setTimeout(
                 () => {
 
-                    saveNotesBtn.textContent =
-                        "Save Notes";
+                    saveNotesBtn.innerHTML = `
+                        <i data-lucide="save"></i>
+                        Save Notes
+                    `;
+
+                    refreshIcons();
 
                 },
                 1500
@@ -1360,7 +1738,7 @@ saveNotesBtn?.addEventListener(
         catch (error) {
 
             console.error(
-                "Notes save failed:",
+                "❌ NOTES ERROR:",
                 error
             );
 
@@ -1370,37 +1748,198 @@ saveNotesBtn?.addEventListener(
 );
 
 
-// ============================================
-// ERROR
-// ============================================
+// ============================================================
+// NO LESSONS
+// ============================================================
 
-function showError(message) {
+function showNoLessons() {
 
-    if (courseContent) {
+    if (lessonList) {
 
-        courseContent.innerHTML = `
+        lessonList.innerHTML = `
 
-            <div class="course-lock-card">
+            <div class="empty-state">
 
-                <h2>
-                    Something went wrong
-                </h2>
+                <i data-lucide="book-open"></i>
+
+                <h3>
+                    Lessons Coming Soon
+                </h3>
 
                 <p>
-                    ${message}
+                    Your instructor hasn't published
+                    lessons for this course yet.
                 </p>
-
-                <button
-                    class="primary-btn"
-                    onclick="history.back()">
-
-                    Go Back
-
-                </button>
 
             </div>
 
         `;
+
+    }
+
+
+    if (lessonTitle) {
+
+        lessonTitle.textContent =
+            "No lesson selected";
+
+    }
+
+
+    if (lessonDescription) {
+
+        lessonDescription.textContent =
+            "Lessons will appear here once published.";
+
+    }
+
+
+    renderVideo({});
+
+    updateProgress();
+
+    refreshIcons();
+
+}
+
+
+// ============================================================
+// ERROR
+// ============================================================
+
+function showError(message) {
+
+    if (!courseContent)
+        return;
+
+
+    courseContent.innerHTML = `
+
+        <div class="course-error-state">
+
+            <div class="error-icon">
+
+                <i data-lucide="circle-alert"></i>
+
+            </div>
+
+            <h2>
+                Something went wrong
+            </h2>
+
+            <p>
+                ${escapeHTML(message)}
+            </p>
+
+            <button
+                class="primary-btn"
+                onclick="history.back()">
+
+                Go Back
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    refreshIcons();
+
+}
+
+
+// ============================================================
+// TOAST
+// ============================================================
+
+function showToast(message) {
+
+    let toast =
+        document.getElementById(
+            "ssaCourseToast"
+        );
+
+
+    if (!toast) {
+
+        toast =
+            document.createElement(
+                "div"
+            );
+
+        toast.id =
+            "ssaCourseToast";
+
+        toast.className =
+            "ssa-course-toast";
+
+        document.body.appendChild(
+            toast
+        );
+
+    }
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        () => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        2500
+    );
+
+}
+
+
+// ============================================================
+// SECURITY HELPERS
+// ============================================================
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+function escapeAttribute(value) {
+
+    return escapeHTML(value);
+
+}
+
+
+// ============================================================
+// ICONS
+// ============================================================
+
+function refreshIcons() {
+
+    if (
+        window.lucide &&
+        typeof window.lucide.createIcons ===
+            "function"
+    ) {
+
+        window.lucide.createIcons();
 
     }
 

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Quizzes | Spark Stack Academy
+    </title>
+
+
+    <!-- CORE CSS -->
+
+    <link
+        rel="stylesheet"
+        href="css/student-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/quizzes.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script
+        src="https://unpkg.com/lucide@latest"
+    ></script>
+
+</head>
+
+
+<body>
+
+<div class="student-layout">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="sidebarContainer"
+        class="sidebar-container"
+    ></aside>
+
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="student-main">
+
+
+        <!-- TOPBAR -->
+
+        <div
+            id="topbarContainer"
+            class="topbar-container"
+        ></div>
+
+
+
+        <!-- =================================================
+             CONTENT
+        ================================================== -->
+
+        <section class="dashboard-content quizzes-page">
+
+
+            <!-- PAGE HEADER -->
+
+            <header class="page-header">
+
+                <div>
+
+                    <span class="page-badge">
+
+                        <i data-lucide="brain-circuit"></i>
+
+                        Learning
+
+                    </span>
+
+
+                    <h1>
+                        Quizzes
+                    </h1>
+
+
+                    <p>
+                        Complete quizzes to test your knowledge,
+                        earn XP and unlock the next challenge.
+                    </p>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 OVERVIEW
+            ================================================== -->
+
+            <section class="quiz-overview">
+
+
+                <div class="quiz-overview-card">
+
+                    <div class="quiz-overview-icon">
+
+                        <i data-lucide="list-checks"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong id="totalQuizzes">
+                            0
+                        </strong>
+
+                        <span>
+                            Total Quizzes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="quiz-overview-card">
+
+                    <div class="quiz-overview-icon">
+
+                        <i data-lucide="circle-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong id="completedQuizzes">
+                            0
+                        </strong>
+
+                        <span>
+                            Completed
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="quiz-overview-card">
+
+                    <div class="quiz-overview-icon">
+
+                        <i data-lucide="lock-open"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong id="unlockedQuizzes">
+                            0
+                        </strong>
+
+                        <span>
+                            Unlocked
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="quiz-overview-card">
+
+                    <div class="quiz-overview-icon">
+
+                        <i data-lucide="zap"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong id="quizXP">
+                            0 XP
+                        </strong>
+
+                        <span>
+                            Quiz XP
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FILTERS
+            ================================================== -->
+
+            <section class="quiz-toolbar">
+
+                <div class="quiz-search">
+
+                    <i data-lucide="search"></i>
+
+                    <input
+                        type="search"
+                        id="quizSearch"
+                        placeholder="Search quizzes..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <select id="courseFilter">
+
+                    <option value="all">
+                        All Courses
+                    </option>
+
+                </select>
+
+
+                <select id="statusFilter">
+
+                    <option value="all">
+                        All Quizzes
+                    </option>
+
+                    <option value="unlocked">
+                        Unlocked
+                    </option>
+
+                    <option value="completed">
+                        Completed
+                    </option>
+
+                    <option value="locked">
+                        Locked
+                    </option>
+
+                </select>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 QUIZ LIST
+            ================================================== -->
+
+            <section class="quiz-library-section">
+
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Your Quizzes
+                        </h2>
+
+                        <p>
+                            Quizzes are unlocked in learning order.
+                        </p>
+
+                    </div>
+
+
+                    <span
+                        id="quizCount"
+                        class="quiz-count"
+                    >
+                        0 quizzes
+                    </span>
+
+                </div>
+
+
+
+                <!-- JS RENDERS QUIZZES -->
+
+                <div
+                    id="quizList"
+                    class="quiz-list"
+                ></div>
+
+
+
+                <!-- EMPTY -->
+
+                <div
+                    id="quizEmpty"
+                    class="quiz-empty hidden"
+                >
+
+                    <div class="empty-icon">
+
+                        <i data-lucide="file-question"></i>
+
+                    </div>
+
+
+                    <h3>
+                        No quizzes found
+                    </h3>
+
+
+                    <p>
+                        There are no quizzes matching your search.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LOCK INFORMATION
+            ================================================== -->
+
+            <section class="quiz-info-banner">
+
+                <div class="quiz-info-icon">
+
+                    <i data-lucide="shield-check"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        How quiz progression works
+                    </h3>
+
+
+                    <p>
+                        Complete the current quiz before the next
+                        quiz becomes available. Your first quiz
+                        allows 3 attempts, the second allows 2,
+                        and later quizzes allow 1 attempt.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<!-- =========================================================
+     APP
+========================================================= -->
+
+<script
+    type="module"
+    src="js/student-app.js"
+></script>
+
+
+<script
+    type="module"
+    src="js/quizzes.js"
+></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (
+            window.lucide &&
+            typeof window.lucide.createIcons ===
+                "function"
+        ) {
+
+            window.lucide.createIcons();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

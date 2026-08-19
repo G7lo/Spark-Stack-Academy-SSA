@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Create Quiz | Instructor Portal
+    </title>
+
+    <!-- CORE CSS -->
+
+    <link rel="stylesheet" href="css/instructor-core.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/create-quiz.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <!-- ICONS -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+<main class="instructor-page create-quiz-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <section class="page-header">
+
+        <div class="page-header-content">
+
+            <div>
+
+                <div class="breadcrumb">
+
+                    <a href="quizzes.html">
+                        Quizzes
+                    </a>
+
+                    <i data-lucide="chevron-right"></i>
+
+                    <span>
+                        Create Quiz
+                    </span>
+
+                </div>
+
+
+                <h1>
+                    Create Quiz
+                </h1>
+
+                <p>
+                    Build an engaging assessment for your students.
+                </p>
+
+            </div>
+
+
+            <div class="page-header-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="cancelQuizBtn"
+                >
+
+                    <i data-lucide="arrow-left"></i>
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="saveQuizBtn"
+                >
+
+                    <i data-lucide="save"></i>
+
+                    Save Quiz
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         COURSE CONTEXT
+    ====================================================== -->
+
+    <section class="quiz-course-context">
+
+        <div class="course-context-icon">
+
+            <i data-lucide="book-open"></i>
+
+        </div>
+
+
+        <div class="course-context-info">
+
+            <span>
+                COURSE
+            </span>
+
+            <strong id="courseName">
+                Loading course...
+            </strong>
+
+        </div>
+
+
+        <div class="course-context-meta">
+
+            <span id="courseCategory">
+                —
+            </span>
+
+            <span class="dot">
+                •
+            </span>
+
+            <span id="courseLevel">
+                —
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUIZ FORM
+    ====================================================== -->
+
+    <form id="quizForm" novalidate>
+
+
+        <!-- =================================================
+             BASIC INFORMATION
+        ================================================== -->
+
+        <section class="builder-card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <h2>
+                        Quiz Information
+                    </h2>
+
+                    <p>
+                        Set the basic details of your quiz.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <!-- TITLE -->
+
+                <div class="form-group full">
+
+                    <label for="quizTitle">
+                        Quiz Title
+                        <span>*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="quizTitle"
+                        name="title"
+                        placeholder="e.g. JavaScript Fundamentals Quiz"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group full">
+
+                    <label for="quizDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="quizDescription"
+                        name="description"
+                        rows="4"
+                        placeholder="Describe what students will be tested on..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- MODULE -->
+
+                <div class="form-group">
+
+                    <label for="quizModule">
+                        Module
+                    </label>
+
+                    <select
+                        id="quizModule"
+                        name="moduleId"
+                    >
+
+                        <option value="">
+                            Entire Course
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- LESSON -->
+
+                <div class="form-group">
+
+                    <label for="quizLesson">
+                        Lesson
+                    </label>
+
+                    <select
+                        id="quizLesson"
+                        name="lessonId"
+                        disabled
+                    >
+
+                        <option value="">
+                            Entire Module
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             QUIZ SETTINGS
+        ================================================== -->
+
+        <section class="builder-card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <h2>
+                        Quiz Settings
+                    </h2>
+
+                    <p>
+                        Configure how students will take the quiz.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <!-- TIME LIMIT -->
+
+                <div class="form-group">
+
+                    <label for="quizDuration">
+                        Time Limit
+                    </label>
+
+                    <div class="input-with-unit">
+
+                        <input
+                            type="number"
+                            id="quizDuration"
+                            name="duration"
+                            min="0"
+                            value="30"
+                            placeholder="30"
+                        >
+
+                        <span>
+                            minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSING SCORE -->
+
+                <div class="form-group">
+
+                    <label for="passingScore">
+                        Passing Score
+                    </label>
+
+                    <div class="input-with-unit">
+
+                        <input
+                            type="number"
+                            id="passingScore"
+                            name="passingScore"
+                            min="0"
+                            max="100"
+                            value="50"
+                        >
+
+                        <span>
+                            %
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ATTEMPTS -->
+
+                <div class="form-group">
+
+                    <label for="maxAttempts">
+                        Maximum Attempts
+                    </label>
+
+                    <input
+                        type="number"
+                        id="maxAttempts"
+                        name="maxAttempts"
+                        min="1"
+                        value="1"
+                    >
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="form-group">
+
+                    <label for="quizStatus">
+                        Status
+                    </label>
+
+                    <select
+                        id="quizStatus"
+                        name="status"
+                    >
+
+                        <option value="draft">
+                            Draft
+                        </option>
+
+                        <option value="published">
+                            Published
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             QUESTIONS
+        ================================================== -->
+
+        <section class="builder-card questions-card">
+
+
+            <div class="card-heading questions-heading">
+
+                <div>
+
+                    <h2>
+                        Questions
+                    </h2>
+
+                    <p>
+                        Add questions students will answer.
+                    </p>
+
+                </div>
+
+
+                <div class="question-counter">
+
+                    <strong id="questionCount">
+                        0
+                    </strong>
+
+                    <span>
+                        Questions
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUESTIONS -->
+
+            <div
+                class="question-list"
+                id="questionList"
+            >
+
+                <!-- JS inserts questions -->
+
+            </div>
+
+
+            <!-- EMPTY -->
+
+            <div
+                class="questions-empty"
+                id="questionsEmpty"
+            >
+
+                <div class="empty-icon">
+
+                    <i data-lucide="help-circle"></i>
+
+                </div>
+
+
+                <h3>
+                    No questions yet
+                </h3>
+
+
+                <p>
+                    Start building your quiz by adding a question.
+                </p>
+
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="firstQuestionBtn"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Add First Question
+
+                </button>
+
+            </div>
+
+
+            <!-- ADD QUESTION -->
+
+            <div class="add-question-area">
+
+                <button
+                    type="button"
+                    class="btn btn-outline"
+                    id="addQuestionBtn"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Add Question
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             BOTTOM ACTIONS
+        ================================================== -->
+
+        <section class="form-actions">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                id="bottomCancelQuizBtn"
+            >
+
+                Cancel
+
+            </button>
+
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+                id="bottomSaveQuizBtn"
+            >
+
+                <i data-lucide="save"></i>
+
+                Save Quiz
+
+            </button>
+
+        </section>
+
+
+    </form>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script
+    type="module"
+    src="js/create-quiz.js"
+></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (
+            window.lucide &&
+            typeof window.lucide.createIcons ===
+                "function"
+        ) {
+
+            window.lucide.createIcons();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

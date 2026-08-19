@@ -5,512 +5,846 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>Founder Dashboard | Spark Stack Academy</title>
+    <title>
+        Founder Console | Spark Stack Academy
+    </title>
 
-    <link rel="stylesheet"
-          href="dashboard.css">
+    <!-- =====================================================
+         CORE CSS
+    ====================================================== -->
 
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="css/admin-core.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/founder.css">
+    <link rel="stylesheet" href="css/responsive.css">
 
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet">
+    <!-- =====================================================
+         FONTS
+    ====================================================== -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         ICONS
+    ====================================================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
 
+
 <body>
 
-    <!-- Background -->
+<div class="founder-app">
 
-    <div class="bg-orb orb-1"></div>
 
-    <div class="bg-orb orb-2"></div>
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-    <div class="bg-orb orb-3"></div>
+    <aside
+        id="founderSidebar"
+        class="founder-sidebar"
+    ></aside>
 
-    <div class="dashboard-layout">
 
-        <!-- Sidebar -->
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
 
-        <aside id="sidebarContainer"></aside>
 
-        <div id="sidebarOverlay"></div>
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
 
-<main class="main-content">
+    <main class="founder-main">
 
-    <!-- ==========================
-         SHARED TOPBAR
-    ========================== -->
 
-    <header id="topbarContainer"></header>
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
 
-    <!-- ==========================
-         EXECUTIVE HERO
-    ========================== -->
+        <header
+            id="founderTopbar"
+            class="founder-topbar"
+        ></header>
 
-    <section class="hero glass-card">
 
-        <div class="hero-left">
+        <!-- =================================================
+             PAGE
+        ================================================== -->
 
-            <div class="hero-badge">
+        <section class="founder-page">
 
-                <span class="live-dot"></span>
 
-                Founder Operating System
+            <!-- =================================================
+                 COMMAND HEADER
+            ================================================== -->
 
-            </div>
+            <section class="founder-command-header">
 
-            <h1 id="heroGreeting">
+                <div class="founder-command-copy">
 
-                Welcome back,
-                <span id="founderHeroName">
-                    Founder
-                </span>
+                    <span class="founder-eyebrow">
+                        FOUNDER COMMAND CENTER
+                    </span>
 
-            </h1>
-
-            <p>
-
-                Monitor your academy in real time,
-                review executive insights,
-                track revenue,
-                and make informed decisions from one place.
-
-            </p>
-
-            <div class="hero-buttons">
-
-                <button
-                    class="primary-btn"
-                    onclick="location.href='spark-ai.html'">
-
-                    🧠 Open SparkMind
-
-                </button>
-
-                <button
-                    class="secondary-btn"
-                    onclick="location.href='reports.html'">
-
-                    📊 View Reports
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <div class="hero-right">
-
-            <div class="executive-card">
-
-                <small>
-
-                    Executive Brief
-
-                </small>
-
-                <h3>
-
-                    Today's Summary
-
-                </h3>
-
-                <p id="dailyInsight">
-
-                    Loading SparkMind insights...
-
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-<!-- ==========================
-     EXECUTIVE KPI CARDS
-========================== -->
-
-<section class="stats-grid">
-
-    <div class="stat-card glass-card">
-
-        <div class="stat-header">
-
-            <span>Students</span>
-
-            <div class="stat-icon cyan">👨‍🎓</div>
-
-        </div>
-
-        <h2 id="studentCount">0</h2>
-
-        <small>Registered Students</small>
-
-    </div>
-
-    <div class="stat-card glass-card">
-
-        <div class="stat-header">
-
-            <span>Courses</span>
-
-            <div class="stat-icon purple">📚</div>
-
-        </div>
-
-        <h2 id="courseCount">0</h2>
-
-        <small>Published Courses</small>
-
-    </div>
-
-    <div class="stat-card glass-card">
-
-        <div class="stat-header">
-
-            <span>Instructors</span>
-
-            <div class="stat-icon orange">👨‍🏫</div>
-
-        </div>
-
-        <h2 id="instructorCount">0</h2>
-
-        <small>Teaching Staff</small>
-
-    </div>
-
-    <div class="stat-card glass-card">
-
-        <div class="stat-header">
-
-            <span>Enrollments</span>
-
-            <div class="stat-icon green">📝</div>
-
-        </div>
-
-        <h2 id="enrollmentCount">0</h2>
-
-        <small>Total Enrollments</small>
-
-    </div>
-
-    <div class="stat-card glass-card">
-
-        <div class="stat-header">
-
-            <span>Revenue</span>
-
-            <div class="stat-icon gold">💰</div>
-
-        </div>
-
-        <h2 id="revenueCount">$0</h2>
-
-        <small>Total Revenue</small>
-
-    </div>
-
-    <div class="stat-card glass-card">
-
-        <div class="stat-header">
-
-            <span>Certificates</span>
-
-            <div class="stat-icon blue">🎓</div>
-
-        </div>
-
-        <h2 id="certificateCount">0</h2>
-
-        <small>Issued Certificates</small>
-
-    </div>
-
-</section>
-
-<!-- ==========================
-     DASHBOARD CONTENT
-========================== -->
-
-<section class="dashboard-grid">
-
-    <!-- LEFT COLUMN -->
-
-    <section class="dashboard-main">
-
-        <!-- ==========================
-             LIVE ACTIVITY
-        ========================== -->
-
-        <div class="glass-card">
-
-            <div class="section-header">
-
-                <h3>📰 Live Activity</h3>
-
-                <span>Real Time</span>
-
-            </div>
-
-            <div
-                id="activityFeed"
-                class="activity-list">
-
-                <div class="empty-state">
-
-                    <div class="empty-icon">
-
-                        📡
-
-                    </div>
-
-                    <h4>
-
-                        No Recent Activity
-
-                    </h4>
+                    <h1>
+                        Welcome back,
+                        <span id="founderName">
+                            Founder
+                        </span>
+                        👋
+                    </h1>
 
                     <p>
-
-                        Student registrations, instructor updates,
-                        announcements and academy events will appear here.
-
+                        Your executive overview of
+                        Spark Stack Academy.
                     </p>
 
                 </div>
 
-            </div>
 
-        </div>
+                <div class="founder-identity-card">
 
-        <!-- ==========================
-             SPARK AI
-        ========================== -->
+                    <div
+                        class="founder-avatar"
+                        id="founderAvatar"
+                    >
+                        F
+                    </div>
 
-        <div class="glass-card">
 
-            <div class="section-header">
+                    <div class="founder-identity-info">
 
-                <h3>🤖 Spark AI</h3>
+                        <strong id="founderDisplayName">
+                            Founder
+                        </strong>
 
-                <span>Executive Assistant</span>
+                        <span id="founderEmail">
+                            —
+                        </span>
 
-            </div>
 
-            <p id="founderInsight">
+                        <div class="founder-badges">
 
-                Spark AI is preparing today's executive recommendations...
+                            <span class="founder-verified-badge">
 
-            </p>
+                                <i data-lucide="badge-check"></i>
 
-            <div class="hero-buttons">
+                                Verified Founder
+
+                            </span>
+
+
+                            <span class="founder-premium-badge">
+
+                                <i data-lucide="crown"></i>
+
+                                Premium
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SYSTEM STATUS
+            ================================================== -->
+
+            <section class="founder-status-bar">
+
+                <div class="founder-status-item">
+
+                    <span class="status-dot online"></span>
+
+                    <span>
+                        Academy Systems
+                    </span>
+
+                    <strong>
+                        Operational
+                    </strong>
+
+                </div>
+
+
+                <div class="founder-status-item">
+
+                    <i data-lucide="shield-check"></i>
+
+                    <span>
+                        Security
+                    </span>
+
+                    <strong>
+                        Protected
+                    </strong>
+
+                </div>
+
+
+                <div class="founder-status-item">
+
+                    <i data-lucide="zap"></i>
+
+                    <span>
+                        Spark AI
+                    </span>
+
+                    <strong>
+                        Online
+                    </strong>
+
+                </div>
+
+
+                <div class="founder-status-item">
+
+                    <i data-lucide="clock-3"></i>
+
+                    <span>
+                        Last Sync
+                    </span>
+
+                    <strong id="lastSystemSync">
+                        —
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 EXECUTIVE METRICS
+            ================================================== -->
+
+            <section class="founder-stat-grid">
+
+
+                <article class="founder-stat-card">
+
+                    <div class="founder-stat-icon blue">
+
+                        <i data-lucide="users"></i>
+
+                    </div>
+
+                    <span>
+                        Total Students
+                    </span>
+
+                    <strong id="totalStudents">
+                        0
+                    </strong>
+
+                    <small id="studentGrowth">
+                        —
+                    </small>
+
+                </article>
+
+
+                <article class="founder-stat-card">
+
+                    <div class="founder-stat-icon gold">
+
+                        <i data-lucide="graduation-cap"></i>
+
+                    </div>
+
+                    <span>
+                        Active Courses
+                    </span>
+
+                    <strong id="activeCourses">
+                        0
+                    </strong>
+
+                    <small>
+                        Academy catalog
+                    </small>
+
+                </article>
+
+
+                <article class="founder-stat-card">
+
+                    <div class="founder-stat-icon green">
+
+                        <i data-lucide="wallet"></i>
+
+                    </div>
+
+                    <span>
+                        Revenue
+                    </span>
+
+                    <strong id="totalRevenue">
+                        KSh 0
+                    </strong>
+
+                    <small id="revenueGrowth">
+                        —
+                    </small>
+
+                </article>
+
+
+                <article class="founder-stat-card">
+
+                    <div class="founder-stat-icon purple">
+
+                        <i data-lucide="user-check"></i>
+
+                    </div>
+
+                    <span>
+                        Instructors
+                    </span>
+
+                    <strong id="totalInstructors">
+                        0
+                    </strong>
+
+                    <small>
+                        Active instructors
+                    </small>
+
+                </article>
+
+
+                <article class="founder-stat-card">
+
+                    <div class="founder-stat-icon red">
+
+                        <i data-lucide="flag"></i>
+
+                    </div>
+
+                    <span>
+                        Open Reports
+                    </span>
+
+                    <strong id="openReports">
+                        0
+                    </strong>
+
+                    <small>
+                        Requires attention
+                    </small>
+
+                </article>
+
+
+                <article class="founder-stat-card">
+
+                    <div class="founder-stat-icon cyan">
+
+                        <i data-lucide="activity"></i>
+
+                    </div>
+
+                    <span>
+                        Platform Activity
+                    </span>
+
+                    <strong id="platformActivity">
+                        0
+                    </strong>
+
+                    <small>
+                        Active today
+                    </small>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 MAIN EXECUTIVE GRID
+            ================================================== -->
+
+            <section class="founder-dashboard-grid">
+
+
+                <!-- =============================================
+                     REVENUE OVERVIEW
+                ============================================== -->
+
+                <article class="founder-panel revenue-panel">
+
+                    <div class="founder-panel-header">
+
+                        <div>
+
+                            <span class="founder-eyebrow">
+                                FINANCIAL INTELLIGENCE
+                            </span>
+
+                            <h2>
+                                Revenue Overview
+                            </h2>
+
+                        </div>
+
+
+                        <select id="revenuePeriod">
+
+                            <option value="7">
+                                7 Days
+                            </option>
+
+                            <option value="30" selected>
+                                30 Days
+                            </option>
+
+                            <option value="90">
+                                90 Days
+                            </option>
+
+                            <option value="365">
+                                12 Months
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div
+                        id="revenueChart"
+                        class="founder-chart"
+                    ></div>
+
+                </article>
+
+
+                <!-- =============================================
+                     PLATFORM HEALTH
+                ============================================== -->
+
+                <article class="founder-panel health-panel">
+
+                    <div class="founder-panel-header">
+
+                        <div>
+
+                            <span class="founder-eyebrow">
+                                PLATFORM HEALTH
+                            </span>
+
+                            <h2>
+                                System Overview
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="health-list">
+
+
+                        <div class="health-item">
+
+                            <div class="health-item-icon">
+
+                                <i data-lucide="database"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Database
+                                </strong>
+
+                                <span>
+                                    Firestore
+                                </span>
+
+                            </div>
+
+                            <b class="health-online">
+                                Online
+                            </b>
+
+                        </div>
+
+
+                        <div class="health-item">
+
+                            <div class="health-item-icon">
+
+                                <i data-lucide="lock"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Authentication
+                                </strong>
+
+                                <span>
+                                    Firebase Auth
+                                </span>
+
+                            </div>
+
+                            <b class="health-online">
+                                Secure
+                            </b>
+
+                        </div>
+
+
+                        <div class="health-item">
+
+                            <div class="health-item-icon">
+
+                                <i data-lucide="brain"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Spark AI
+                                </strong>
+
+                                <span>
+                                    AI services
+                                </span>
+
+                            </div>
+
+                            <b class="health-online">
+                                Online
+                            </b>
+
+                        </div>
+
+
+                        <div class="health-item">
+
+                            <div class="health-item-icon">
+
+                                <i data-lucide="bell"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Notifications
+                                </strong>
+
+                                <span>
+                                    Delivery engine
+                                </span>
+
+                            </div>
+
+                            <b class="health-online">
+                                Active
+                            </b>
+
+                        </div>
+
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 FOUNDER INTELLIGENCE
+            ================================================== -->
+
+            <section class="founder-ai-panel">
+
+                <div class="founder-ai-icon">
+
+                    <i data-lucide="sparkles"></i>
+
+                </div>
+
+
+                <div class="founder-ai-content">
+
+                    <span class="founder-eyebrow">
+                        FOUNDER INTELLIGENCE
+                    </span>
+
+                    <h2>
+                        Spark AI Executive Brief
+                    </h2>
+
+                    <p id="founderAiBrief">
+                        Analyzing academy activity,
+                        revenue and platform signals...
+                    </p>
+
+                </div>
+
 
                 <button
-                    class="primary-btn"
-                    onclick="location.href='spark-ai.html'">
+                    type="button"
+                    class="founder-btn primary"
+                    id="openSparkAiBtn"
+                >
+
+                    <i data-lucide="brain"></i>
 
                     Open Spark AI
 
                 </button>
 
-            </div>
+            </section>
 
-        </div>
 
-    </section>
+            <!-- =================================================
+                 QUICK COMMANDS
+            ================================================== -->
 
-    <!-- RIGHT COLUMN -->
+            <section class="founder-panel quick-command-panel">
 
-    <aside class="dashboard-sidebar">
+                <div class="founder-panel-header">
 
-        <!-- ==========================
-             FINANCIAL OVERVIEW
-        ========================== -->
+                    <div>
 
-        <div class="glass-card">
+                        <span class="founder-eyebrow">
+                            EXECUTIVE COMMANDS
+                        </span>
 
-            <div class="section-header">
+                        <h2>
+                            Quick Actions
+                        </h2>
 
-                <h3>💰 Financial Overview</h3>
-
-            </div>
-
-            <div class="overview-list">
-
-                <div class="overview-row">
-
-                    <span>Total Revenue</span>
-
-                    <strong id="overviewRevenue">
-
-                        $0
-
-                    </strong>
+                    </div>
 
                 </div>
 
-                <div class="overview-row">
 
-                    <span>Today's Revenue</span>
+                <div class="founder-command-grid">
 
-                    <strong id="todayRevenue">
 
-                        $0
+                    <button
+                        type="button"
+                        class="founder-command"
+                        id="manageStudentsBtn"
+                    >
 
-                    </strong>
+                        <i data-lucide="users"></i>
 
-                </div>
+                        <span>
+                            Students
+                        </span>
 
-                <div class="overview-row">
+                    </button>
 
-                    <span>Pending Withdrawals</span>
 
-                    <strong id="pendingWithdrawals">
+                    <button
+                        type="button"
+                        class="founder-command"
+                        id="manageInstructorsBtn"
+                    >
 
-                        $0
+                        <i data-lucide="graduation-cap"></i>
 
-                    </strong>
+                        <span>
+                            Instructors
+                        </span>
 
-                </div>
+                    </button>
 
-            </div>
 
-        </div>
+                    <button
+                        type="button"
+                        class="founder-command"
+                        id="manageCoursesBtn"
+                    >
 
-        <!-- ==========================
-             ACADEMY HEALTH
-        ========================== -->
+                        <i data-lucide="book-open"></i>
 
-        <div class="glass-card">
+                        <span>
+                            Courses
+                        </span>
 
-            <div class="section-header">
+                    </button>
 
-                <h3>💚 Academy Health</h3>
 
-            </div>
+                    <button
+                        type="button"
+                        class="founder-command"
+                        id="viewRevenueBtn"
+                    >
 
-            <div id="academyHealth">
+                        <i data-lucide="bar-chart-3"></i>
 
-                Checking academy status...
+                        <span>
+                            Revenue
+                        </span>
 
-            </div>
+                    </button>
 
-        </div>
 
-        <!-- ==========================
-             QUICK ACTIONS
-        ========================== -->
+                    <button
+                        type="button"
+                        class="founder-command"
+                        id="viewReportsBtn"
+                    >
 
-        <div class="glass-card">
+                        <i data-lucide="shield-alert"></i>
 
-            <div class="section-header">
+                        <span>
+                            Moderation
+                        </span>
 
-                <h3>⚡ Quick Actions</h3>
+                    </button>
 
-            </div>
 
-            <div class="quick-grid">
+                    <button
+                        type="button"
+                        class="founder-command"
+                        id="openSettingsBtn"
+                    >
 
-                <a href="students.html" class="quick-link">Students</a>
+                        <i data-lucide="settings"></i>
 
-                <a href="instructors.html" class="quick-link">Instructors</a>
+                        <span>
+                            Settings
+                        </span>
 
-                <a href="admissions.html" class="quick-link">Admissions</a>
+                    </button>
 
-                <a href="announcements.html" class="quick-link">Announcements</a>
-
-                <a href="reports.html" class="quick-link">Reports</a>
-
-                <a href="settings.html" class="quick-link">Settings</a>
-
-            </div>
-
-        </div>
-
-        <!-- ==========================
-             SYSTEM STATUS
-        ========================== -->
-
-        <div class="glass-card">
-
-            <div class="section-header">
-
-                <h3>🛰 System Status</h3>
-
-            </div>
-
-            <div class="system-status">
-
-                <div class="status-row">
-
-                    <span>Dashboard</span>
-
-                    <strong class="online">Online</strong>
 
                 </div>
 
-                <div class="status-row">
+            </section>
 
-                    <span>Spark AI</span>
 
-                    <strong class="online">Connected</strong>
+            <!-- =================================================
+                 RECENT ACTIVITY
+            ================================================== -->
+
+            <section class="founder-panel activity-panel">
+
+                <div class="founder-panel-header">
+
+                    <div>
+
+                        <span class="founder-eyebrow">
+                            LIVE INTELLIGENCE
+                        </span>
+
+                        <h2>
+                            Recent Platform Activity
+                        </h2>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="founder-text-link"
+                        id="viewAllActivityBtn"
+                    >
+                        View All
+                    </button>
 
                 </div>
 
-                <div class="status-row">
 
-                    <span>Firebase</span>
+                <div
+                    id="founderActivityList"
+                    class="founder-activity-list"
+                >
 
-                    <strong class="online">Connected</strong>
+                    <div class="founder-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading platform activity...
+                        </span>
+
+                    </div>
 
                 </div>
 
-                <div class="status-row">
+            </section>
 
-                    <span>Academy</span>
 
-                    <strong class="online">Healthy</strong>
+        </section>
 
-                </div>
+    </main>
 
-            </div>
+</div>
 
-        </div>
 
-    </aside>
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
 
-</section>
+<script
+    type="module"
+    src="js/founder-app.js"
+></script>
 
-<!-- ==========================
-     FOOTER
-========================== -->
+<script
+    type="module"
+    src="js/founder-dashboard.js"
+></script>
 
-<footer class="dashboard-footer">
 
-    © 2026 Spark Stack Academy • Founder Operating System
+<script>
 
-</footer>
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    <script src="https://unpkg.com/lucide@latest"></script>
+        if (window.lucide) {
+            lucide.createIcons();
+        }
 
-    <script
-        type="module"
-        src="./js/founder-app.js"></script>
+    }
+);
 
-    <script
-        type="module"
-        src="dashboard.js"></script>
+</script>
 
 </body>
 

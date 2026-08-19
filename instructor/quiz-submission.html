@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Review Submission | Instructor Portal
+    </title>
+
+
+    <!-- =========================
+         CORE STYLES
+    ========================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/quiz-submission.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- =========================
+         ICONS
+    ========================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+<main class="instructor-page quiz-submission-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <section class="page-header">
+
+        <div class="page-header-content">
+
+            <div>
+
+                <div class="breadcrumb">
+
+                    <a href="dashboard.html">
+                        Dashboard
+                    </a>
+
+                    <i data-lucide="chevron-right"></i>
+
+                    <a id="quizBreadcrumb">
+                        Quiz
+                    </a>
+
+                    <i data-lucide="chevron-right"></i>
+
+                    <span>
+                        Submission
+                    </span>
+
+                </div>
+
+
+                <div class="submission-title-row">
+
+                    <div class="submission-title-icon">
+
+                        <i data-lucide="file-check-2"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h1 id="submissionTitle">
+                            Review Submission
+                        </h1>
+
+                        <p id="submissionSubtitle">
+                            Loading student submission...
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="page-header-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="backToQuizBtn"
+                >
+
+                    <i data-lucide="arrow-left"></i>
+
+                    Back to Quiz
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="gradeSubmissionBtn"
+                >
+
+                    <i data-lucide="check-check"></i>
+
+                    Save Grade
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         STUDENT SUMMARY
+    ====================================================== -->
+
+    <section class="student-summary-card">
+
+
+        <div class="student-summary-main">
+
+            <div
+                class="student-large-avatar"
+                id="studentAvatar"
+            >
+                ?
+            </div>
+
+
+            <div class="student-summary-info">
+
+                <span>
+                    STUDENT
+                </span>
+
+                <h2 id="studentName">
+                    Loading...
+                </h2>
+
+                <p id="studentEmail">
+                    —
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="student-summary-meta">
+
+
+            <div class="summary-meta-item">
+
+                <span>
+                    SUBMITTED
+                </span>
+
+                <strong id="submittedAt">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="summary-meta-item">
+
+                <span>
+                    STATUS
+                </span>
+
+                <strong
+                    id="submissionStatus"
+                    class="submission-status pending"
+                >
+                    Pending
+                </strong>
+
+            </div>
+
+
+            <div class="summary-meta-item">
+
+                <span>
+                    SCORE
+                </span>
+
+                <strong id="submissionScore">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SCORE PANEL
+    ====================================================== -->
+
+    <section class="grading-summary-grid">
+
+
+        <article class="grading-stat-card">
+
+            <span>
+                Total Marks
+            </span>
+
+            <strong id="totalMarks">
+                0
+            </strong>
+
+        </article>
+
+
+        <article class="grading-stat-card">
+
+            <span>
+                Marks Awarded
+            </span>
+
+            <strong id="marksAwarded">
+                0
+            </strong>
+
+        </article>
+
+
+        <article class="grading-stat-card">
+
+            <span>
+                Percentage
+            </span>
+
+            <strong id="percentageScore">
+                0%
+            </strong>
+
+        </article>
+
+
+        <article class="grading-stat-card">
+
+            <span>
+                Result
+            </span>
+
+            <strong
+                id="resultStatus"
+                class="result-pending"
+            >
+                Pending
+            </strong>
+
+        </article>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <section class="submission-content-grid">
+
+
+        <!-- =================================================
+             ANSWERS
+        ================================================== -->
+
+        <div class="answers-panel">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Student Answers
+                    </h2>
+
+                    <p>
+                        Review each answer and award marks where applicable.
+                    </p>
+
+                </div>
+
+
+                <span
+                    class="answer-count"
+                    id="answerCount"
+                >
+                    0 questions
+                </span>
+
+            </div>
+
+
+            <!-- ANSWER LIST -->
+
+            <div
+                class="answer-list"
+                id="answerList"
+            >
+
+                <!-- JS renders answers -->
+
+            </div>
+
+
+            <!-- EMPTY -->
+
+            <div
+                class="answers-empty hidden"
+                id="answersEmpty"
+            >
+
+                <div class="empty-icon">
+
+                    <i data-lucide="file-question"></i>
+
+                </div>
+
+                <h3>
+                    No answers found
+                </h3>
+
+                <p>
+                    This submission does not contain any answers.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             GRADING SIDEBAR
+        ================================================== -->
+
+        <aside class="grading-sidebar">
+
+
+            <!-- SCORE CARD -->
+
+            <div class="grading-card">
+
+                <div class="grading-card-header">
+
+                    <h3>
+                        Grade Submission
+                    </h3>
+
+                    <i data-lucide="award"></i>
+
+                </div>
+
+
+                <div class="final-score">
+
+                    <span>
+                        Final Score
+                    </span>
+
+                    <strong id="finalScore">
+                        0 / 0
+                    </strong>
+
+                </div>
+
+
+                <div class="percentage-display">
+
+                    <strong id="sidebarPercentage">
+                        0%
+                    </strong>
+
+                    <span>
+                        Overall Score
+                    </span>
+
+                </div>
+
+
+                <div class="result-display">
+
+                    <span>
+                        Result
+                    </span>
+
+                    <strong
+                        id="sidebarResult"
+                        class="result-pending"
+                    >
+                        Pending
+                    </strong>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn btn-primary grade-full-btn"
+                    id="sidebarGradeBtn"
+                >
+
+                    <i data-lucide="save"></i>
+
+                    Save Grade
+
+                </button>
+
+            </div>
+
+
+
+            <!-- FEEDBACK -->
+
+            <div class="grading-card">
+
+                <div class="grading-card-header">
+
+                    <h3>
+                        Instructor Feedback
+                    </h3>
+
+                    <i data-lucide="message-square"></i>
+
+                </div>
+
+
+                <textarea
+                    id="instructorFeedback"
+                    rows="6"
+                    placeholder="Write feedback for the student..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- QUICK INFO -->
+
+            <div class="grading-card">
+
+                <div class="grading-card-header">
+
+                    <h3>
+                        Submission Info
+                    </h3>
+
+                    <i data-lucide="info"></i>
+
+                </div>
+
+
+                <div class="grading-info-list">
+
+
+                    <div>
+
+                        <span>
+                            Quiz
+                        </span>
+
+                        <strong id="infoQuiz">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Course
+                        </span>
+
+                        <strong id="infoCourse">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Attempt
+                        </span>
+
+                        <strong id="infoAttempt">
+                            1
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Time Spent
+                        </span>
+
+                        <strong id="timeSpent">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script
+    type="module"
+    src="js/quiz-submission.js"
+></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (
+            window.lucide &&
+            typeof window.lucide.createIcons ===
+                "function"
+        ) {
+
+            window.lucide.createIcons();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

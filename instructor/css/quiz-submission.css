@@ -1,0 +1,1308 @@
+/* ============================================================
+   SPARK STACK ACADEMY
+   INSTRUCTOR PORTAL
+   QUIZ SUBMISSION REVIEW
+   PREMIUM RESPONSIVE STYLES
+============================================================ */
+
+
+/* ============================================================
+   PAGE
+============================================================ */
+
+.quiz-submission-page {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.quiz-submission-page .page-header {
+    margin-bottom: 24px;
+}
+
+.quiz-submission-page .page-header-content {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.quiz-submission-page .breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #7b8494;
+}
+
+.quiz-submission-page .breadcrumb a {
+    color: #4f78c9;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.quiz-submission-page .breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.quiz-submission-page .breadcrumb svg {
+    width: 14px;
+    height: 14px;
+    color: #a0a8b6;
+}
+
+.submission-title-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.submission-title-icon {
+    width: 52px;
+    height: 52px;
+    flex: 0 0 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: #eef4ff;
+    color: #356edb;
+}
+
+.submission-title-icon svg {
+    width: 25px;
+    height: 25px;
+}
+
+.submission-title-row h1 {
+    margin: 0 0 5px;
+
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.15;
+    font-weight: 750;
+    letter-spacing: -0.7px;
+
+    color: #111827;
+}
+
+.submission-title-row p {
+    margin: 0;
+
+    font-size: 14px;
+    line-height: 1.5;
+
+    color: #697386;
+}
+
+
+/* ============================================================
+   HEADER BUTTONS
+============================================================ */
+
+.quiz-submission-page .page-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.quiz-submission-page .btn {
+    min-height: 44px;
+    padding: 0 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 650;
+
+    cursor: pointer;
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        background .18s ease;
+}
+
+.quiz-submission-page .btn svg {
+    width: 17px;
+    height: 17px;
+}
+
+.quiz-submission-page .btn:hover {
+    transform: translateY(-1px);
+}
+
+.quiz-submission-page .btn:active {
+    transform: translateY(0);
+}
+
+
+/* ============================================================
+   STUDENT SUMMARY
+============================================================ */
+
+.student-summary-card {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    background: #ffffff;
+    border: 1px solid #e6eaf0;
+    border-radius: 16px;
+
+    box-shadow:
+        0 5px 20px rgba(15, 23, 42, .045);
+
+    box-sizing: border-box;
+}
+
+.student-summary-main {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+}
+
+.student-large-avatar {
+    width: 58px;
+    height: 58px;
+    flex: 0 0 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eef4ff;
+    color: #356edb;
+
+    font-size: 18px;
+    font-weight: 750;
+}
+
+.student-summary-info {
+    min-width: 0;
+}
+
+.student-summary-info > span {
+    display: block;
+    margin-bottom: 4px;
+
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: .8px;
+
+    color: #8a93a3;
+}
+
+.student-summary-info h2 {
+    margin: 0;
+
+    font-size: 20px;
+    line-height: 1.3;
+    font-weight: 720;
+
+    color: #172033;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.student-summary-info p {
+    margin: 4px 0 0;
+
+    font-size: 13px;
+    color: #70798a;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.student-summary-meta {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+}
+
+.summary-meta-item {
+    min-width: 120px;
+    padding: 0 18px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border-left: 1px solid #edf0f4;
+}
+
+.summary-meta-item span {
+    margin-bottom: 6px;
+
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: .7px;
+
+    color: #8a93a3;
+}
+
+.summary-meta-item strong {
+    font-size: 14px;
+    font-weight: 700;
+    color: #202939;
+}
+
+
+/* ============================================================
+   STATUS
+============================================================ */
+
+.submission-status {
+    display: inline-flex;
+    align-items: center;
+
+    width: fit-content;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    font-size: 11px !important;
+    font-weight: 700 !important;
+}
+
+.submission-status.pending {
+    background: #fff5df;
+    color: #a96800;
+}
+
+.submission-status.graded {
+    background: #eaf8ef;
+    color: #168344;
+}
+
+
+/* ============================================================
+   GRADING SUMMARY
+============================================================ */
+
+.grading-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+
+    margin-bottom: 22px;
+}
+
+.grading-stat-card {
+    min-height: 104px;
+    padding: 18px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background: #ffffff;
+
+    border: 1px solid #e6eaf0;
+    border-radius: 14px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 4px 16px rgba(15, 23, 42, .035);
+}
+
+.grading-stat-card span {
+    margin-bottom: 7px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #7c8697;
+}
+
+.grading-stat-card strong {
+    font-size: 23px;
+    line-height: 1.2;
+    font-weight: 750;
+
+    color: #182131;
+}
+
+.grading-stat-card strong:empty {
+    visibility: hidden;
+}
+
+
+/* ============================================================
+   MAIN CONTENT
+============================================================ */
+
+.submission-content-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    align-items: start;
+    gap: 22px;
+}
+
+
+/* ============================================================
+   ANSWERS PANEL
+============================================================ */
+
+.answers-panel {
+    min-width: 0;
+
+    padding: 22px;
+
+    background: #ffffff;
+
+    border: 1px solid #e6eaf0;
+    border-radius: 16px;
+
+    box-shadow:
+        0 5px 20px rgba(15, 23, 42, .04);
+}
+
+.quiz-submission-page .section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.quiz-submission-page .section-heading h2 {
+    margin: 0 0 5px;
+
+    font-size: 19px;
+    line-height: 1.3;
+    font-weight: 720;
+
+    color: #182131;
+}
+
+.quiz-submission-page .section-heading p {
+    margin: 0;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    color: #7a8494;
+}
+
+.answer-count {
+    flex-shrink: 0;
+
+    padding: 6px 10px;
+
+    border-radius: 8px;
+
+    background: #f4f6f9;
+
+    color: #697386;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   ANSWER LIST
+============================================================ */
+
+.answer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.answer-card {
+    padding: 18px;
+
+    background: #fbfcfe;
+
+    border: 1px solid #e7ebf1;
+    border-radius: 13px;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.answer-card:hover {
+    border-color: #d8dee8;
+
+    box-shadow:
+        0 5px 15px rgba(15, 23, 42, .035);
+}
+
+.answer-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-bottom: 15px;
+}
+
+.answer-question-number {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #edf3ff;
+    color: #386fd5;
+
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.answer-question {
+    flex: 1;
+    min-width: 0;
+}
+
+.answer-question h3 {
+    margin: 0;
+
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 680;
+
+    color: #202939;
+}
+
+.answer-type {
+    flex-shrink: 0;
+
+    padding: 5px 8px;
+
+    border-radius: 7px;
+
+    background: #f0f2f6;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    color: #70798a;
+}
+
+
+/* ============================================================
+   STUDENT ANSWER
+============================================================ */
+
+.student-answer-box {
+    margin-top: 12px;
+    padding: 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e9ef;
+    border-radius: 10px;
+}
+
+.student-answer-box > span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: .5px;
+
+    color: #8a93a3;
+}
+
+.student-answer-box p {
+    margin: 0;
+
+    font-size: 14px;
+    line-height: 1.65;
+
+    color: #303a4c;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   MARKING AREA
+============================================================ */
+
+.answer-marking {
+    margin-top: 14px;
+    padding-top: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    border-top: 1px solid #e9edf2;
+}
+
+.answer-marking label {
+    font-size: 12px;
+    font-weight: 650;
+
+    color: #687284;
+}
+
+.answer-score-input {
+    width: 100px;
+    min-height: 40px;
+
+    padding: 0 11px;
+
+    border: 1px solid #dce1e8;
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #182131;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    outline: none;
+    box-sizing: border-box;
+}
+
+.answer-score-input:focus {
+    border-color: #4c7fe4;
+
+    box-shadow:
+        0 0 0 3px rgba(76, 127, 228, .12);
+}
+
+
+/* ============================================================
+   EMPTY ANSWERS
+============================================================ */
+
+.answers-empty {
+    padding: 55px 20px;
+
+    text-align: center;
+
+    border: 1px dashed #d9dee7;
+    border-radius: 13px;
+
+    background: #fafbfd;
+}
+
+.answers-empty.hidden {
+    display: none;
+}
+
+.empty-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #f0f3f7;
+    color: #8b95a5;
+}
+
+.empty-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.answers-empty h3 {
+    margin: 0 0 6px;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #273143;
+}
+
+.answers-empty p {
+    margin: 0;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    color: #7c8696;
+}
+
+
+/* ============================================================
+   GRADING SIDEBAR
+============================================================ */
+
+.grading-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    position: sticky;
+    top: 20px;
+}
+
+.grading-card {
+    padding: 19px;
+
+    background: #ffffff;
+
+    border: 1px solid #e6eaf0;
+    border-radius: 15px;
+
+    box-shadow:
+        0 5px 18px rgba(15, 23, 42, .035);
+}
+
+.grading-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+
+    border-bottom: 1px solid #edf0f4;
+}
+
+.grading-card-header h3 {
+    margin: 0;
+
+    font-size: 15px;
+    font-weight: 720;
+
+    color: #202939;
+}
+
+.grading-card-header svg {
+    width: 18px;
+    height: 18px;
+
+    color: #758093;
+}
+
+
+/* ============================================================
+   FINAL SCORE
+============================================================ */
+
+.final-score {
+    text-align: center;
+    padding: 8px 0 18px;
+}
+
+.final-score span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 11px;
+    font-weight: 650;
+
+    color: #7e8796;
+}
+
+.final-score strong {
+    display: block;
+
+    font-size: 27px;
+    line-height: 1.2;
+    font-weight: 800;
+
+    color: #172033;
+}
+
+.percentage-display {
+    padding: 14px;
+
+    text-align: center;
+
+    border-radius: 11px;
+
+    background: #f5f8ff;
+}
+
+.percentage-display strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 24px;
+    font-weight: 800;
+
+    color: #356edb;
+}
+
+.percentage-display span {
+    font-size: 11px;
+    color: #7a8494;
+}
+
+.result-display {
+    margin-top: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid #edf0f4;
+}
+
+.result-display span {
+    font-size: 12px;
+    color: #70798a;
+}
+
+.result-display strong {
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.result-pending {
+    color: #a96800;
+}
+
+.result-pass {
+    color: #168344;
+}
+
+.result-fail {
+    color: #c43d3d;
+}
+
+
+/* ============================================================
+   GRADE BUTTON
+============================================================ */
+
+.grade-full-btn {
+    width: 100%;
+    margin-top: 15px;
+}
+
+
+/* ============================================================
+   FEEDBACK
+============================================================ */
+
+#instructorFeedback {
+    width: 100%;
+    min-height: 135px;
+
+    padding: 12px;
+
+    resize: vertical;
+
+    border: 1px solid #dce1e8;
+    border-radius: 10px;
+
+    background: #fbfcfe;
+
+    color: #273143;
+
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.55;
+
+    outline: none;
+
+    box-sizing: border-box;
+}
+
+#instructorFeedback::placeholder {
+    color: #a0a8b5;
+}
+
+#instructorFeedback:focus {
+    border-color: #4c7fe4;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 3px rgba(76, 127, 228, .10);
+}
+
+
+/* ============================================================
+   SUBMISSION INFO
+============================================================ */
+
+.grading-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.grading-info-list > div {
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    border-bottom: 1px solid #edf0f4;
+}
+
+.grading-info-list > div:last-child {
+    border-bottom: 0;
+}
+
+.grading-info-list span {
+    font-size: 11px;
+    color: #7b8494;
+}
+
+.grading-info-list strong {
+    max-width: 60%;
+
+    text-align: right;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    color: #283244;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET
+============================================================ */
+
+@media (max-width: 1050px) {
+
+    .quiz-submission-page {
+        padding: 20px;
+    }
+
+    .student-summary-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .student-summary-meta {
+        width: 100%;
+    }
+
+    .summary-meta-item {
+        flex: 1;
+    }
+
+    .submission-content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .grading-sidebar {
+        position: static;
+
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — SMALL TABLET
+============================================================ */
+
+@media (max-width: 760px) {
+
+    .quiz-submission-page {
+        padding: 16px;
+    }
+
+    .quiz-submission-page .page-header-content {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .quiz-submission-page .page-header-actions {
+        width: 100%;
+    }
+
+    .quiz-submission-page .page-header-actions .btn {
+        flex: 1;
+    }
+
+    .grading-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .student-summary-meta {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .summary-meta-item {
+        min-width: 0;
+        padding: 0 12px;
+    }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — PHONE
+============================================================ */
+
+@media (max-width: 560px) {
+
+    .quiz-submission-page {
+        padding: 12px;
+    }
+
+
+    /* HEADER */
+
+    .submission-title-row {
+        align-items: flex-start;
+        gap: 11px;
+    }
+
+    .submission-title-icon {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+
+        border-radius: 11px;
+    }
+
+    .submission-title-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .submission-title-row h1 {
+        font-size: 22px;
+        letter-spacing: -.4px;
+    }
+
+    .submission-title-row p {
+        font-size: 12px;
+    }
+
+    .quiz-submission-page .breadcrumb {
+        font-size: 11px;
+    }
+
+
+    /* HEADER BUTTONS */
+
+    .quiz-submission-page .page-header-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .quiz-submission-page .page-header-actions .btn {
+        width: 100%;
+        min-height: 42px;
+
+        padding: 0 8px;
+
+        font-size: 12px;
+    }
+
+    .quiz-submission-page .page-header-actions .btn svg {
+        width: 15px;
+        height: 15px;
+    }
+
+
+    /* STUDENT */
+
+    .student-summary-card {
+        padding: 16px;
+        gap: 18px;
+
+        border-radius: 13px;
+    }
+
+    .student-large-avatar {
+        width: 48px;
+        height: 48px;
+        flex-basis: 48px;
+
+        font-size: 15px;
+    }
+
+    .student-summary-info h2 {
+        font-size: 17px;
+    }
+
+    .student-summary-info p {
+        font-size: 12px;
+    }
+
+    .student-summary-meta {
+        width: 100%;
+    }
+
+    .summary-meta-item {
+        padding: 0 8px;
+    }
+
+    .summary-meta-item:first-child {
+        padding-left: 0;
+    }
+
+    .summary-meta-item span {
+        font-size: 8px;
+        letter-spacing: .4px;
+    }
+
+    .summary-meta-item strong {
+        font-size: 11px;
+    }
+
+
+    /* STATS */
+
+    .grading-summary-grid {
+        gap: 9px;
+    }
+
+    .grading-stat-card {
+        min-height: 85px;
+        padding: 13px;
+        border-radius: 11px;
+    }
+
+    .grading-stat-card span {
+        font-size: 10px;
+        margin-bottom: 5px;
+    }
+
+    .grading-stat-card strong {
+        font-size: 19px;
+    }
+
+
+    /* ANSWERS */
+
+    .answers-panel {
+        padding: 15px;
+        border-radius: 13px;
+    }
+
+    .quiz-submission-page .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    .quiz-submission-page .section-heading h2 {
+        font-size: 17px;
+    }
+
+    .quiz-submission-page .section-heading p {
+        font-size: 12px;
+    }
+
+    .answer-count {
+        font-size: 10px;
+    }
+
+    .answer-card {
+        padding: 14px;
+        border-radius: 11px;
+    }
+
+    .answer-card-header {
+        gap: 9px;
+    }
+
+    .answer-question-number {
+        width: 27px;
+        height: 27px;
+        flex-basis: 27px;
+
+        font-size: 11px;
+    }
+
+    .answer-question h3 {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .answer-type {
+        display: none;
+    }
+
+    .student-answer-box {
+        padding: 11px;
+    }
+
+    .student-answer-box > span {
+        font-size: 9px;
+    }
+
+    .student-answer-box p {
+        font-size: 12px;
+        line-height: 1.55;
+    }
+
+    .answer-marking {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .answer-score-input {
+        width: 100%;
+        min-height: 42px;
+    }
+
+
+    /* SIDEBAR */
+
+    .grading-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .grading-card {
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    .grading-card-header {
+        margin-bottom: 13px;
+        padding-bottom: 12px;
+    }
+
+    .grading-card-header h3 {
+        font-size: 14px;
+    }
+
+    .final-score strong {
+        font-size: 24px;
+    }
+
+    .percentage-display strong {
+        font-size: 22px;
+    }
+
+    #instructorFeedback {
+        min-height: 120px;
+        font-size: 12px;
+    }
+
+    .grading-info-list > div {
+        min-height: 40px;
+    }
+
+}
+
+
+/* ============================================================
+   VERY SMALL PHONES
+============================================================ */
+
+@media (max-width: 380px) {
+
+    .quiz-submission-page {
+        padding: 10px;
+    }
+
+    .student-summary-meta {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .summary-meta-item {
+        padding: 0 !important;
+
+        border-left: 0;
+    }
+
+    .summary-meta-item:not(:last-child) {
+        padding-bottom: 10px !important;
+
+        border-bottom: 1px solid #edf0f4;
+    }
+
+    .grading-summary-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .quiz-submission-page .page-header-actions {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+============================================================ */
+
+.quiz-submission-page button:focus-visible,
+.quiz-submission-page input:focus-visible,
+.quiz-submission-page textarea:focus-visible {
+    outline: 3px solid rgba(53, 110, 219, .18);
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .quiz-submission-page *,
+    .quiz-submission-page *::before,
+    .quiz-submission-page *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+    }
+
+}

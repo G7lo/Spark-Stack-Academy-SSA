@@ -3,504 +3,881 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>
-Classroom | Spark Stack Academy
-</title>
+    <title>
+        Course Player | Spark Stack Academy
+    </title>
 
-<link rel="stylesheet" href="css/student-core.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/course-player.css">
-<link rel="stylesheet" href="css/responsive.css">
+    <!-- =========================
+         CORE STYLES
+    ========================== -->
 
-<link
-href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-rel="stylesheet">
+    <link
+        rel="stylesheet"
+        href="css/student-core.css"
+    >
 
-<script src="https://unpkg.com/lucide@latest"></script>
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/course-player.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- =========================
+         FONT
+    ========================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =========================
+         ICONS
+    ========================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
 
+
 <body>
+
 
 <div class="student-layout">
 
-    <!-- SIDEBAR -->
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
     <aside
         id="sidebarContainer"
-        class="sidebar-container">
-    </aside>
+        class="sidebar-container"
+    ></aside>
+
 
     <div
         id="sidebarOverlay"
-        class="sidebar-overlay">
-    </div>
+        class="sidebar-overlay"
+    ></div>
 
 
-    <!-- MAIN -->
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
     <main class="student-main">
 
-        <!-- TOPBAR -->
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
         <div
             id="topbarContainer"
-            class="topbar-container">
-        </div>
+            class="topbar-container"
+        ></div>
 
 
-        <section class="dashboard-content course-player-page">
+        <!-- =================================================
+             CLASSROOM
+        ================================================== -->
+
+        <section class="course-player-page">
 
 
-            <!-- =================================
-                 LOCKED COURSE
-            ================================== -->
+            <!-- =================================================
+                 COURSE HEADER
+            ================================================== -->
 
-            <div
-    id="courseLocked"
-    class="course-lock-card">
-
-                <div class="lock-icon">
-                    <i data-lucide="lock"></i>
-                </div>
-
-                <h2>
-                    Course Locked
-                </h2>
-
-                <p>
-                    This course requires payment
-                    before you can enter the classroom.
-                </p>
-
-                <button
-                    class="primary-btn"
-                    id="unlockCourseBtn">
-
-                    <i data-lucide="credit-card"></i>
-
-                    Pay & Unlock
-
-                </button>
-
-            </div>
+            <header class="classroom-header">
 
 
-            <!-- =================================
-                 CLASSROOM
-            ================================== -->
-
-            <div
-    id="courseContent"
-    class="course-content">
+                <div class="classroom-header-left">
 
 
-                <!-- COURSE HEADER -->
+                    <a
+                        href="courses.html"
+                        class="back-to-courses"
+                    >
 
-                <div class="class-header">
+                        <i data-lucide="arrow-left"></i>
 
-                    <div class="class-header-main">
-
-                        <span class="page-badge">
-
-                            <i data-lucide="graduation-cap"></i>
-
-                            Masterclass
-
+                        <span>
+                            My Courses
                         </span>
 
+                    </a>
+
+
+                    <div class="classroom-course-info">
+
+
+                        <span
+                            class="course-category"
+                            id="courseCategory"
+                        >
+                            Course
+                        </span>
+
+
                         <h1 id="courseTitle">
-                            Course Title
+                            Loading course...
                         </h1>
 
-                        <p id="courseDescription">
-                            Course description.
-                        </p>
 
-                    </div>
+                        <div class="course-instructor">
 
 
-                    <!-- INSTRUCTOR -->
-
-                    <div class="instructor-card">
-
-                        <div
-                            class="instructor-avatar"
-                            id="instructorAvatar">
-
-                            I
-
-                        </div>
-
-                        <div>
-
-                            <h4 id="instructorName">
-                                Instructor
-                            </h4>
-
-                            <span>
-                                Course Instructor
+                            <span
+                                class="instructor-avatar"
+                                id="instructorAvatar"
+                            >
+                                I
                             </span>
 
+
+                            <span id="instructorName">
+                                SSA Instructor
+                            </span>
+
+
                         </div>
 
+
                     </div>
+
 
                 </div>
 
 
-                <!-- =================================
-                     PROGRESS
-                ================================== -->
+                <!-- =========================
+                     COURSE PROGRESS
+                ========================== -->
 
-                <div class="class-progress-box">
+                <div class="classroom-progress">
+
 
                     <div class="progress-header">
+
 
                         <span>
                             Your Progress
                         </span>
 
-                        <strong
-                            id="courseProgressText">
 
+                        <strong id="courseProgressText">
                             0%
-
                         </strong>
 
+
                     </div>
 
 
-                    <div class="class-progress">
+                    <div class="progress-track">
+
 
                         <span
-                            id="courseProgressBar">
-                        </span>
+                            id="courseProgressBar"
+                            class="progress-fill"
+                            style="width:0%"
+                        ></span>
+
 
                     </div>
+
+
+                    <small id="lessonProgressLabel">
+                        Getting your classroom ready...
+                    </small>
+
 
                 </div>
 
 
-                <!-- =================================
-                     LEARNING AREA
-                ================================== -->
-
-                <div class="learning-layout">
+            </header>
 
 
-                    <!-- LESSON SIDEBAR -->
+            <!-- =================================================
+                 LOCKED COURSE
+            ================================================== -->
 
-                    <aside class="lesson-sidebar">
+            <section
+                id="courseLocked"
+                class="course-locked"
+                style="display:none;"
+            >
 
-                        <div class="lesson-sidebar-header">
 
-                            <h3>
-                                Course Lessons
-                            </h3>
+                <div class="course-lock-card">
+
+
+                    <div class="lock-icon">
+
+                        <i data-lucide="lock"></i>
+
+                    </div>
+
+
+                    <h2>
+                        Course Locked
+                    </h2>
+
+
+                    <p>
+                        Enroll in this course to access
+                        the classroom and lessons.
+                    </p>
+
+
+                    <button
+                        id="unlockCourseBtn"
+                        class="primary-btn"
+                        type="button"
+                    >
+
+                        <i data-lucide="unlock"></i>
+
+                        Unlock Course
+
+                    </button>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 CLASSROOM CONTENT
+            ================================================== -->
+
+            <section
+                id="courseContent"
+                class="classroom-content"
+            >
+
+
+                <!-- =================================================
+                     MOBILE COURSE CONTENT BUTTON
+                ================================================== -->
+
+                <button
+                    id="mobileLessonsBtn"
+                    class="mobile-lessons-btn"
+                    type="button"
+                >
+
+                    <i data-lucide="list-video"></i>
+
+                    <span>
+                        Course Content
+                    </span>
+
+                    <i data-lucide="chevron-down"></i>
+
+                </button>
+
+
+                <!-- =================================================
+                     LESSON SIDEBAR
+                ================================================== -->
+
+                <aside
+                    id="lessonSidebar"
+                    class="lesson-sidebar"
+                >
+
+
+                    <div class="lesson-sidebar-header">
+
+
+                        <div>
 
                             <span>
+                                COURSE CONTENT
+                            </span>
+
+                            <h2>
                                 Curriculum
-                            </span>
-
-                        </div>
-
-
-                        <div id="lessonList">
-
-                            <div class="empty-state">
-
-                                Loading lessons...
-
-                            </div>
-
-                        </div>
-
-                    </aside>
-
-
-                    <!-- =================================
-                         LESSON VIEW
-                    ================================== -->
-
-                    <div class="lesson-view">
-
-
-                        <!-- VIDEO -->
-
-                        <div class="video-box">
-
-                            <div class="video-placeholder">
-
-                                <i data-lucide="play-circle"></i>
-
-                                <h3>
-                                    Select a lesson
-                                </h3>
-
-                                <p>
-                                    Your lesson video will
-                                    appear here.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- LESSON INFORMATION -->
-
-                        <div class="lesson-info">
-
-                            <span class="lesson-label">
-                                CURRENT LESSON
-                            </span>
-
-                            <h2 id="lessonTitle">
-                                Select Lesson
                             </h2>
 
-                            <p id="lessonDescription">
-                                Your lesson content
-                                will appear here.
-                            </p>
+                        </div>
+
+
+                        <button
+                            id="closeLessonsBtn"
+                            class="icon-btn mobile-only"
+                            type="button"
+                            aria-label="Close course content"
+                        >
+
+                            <i data-lucide="x"></i>
+
+                        </button>
+
+
+                    </div>
+
+
+                    <!-- =========================
+                         LESSON SUMMARY
+                    ========================== -->
+
+                    <div class="lesson-summary">
+
+
+                        <div class="summary-icon">
+
+                            <i data-lucide="graduation-cap"></i>
 
                         </div>
 
 
-                        <!-- =================================
-                             LESSON CONTROLS
-                        ================================== -->
+                        <div>
 
-                        <div class="lesson-actions">
+                            <strong id="lessonCount">
+                                0 Lessons
+                            </strong>
+
+                            <span id="completedCount">
+                                0 completed
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- =========================
+                         LESSON LIST
+                    ========================== -->
+
+                    <div
+                        id="lessonList"
+                        class="lesson-list"
+                    >
+
+
+                        <div class="lesson-list-loading">
+
+
+                            <i data-lucide="loader"></i>
+
+
+                            <span>
+                                Loading lessons...
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </aside>
+
+
+                <!-- =================================================
+                     LESSON WORKSPACE
+                ================================================== -->
+
+                <main class="lesson-workspace">
+
+
+                    <!-- =================================================
+                         VIDEO / CONTENT PLAYER
+                    ================================================== -->
+
+                    <section class="lesson-player-card">
+
+
+                        <div
+                            id="videoBox"
+                            class="video-box"
+                        >
+
+
+                            <div class="video-loading">
+
+
+                                <div class="loading-spinner"></div>
+
+
+                                <span>
+                                    Preparing lesson...
+                                </span>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- =========================
+                             PLAYER ACTIONS
+                        ========================== -->
+
+                        <div class="player-actions">
+
 
                             <button
-                                class="secondary-btn"
-                                id="previousLessonBtn">
+                                id="fullscreenBtn"
+                                class="player-action"
+                                type="button"
+                            >
 
-                                <i data-lucide="arrow-left"></i>
+                                <i data-lucide="maximize"></i>
 
+                                <span>
+                                    Fullscreen
+                                </span>
+
+                            </button>
+
+
+                            <button
+                                id="orientationBtn"
+                                class="player-action"
+                                type="button"
+                            >
+
+                                <i data-lucide="smartphone"></i>
+
+                                <span>
+                                    Landscape
+                                </span>
+
+                            </button>
+
+
+                            <span
+                                id="lessonTypeBadge"
+                                class="lesson-type-badge"
+                            >
+                                Lesson
+                            </span>
+
+
+                        </div>
+
+
+                    </section>
+
+
+                    <!-- =================================================
+                         CURRENT LESSON
+                    ================================================== -->
+
+                    <section class="lesson-details">
+
+
+                        <div class="lesson-heading">
+
+
+                            <div>
+
+
+                                <span class="current-label">
+                                    CURRENT LESSON
+                                </span>
+
+
+                                <h2 id="lessonTitle">
+                                    Select a lesson
+                                </h2>
+
+
+                            </div>
+
+
+                            <span
+                                id="lessonDuration"
+                                class="lesson-duration"
+                            >
+                                --
+                            </span>
+
+
+                        </div>
+
+
+                        <div
+                            id="lessonDescription"
+                            class="lesson-description"
+                        >
+
+                            Your lesson content will appear here.
+
+                        </div>
+
+
+                    </section>
+
+
+                    <!-- =================================================
+                         LESSON NAVIGATION
+                    ================================================== -->
+
+                    <nav class="lesson-navigation">
+
+
+                        <button
+                            id="previousLessonBtn"
+                            class="secondary-btn"
+                            type="button"
+                            disabled
+                        >
+
+                            <i data-lucide="arrow-left"></i>
+
+                            <span>
                                 Previous
+                            </span>
 
-                            </button>
+                        </button>
 
 
-                            <button
-                                class="primary-btn"
-                                id="completeLessonBtn">
+                        <button
+                            id="completeLessonBtn"
+                            class="complete-btn"
+                            type="button"
+                            disabled
+                        >
 
+                            <i data-lucide="check"></i>
+
+                            <span>
                                 Mark Complete
+                            </span>
 
-                                <i data-lucide="check"></i>
-
-                            </button>
-
-
-                            <button
-                                class="secondary-btn"
-                                id="nextLessonBtn">
-
-                                Next
-
-                                <i data-lucide="arrow-right"></i>
-
-                            </button>
-
-                        </div>
+                        </button>
 
 
-                        <!-- =================================
+                        <button
+                            id="nextLessonBtn"
+                            class="primary-btn"
+                            type="button"
+                            disabled
+                        >
+
+                            <span>
+                                Next Lesson
+                            </span>
+
+                            <i data-lucide="arrow-right"></i>
+
+                        </button>
+
+
+                    </nav>
+
+
+                    <!-- =================================================
+                         LEARNING MATERIAL
+                    ================================================== -->
+
+                    <section class="learning-material">
+
+
+                        <!-- =========================
                              RESOURCES
-                        ================================== -->
+                        ========================== -->
 
-                        <div class="class-section">
+                        <div class="material-card">
 
-                            <div class="section-heading">
+
+                            <div class="material-header">
+
+
+                                <div class="material-icon">
+
+                                    <i data-lucide="paperclip"></i>
+
+                                </div>
+
 
                                 <div>
-
-                                    <span>
-                                        LEARNING MATERIAL
-                                    </span>
 
                                     <h3>
                                         Resources
                                     </h3>
 
+                                    <p>
+                                        Files and materials for this lesson.
+                                    </p>
+
                                 </div>
+
 
                             </div>
 
 
-                            <div id="courseResources">
+                            <div
+                                id="courseResources"
+                                class="resources-list"
+                            >
 
-                                <p>
+                                <p class="empty-material">
                                     No resources available.
                                 </p>
 
                             </div>
 
+
                         </div>
 
 
-                        <!-- =================================
+                        <!-- =========================
                              NOTES
-                        ================================== -->
+                        ========================== -->
 
-                        <div class="class-section">
+                        <div class="material-card">
 
-                            <div class="section-heading">
+
+                            <div class="material-header">
+
+
+                                <div class="material-icon">
+
+                                    <i data-lucide="notebook-pen"></i>
+
+                                </div>
+
 
                                 <div>
-
-                                    <span>
-                                        PERSONAL
-                                    </span>
 
                                     <h3>
                                         My Notes
                                     </h3>
 
+                                    <p>
+                                        Keep personal notes while learning.
+                                    </p>
+
                                 </div>
+
 
                             </div>
 
 
                             <textarea
                                 id="lessonNotes"
-                                placeholder="Write your notes for this lesson...">
-                            </textarea>
+                                class="lesson-notes"
+                                placeholder="Write your notes for this lesson..."
+                            ></textarea>
 
 
-                            <button
-                                class="primary-btn"
-                                id="saveNotesBtn">
+                            <div class="notes-footer">
 
-                                <i data-lucide="save"></i>
 
-                                Save Notes
+                                <span>
+                                    Private to you
+                                </span>
 
-                            </button>
+
+                                <button
+                                    id="saveNotesBtn"
+                                    class="secondary-btn"
+                                    type="button"
+                                >
+
+                                    <i data-lucide="save"></i>
+
+                                    Save Notes
+
+                                </button>
+
+
+                            </div>
+
 
                         </div>
 
 
-                        <!-- =================================
+                        <!-- =========================
                              DISCUSSION
-                        ================================== -->
+                        ========================== -->
 
-                        <div class="class-section">
+                        <div class="material-card community-card">
 
-                            <div class="section-heading">
+
+                            <div class="material-header">
+
+
+                                <div class="material-icon">
+
+                                    <i data-lucide="messages-square"></i>
+
+                                </div>
+
 
                                 <div>
-
-                                    <span>
-                                        COMMUNITY
-                                    </span>
 
                                     <h3>
                                         Class Discussion
                                     </h3>
 
-                                </div>
-
-                            </div>
-
-
-                            <div id="discussionBox">
-
-                                <div class="discussion-empty">
-
-                                    <i data-lucide="messages-square"></i>
-
                                     <p>
-                                        Ask questions and
-                                        interact with classmates.
+                                        Ask questions and interact with
+                                        your classmates.
                                     </p>
 
                                 </div>
 
+
                             </div>
+
+
+                            <button
+                                id="discussionBtn"
+                                class="secondary-btn"
+                                type="button"
+                            >
+
+                                <i data-lucide="message-circle"></i>
+
+                                Join Discussion
+
+                            </button>
+
 
                         </div>
 
 
-                    </div>
-
-                </div>
+                    </section>
 
 
-                <!-- =================================
-                     ANNOUNCEMENT
-                ================================== -->
+                    <!-- =================================================
+                         INSTRUCTOR ANNOUNCEMENT
+                    ================================================== -->
 
-                <div class="class-announcement">
-
-                    <div class="announcement-icon">
-
-                        <i data-lucide="megaphone"></i>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            INSTRUCTOR ANNOUNCEMENT
-                        </span>
-
-                        <h4>
-                            Latest Update
-                        </h4>
-
-                        <p id="classAnnouncement">
-                            No announcements yet.
-                        </p>
-
-                    </div>
-
-                </div>
+                    <section class="announcement-card">
 
 
-            </div>
+                        <div class="announcement-icon">
+
+                            <i data-lucide="megaphone"></i>
+
+                        </div>
+
+
+                        <div>
+
+
+                            <span>
+                                INSTRUCTOR ANNOUNCEMENT
+                            </span>
+
+
+                            <h3>
+                                Latest Update
+                            </h3>
+
+
+                            <p id="classAnnouncement">
+                                No announcements yet.
+                            </p>
+
+
+                        </div>
+
+
+                    </section>
+
+
+                </main>
+
+
+            </section>
+
 
         </section>
 
+
     </main>
+
 
 </div>
 
 
-<!-- =================================
+<!-- =========================================================
+     LESSON SIDEBAR OVERLAY
+========================================================== -->
+
+<div
+    id="lessonDrawerOverlay"
+    class="lesson-drawer-overlay"
+></div>
+
+
+<!-- =========================================================
      SCRIPTS
-================================== -->
+========================================================== -->
 
 <script
-type="module"
-src="js/student-app.js">
-</script>
+    type="module"
+    src="js/student-app.js"
+></script>
+
 
 <script
-type="module"
-src="js/course-player.js">
-</script>
+    type="module"
+    src="js/course-player.js"
+></script>
+
 
 <script>
 
-window.addEventListener(
-    "DOMContentLoaded",
-    () => {
+    document.addEventListener("DOMContentLoaded", () => {
 
-        if (window.lucide) {
-            lucide.createIcons();
+        if (
+            window.lucide &&
+            typeof window.lucide.createIcons === "function"
+        ) {
+
+            window.lucide.createIcons();
+
         }
 
-    }
-);
+    });
 
 </script>
 
+
 </body>
+
 </html>

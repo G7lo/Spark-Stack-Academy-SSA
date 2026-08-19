@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Assignment | Spark Stack Academy
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/assignment.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+<div class="instructor-app">
+
+    <!-- SIDEBAR -->
+
+    <aside
+        id="instructorSidebar"
+        class="instructor-sidebar"
+    ></aside>
+
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- MAIN -->
+
+    <main class="instructor-main">
+
+        <header
+            id="instructorTopbar"
+            class="instructor-topbar"
+        ></header>
+
+
+        <section class="assignment-page">
+
+
+            <!-- HEADER -->
+
+            <div class="assignment-header">
+
+                <div>
+
+                    <a
+                        href="assignments.html"
+                        class="back-link"
+                    >
+
+                        <i data-lucide="arrow-left"></i>
+
+                        Back to Assignments
+
+                    </a>
+
+
+                    <span class="page-eyebrow">
+                        ASSIGNMENT WORKSPACE
+                    </span>
+
+
+                    <h1 id="assignmentTitle">
+                        Loading Assignment...
+                    </h1>
+
+
+                    <p id="assignmentDescription">
+                        Loading assignment details...
+                    </p>
+
+                </div>
+
+
+                <div class="assignment-header-actions">
+
+                    <span
+                        id="assignmentStatus"
+                        class="assignment-status"
+                    >
+                        Loading
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- OVERVIEW -->
+
+            <section class="assignment-overview">
+
+                <article class="overview-card">
+
+                    <div class="overview-icon blue">
+
+                        <i data-lucide="book-open"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Course
+                        </span>
+
+                        <strong id="assignmentCourse">
+                            —
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="overview-card">
+
+                    <div class="overview-icon gold">
+
+                        <i data-lucide="calendar"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Due Date
+                        </span>
+
+                        <strong id="assignmentDueDate">
+                            No deadline
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="overview-card">
+
+                    <div class="overview-icon purple">
+
+                        <i data-lucide="target"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Maximum Score
+                        </span>
+
+                        <strong id="assignmentMaxScore">
+                            100
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="overview-card">
+
+                    <div class="overview-icon green">
+
+                        <i data-lucide="users"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Submissions
+                        </span>
+
+                        <strong id="assignmentSubmissionCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- CONTENT -->
+
+            <section class="assignment-layout">
+
+
+                <!-- DETAILS -->
+
+                <div class="assignment-main-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                ASSIGNMENT
+                            </span>
+
+                            <h2>
+                                Instructions
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="assignmentInstructions"
+                        class="assignment-instructions"
+                    >
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <!-- SUBMISSION SUMMARY -->
+
+                <aside class="assignment-side-card">
+
+                    <span class="card-eyebrow">
+                        SUBMISSIONS
+                    </span>
+
+                    <h2>
+                        Review Progress
+                    </h2>
+
+
+                    <div class="review-stat">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong id="totalSubmissions">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-stat pending">
+
+                        <span>
+                            Pending Review
+                        </span>
+
+                        <strong id="pendingSubmissions">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-stat graded">
+
+                        <span>
+                            Graded
+                        </span>
+
+                        <strong id="gradedSubmissions">
+                            0
+                        </strong>
+
+                    </div>
+
+                </aside>
+
+            </section>
+
+
+            <!-- SUBMISSIONS -->
+
+            <section class="submissions-card">
+
+                <div class="submissions-header">
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            STUDENT WORK
+                        </span>
+
+                        <h2>
+                            Submissions
+                        </h2>
+
+                        <p>
+                            Review and grade student work.
+                        </p>
+
+                    </div>
+
+
+                    <div class="submission-search">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            type="search"
+                            id="submissionSearch"
+                            placeholder="Search students..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- FILTERS -->
+
+                <div class="submission-filters">
+
+                    <button
+                        class="submission-filter active"
+                        data-filter="all"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        class="submission-filter"
+                        data-filter="pending_review"
+                    >
+                        Pending Review
+                    </button>
+
+                    <button
+                        class="submission-filter"
+                        data-filter="graded"
+                    >
+                        Graded
+                    </button>
+
+                </div>
+
+
+                <!-- LIST -->
+
+                <div
+                    id="submissionList"
+                    class="submission-list"
+                >
+
+                    <div class="submission-loading">
+
+                        <div class="loading-spinner"></div>
+
+                        <span>
+                            Loading submissions...
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMPTY -->
+
+                <div
+                    id="submissionEmpty"
+                    class="submission-empty hidden"
+                >
+
+                    <div class="empty-icon">
+
+                        <i data-lucide="inbox"></i>
+
+                    </div>
+
+                    <h3>
+                        No submissions yet
+                    </h3>
+
+                    <p>
+                        Student submissions will appear here.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script
+    type="module"
+    src="js/instructor-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/assignment.js"
+></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (window.lucide) {
+
+            lucide.createIcons();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

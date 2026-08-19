@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Quizzes | Instructor Portal
+    </title>
+
+    <!-- =========================
+         CORE STYLES
+    ========================== -->
+
+<link rel="stylesheet" href="css/instructor-core.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/quizzes.css">
+<link rel="stylesheet" href="css/responsive.css">
+
+    <!-- =========================
+         ICONS
+    ========================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     PAGE
+========================================================= -->
+
+<main class="instructor-page quizzes-page">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <section class="page-header">
+
+        <div class="page-header-content">
+
+            <div>
+
+                <div class="breadcrumb">
+
+                    <a href="dashboard.html">
+                        Dashboard
+                    </a>
+
+                    <i data-lucide="chevron-right"></i>
+
+                    <span>
+                        Quizzes
+                    </span>
+
+                </div>
+
+
+                <h1>
+                    Quizzes
+                </h1>
+
+                <p>
+                    Create, manage and review your course quizzes.
+                </p>
+
+            </div>
+
+
+            <div class="page-header-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="createQuizBtn"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Create Quiz
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         COURSE CONTEXT
+    ====================================================== -->
+
+    <section
+        class="quiz-course-bar"
+        id="quizCourseBar"
+    >
+
+        <div class="course-context-icon">
+
+            <i data-lucide="book-open"></i>
+
+        </div>
+
+
+        <div class="course-context-info">
+
+            <span>
+                COURSE
+            </span>
+
+            <strong id="courseName">
+                Loading course...
+            </strong>
+
+        </div>
+
+
+        <div class="course-context-meta">
+
+            <span id="courseCategory">
+                —
+            </span>
+
+            <span class="dot">
+                •
+            </span>
+
+            <span id="courseLevel">
+                —
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+
+    <section class="quiz-stats-grid">
+
+
+        <!-- TOTAL QUIZZES -->
+
+        <article class="quiz-stat-card">
+
+            <div class="stat-icon blue">
+
+                <i data-lucide="clipboard-list"></i>
+
+            </div>
+
+
+            <div class="stat-content">
+
+                <span>
+                    Total Quizzes
+                </span>
+
+                <strong id="totalQuizzes">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PUBLISHED -->
+
+        <article class="quiz-stat-card">
+
+            <div class="stat-icon green">
+
+                <i data-lucide="circle-check"></i>
+
+            </div>
+
+
+            <div class="stat-content">
+
+                <span>
+                    Published
+                </span>
+
+                <strong id="publishedQuizzes">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SUBMISSIONS -->
+
+        <article class="quiz-stat-card">
+
+            <div class="stat-icon purple">
+
+                <i data-lucide="users"></i>
+
+            </div>
+
+
+            <div class="stat-content">
+
+                <span>
+                    Submissions
+                </span>
+
+                <strong id="totalSubmissions">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PENDING -->
+
+        <article class="quiz-stat-card">
+
+            <div class="stat-icon orange">
+
+                <i data-lucide="clock-3"></i>
+
+            </div>
+
+
+            <div class="stat-content">
+
+                <span>
+                    Pending Review
+                </span>
+
+                <strong id="pendingSubmissions">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- GRADED -->
+
+        <article class="quiz-stat-card">
+
+            <div class="stat-icon gold">
+
+                <i data-lucide="badge-check"></i>
+
+            </div>
+
+
+            <div class="stat-content">
+
+                <span>
+                    Graded
+                </span>
+
+                <strong id="gradedSubmissions">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         TOOLBAR
+    ====================================================== -->
+
+    <section class="quiz-toolbar">
+
+
+        <div class="quiz-filters">
+
+            <button
+                type="button"
+                class="quiz-filter active"
+                data-filter="all"
+            >
+                All
+            </button>
+
+
+            <button
+                type="button"
+                class="quiz-filter"
+                data-filter="published"
+            >
+                Published
+            </button>
+
+
+            <button
+                type="button"
+                class="quiz-filter"
+                data-filter="draft"
+            >
+                Drafts
+            </button>
+
+        </div>
+
+
+
+        <div class="quiz-search">
+
+            <i data-lucide="search"></i>
+
+            <input
+                type="search"
+                id="quizSearch"
+                placeholder="Search quizzes..."
+                autocomplete="off"
+            >
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUIZ LIST
+    ====================================================== -->
+
+    <section class="quiz-list-section">
+
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Your Quizzes
+                </h2>
+
+                <p>
+                    Manage quizzes and view student performance.
+                </p>
+
+            </div>
+
+
+            <span
+                class="quiz-count"
+                id="quizCount"
+            >
+                0 quizzes
+            </span>
+
+        </div>
+
+
+
+        <!-- QUIZ LIST -->
+
+        <div
+            class="quiz-list"
+            id="quizList"
+        >
+
+            <!-- JS renders quizzes here -->
+
+        </div>
+
+
+
+        <!-- =================================================
+             EMPTY STATE
+        ================================================== -->
+
+        <div
+            class="quiz-empty hidden"
+            id="quizEmpty"
+        >
+
+            <div class="empty-icon">
+
+                <i data-lucide="clipboard-list"></i>
+
+            </div>
+
+
+            <h3>
+                No quizzes yet
+            </h3>
+
+
+            <p>
+                Create your first quiz to start testing your students.
+            </p>
+
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="emptyCreateQuizBtn"
+            >
+
+                <i data-lucide="plus"></i>
+
+                Create Your First Quiz
+
+            </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SEARCH EMPTY STATE
+        ================================================== -->
+
+        <div
+            class="quiz-search-empty hidden"
+            id="quizSearchEmpty"
+        >
+
+            <div class="empty-icon">
+
+                <i data-lucide="search-x"></i>
+
+            </div>
+
+
+            <h3>
+                No quizzes found
+            </h3>
+
+
+            <p>
+                Try another search term.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+</main>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script
+    type="module"
+    src="js/quizzes.js"
+></script>
+
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            if (
+                window.lucide &&
+                typeof window.lucide.createIcons ===
+                    "function"
+            ) {
+
+                window.lucide.createIcons();
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

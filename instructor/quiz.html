@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Quiz | Instructor Portal
+    </title>
+
+
+    <!-- =========================
+         CORE STYLES
+    ========================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/quiz.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- =========================
+         ICONS
+    ========================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     PAGE
+========================================================= -->
+
+<main class="instructor-page quiz-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <section class="page-header">
+
+        <div class="page-header-content">
+
+
+            <div>
+
+                <div class="breadcrumb">
+
+                    <a href="dashboard.html">
+                        Dashboard
+                    </a>
+
+                    <i data-lucide="chevron-right"></i>
+
+                    <a href="quizzes.html">
+                        Quizzes
+                    </a>
+
+                    <i data-lucide="chevron-right"></i>
+
+                    <span>
+                        Quiz
+                    </span>
+
+                </div>
+
+
+                <div class="quiz-title-row">
+
+                    <div class="quiz-title-icon">
+
+                        <i data-lucide="clipboard-check"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h1 id="quizTitle">
+                            Loading quiz...
+                        </h1>
+
+                        <p id="quizDescription">
+                            Loading quiz information...
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="page-header-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="editQuizBtn"
+                >
+
+                    <i data-lucide="square-pen"></i>
+
+                    Edit Quiz
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="publishQuizBtn"
+                >
+
+                    <i data-lucide="send"></i>
+
+                    Publish Quiz
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUIZ META
+    ====================================================== -->
+
+    <section class="quiz-meta-card">
+
+        <div class="quiz-meta-main">
+
+
+            <div class="quiz-status-wrapper">
+
+                <span>
+                    STATUS
+                </span>
+
+                <strong
+                    id="quizStatus"
+                    class="quiz-status draft"
+                >
+                    Draft
+                </strong>
+
+            </div>
+
+
+            <div class="quiz-meta-item">
+
+                <span>
+                    COURSE
+                </span>
+
+                <strong id="quizCourse">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="quiz-meta-item">
+
+                <span>
+                    LESSON
+                </span>
+
+                <strong id="quizLesson">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="quiz-meta-item">
+
+                <span>
+                    TIME LIMIT
+                </span>
+
+                <strong>
+
+                    <span id="quizTimeLimit">
+                        0
+                    </span>
+
+                    min
+
+                </strong>
+
+            </div>
+
+
+            <div class="quiz-meta-item">
+
+                <span>
+                    PASS MARK
+                </span>
+
+                <strong>
+
+                    <span id="quizPassMark">
+                        0
+                    </span>%
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+
+    <section class="quiz-stats-grid">
+
+
+        <!-- TOTAL QUESTIONS -->
+
+        <article class="quiz-stat-card">
+
+            <div class="stat-icon blue">
+
+                <i data-lucide="list-checks"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span>
+                    Questions
+                </span>
+
+                <strong id="questionCount">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- TOTAL STUDENTS -->
+
+        <article class="quiz-stat-card">
+
+            <div class="stat-icon purple">
+
+                <i data-lucide="users"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span>
+                    Submissions
+                </span>
+
+                <strong id="submissionCount">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PENDING -->
+
+        <article class="quiz-stat-card">
+
+            <div class="stat-icon orange">
+
+                <i data-lucide="clock-3"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span>
+                    Pending Review
+                </span>
+
+                <strong id="pendingCount">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- GRADED -->
+
+        <article class="quiz-stat-card">
+
+            <div class="stat-icon green">
+
+                <i data-lucide="badge-check"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span>
+                    Graded
+                </span>
+
+                <strong id="gradedCount">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- AVERAGE -->
+
+        <article class="quiz-stat-card">
+
+            <div class="stat-icon gold">
+
+                <i data-lucide="chart-no-axes-combined"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span>
+                    Average Score
+                </span>
+
+                <strong id="averageScore">
+                    —
+                </strong>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUIZ CONTENT
+    ====================================================== -->
+
+    <section class="quiz-content-grid">
+
+
+        <!-- =================================================
+             QUESTIONS
+        ================================================== -->
+
+        <div class="quiz-questions-panel">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Quiz Questions
+                    </h2>
+
+                    <p>
+                        Questions included in this quiz.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="editQuestionsBtn"
+                >
+
+                    <i data-lucide="square-pen"></i>
+
+                    Edit Questions
+
+                </button>
+
+            </div>
+
+
+            <div
+                class="question-list"
+                id="questionList"
+            >
+
+                <!-- JS renders questions -->
+
+            </div>
+
+
+            <div
+                class="quiz-empty hidden"
+                id="questionEmpty"
+            >
+
+                <div class="empty-icon">
+
+                    <i data-lucide="list-x"></i>
+
+                </div>
+
+                <h3>
+                    No questions yet
+                </h3>
+
+                <p>
+                    Add questions to this quiz before publishing it.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             QUIZ INFORMATION
+        ================================================== -->
+
+        <aside class="quiz-info-panel">
+
+
+            <div class="info-card">
+
+                <div class="info-card-header">
+
+                    <h3>
+                        Quiz Information
+                    </h3>
+
+                    <i data-lucide="info"></i>
+
+                </div>
+
+
+                <div class="info-list">
+
+
+                    <div class="info-row">
+
+                        <span>
+                            Total Marks
+                        </span>
+
+                        <strong id="totalMarks">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span>
+                            Questions
+                        </span>
+
+                        <strong id="infoQuestionCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span>
+                            Attempts
+                        </span>
+
+                        <strong id="maxAttempts">
+                            Unlimited
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span>
+                            Created
+                        </span>
+
+                        <strong id="quizCreatedAt">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span>
+                            Updated
+                        </span>
+
+                        <strong id="quizUpdatedAt">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="info-card">
+
+                <div class="info-card-header">
+
+                    <h3>
+                        Quick Actions
+                    </h3>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+
+                    <button
+                        type="button"
+                        id="previewQuizBtn"
+                        class="quick-action"
+                    >
+
+                        <i data-lucide="eye"></i>
+
+                        Preview Quiz
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="editQuizQuestionsBtn"
+                        class="quick-action"
+                    >
+
+                        <i data-lucide="list-plus"></i>
+
+                        Manage Questions
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="backToQuizzesBtn"
+                        class="quick-action"
+                    >
+
+                        <i data-lucide="arrow-left"></i>
+
+                        Back to Quizzes
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         STUDENT SUBMISSIONS
+    ====================================================== -->
+
+    <section class="quiz-submissions-section">
+
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Student Submissions
+                </h2>
+
+                <p>
+                    Review student attempts and grading status.
+                </p>
+
+            </div>
+
+
+            <span
+                class="quiz-count"
+                id="submissionLabel"
+            >
+                0 submissions
+            </span>
+
+        </div>
+
+
+
+        <!-- =================================================
+             TOOLBAR
+        ================================================== -->
+
+        <div class="submission-toolbar">
+
+
+            <div class="submission-filters">
+
+                <button
+                    type="button"
+                    class="submission-filter active"
+                    data-filter="all"
+                >
+                    All
+                </button>
+
+
+                <button
+                    type="button"
+                    class="submission-filter"
+                    data-filter="pending"
+                >
+                    Pending
+                </button>
+
+
+                <button
+                    type="button"
+                    class="submission-filter"
+                    data-filter="graded"
+                >
+                    Graded
+                </button>
+
+            </div>
+
+
+            <div class="submission-search">
+
+                <i data-lucide="search"></i>
+
+                <input
+                    type="search"
+                    id="submissionSearch"
+                    placeholder="Search students..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SUBMISSION LIST
+        ================================================== -->
+
+        <div
+            class="submission-list"
+            id="submissionList"
+        >
+
+            <!-- JS renders submissions -->
+
+        </div>
+
+
+
+        <!-- =================================================
+             EMPTY STATE
+        ================================================== -->
+
+        <div
+            class="submission-empty hidden"
+            id="submissionEmpty"
+        >
+
+            <div class="empty-icon">
+
+                <i data-lucide="inbox"></i>
+
+            </div>
+
+
+            <h3>
+                No submissions yet
+            </h3>
+
+
+            <p>
+                Student quiz attempts will appear here.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+</main>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script
+    type="module"
+    src="js/quiz.js"
+></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (
+            window.lucide &&
+            typeof window.lucide.createIcons ===
+                "function"
+        ) {
+
+            window.lucide.createIcons();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

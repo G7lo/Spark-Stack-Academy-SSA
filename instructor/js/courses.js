@@ -1,7 +1,7 @@
 // ============================================================
 // SPARK STACK ACADEMY
 // INSTRUCTOR COURSES
-// COURSE MANAGEMENT ENGINE
+// COURSE MANAGEMENT ENGINE V3
 // ============================================================
 
 import {
@@ -37,6 +37,18 @@ let editingCourseId = null;
 
 const $ = id => document.getElementById(id);
 
+
+function setText(id, value) {
+
+    const element = $(id);
+
+    if (element) {
+        element.textContent = value;
+    }
+
+}
+
+
 function escapeHTML(value) {
 
     return String(value ?? "")
@@ -49,9 +61,37 @@ function escapeHTML(value) {
 }
 
 
+function formatNumber(value) {
+
+    return new Intl.NumberFormat("en-KE")
+        .format(Number(value) || 0);
+
+}
+
+
+function refreshIcons() {
+
+    if (
+        window.lucide &&
+        typeof window.lucide.createIcons === "function"
+    ) {
+
+        window.lucide.createIcons();
+
+    }
+
+}
+
+
 // ============================================================
 // BOOT
 // ============================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initCourses
+);
+
 
 async function initCourses() {
 
@@ -59,12 +99,11 @@ async function initCourses() {
 
         await waitForInstructor();
 
-        instructor =
-            window.currentInstructor;
+        instructor = window.currentInstructor;
 
         if (!instructor) {
 
-            console.error(
+            showCourseError(
                 "Instructor authentication unavailable."
             );
 
@@ -72,8 +111,6 @@ async function initCourses() {
 
         }
 
-
-        createCourseModal();
 
         setupEvents();
 
@@ -85,15 +122,18 @@ async function initCourses() {
 
 
         console.log(
-            "✓ Instructor courses loaded"
+            "✓ Instructor Courses V3 loaded"
         );
-
 
     } catch (error) {
 
         console.error(
-            "Courses engine error:",
+            "❌ Courses boot error:",
             error
+        );
+
+        showCourseError(
+            "Unable to load your courses."
         );
 
     }
@@ -102,7 +142,7 @@ async function initCourses() {
 
 
 // ============================================================
-// WAIT FOR INSTRUCTOR
+// AUTH
 // ============================================================
 
 function waitForInstructor() {
@@ -141,6 +181,145 @@ function waitForInstructor() {
 
 
 // ============================================================
+// EVENTS
+// ============================================================
+
+function setupEvents() {
+
+    $("createCourseBtn")
+        ?.addEventListener(
+            "click",
+            () => openCourseModal()
+        );
+
+
+    $("emptyCreateCourseBtn")
+        ?.addEventListener(
+            "click",
+            () => openCourseModal()
+        );
+
+
+    $("courseSearch")
+        ?.addEventListener(
+            "input",
+            renderCourses
+        );
+
+
+    document
+        .querySelectorAll(".course-filter")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    document
+                        .querySelectorAll(".course-filter")
+                        .forEach(btn => {
+
+                            btn.classList.remove(
+                                "active"
+                            );
+
+                        });
+
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    currentFilter =
+                        button.dataset.filter ||
+                        "all";
+
+
+                    renderCourses();
+
+                }
+            );
+
+        });
+
+
+    document.addEventListener(
+        "click",
+        handleCourseActions
+    );
+
+}
+
+
+// ============================================================
+// COURSE ACTIONS
+// ============================================================
+
+function handleCourseActions(event) {
+
+    const builderButton =
+        event.target.closest(
+            "[data-open-builder]"
+        );
+
+
+    if (builderButton) {
+
+        openBuilder(
+            builderButton.dataset.openBuilder
+        );
+
+        return;
+
+    }
+
+
+    const editButton =
+        event.target.closest(
+            "[data-edit-course]"
+        );
+
+
+    if (editButton) {
+
+        const course =
+            courses.find(
+                item =>
+                    item.id ===
+                    editButton.dataset.editCourse
+            );
+
+
+        if (course) {
+
+            openCourseModal(course);
+
+        }
+
+        return;
+
+    }
+
+
+    const deleteButton =
+        event.target.closest(
+            "[data-delete-course]"
+        );
+
+
+    if (deleteButton) {
+
+        deleteCourse(
+            deleteButton.dataset.deleteCourse
+        );
+
+    }
+
+}
+
+
+// ============================================================
 // LOAD COURSES
 // ============================================================
 
@@ -149,10 +328,14 @@ async function loadCourses() {
     const grid =
         $("courseGrid");
 
+
     try {
 
         const coursesRef =
-            collection(db, "courses");
+            collection(
+                db,
+                "courses"
+            );
 
 
         const q =
@@ -171,13 +354,29 @@ async function loadCourses() {
 
 
         courses =
-            snapshot.docs.map(item => ({
+            snapshot.docs
+                .map(item => ({
 
-                id: item.id,
+                    id: item.id,
 
-                ...item.data()
+                    ...item.data()
 
-            }));
+                }))
+                .sort(
+                    (a, b) => {
+
+                        const aTime =
+                            a.createdAt?.seconds ||
+                            0;
+
+                        const bTime =
+                            b.createdAt?.seconds ||
+                            0;
+
+                        return bTime - aTime;
+
+                    }
+                );
 
 
         updateStats();
@@ -188,7 +387,7 @@ async function loadCourses() {
     } catch (error) {
 
         console.error(
-            "Failed to load courses:",
+            "❌ Failed to load courses:",
             error
         );
 
@@ -215,6 +414,7 @@ async function loadCourses() {
 
         }
 
+
         refreshIcons();
 
     }
@@ -229,13 +429,16 @@ async function loadCourses() {
 function updateStats() {
 
     const published =
-        courses.filter(course =>
-            course.status === "published"
+        courses.filter(
+            course =>
+                course.status === "published"
         );
 
+
     const drafts =
-        courses.filter(course =>
-            course.status !== "published"
+        courses.filter(
+            course =>
+                course.status !== "published"
         );
 
 
@@ -319,8 +522,13 @@ async function loadStudentCount() {
     } catch (error) {
 
         console.warn(
-            "Student count unavailable:",
+            "⚠ Student count unavailable:",
             error
+        );
+
+        setText(
+            "totalStudents",
+            0
         );
 
     }
@@ -337,19 +545,25 @@ function renderCourses() {
     const grid =
         $("courseGrid");
 
+
     const empty =
         $("courseEmpty");
+
 
     if (!grid) return;
 
 
     const search =
-        ($("courseSearch")?.value || "")
+        (
+            $("courseSearch")
+                ?.value ||
+            ""
+        )
             .trim()
             .toLowerCase();
 
 
-    let filtered =
+    const filtered =
         courses.filter(course => {
 
             const status =
@@ -375,15 +589,20 @@ function renderCourses() {
                 ).toLowerCase();
 
 
-            const matchesSearch =
-                !search ||
-                title.includes(search) ||
-                description.includes(search);
+            const category =
+                String(
+                    course.category || ""
+                ).toLowerCase();
 
 
             return (
                 matchesFilter &&
-                matchesSearch
+                (
+                    !search ||
+                    title.includes(search) ||
+                    description.includes(search) ||
+                    category.includes(search)
+                )
             );
 
         });
@@ -393,7 +612,9 @@ function renderCourses() {
 
         grid.innerHTML = "";
 
-        empty?.classList.remove("hidden");
+        empty?.classList.remove(
+            "hidden"
+        );
 
         refreshIcons();
 
@@ -402,50 +623,18 @@ function renderCourses() {
     }
 
 
-    empty?.classList.add("hidden");
+    empty?.classList.add(
+        "hidden"
+    );
 
 
     grid.innerHTML =
-        filtered.map(renderCourseCard).join("");
+        filtered
+            .map(renderCourseCard)
+            .join("");
 
 
     refreshIcons();
-
-
-    grid
-        .querySelectorAll("[data-edit-course]")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    editCourse(
-                        button.dataset.editCourse
-                    );
-
-                }
-            );
-
-        });
-
-
-    grid
-        .querySelectorAll("[data-delete-course]")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    deleteCourse(
-                        button.dataset.deleteCourse
-                    );
-
-                }
-            );
-
-        });
 
 }
 
@@ -468,38 +657,52 @@ function renderCourseCard(course) {
         Number(course.discountPrice || 0);
 
 
-    const displayPrice =
+    const finalPrice =
         discount > 0
             ? discount
             : price;
 
 
-    const priceHTML =
-        course.isFree || displayPrice <= 0
+    let priceHTML;
 
-            ? `<strong class="course-price">
-                    FREE
-               </strong>`
 
-            : `
+    if (
+        course.isFree ||
+        finalPrice <= 0
+    ) {
 
-                <strong class="course-price">
-                    KSh ${formatNumber(displayPrice)}
-                </strong>
+        priceHTML = `
 
-                ${
-                    discount > 0 && price > discount
+            <strong class="course-price">
+                FREE
+            </strong>
 
-                    ? `
-                        <del>
-                            KSh ${formatNumber(price)}
-                        </del>
-                    `
+        `;
 
-                    : ""
-                }
+    } else {
 
-            `;
+        priceHTML = `
+
+            <strong class="course-price">
+                KSh ${formatNumber(finalPrice)}
+            </strong>
+
+            ${
+                discount > 0 &&
+                discount < price
+
+                ? `
+                    <del>
+                        KSh ${formatNumber(price)}
+                    </del>
+                `
+
+                : ""
+            }
+
+        `;
+
+    }
 
 
     return `
@@ -513,6 +716,7 @@ function renderCourseCard(course) {
                     <i data-lucide="book-open"></i>
 
                 </div>
+
 
                 <span class="course-status ${
                     published
@@ -581,7 +785,7 @@ function renderCourseCard(course) {
 
                         <i data-lucide="users"></i>
 
-                        ${Number(
+                        ${formatNumber(
                             course.studentCount || 0
                         )}
 
@@ -603,8 +807,21 @@ function renderCourseCard(course) {
 
                 <button
                     type="button"
-                    data-edit-course="${course.id}"
+                    class="course-action primary"
+                    data-open-builder="${course.id}"
+                >
+
+                    <i data-lucide="blocks"></i>
+
+                    Course Builder
+
+                </button>
+
+
+                <button
+                    type="button"
                     class="course-action"
+                    data-edit-course="${course.id}"
                 >
 
                     <i data-lucide="square-pen"></i>
@@ -616,8 +833,8 @@ function renderCourseCard(course) {
 
                 <button
                     type="button"
-                    data-delete-course="${course.id}"
                     class="course-action danger"
+                    data-delete-course="${course.id}"
                 >
 
                     <i data-lucide="trash-2"></i>
@@ -636,424 +853,17 @@ function renderCourseCard(course) {
 
 
 // ============================================================
-// CREATE MODAL
-// ============================================================
-
-function createCourseModal() {
-
-    if ($("courseModal")) return;
-
-
-    const modal =
-        document.createElement("div");
-
-
-    modal.id =
-        "courseModal";
-
-
-    modal.className =
-        "course-modal";
-
-
-    modal.innerHTML = `
-
-        <div class="course-modal-backdrop"
-             data-close-modal></div>
-
-
-        <div class="course-modal-content">
-
-            <div class="course-modal-header">
-
-                <div>
-
-                    <span>
-                        COURSE BUILDER
-                    </span>
-
-                    <h2 id="courseModalTitle">
-                        Create Course
-                    </h2>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    id="closeCourseModal"
-                    class="modal-close"
-                >
-
-                    <i data-lucide="x"></i>
-
-                </button>
-
-            </div>
-
-
-            <form id="courseForm">
-
-                <div class="form-group">
-
-                    <label>
-                        Course Title
-                    </label>
-
-                    <input
-                        id="courseTitle"
-                        type="text"
-                        placeholder="e.g. Full Stack Web Development"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Description
-                    </label>
-
-                    <textarea
-                        id="courseDescription"
-                        rows="4"
-                        placeholder="Describe what students will learn..."
-                        required
-                    ></textarea>
-
-                </div>
-
-
-                <div class="form-row">
-
-                    <div class="form-group">
-
-                        <label>
-                            Category
-                        </label>
-
-                        <select id="courseCategory">
-
-                            <option>
-                                Technology
-                            </option>
-
-                            <option>
-                                Programming
-                            </option>
-
-                            <option>
-                                Web Development
-                            </option>
-
-                            <option>
-                                Mobile Development
-                            </option>
-
-                            <option>
-                                Business
-                            </option>
-
-                            <option>
-                                Design
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Level
-                        </label>
-
-                        <select id="courseLevel">
-
-                            <option>
-                                Beginner
-                            </option>
-
-                            <option>
-                                Intermediate
-                            </option>
-
-                            <option>
-                                Advanced
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-
-                <div class="pricing-box">
-
-                    <div class="pricing-header">
-
-                        <div>
-
-                            <strong>
-                                Course Pricing
-                            </strong>
-
-                            <span>
-                                Set how much students pay.
-                            </span>
-
-                        </div>
-
-
-                        <label class="switch">
-
-                            <input
-                                type="checkbox"
-                                id="courseFree"
-                            >
-
-                            <span>
-                                Free Course
-                            </span>
-
-                        </label>
-
-                    </div>
-
-
-                    <div class="form-row">
-
-                        <div class="form-group">
-
-                            <label>
-                                Price (KSh)
-                            </label>
-
-                            <input
-                                id="coursePrice"
-                                type="number"
-                                min="0"
-                                step="50"
-                                value="0"
-                                placeholder="1500"
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label>
-                                Discount Price (KSh)
-                            </label>
-
-                            <input
-                                id="courseDiscount"
-                                type="number"
-                                min="0"
-                                step="50"
-                                placeholder="Optional"
-                            >
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Course Status
-                    </label>
-
-                    <select id="courseStatus">
-
-                        <option value="draft">
-                            Save as Draft
-                        </option>
-
-                        <option value="published">
-                            Publish Course
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="modal-actions">
-
-                    <button
-                        type="button"
-                        id="cancelCourseBtn"
-                        class="secondary-btn"
-                    >
-                        Cancel
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="primary-btn"
-                        id="saveCourseBtn"
-                    >
-
-                        <i data-lucide="save"></i>
-
-                        Save Course
-
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    `;
-
-
-    document.body.appendChild(modal);
-
-
-    refreshIcons();
-
-}
-
-
-// ============================================================
-// EVENTS
-// ============================================================
-
-function setupEvents() {
-
-    $("createCourseBtn")
-        ?.addEventListener(
-            "click",
-            () => openCourseModal()
-        );
-
-
-    $("emptyCreateCourseBtn")
-        ?.addEventListener(
-            "click",
-            () => openCourseModal()
-        );
-
-
-    $("courseSearch")
-        ?.addEventListener(
-            "input",
-            renderCourses
-        );
-
-
-    document
-        .querySelectorAll(".course-filter")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    document
-                        .querySelectorAll(".course-filter")
-                        .forEach(btn =>
-                            btn.classList.remove(
-                                "active"
-                            )
-                        );
-
-
-                    button.classList.add(
-                        "active"
-                    );
-
-
-                    currentFilter =
-                        button.dataset.filter ||
-                        "all";
-
-
-                    renderCourses();
-
-                }
-            );
-
-        });
-
-
-    $("closeCourseModal")
-        ?.addEventListener(
-            "click",
-            closeCourseModal
-        );
-
-
-    $("cancelCourseBtn")
-        ?.addEventListener(
-            "click",
-            closeCourseModal
-        );
-
-
-    document
-        .querySelector("#courseModal")
-        ?.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target.matches(
-                        "[data-close-modal]"
-                    )
-                ) {
-
-                    closeCourseModal();
-
-                }
-
-            }
-        );
-
-
-    $("courseForm")
-        ?.addEventListener(
-            "submit",
-            saveCourse
-        );
-
-
-    $("courseFree")
-        ?.addEventListener(
-            "change",
-            togglePricing
-        );
-
-}
-
-
-// ============================================================
-// OPEN MODAL
+// COURSE MODAL
 // ============================================================
 
 function openCourseModal(course = null) {
 
-    const modal =
-        $("courseModal");
-
-
-    if (!modal) return;
-
-
     editingCourseId =
         course?.id || null;
+
+
+    const modal =
+        createCourseModal();
 
 
     setText(
@@ -1102,7 +912,10 @@ function openCourseModal(course = null) {
     togglePricing();
 
 
-    modal.classList.add("open");
+    modal.classList.add(
+        "open"
+    );
+
 
     document.body.classList.add(
         "modal-open"
@@ -1110,7 +923,8 @@ function openCourseModal(course = null) {
 
 
     setTimeout(
-        () => $("courseTitle")?.focus(),
+        () =>
+            $("courseTitle")?.focus(),
         100
     );
 
@@ -1118,23 +932,358 @@ function openCourseModal(course = null) {
 
 
 // ============================================================
-// CLOSE MODAL
+// CREATE MODAL
 // ============================================================
 
-function closeCourseModal() {
+function createCourseModal() {
 
-    const modal =
+    let modal =
         $("courseModal");
 
 
-    modal?.classList.remove("open");
+    if (modal) return modal;
 
-    document.body.classList.remove(
-        "modal-open"
+
+    modal =
+        document.createElement(
+            "div"
+        );
+
+
+    modal.id =
+        "courseModal";
+
+
+    modal.className =
+        "course-modal";
+
+
+    modal.innerHTML = `
+
+        <div
+            class="course-modal-backdrop"
+            data-close-modal
+        ></div>
+
+
+        <div class="course-modal-content">
+
+            <div class="course-modal-header">
+
+                <div>
+
+                    <span>
+                        COURSE SETUP
+                    </span>
+
+                    <h2 id="courseModalTitle">
+                        Create Course
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="modal-close"
+                    id="closeCourseModal"
+                    aria-label="Close"
+                >
+
+                    <i data-lucide="x"></i>
+
+                </button>
+
+            </div>
+
+
+            <form id="courseForm">
+
+                <div class="form-group">
+
+                    <label for="courseTitle">
+                        Course Title
+                    </label>
+
+                    <input
+                        id="courseTitle"
+                        type="text"
+                        placeholder="e.g. Full Stack Web Development"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="courseDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="courseDescription"
+                        rows="4"
+                        placeholder="What will students learn?"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="courseCategory">
+                            Category
+                        </label>
+
+                        <select id="courseCategory">
+
+                            <option value="Technology">
+                                Technology
+                            </option>
+
+                            <option value="Programming">
+                                Programming
+                            </option>
+
+                            <option value="Web Development">
+                                Web Development
+                            </option>
+
+                            <option value="Mobile Development">
+                                Mobile Development
+                            </option>
+
+                            <option value="Business">
+                                Business
+                            </option>
+
+                            <option value="Design">
+                                Design
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="courseLevel">
+                            Level
+                        </label>
+
+                        <select id="courseLevel">
+
+                            <option value="Beginner">
+                                Beginner
+                            </option>
+
+                            <option value="Intermediate">
+                                Intermediate
+                            </option>
+
+                            <option value="Advanced">
+                                Advanced
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pricing-box">
+
+                    <div class="pricing-header">
+
+                        <div>
+
+                            <strong>
+                                Pricing
+                            </strong>
+
+                            <span>
+                                Set the student price.
+                            </span>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="courseFree"
+                            >
+
+                            <span>
+                                Free Course
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="coursePrice">
+                                Price (KSh)
+                            </label>
+
+                            <input
+                                id="coursePrice"
+                                type="number"
+                                min="0"
+                                step="50"
+                                value="0"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="courseDiscount">
+                                Discount (KSh)
+                            </label>
+
+                            <input
+                                id="courseDiscount"
+                                type="number"
+                                min="0"
+                                step="50"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="courseStatus">
+                        Initial Status
+                    </label>
+
+                    <select id="courseStatus">
+
+                        <option value="draft">
+                            Save as Draft
+                        </option>
+
+                        <option value="published">
+                            Publish Course
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div
+                    id="courseFormMessage"
+                    class="form-message"
+                    hidden
+                ></div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        id="cancelCourseBtn"
+                        class="secondary-btn"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        id="saveCourseBtn"
+                        class="primary-btn"
+                    >
+
+                        <i data-lucide="arrow-right"></i>
+
+                        Continue to Builder
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        modal
     );
 
 
-    editingCourseId = null;
+    $("closeCourseModal")
+        ?.addEventListener(
+            "click",
+            closeCourseModal
+        );
+
+
+    $("cancelCourseBtn")
+        ?.addEventListener(
+            "click",
+            closeCourseModal
+        );
+
+
+    modal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.closest(
+                    "[data-close-modal]"
+                )
+            ) {
+
+                closeCourseModal();
+
+            }
+
+        }
+    );
+
+
+    $("courseForm")
+        ?.addEventListener(
+            "submit",
+            saveCourse
+        );
+
+
+    $("courseFree")
+        ?.addEventListener(
+            "change",
+            togglePricing
+        );
+
+
+    refreshIcons();
+
+
+    return modal;
 
 }
 
@@ -1152,6 +1301,7 @@ function togglePricing() {
     const price =
         $("coursePrice");
 
+
     const discount =
         $("courseDiscount");
 
@@ -1161,6 +1311,10 @@ function togglePricing() {
         price.disabled =
             free;
 
+        if (free) {
+            price.value = 0;
+        }
+
     }
 
 
@@ -1168,6 +1322,10 @@ function togglePricing() {
 
         discount.disabled =
             free;
+
+        if (free) {
+            discount.value = "";
+        }
 
     }
 
@@ -1185,27 +1343,32 @@ async function saveCourse(event) {
 
     const title =
         $("courseTitle")
-            ?.value.trim();
+            ?.value
+            .trim();
 
 
     const description =
         $("courseDescription")
-            ?.value.trim();
+            ?.value
+            .trim();
 
 
     const category =
         $("courseCategory")
-            ?.value;
+            ?.value ||
+        "Technology";
 
 
     const level =
         $("courseLevel")
-            ?.value;
+            ?.value ||
+        "Beginner";
 
 
     const isFree =
         $("courseFree")
-            ?.checked;
+            ?.checked ||
+        false;
 
 
     const price =
@@ -1213,7 +1376,8 @@ async function saveCourse(event) {
             ? 0
             : Number(
                 $("coursePrice")
-                    ?.value || 0
+                    ?.value ||
+                0
             );
 
 
@@ -1222,19 +1386,26 @@ async function saveCourse(event) {
             ? 0
             : Number(
                 $("courseDiscount")
-                    ?.value || 0
+                    ?.value ||
+                0
             );
 
 
     const status =
         $("courseStatus")
-            ?.value || "draft";
+            ?.value ||
+        "draft";
 
+
+    // ========================================================
+    // VALIDATION
+    // ========================================================
 
     if (!title) {
 
-        alert(
-            "Please enter a course title."
+        showFormMessage(
+            "Please enter a course title.",
+            "error"
         );
 
         return;
@@ -1244,8 +1415,9 @@ async function saveCourse(event) {
 
     if (!description) {
 
-        alert(
-            "Please enter a course description."
+        showFormMessage(
+            "Please enter a course description.",
+            "error"
         );
 
         return;
@@ -1253,10 +1425,17 @@ async function saveCourse(event) {
     }
 
 
-    if (!isFree && price <= 0) {
+    if (
+        !isFree &&
+        (
+            !Number.isFinite(price) ||
+            price <= 0
+        )
+    ) {
 
-        alert(
-            "Please enter a valid course price."
+        showFormMessage(
+            "Enter a valid course price or make it free.",
+            "error"
         );
 
         return;
@@ -1269,8 +1448,9 @@ async function saveCourse(event) {
         discountPrice >= price
     ) {
 
-        alert(
-            "Discount price must be lower than the original price."
+        showFormMessage(
+            "Discount price must be lower than the original price.",
+            "error"
         );
 
         return;
@@ -1286,12 +1466,21 @@ async function saveCourse(event) {
 
         button.disabled = true;
 
+
         button.innerHTML = `
-            <i data-lucide="loader-circle"></i>
+            <span class="loading-spinner"></span>
             Saving...
         `;
 
-        refreshIcons();
+
+        const existing =
+            editingCourseId
+                ? courses.find(
+                    item =>
+                        item.id ===
+                        editingCourseId
+                )
+                : null;
 
 
         const courseData = {
@@ -1301,6 +1490,7 @@ async function saveCourse(event) {
 
             instructorName:
                 instructor.displayName ||
+                instructor.name ||
                 "Instructor",
 
             title,
@@ -1323,21 +1513,29 @@ async function saveCourse(event) {
                 status === "published",
 
             studentCount:
-                editingCourseId
-                    ? (
-                        courses.find(
-                            c =>
-                                c.id ===
-                                editingCourseId
-                        )?.studentCount || 0
-                    )
-                    : 0,
+                existing?.studentCount ||
+                0,
+
+            moduleCount:
+                existing?.moduleCount ||
+                0,
+
+            lessonCount:
+                existing?.lessonCount ||
+                0,
 
             updatedAt:
                 serverTimestamp()
 
         };
 
+
+        let savedCourseId;
+
+
+        // ====================================================
+        // UPDATE
+        // ====================================================
 
         if (editingCourseId) {
 
@@ -1353,84 +1551,91 @@ async function saveCourse(event) {
 
             );
 
-        } else {
 
-            await addDoc(
-
-                collection(
-                    db,
-                    "courses"
-                ),
-
-                {
-
-                    ...courseData,
-
-                    createdAt:
-                        serverTimestamp()
-
-                }
-
-            );
+            savedCourseId =
+                editingCourseId;
 
         }
 
 
-        closeCourseModal();
+        // ====================================================
+        // CREATE
+        // ====================================================
 
-        await loadCourses();
+        else {
+
+            const courseRef =
+                await addDoc(
+
+                    collection(
+                        db,
+                        "courses"
+                    ),
+
+                    {
+
+                        ...courseData,
+
+                        createdAt:
+                            serverTimestamp()
+
+                    }
+
+                );
+
+
+            savedCourseId =
+                courseRef.id;
+
+        }
 
 
         console.log(
-            "✓ Course saved successfully"
+            "✓ Course saved:",
+            savedCourseId
         );
+
+
+        closeCourseModal();
+
+
+        // ====================================================
+        // IMPORTANT
+        // BUILDER EXPECTS ?id=
+        // ====================================================
+
+        window.location.href =
+            `course-builder.html?id=${encodeURIComponent(
+                savedCourseId
+            )}`;
 
 
     } catch (error) {
 
         console.error(
-            "Failed to save course:",
+            "❌ Failed to save course:",
             error
         );
 
 
-        alert(
-            "Unable to save course. Please try again."
+        showFormMessage(
+            "Unable to save course. Please try again.",
+            "error"
         );
 
 
-    } finally {
-
         button.disabled = false;
 
+
         button.innerHTML = `
-            <i data-lucide="save"></i>
-            Save Course
+            <i data-lucide="arrow-right"></i>
+            Continue to Builder
         `;
+
 
         refreshIcons();
 
     }
-
-}
-
-
-// ============================================================
-// EDIT COURSE
-// ============================================================
-
-function editCourse(id) {
-
-    const course =
-        courses.find(
-            item => item.id === id
-        );
-
-
-    if (!course) return;
-
-
-    openCourseModal(course);
 
 }
 
@@ -1443,7 +1648,8 @@ async function deleteCourse(id) {
 
     const course =
         courses.find(
-            item => item.id === id
+            item =>
+                item.id === id
         );
 
 
@@ -1452,7 +1658,7 @@ async function deleteCourse(id) {
 
     const confirmed =
         confirm(
-            `Delete "${course.title || "this course"}"?\n\nThis action cannot be undone.`
+            `Delete "${course.title || "this course"}"?\n\nThis cannot be undone.`
         );
 
 
@@ -1462,17 +1668,20 @@ async function deleteCourse(id) {
     try {
 
         await deleteDoc(
+
             doc(
                 db,
                 "courses",
                 id
             )
+
         );
 
 
         courses =
             courses.filter(
-                item => item.id !== id
+                item =>
+                    item.id !== id
             );
 
 
@@ -1482,14 +1691,15 @@ async function deleteCourse(id) {
 
 
         console.log(
-            "✓ Course deleted"
+            "✓ Course deleted:",
+            id
         );
 
 
     } catch (error) {
 
         console.error(
-            "Failed to delete course:",
+            "❌ Failed to delete course:",
             error
         );
 
@@ -1504,54 +1714,114 @@ async function deleteCourse(id) {
 
 
 // ============================================================
-// UI
+// BUILDER
 // ============================================================
 
-function setText(id, value) {
+function openBuilder(id) {
+
+    if (!id) return;
+
+
+    window.location.href =
+        `course-builder.html?id=${encodeURIComponent(id)}`;
+
+}
+
+
+// ============================================================
+// CLOSE MODAL
+// ============================================================
+
+function closeCourseModal() {
+
+    const modal =
+        $("courseModal");
+
+
+    modal?.classList.remove(
+        "open"
+    );
+
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+
+    editingCourseId = null;
+
+}
+
+
+// ============================================================
+// FORM MESSAGE
+// ============================================================
+
+function showFormMessage(
+    message,
+    type
+) {
 
     const element =
-        $(id);
-
-    if (element) {
-
-        element.textContent =
-            value;
-
-    }
-
-}
+        $("courseFormMessage");
 
 
-function formatNumber(value) {
+    if (!element) {
 
-    return new Intl.NumberFormat(
-        "en-KE"
-    ).format(value);
+        alert(message);
 
-}
-
-
-// ============================================================
-// ICONS
-// ============================================================
-
-function refreshIcons() {
-
-    if (
-        window.lucide &&
-        typeof window.lucide.createIcons ===
-            "function"
-    ) {
-
-        window.lucide.createIcons();
+        return;
 
     }
 
+
+    element.hidden = false;
+
+
+    element.className =
+        `form-message ${type}`;
+
+
+    element.textContent =
+        message;
+
 }
 
 
 // ============================================================
-// START
+// ERROR
 // ============================================================
 
-initCourses();
+function showCourseError(
+    message
+) {
+
+    const grid =
+        $("courseGrid");
+
+
+    if (!grid) return;
+
+
+    grid.innerHTML = `
+
+        <div class="course-error">
+
+            <i data-lucide="alert-circle"></i>
+
+            <h3>
+                Something went wrong
+            </h3>
+
+            <p>
+                ${escapeHTML(message)}
+            </p>
+
+        </div>
+
+    `;
+
+
+    refreshIcons();
+
+}

@@ -1,898 +1,1309 @@
 // =====================================
 // SPARK STACK ACADEMY
-// STUDENT PORTAL V1
-// MY COURSES CONTROLLER
-// PART 1
+// MY COURSES ENGINE V2
 // =====================================
 
-
-
-console.log("🚀 Courses Module Loaded");
-
-
-
-
-// =========================
-// FIREBASE IMPORTS
-// =========================
-
-
 import {
-
     auth,
     db
-
 } from "../../js/firebase.js";
 
-
-
 import {
-
     onAuthStateChanged
-
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
-
 import {
-
     collection,
     query,
     where,
     getDocs,
     doc,
     getDoc
-
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-
-
-
-
-
-// =========================
-// INITIALIZE
-// =========================
-
-
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
-
-
-    initializeCourses();
-
-
-});
-
-
-
-
-
-
-
-// =========================
-// START COURSES
-// =========================
-
-
-function initializeCourses(){
-
-
-    console.log(
-        "📚 Initializing Courses..."
-    );
-
-
-
-    onAuthStateChanged(
-
-        auth,
-
-        async(user)=>{
-
-
-            if(!user){
-
-
-                window.location.href =
-                "../login.html";
-
-
-                return;
-
-
-            }
-
-
-
-            console.log(
-                "Student:",
-                user.uid
-            );
-
-
-
-            await loadCourses(
-                user.uid
-            );
-
-
-        }
-
-
-    );
-
-
-}
-
-
-
-
-
-
-
-// =========================
-// LOAD STUDENT COURSES
-// =========================
-
-
-async function loadCourses(uid){
-
-
-    try{
-
-    showCoursesLoading();
-
-
-        const enrollmentQuery =
-query(
-    collection(db,"enrollments"),
-    where(
-        "userId",
-        "==",
-        uid
-    )
-);
-
-
-
-
-
-        const enrollmentSnap =
-
-        await getDocs(
-            enrollmentQuery
-        );
-
-
-
-
-
-        console.log(
-
-            "Enrollments:",
-            enrollmentSnap.size
-
-        );
-
-
-
-
-
-
-        if(
-            enrollmentSnap.empty
-        ){
-
-
-            showEmptyCourses();
-
-
-            updateCourseStats([]);
-
-
-            return;
-
-
-        }
-
-
-
-
-
-
-        let courses = [];
-
-
-
-
-
-
-        for(
-            const enrollmentDoc
-            of enrollmentSnap.docs
-
-        ){
-
-
-
-            const enrollment =
-
-            enrollmentDoc.data();
-
-
-
-
-
-            const courseId =
-
-            enrollment.courseId;
-
-
-
-
-
-
-            if(!courseId)
-                continue;
-
-
-
-
-
-
-
-            const courseRef =
-
-            doc(
-
-                db,
-
-                "courses",
-
-                courseId
-
-            );
-
-
-
-
-
-
-
-            const courseSnap =
-
-            await getDoc(
-                courseRef
-            );
-
-
-
-
-
-
-
-            if(
-                courseSnap.exists()
-            ){
-
-
-                courses.push({
-
-                    id:courseId,
-
-                    ...courseSnap.data(),
-
-                    progress:
-                    enrollment.progress || 0,
-
-
-                    status:
-                    enrollment.status || "in-progress"
-
-
-                });
-
-
-            }
-
-
-
-        }
-
-
-
-
-
-
-        console.log(
-
-            "Loaded Courses:",
-            courses
-
-        );
-
-
-
-
-
-        const studentSnap = await getDoc(
-    doc(db, "students", uid)
-);
-
-const student = studentSnap.exists()
-    ? studentSnap.data()
-    : {};
-
-renderCourses(
-    courses,
-    student
-);
-
-
-
-        updateCourseStats(
-            courses
-        );
-
-
-
-
-    }
-
-
-    catch(error){
-
-
-        console.error(
-
-            "Courses loading error:",
-            error
-
-        );
-
-
-    }
-
-
-
-}
 // =====================================
-// RENDER COURSES
+// STATE
 // =====================================
 
+let currentUser = null;
 
-function renderCourses(courses, student){
+let myCourses = [];
 
 
-    const container =
+// =====================================
+// DOM
+// =====================================
 
+const coursesContainer =
     document.getElementById(
         "coursesContainer"
     );
 
+const enrolledCount =
+    document.getElementById(
+        "enrolledCount"
+    );
+
+const progressCount =
+    document.getElementById(
+        "progressCount"
+    );
+
+const completedCount =
+    document.getElementById(
+        "completedCount"
+    );
+
+const hoursCount =
+    document.getElementById(
+        "hoursCount"
+    );
+
+const myCoursesCount =
+    document.getElementById(
+        "myCoursesCount"
+    );
 
 
-    if(!container)
-        return;
+// =====================================
+// START
+// =====================================
+
+console.log(
+    "🚀 SSA MY COURSES V2 LOADED"
+);
 
 
+document.addEventListener(
+    "DOMContentLoaded",
+    initializeCourses
+);
 
 
+// =====================================
+// INITIALIZE
+// =====================================
 
-    if(courses.length === 0){
+function initializeCourses() {
+
+    console.log(
+        "📚 Initializing My Courses..."
+    );
 
 
-        showEmptyCourses();
+    onAuthStateChanged(
+        auth,
+        async user => {
 
-        return;
+            if (!user) {
+
+                window.location.href =
+                    "../login.html";
+
+                return;
+
+            }
+
+
+            currentUser =
+                user;
+
+
+            console.log(
+                "👨‍🎓 Student:",
+                user.uid
+            );
+
+
+            await loadMyCourses();
+
+        }
+    );
+
+}
+
+
+// =====================================
+// LOAD MY COURSES
+// =====================================
+
+async function loadMyCourses() {
+
+    showLoading();
+
+
+    try {
+
+        console.log(
+            "🔎 Loading student enrollments..."
+        );
+
+
+        const enrollmentQuery =
+            query(
+
+                collection(
+                    db,
+                    "enrollments"
+                ),
+
+                where(
+                    "userId",
+                    "==",
+                    currentUser.uid
+                )
+
+            );
+
+
+        const enrollmentSnapshot =
+            await getDocs(
+                enrollmentQuery
+            );
+
+
+        console.log(
+            "📦 Enrollment documents:",
+            enrollmentSnapshot.size
+        );
+
+
+        myCourses = [];
+
+
+        // =================================
+        // LOAD EACH COURSE
+        // =================================
+
+        for (
+            const enrollmentDoc
+            of enrollmentSnapshot.docs
+        ) {
+
+            const enrollment =
+                enrollmentDoc.data();
+
+
+            const courseId =
+                enrollment.courseId;
+
+
+            if (!courseId) {
+
+                continue;
+
+            }
+
+
+            // -----------------------------
+            // ACCESS CHECK
+            // -----------------------------
+
+            if (
+                !hasAccess(
+                    enrollment
+                )
+            ) {
+
+                console.log(
+                    "⛔ Enrollment has no access:",
+                    courseId
+                );
+
+                continue;
+
+            }
+
+
+            // -----------------------------
+            // COURSE DOCUMENT
+            // -----------------------------
+
+            const courseRef =
+                doc(
+                    db,
+                    "courses",
+                    courseId
+                );
+
+
+            const courseSnapshot =
+                await getDoc(
+                    courseRef
+                );
+
+
+            if (
+                !courseSnapshot.exists()
+            ) {
+
+                console.warn(
+                    "⚠️ Course document missing:",
+                    courseId
+                );
+
+                continue;
+
+            }
+
+
+            const course =
+                courseSnapshot.data();
+
+
+            myCourses.push({
+
+                id:
+                    courseId,
+
+                ...course,
+
+                enrollmentId:
+                    enrollmentDoc.id,
+
+                progress:
+                    Number(
+                        enrollment.progress || 0
+                    ),
+
+                enrollmentStatus:
+                    enrollment.status ||
+                    "active",
+
+                paymentStatus:
+                    enrollment.paymentStatus ||
+                    "",
+
+                joinedAt:
+                    enrollment.enrolledAt ||
+                    enrollment.joinedAt ||
+                    null
+
+            });
+
+        }
+
+
+        // =================================
+        // REMOVE DUPLICATES
+        // =================================
+
+        myCourses =
+            removeDuplicates(
+                myCourses
+            );
+
+
+        // =================================
+        // SORT
+        // =================================
+
+        myCourses.sort(
+            (a, b) => {
+
+                const aTime =
+                    getTime(
+                        a.joinedAt
+                    );
+
+                const bTime =
+                    getTime(
+                        b.joinedAt
+                    );
+
+                return bTime - aTime;
+
+            }
+        );
+
+
+        console.log(
+            "🎓 My Courses:",
+            myCourses
+        );
+
+
+        renderCourses();
+
+
+        updateStats();
 
 
     }
 
+    catch (error) {
+
+        console.error(
+            "❌ MY COURSES FAILED:",
+            error
+        );
 
 
+        showError();
+
+    }
+
+}
 
 
+// =====================================
+// ACCESS RULE
+// =====================================
 
-    container.innerHTML = "";
+function hasAccess(
+    enrollment
+) {
 
+    if (!enrollment) {
 
+        return false;
 
-
-
-
-    courses.forEach(course=>{
-
-
-
-        const progress =
-
-        course.progress || 0;
+    }
 
 
+    const status =
+        String(
+            enrollment.status || ""
+        )
+        .trim()
+        .toLowerCase();
 
 
-
-        container.innerHTML += `
-
-
-        <div class="course-card">
-
-
-
-            <div class="course-image">
+    const paymentStatus =
+        String(
+            enrollment.paymentStatus || ""
+        )
+        .trim()
+        .toLowerCase();
 
 
-                <i data-lucide="book-open"></i>
+    // FREE COURSE
+
+    if (
+        paymentStatus === "free" &&
+        (
+            status === "active" ||
+            status === "approved" ||
+            status === "completed"
+        )
+    ) {
+
+        return true;
+
+    }
 
 
-            </div>
+    // PAID COURSE
+
+    if (
+        paymentStatus === "paid" &&
+        (
+            status === "active" ||
+            status === "approved" ||
+            status === "completed"
+        )
+    ) {
+
+        return true;
+
+    }
 
 
+    return false;
+
+}
 
 
+// =====================================
+// RENDER COURSES
+// =====================================
 
-            <div class="course-content">
+function renderCourses() {
+
+    if (!coursesContainer) {
+
+        return;
+
+    }
 
 
+    if (!myCourses.length) {
 
-                <span class="course-status">
+        showEmpty();
 
-                    ${
-                    progress >= 100
-                    ?
-                    "Completed"
-                    :
-                    "In Progress"
-                    }
+        return;
+
+    }
+
+
+    coursesContainer.innerHTML =
+        "";
+
+
+    myCourses.forEach(
+        course => {
+
+            coursesContainer.appendChild(
+                createCourseCard(
+                    course
+                )
+            );
+
+        }
+    );
+
+
+    updateCourseCount();
+
+
+    refreshIcons();
+
+}
+
+
+// =====================================
+// CREATE COURSE CARD
+// =====================================
+
+function createCourseCard(
+    course
+) {
+
+    const card =
+        document.createElement(
+            "article"
+        );
+
+
+    card.className =
+        "my-course-card";
+
+
+    const progress =
+        Math.min(
+            100,
+            Math.max(
+                0,
+                Number(
+                    course.progress || 0
+                )
+            )
+        );
+
+
+    const completed =
+        progress >= 100;
+
+
+    const thumbnail =
+        course.thumbnail ||
+        "";
+
+
+    const title =
+        course.title ||
+        "Untitled Course";
+
+
+    const description =
+        course.description ||
+        "Continue your learning journey.";
+
+
+    const instructor =
+        course.instructorName ||
+        "SSA Instructor";
+
+
+    const category =
+        course.category ||
+        "Technology";
+
+
+    const level =
+        course.level ||
+        "Beginner";
+
+
+    const duration =
+        course.duration ||
+        "Self-paced";
+
+
+    card.innerHTML = `
+
+        <!-- COVER -->
+
+        <div class="my-course-cover">
+
+
+            ${
+                thumbnail
+
+                ? `
+
+                    <img
+                        src="${escapeHTML(thumbnail)}"
+                        alt="${escapeHTML(title)}"
+                        loading="lazy"
+                    >
+
+                `
+
+                : `
+
+                    <div class="course-cover-placeholder">
+
+                        <i data-lucide="book-open"></i>
+
+                    </div>
+
+                `
+            }
+
+
+            <div class="course-cover-overlay">
+
+
+                <span class="course-category">
+
+                    ${escapeHTML(category)}
 
                 </span>
 
 
+                <span class="course-progress-pill">
 
+                    ${progress}%
 
-
-                <h3>
-
-    ${
-        course.title ||
-        "Untitled Course"
-    }
-
-    ${
-        student?.premium === true
-            ? `<span class="premium-badge" title="SSA Premium Verified">✓</span>`
-            : ""
-    }
-
-</h3>
-
-
-
-
-
-                <p>
-
-                    ${
-                    course.description ||
-                    "Continue your learning journey."
-
-                    }
-
-                </p>
-
-
-
-
-
-
-
-                <div class="course-progress">
-
-
-
-                    <div class="progress-track">
-
-
-                        <span style="
-                        width:${progress}%;
-                        "></span>
-
-
-                    </div>
-
-
-
-                    <small>
-
-                        ${progress}% Complete
-
-                    </small>
-
-
-
-                </div>
-
-
-
-
-
-
-                <a href="
-                course-player.html?id=${course.id}
-                "
-                class="continue-btn">
-
-
-                    ${
-                    progress >= 100
-                    ?
-                    "Review Course"
-                    :
-                    "Continue Learning"
-                    }
-
-
-                </a>
-
-
+                </span>
 
 
             </div>
-
 
 
         </div>
 
 
-        `;
+        <!-- BODY -->
 
+        <div class="my-course-body">
 
 
-    });
+            <div class="course-meta-row">
 
 
+                <span>
 
+                    <i data-lucide="signal"></i>
 
+                    ${escapeHTML(level)}
 
+                </span>
 
-    if(typeof lucide !== "undefined"){
 
-        lucide.createIcons();
+                <span>
 
-    }
+                    <i data-lucide="clock-3"></i>
 
+                    ${escapeHTML(
+                        String(duration)
+                    )}
 
+                </span>
 
-}
 
+            </div>
 
 
+            <h3>
 
+                ${escapeHTML(title)}
 
+            </h3>
 
 
+            <p>
 
-// =====================================
-// COURSE STATS
-// =====================================
+                ${escapeHTML(description)}
 
+            </p>
 
-function updateCourseStats(courses){
 
+            <!-- INSTRUCTOR -->
 
+            <div class="course-instructor-row">
 
-    let enrolled = courses.length;
 
+                <span class="instructor-avatar">
 
+                    ${escapeHTML(
+                        instructor
+                            .charAt(0)
+                            .toUpperCase()
+                    )}
 
-    let inProgress = 0;
+                </span>
 
 
-    let completed = 0;
+                <span>
 
+                    ${escapeHTML(
+                        instructor
+                    )}
 
-    let hours = 0;
+                </span>
 
+            </div>
 
 
+            <!-- PROGRESS -->
 
+            <div class="course-progress-block">
 
-    courses.forEach(course=>{
 
+                <div class="progress-label">
 
 
-        const progress =
+                    <span>
 
-        course.progress || 0;
+                        ${
+                            completed
+                                ? "Course completed"
+                                : "Your progress"
+                        }
 
+                    </span>
 
 
+                    <strong>
 
-        if(progress >= 100){
+                        ${progress}%
 
+                    </strong>
 
-            completed++;
 
+                </div>
 
-        }
-        else{
 
+                <div class="progress-track">
 
-            inProgress++;
 
+                    <span
+                        class="progress-fill"
+                        style="width:${progress}%"
+                    ></span>
 
-        }
 
+                </div>
 
 
+            </div>
 
 
-        hours +=
+            <!-- ACTION -->
 
-        course.hours || 0;
+            <button
+                type="button"
+                class="continue-course-btn"
+                data-course-id="${escapeHTML(course.id)}"
+            >
 
+                <span>
 
+                    ${
+                        completed
+                            ? "Review Course"
+                            : "Continue Learning"
+                    }
 
-    });
+                </span>
 
 
+                <i
+                    data-lucide="${
+                        completed
+                            ? "rotate-ccw"
+                            : "arrow-right"
+                    }"
+                ></i>
 
+            </button>
 
 
-
-
-
-    const enrolledEl =
-
-    document.getElementById(
-        "enrolledCount"
-    );
-
-
-
-    const progressEl =
-
-    document.getElementById(
-        "progressCount"
-    );
-
-
-
-    const completedEl =
-
-    document.getElementById(
-        "completedCount"
-    );
-
-
-
-    const hoursEl =
-
-    document.getElementById(
-        "hoursCount"
-    );
-
-
-
-
-
-
-
-    if(enrolledEl)
-
-        enrolledEl.textContent =
-        enrolled;
-
-
-
-
-
-    if(progressEl)
-
-        progressEl.textContent =
-        inProgress;
-
-
-
-
-
-    if(completedEl)
-
-        completedEl.textContent =
-        completed;
-
-
-
-
-
-    if(hoursEl)
-
-        hoursEl.textContent =
-        hours + "h";
-
-
-
-}
-
-
-
-
-
-
-
-
-// =====================================
-// EMPTY STATE
-// =====================================
-
-
-function showEmptyCourses(){
-
-
-    const container =
-
-    document.getElementById(
-        "coursesContainer"
-    );
-
-
-
-    if(!container)
-        return;
-
-
-
-
-
-    container.innerHTML = `
-
-
-
-    <div class="empty-state">
-
-
-        <i data-lucide="book-open"></i>
-
-
-
-        <h3>
-
-            No Courses Yet
-
-        </h3>
-
-
-
-        <p>
-
-            Start learning by enrolling into a course.
-
-        </p>
-
-
-
-
-    </div>
-
-
+        </div>
 
     `;
 
 
+    const button =
+        card.querySelector(
+            ".continue-course-btn"
+        );
 
 
+    button?.addEventListener(
+        "click",
+        () => {
 
-    if(typeof lucide !== "undefined"){
+            window.location.href =
+                `course-player.html?id=${course.id}`;
 
-        lucide.createIcons();
-
-    }
-
-
-
-}
-// =====================================
-// COURSE SEARCH + ACTIONS
-// PART 3
-// =====================================
-
-
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
-
-
-    initializeCourseActions();
-
-
-});
-
-
-
-
-
-function initializeCourseActions(){
-
-
-
-    const exploreBtn =
-
-    document.getElementById(
-        "exploreCoursesBtn"
+        }
     );
 
 
+    return card;
 
-    if(exploreBtn){
-
-
-        exploreBtn.addEventListener(
-        "click",
-        ()=>{
+}
 
 
-            window.location.href =
-            "course-library.html";
+// =====================================
+// STATS
+// =====================================
+
+function updateStats() {
+
+    const enrolled =
+        myCourses.length;
 
 
-        });
+    let inProgress =
+        0;
 
+
+    let completed =
+        0;
+
+
+    let totalHours =
+        0;
+
+
+    myCourses.forEach(
+        course => {
+
+            const progress =
+                Math.min(
+                    100,
+                    Math.max(
+                        0,
+                        Number(
+                            course.progress || 0
+                        )
+                    )
+                );
+
+
+            if (
+                progress >= 100
+            ) {
+
+                completed++;
+
+            }
+
+            else if (
+                progress > 0
+            ) {
+
+                inProgress++;
+
+            }
+
+
+            totalHours +=
+                getCourseHours(
+                    course.duration
+                );
+
+        }
+    );
+
+
+    if (enrolledCount) {
+
+        enrolledCount.textContent =
+            enrolled;
 
     }
 
 
+    if (progressCount) {
+
+        progressCount.textContent =
+            inProgress;
+
+    }
 
 
+    if (completedCount) {
 
-}
-function showCoursesLoading(){
+        completedCount.textContent =
+            completed;
 
-
-const container =
-document.getElementById(
-"coursesContainer"
-);
+    }
 
 
+    if (hoursCount) {
 
-if(!container)
-return;
+        hoursCount.textContent =
+            formatHours(
+                totalHours
+            );
 
-
-
-container.innerHTML = `
-
-<div class="empty-state">
-
-
-<i data-lucide="loader"></i>
+    }
 
 
-<h3>
-Loading Courses...
-</h3>
-
-
-<p>
-Fetching your learning progress
-</p>
-
-
-</div>
-
-`;
-
-
-
-if(typeof lucide !== "undefined"){
-
-lucide.createIcons();
+    updateCourseCount();
 
 }
 
+
+// =====================================
+// COURSE COUNT
+// =====================================
+
+function updateCourseCount() {
+
+    if (!myCoursesCount) {
+
+        return;
+
+    }
+
+
+    const count =
+        myCourses.length;
+
+
+    myCoursesCount.textContent =
+        `${count} ${
+            count === 1
+                ? "course"
+                : "courses"
+        }`;
+
+}
+
+
+// =====================================
+// DURATION → HOURS
+// =====================================
+
+function getCourseHours(
+    duration
+) {
+
+    if (
+        typeof duration ===
+        "number"
+    ) {
+
+        return duration;
+
+    }
+
+
+    const value =
+        String(
+            duration || ""
+        )
+        .toLowerCase();
+
+
+    const number =
+        parseFloat(
+            value
+        );
+
+
+    if (
+        Number.isNaN(number)
+    ) {
+
+        return 0;
+
+    }
+
+
+    if (
+        value.includes("week")
+    ) {
+
+        return number * 5;
+
+    }
+
+
+    if (
+        value.includes("minute")
+    ) {
+
+        return number / 60;
+
+    }
+
+
+    return number;
+
+}
+
+
+// =====================================
+// FORMAT HOURS
+// =====================================
+
+function formatHours(
+    hours
+) {
+
+    if (!hours) {
+
+        return "0h";
+
+    }
+
+
+    if (
+        hours < 1
+    ) {
+
+        return `${Math.round(
+            hours * 60
+        )}m`;
+
+    }
+
+
+    return `${Math.round(
+        hours
+    )}h`;
+
+}
+
+
+// =====================================
+// EMPTY
+// =====================================
+
+function showEmpty() {
+
+    if (!coursesContainer) {
+
+        return;
+
+    }
+
+
+    coursesContainer.innerHTML = `
+
+        <div class="courses-state empty-state">
+
+
+            <div class="state-icon">
+
+                <i data-lucide="book-open"></i>
+
+            </div>
+
+
+            <h3>
+
+                No Courses Yet
+
+            </h3>
+
+
+            <p>
+
+                You haven't enrolled in any courses yet.
+                Explore the library and start learning.
+
+            </p>
+
+
+            <a
+                href="course-library.html"
+                class="primary-btn"
+            >
+
+                <i data-lucide="compass"></i>
+
+                Explore Courses
+
+            </a>
+
+
+        </div>
+
+    `;
+
+
+    updateStats();
+
+    refreshIcons();
+
+}
+
+
+// =====================================
+// LOADING
+// =====================================
+
+function showLoading() {
+
+    if (!coursesContainer) {
+
+        return;
+
+    }
+
+
+    coursesContainer.innerHTML = `
+
+        <div class="courses-state loading-state">
+
+
+            <div class="state-icon">
+
+                <i data-lucide="loader-circle"></i>
+
+            </div>
+
+
+            <h3>
+
+                Loading your courses...
+
+            </h3>
+
+
+            <p>
+
+                Preparing your learning dashboard.
+
+            </p>
+
+
+        </div>
+
+    `;
+
+
+    refreshIcons();
+
+}
+
+
+// =====================================
+// ERROR
+// =====================================
+
+function showError() {
+
+    if (!coursesContainer) {
+
+        return;
+
+    }
+
+
+    coursesContainer.innerHTML = `
+
+        <div class="courses-state error-state">
+
+
+            <div class="state-icon">
+
+                <i data-lucide="triangle-alert"></i>
+
+            </div>
+
+
+            <h3>
+
+                Couldn't load your courses
+
+            </h3>
+
+
+            <p>
+
+                Something went wrong while loading
+                your classroom.
+
+            </p>
+
+
+            <button
+                type="button"
+                class="primary-btn"
+                id="retryCourses"
+            >
+
+                <i data-lucide="refresh-cw"></i>
+
+                Try Again
+
+            </button>
+
+
+        </div>
+
+    `;
+
+
+    document
+        .getElementById("retryCourses")
+        ?.addEventListener(
+            "click",
+            loadMyCourses
+        );
+
+
+    refreshIcons();
+
+}
+
+
+// =====================================
+// REMOVE DUPLICATES
+// =====================================
+
+function removeDuplicates(
+    courses
+) {
+
+    const map =
+        new Map();
+
+
+    courses.forEach(
+        course => {
+
+            if (
+                !map.has(
+                    course.id
+                )
+            ) {
+
+                map.set(
+                    course.id,
+                    course
+                );
+
+            }
+
+        }
+    );
+
+
+    return Array.from(
+        map.values()
+    );
+
+}
+
+
+// =====================================
+// TIMESTAMP
+// =====================================
+
+function getTime(
+    value
+) {
+
+    if (!value) {
+
+        return 0;
+
+    }
+
+
+    if (
+        typeof value.toMillis ===
+        "function"
+    ) {
+
+        return value.toMillis();
+
+    }
+
+
+    if (
+        value instanceof Date
+    ) {
+
+        return value.getTime();
+
+    }
+
+
+    if (
+        typeof value === "number"
+    ) {
+
+        return value;
+
+    }
+
+
+    return 0;
+
+}
+
+
+// =====================================
+// ESCAPE HTML
+// =====================================
+
+function escapeHTML(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+// =====================================
+// ICONS
+// =====================================
+
+function refreshIcons() {
+
+    if (
+        window.lucide &&
+        typeof window.lucide.createIcons ===
+            "function"
+    ) {
+
+        window.lucide.createIcons();
+
+    }
 
 }

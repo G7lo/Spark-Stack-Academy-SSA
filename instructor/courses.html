@@ -15,7 +15,9 @@
     </title>
 
 
-    <!-- CORE -->
+    <!-- =====================================================
+         CORE STYLES
+    ====================================================== -->
 
     <link
         rel="stylesheet"
@@ -38,14 +40,20 @@
     >
 
 
-    <!-- FONT -->
+    <!-- =====================================================
+         FONT
+    ====================================================== -->
 
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
 
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
@@ -53,9 +61,13 @@
     >
 
 
-    <!-- ICONS -->
+    <!-- =====================================================
+         ICONS
+    ====================================================== -->
 
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script
+        src="https://unpkg.com/lucide@latest"
+    ></script>
 
 </head>
 
@@ -66,7 +78,9 @@
 <div class="instructor-app">
 
 
-    <!-- SIDEBAR -->
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
     <aside
         id="instructorSidebar"
@@ -82,7 +96,9 @@
     ></div>
 
 
-    <!-- MAIN -->
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
 
     <main class="instructor-main">
 
@@ -95,16 +111,20 @@
         ></header>
 
 
-        <!-- PAGE -->
+        <!-- =================================================
+             COURSES PAGE
+        ================================================== -->
 
         <section class="courses-page">
 
 
-            <!-- PAGE HEADER -->
+            <!-- =================================================
+                 PAGE HEADER
+            ================================================== -->
 
             <div class="page-header">
 
-                <div>
+                <div class="page-header-content">
 
                     <span class="page-eyebrow">
                         TEACHING
@@ -130,17 +150,26 @@
 
                     <i data-lucide="plus"></i>
 
-                    Create Course
+                    <span>
+                        Create Course
+                    </span>
 
                 </button>
 
             </div>
 
 
-            <!-- STATS -->
+            <!-- =================================================
+                 COURSE STATS
+            ================================================== -->
 
-            <section class="course-stats">
+            <section
+                class="course-stats"
+                aria-label="Course statistics"
+            >
 
+
+                <!-- TOTAL -->
 
                 <article class="course-stat">
 
@@ -150,7 +179,7 @@
 
                     </div>
 
-                    <div>
+                    <div class="stat-content">
 
                         <span>
                             Total Courses
@@ -165,6 +194,8 @@
                 </article>
 
 
+                <!-- PUBLISHED -->
+
                 <article class="course-stat">
 
                     <div class="stat-icon green">
@@ -173,7 +204,7 @@
 
                     </div>
 
-                    <div>
+                    <div class="stat-content">
 
                         <span>
                             Published
@@ -188,6 +219,8 @@
                 </article>
 
 
+                <!-- DRAFTS -->
+
                 <article class="course-stat">
 
                     <div class="stat-icon gold">
@@ -196,7 +229,7 @@
 
                     </div>
 
-                    <div>
+                    <div class="stat-content">
 
                         <span>
                             Drafts
@@ -211,6 +244,8 @@
                 </article>
 
 
+                <!-- STUDENTS -->
+
                 <article class="course-stat">
 
                     <div class="stat-icon purple">
@@ -219,7 +254,7 @@
 
                     </div>
 
-                    <div>
+                    <div class="stat-content">
 
                         <span>
                             Students
@@ -237,7 +272,9 @@
             </section>
 
 
-            <!-- COURSE WORKSPACE -->
+            <!-- =================================================
+                 COURSE LIBRARY
+            ================================================== -->
 
             <section class="courses-card">
 
@@ -247,7 +284,7 @@
                 <div class="courses-toolbar">
 
 
-                    <div>
+                    <div class="courses-toolbar-title">
 
                         <span class="card-eyebrow">
                             COURSE LIBRARY
@@ -264,39 +301,55 @@
 
                     <div class="course-search">
 
-                        <i data-lucide="search"></i>
+                        <i
+                            data-lucide="search"
+                            aria-hidden="true"
+                        ></i>
 
                         <input
                             type="search"
                             id="courseSearch"
                             placeholder="Search courses..."
                             autocomplete="off"
+                            aria-label="Search courses"
                         >
 
                     </div>
 
+
                 </div>
 
 
-                <!-- FILTERS -->
+                <!-- =================================================
+                     FILTERS
+                ================================================== -->
 
-                <div class="course-filters">
+                <div
+                    class="course-filters"
+                    role="tablist"
+                    aria-label="Course filters"
+                >
 
                     <button
+                        type="button"
                         class="course-filter active"
                         data-filter="all"
                     >
                         All
                     </button>
 
+
                     <button
+                        type="button"
                         class="course-filter"
                         data-filter="published"
                     >
                         Published
                     </button>
 
+
                     <button
+                        type="button"
                         class="course-filter"
                         data-filter="draft"
                     >
@@ -306,16 +359,24 @@
                 </div>
 
 
-                <!-- COURSE GRID -->
+                <!-- =================================================
+                     COURSE GRID
+                ================================================== -->
 
                 <div
                     id="courseGrid"
                     class="course-grid"
+                    aria-live="polite"
                 >
+
+                    <!-- JS LOADING STATE -->
 
                     <div class="course-loading">
 
-                        <div class="loading-spinner"></div>
+                        <div
+                            class="loading-spinner"
+                            aria-hidden="true"
+                        ></div>
 
                         <span>
                             Loading courses...
@@ -326,7 +387,9 @@
                 </div>
 
 
-                <!-- EMPTY STATE -->
+                <!-- =================================================
+                     EMPTY STATE
+                ================================================== -->
 
                 <div
                     id="courseEmpty"
@@ -335,18 +398,24 @@
 
                     <div class="empty-icon">
 
-                        <i data-lucide="book-open"></i>
+                        <i
+                            data-lucide="book-open"
+                            aria-hidden="true"
+                        ></i>
 
                     </div>
+
 
                     <h3>
                         No courses yet
                     </h3>
 
+
                     <p>
                         Create your first course
                         and start teaching.
                     </p>
+
 
                     <button
                         id="emptyCreateCourseBtn"
@@ -373,12 +442,19 @@
 </div>
 
 
-<!-- APP -->
+<!-- =========================================================
+     INSTRUCTOR APP
+========================================================= -->
 
 <script
     type="module"
     src="js/instructor-app.js"
 ></script>
+
+
+<!-- =========================================================
+     COURSES ENGINE
+========================================================= -->
 
 <script
     type="module"
@@ -386,9 +462,28 @@
 ></script>
 
 
+<!-- =========================================================
+     LUCIDE
+========================================================= -->
+
 <script>
 
-    lucide.createIcons();
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (
+            window.lucide &&
+            typeof window.lucide.createIcons ===
+                "function"
+        ) {
+
+            lucide.createIcons();
+
+        }
+
+    }
+);
 
 </script>
 

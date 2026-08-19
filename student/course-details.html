@@ -4,402 +4,473 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-<title>
-Course Details | Spark Stack Academy
-</title>
-
-
+<title>Course Details | Spark Stack Academy</title>
 
 <link rel="stylesheet" href="css/student-core.css">
-
 <link rel="stylesheet" href="css/components.css">
-
 <link rel="stylesheet" href="css/course-details.css">
-
 <link rel="stylesheet" href="css/responsive.css">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
 
 <script src="https://unpkg.com/lucide@latest"></script>
 
-
 </head>
-
-
 
 <body>
 
-
-
 <div class="student-layout">
 
+    <!-- SIDEBAR -->
+    <aside
+        id="sidebarContainer"
+        class="sidebar-container">
+    </aside>
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay">
+    </div>
 
 
-<!-- SIDEBAR -->
+    <!-- MAIN -->
+    <main class="student-main">
 
-<aside
-id="sidebarContainer"
-class="sidebar-container">
+        <!-- TOPBAR -->
+        <div
+            id="topbarContainer"
+            class="topbar-container">
+        </div>
 
-</aside>
+
+        <section class="dashboard-content course-details-page">
+
+            <!-- BACK -->
+            <button
+                class="back-btn"
+                id="backBtn"
+                type="button">
+
+                <i data-lucide="arrow-left"></i>
+                Back to Library
+
+            </button>
 
 
+            <!-- LOADING -->
+            <div
+                id="courseLoading"
+                class="course-loading">
 
-<div 
-id="sidebarOverlay"
-class="sidebar-overlay">
+                <div class="loading-spinner"></div>
+
+                <h3>Loading course...</h3>
+
+                <p>
+                    Preparing your classroom.
+                </p>
+
+            </div>
+
+
+            <!-- ERROR -->
+            <div
+                id="courseError"
+                class="course-error"
+                style="display:none;">
+
+                <div class="error-icon">
+                    <i data-lucide="circle-alert"></i>
+                </div>
+
+                <h2>Course unavailable</h2>
+
+                <p id="courseErrorMessage">
+                    We couldn't load this course.
+                </p>
+
+                <button
+                    class="primary-btn"
+                    id="errorBackBtn">
+
+                    <i data-lucide="arrow-left"></i>
+                    Back to Library
+
+                </button>
+
+            </div>
+
+
+            <!-- CONTENT -->
+            <div
+                id="courseDetailsContent"
+                style="display:none;">
+
+
+                <!-- HERO -->
+                <section class="course-details-hero">
+
+                    <div class="course-cover-large">
+
+                        <i data-lucide="graduation-cap"></i>
+
+                    </div>
+
+
+                    <div class="course-hero-info">
+
+                        <div class="course-badges">
+
+                            <span
+                                class="course-category"
+                                id="courseCategory">
+                                Course
+                            </span>
+
+                            <span
+                                class="course-level"
+                                id="courseLevel">
+                                Beginner
+                            </span>
+
+                            <span
+                                class="course-free-badge"
+                                id="courseFreeBadge"
+                                style="display:none;">
+                                Free
+                            </span>
+
+                        </div>
+
+
+                        <h1 id="courseTitle">
+                            Course Title
+                        </h1>
+
+                        <p
+                            id="courseDescription"
+                            class="course-description">
+                        </p>
+
+
+                        <div class="course-instructor">
+
+                            <div
+                                class="instructor-avatar"
+                                id="instructorAvatar">
+                                S
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Instructor
+                                </span>
+
+                                <strong id="instructorName">
+                                    Spark Stack Academy
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ENROLL CARD -->
+                    <aside class="enrollment-card">
+
+                        <div class="price-area">
+
+                            <span>Course Price</span>
+
+                            <strong id="coursePrice">
+                                Free
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="discount-price"
+                            id="discountPrice"
+                            style="display:none;">
+                        </div>
+
+
+                        <button
+                            id="enrollBtn"
+                            class="primary-btn enroll-btn"
+                            type="button">
+
+                            <i data-lucide="book-open"></i>
+                            Enroll Now
+
+                        </button>
+
+
+                        <p
+                            class="enrollment-note"
+                            id="enrollmentNote">
+
+                            Start learning at your own pace.
+
+                        </p>
+
+                    </aside>
+
+                </section>
+
+
+                <!-- STATS -->
+                <section class="course-info-grid">
+
+                    <div class="info-card">
+
+                        <i data-lucide="clock"></i>
+
+                        <div>
+                            <span>Duration</span>
+                            <strong id="courseDuration">
+                                —
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <i data-lucide="bar-chart-3"></i>
+
+                        <div>
+                            <span>Level</span>
+                            <strong id="courseLevelInfo">
+                                Beginner
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <i data-lucide="book-open"></i>
+
+                        <div>
+                            <span>Lessons</span>
+                            <strong id="lessonCount">
+                                0
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <i data-lucide="users"></i>
+
+                        <div>
+                            <span>Students</span>
+                            <strong id="studentCount">
+                                0
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- MAIN BODY -->
+                <div class="course-details-grid">
+
+
+                    <!-- LEFT -->
+                    <div class="course-main-column">
+
+                        <section class="details-section">
+
+                            <div class="section-heading">
+
+                                <span class="section-icon">
+                                    <i data-lucide="target"></i>
+                                </span>
+
+                                <div>
+                                    <h2>What You'll Learn</h2>
+                                    <p>
+                                        Skills and knowledge you'll gain.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <ul
+                                id="learningList"
+                                class="learning-list">
+                            </ul>
+
+                        </section>
+
+
+                        <section class="details-section">
+
+                            <div class="section-heading">
+
+                                <span class="section-icon">
+                                    <i data-lucide="list-video"></i>
+                                </span>
+
+                                <div>
+                                    <h2>Course Curriculum</h2>
+                                    <p>
+                                        Explore what is inside this course.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                id="curriculumList"
+                                class="curriculum-list">
+
+                                <div class="curriculum-empty">
+
+                                    <i data-lucide="book-open"></i>
+
+                                    <p>
+                                        Curriculum will appear here.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+                        <section class="details-section">
+
+                            <div class="section-heading">
+
+                                <span class="section-icon">
+                                    <i data-lucide="info"></i>
+                                </span>
+
+                                <div>
+                                    <h2>About This Course</h2>
+                                </div>
+
+                            </div>
+
+                            <p
+                                id="aboutCourse"
+                                class="about-course">
+                            </p>
+
+                        </section>
+
+                    </div>
+
+
+                    <!-- RIGHT -->
+                    <aside class="course-side-column">
+
+                        <div class="side-card">
+
+                            <h3>Course Includes</h3>
+
+                            <ul class="includes-list">
+
+                                <li>
+                                    <i data-lucide="play-circle"></i>
+                                    <span>Video & lesson content</span>
+                                </li>
+
+                                <li>
+                                    <i data-lucide="file-text"></i>
+                                    <span>Learning materials</span>
+                                </li>
+
+                                <li>
+                                    <i data-lucide="award"></i>
+                                    <span>Course completion tracking</span>
+                                </li>
+
+                                <li>
+                                    <i data-lucide="infinity"></i>
+                                    <span>Learn at your own pace</span>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+
+                        <div class="side-card instructor-card">
+
+                            <span class="side-label">
+                                YOUR INSTRUCTOR
+                            </span>
+
+                            <div class="side-instructor">
+
+                                <div
+                                    class="instructor-avatar"
+                                    id="sideInstructorAvatar">
+                                    S
+                                </div>
+
+                                <div>
+                                    <strong id="sideInstructorName">
+                                        Spark Stack Academy
+                                    </strong>
+
+                                    <span>
+                                        Course Instructor
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </aside>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </div>
-
-
-
-
-
-
-
-<main class="student-main">
-
-
-
-<div
-id="topbarContainer"
-class="topbar-container">
-
-</div>
-
-
-
-
-
-
-
-
-<section class="dashboard-content course-details-page">
-
-
-
-
-
-<!-- HERO -->
-
-
-<div class="course-hero">
-
-
-
-<div class="course-hero-content">
-
-
-
-<span class="page-badge">
-
-<i data-lucide="graduation-cap"></i>
-
-Course Preview
-
-</span>
-
-
-
-
-<h1 id="courseTitle">
-
-Course Title
-
-</h1>
-
-
-
-<p id="courseDescription">
-
-Course description.
-
-</p>
-
-
-
-
-
-
-<div class="course-tags">
-
-
-<span id="courseLevel">
-
-Beginner
-
-</span>
-
-
-<span id="courseDuration">
-
-0 Hours
-
-</span>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-<div class="course-action-card">
-
-
-
-<h2 id="coursePrice">
-
-Free
-
-</h2>
-
-
-
-<p>
-
-Full lifetime access
-
-</p>
-
-
-
-
-<button
-id="enrollBtn"
-class="primary-btn">
-
-Enroll Now
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- CONTENT -->
-
-<div class="details-grid">
-
-
-
-
-
-<!-- CURRICULUM -->
-
-
-<div class="details-card">
-
-
-<h2>
-
-Curriculum
-
-</h2>
-
-
-
-<div id="curriculumList">
-
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- SIDE INFO -->
-
-
-<div class="details-card">
-
-
-
-<h2>
-
-About Instructor
-
-</h2>
-
-
-
-<div class="instructor-card">
-
-
-
-<div class="instructor-avatar">
-
-S
-
-</div>
-
-
-<div>
-
-
-<h4 id="instructorName">
-
-Instructor
-
-</h4>
-
-
-
-<span>
-
-Academy Instructor
-
-</span>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-<h2>
-
-What You'll Learn
-
-</h2>
-
-
-
-<ul id="learningList">
-
-
-</ul>
-
-
-
-
-</div>
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<!-- REVIEWS -->
-
-
-<div class="details-card review-section">
-
-
-<h2>
-
-Student Reviews
-
-</h2>
-
-
-
-<div id="reviewList">
-
-
-<p>
-
-No reviews yet.
-
-</p>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-</section>
-
-
-
-
-
-</main>
-
-
-
-</div>
-
-
-
-
-
-
 
 
 <script type="module" src="js/student-app.js"></script>
-
 <script type="module" src="js/course-details.js"></script>
 
-
-
 <script>
-
-lucide.createIcons();
-
+    document.addEventListener("DOMContentLoaded", () => {
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+    });
 </script>
 
-
 </body>
-
 </html>

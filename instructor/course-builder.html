@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Course Builder | Spark Stack Academy
+    </title>
+
+
+    <!-- CORE -->
+
+    <link
+        rel="stylesheet"
+        href="css/instructor-core.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/course-builder.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- FONT -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONS -->
+
+    <script
+        src="https://unpkg.com/lucide@latest"
+    ></script>
+
+</head>
+
+
+<body>
+
+
+<div class="instructor-app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="instructorSidebar"
+        class="instructor-sidebar"
+    ></aside>
+
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="instructor-main">
+
+
+        <!-- TOPBAR -->
+
+        <header
+            id="instructorTopbar"
+            class="instructor-topbar"
+        ></header>
+
+
+        <!-- =================================================
+             BUILDER PAGE
+        ================================================== -->
+
+        <section class="course-builder-page">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="course-builder-header">
+
+
+                <div class="builder-header-left">
+
+
+                    <a
+                        href="courses.html"
+                        class="back-link"
+                    >
+
+                        <i data-lucide="arrow-left"></i>
+
+                        Back to Courses
+
+                    </a>
+
+
+                    <span class="page-eyebrow">
+                        COURSE BUILDER
+                    </span>
+
+
+                    <h1 id="builderCourseTitle">
+                        Loading Course...
+                    </h1>
+
+
+                    <p id="builderCourseDescription">
+                        Loading course information...
+                    </p>
+
+                </div>
+
+
+                <div class="builder-header-actions">
+
+
+                    <span
+                        id="courseBuilderStatus"
+                        class="builder-status draft"
+                    >
+                        Draft
+                    </span>
+
+
+                    <button
+                        type="button"
+                        id="previewCourseBtn"
+                        class="secondary-btn"
+                    >
+
+                        <i data-lucide="eye"></i>
+
+                        Preview
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="saveCourseBtn"
+                        class="secondary-btn"
+                    >
+
+                        <i data-lucide="save"></i>
+
+                        Save
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="publishCourseBtn"
+                        class="primary-btn"
+                    >
+
+                        <i data-lucide="rocket"></i>
+
+                        Publish Course
+
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 COURSE OVERVIEW
+            ================================================== -->
+
+            <section class="builder-overview-card">
+
+
+                <div class="overview-course-icon">
+
+                    <i data-lucide="book-open"></i>
+
+                </div>
+
+
+                <div class="overview-course-info">
+
+                    <span>
+                        COURSE
+                    </span>
+
+
+                    <strong id="overviewCourseName">
+                        —
+                    </strong>
+
+
+                    <small id="overviewCourseMeta">
+                        —
+                    </small>
+
+                </div>
+
+
+                <div class="overview-stats">
+
+
+                    <div class="overview-stat">
+
+                        <span>
+                            Modules
+                        </span>
+
+                        <strong id="moduleCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="overview-stat">
+
+                        <span>
+                            Lessons
+                        </span>
+
+                        <strong id="lessonCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="overview-stat">
+
+                        <span>
+                            Quizzes
+                        </span>
+
+                        <strong id="quizCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="overview-stat">
+
+                        <span>
+                            Assignments
+                        </span>
+
+                        <strong id="assignmentCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 WORKSPACE
+            ================================================== -->
+
+            <section class="course-builder-workspace">
+
+
+                <!-- =================================================
+                     MAIN CONTENT
+                ================================================== -->
+
+                <div class="builder-content-panel">
+
+
+                    <div class="builder-section-header">
+
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                CURRICULUM
+                            </span>
+
+
+                            <h2>
+                                Course Content
+                            </h2>
+
+
+                            <p>
+                                Build your course using modules,
+                                lessons and assessments.
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            id="addModuleBtn"
+                            class="primary-btn"
+                        >
+
+                            <i data-lucide="plus"></i>
+
+                            Add Module
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- MODULES -->
+
+                    <div
+                        id="moduleList"
+                        class="module-list"
+                    >
+
+                        <div
+                            id="builderLoading"
+                            class="builder-loading"
+                        >
+
+                            <div class="loading-spinner"></div>
+
+                            <span>
+                                Loading course content...
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EMPTY -->
+
+                    <div
+                        id="builderEmpty"
+                        class="builder-empty hidden"
+                    >
+
+                        <div class="builder-empty-icon">
+
+                            <i data-lucide="layers-3"></i>
+
+                        </div>
+
+
+                        <h3>
+                            Your course is empty
+                        </h3>
+
+
+                        <p>
+                            Start by creating your first module.
+                        </p>
+
+
+                        <button
+                            type="button"
+                            id="emptyAddModuleBtn"
+                            class="primary-btn"
+                        >
+
+                            <i data-lucide="plus"></i>
+
+                            Create First Module
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     SIDEBAR
+                ================================================== -->
+
+                <aside class="builder-side-panel">
+
+
+                    <!-- STATUS -->
+
+                    <div class="builder-side-card">
+
+
+                        <div class="side-card-header">
+
+                            <span class="card-eyebrow">
+                                PUBLISHING
+                            </span>
+
+                            <h3>
+                                Course Status
+                            </h3>
+
+                        </div>
+
+
+                        <div
+                            id="sideCourseStatus"
+                            class="side-status draft"
+                        >
+
+                            <span></span>
+
+                            Draft
+
+                        </div>
+
+
+                        <p id="publishRequirements">
+                            Add course content before publishing.
+                        </p>
+
+
+                        <button
+                            type="button"
+                            id="sidePublishBtn"
+                            class="primary-btn full-width"
+                        >
+
+                            <i data-lucide="rocket"></i>
+
+                            Publish Course
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- QUICK ADD -->
+
+                    <div class="builder-side-card">
+
+
+                        <div class="side-card-header">
+
+                            <span class="card-eyebrow">
+                                QUICK ADD
+                            </span>
+
+                            <h3>
+                                Add Content
+                            </h3>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="quick-add-btn"
+                            id="quickAddLessonBtn"
+                        >
+
+                            <span class="quick-add-icon">
+
+                                <i data-lucide="play-circle"></i>
+
+                            </span>
+
+
+                            <span>
+
+                                <strong>
+                                    Lesson
+                                </strong>
+
+                                <small>
+                                    Add learning material
+                                </small>
+
+                            </span>
+
+
+                            <i data-lucide="chevron-right"></i>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="quick-add-btn"
+                            id="quickAddQuizBtn"
+                        >
+
+                            <span class="quick-add-icon">
+
+                                <i data-lucide="brain"></i>
+
+                            </span>
+
+
+                            <span>
+
+                                <strong>
+                                    Quiz
+                                </strong>
+
+                                <small>
+                                    Test student knowledge
+                                </small>
+
+                            </span>
+
+
+                            <i data-lucide="chevron-right"></i>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="quick-add-btn"
+                            id="quickAddAssignmentBtn"
+                        >
+
+                            <span class="quick-add-icon">
+
+                                <i data-lucide="clipboard-list"></i>
+
+                            </span>
+
+
+                            <span>
+
+                                <strong>
+                                    Assignment
+                                </strong>
+
+                                <small>
+                                    Create practical work
+                                </small>
+
+                            </span>
+
+
+                            <i data-lucide="chevron-right"></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- TIPS -->
+
+                    <div
+                        class="builder-side-card builder-tips"
+                    >
+
+                        <div class="side-card-header">
+
+                            <span class="card-eyebrow">
+                                BUILDER TIPS
+                            </span>
+
+                            <h3>
+                                Build Better Courses
+                            </h3>
+
+                        </div>
+
+
+                        <div class="tip-item">
+
+                            <i data-lucide="layers-3"></i>
+
+                            <span>
+                                Break large topics into
+                                focused modules.
+                            </span>
+
+                        </div>
+
+
+                        <div class="tip-item">
+
+                            <i data-lucide="video"></i>
+
+                            <span>
+                                Keep lessons focused on
+                                one learning objective.
+                            </span>
+
+                        </div>
+
+
+                        <div class="tip-item">
+
+                            <i data-lucide="badge-check"></i>
+
+                            <span>
+                                Use quizzes and assignments
+                                to measure progress.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     MODULE MODAL
+========================================================= -->
+
+<div
+    id="moduleModal"
+    class="builder-modal hidden"
+    aria-hidden="true"
+>
+
+
+    <div
+        class="builder-modal-backdrop"
+        data-close-module
+    ></div>
+
+
+    <div
+        class="builder-modal-panel"
+        role="dialog"
+        aria-modal="true"
+    >
+
+
+        <div class="builder-modal-header">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    CURRICULUM
+                </span>
+
+                <h2 id="moduleModalTitle">
+                    Add Module
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeModuleModal"
+            >
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+        </div>
+
+
+        <form id="moduleForm">
+
+
+            <input
+                type="hidden"
+                id="editingModuleId"
+            >
+
+
+            <div class="form-group">
+
+                <label for="moduleTitle">
+                    Module Title
+                </label>
+
+                <input
+                    type="text"
+                    id="moduleTitle"
+                    placeholder="e.g. HTML Fundamentals"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="moduleDescription">
+                    Description
+                </label>
+
+                <textarea
+                    id="moduleDescription"
+                    rows="4"
+                    placeholder="What will students learn?"
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="moduleStatus">
+                    Status
+                </label>
+
+                <select id="moduleStatus">
+
+                    <option value="draft">
+                        Draft
+                    </option>
+
+                    <option value="published">
+                        Published
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div
+                id="moduleFormMessage"
+                class="form-message"
+                hidden
+            ></div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    id="cancelModuleBtn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                    id="saveModuleBtn"
+                >
+
+                    <i data-lucide="save"></i>
+
+                    Save Module
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     LESSON MODAL
+========================================================= -->
+
+<div
+    id="lessonModal"
+    class="builder-modal hidden"
+    aria-hidden="true"
+>
+
+
+    <div
+        class="builder-modal-backdrop"
+        data-close-lesson
+    ></div>
+
+
+    <div
+        class="builder-modal-panel lesson-modal-panel"
+        role="dialog"
+        aria-modal="true"
+    >
+
+
+        <div class="builder-modal-header">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    LEARNING CONTENT
+                </span>
+
+                <h2 id="lessonModalTitle">
+                    Add Lesson
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeLessonModal"
+            >
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+        </div>
+
+
+        <form id="lessonForm">
+
+
+            <input
+                type="hidden"
+                id="lessonModuleId"
+            >
+
+
+            <input
+                type="hidden"
+                id="editingLessonId"
+            >
+
+
+            <div class="form-group">
+
+                <label for="lessonTitle">
+                    Lesson Title
+                </label>
+
+                <input
+                    type="text"
+                    id="lessonTitle"
+                    placeholder="e.g. Understanding HTML Elements"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="lessonType">
+                    Lesson Type
+                </label>
+
+                <select id="lessonType">
+
+                    <option value="text">
+                        Text Lesson
+                    </option>
+
+                    <option value="video">
+                        Video Lesson
+                    </option>
+
+                    <option value="mixed">
+                        Video + Text
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="lessonDescription">
+                    Lesson Description
+                </label>
+
+                <textarea
+                    id="lessonDescription"
+                    rows="3"
+                    placeholder="Briefly describe this lesson..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="lessonContent">
+                    Lesson Content
+                </label>
+
+                <textarea
+                    id="lessonContent"
+                    rows="7"
+                    placeholder="Write your lesson content..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- VIDEO -->
+
+            <div class="form-group">
+
+                <label for="lessonVideoUrl">
+                    YouTube / Video URL
+                </label>
+
+                <input
+                    type="url"
+                    id="lessonVideoUrl"
+                    placeholder="https://youtube.com/watch?v=..."
+                >
+
+                <small class="form-hint">
+                    You can paste a YouTube video link.
+                </small>
+
+            </div>
+
+
+            <!-- DURATION + STATUS -->
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="lessonDuration">
+                        Duration (minutes)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="lessonDuration"
+                        min="1"
+                        placeholder="15"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="lessonStatus">
+                        Status
+                    </label>
+
+                    <select id="lessonStatus">
+
+                        <option value="draft">
+                            Draft
+                        </option>
+
+                        <option value="published">
+                            Published
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="lessonFormMessage"
+                class="form-message"
+                hidden
+            ></div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    id="cancelLessonBtn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                    id="saveLessonBtn"
+                >
+
+                    <i data-lucide="save"></i>
+
+                    Save Lesson
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     PREVIEW MODAL
+========================================================= -->
+
+<div
+    id="previewModal"
+    class="builder-modal hidden"
+    aria-hidden="true"
+>
+
+
+    <div
+        class="builder-modal-backdrop"
+        data-close-preview
+    ></div>
+
+
+    <div
+        class="builder-modal-panel preview-modal-panel"
+        role="dialog"
+        aria-modal="true"
+    >
+
+
+        <div class="builder-modal-header">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    STUDENT PREVIEW
+                </span>
+
+                <h2>
+                    Course Preview
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closePreviewModal"
+            >
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+        </div>
+
+
+        <div id="coursePreviewContent">
+
+            <div class="preview-loading">
+
+                <div class="loading-spinner"></div>
+
+                <span>
+                    Preparing preview...
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
+
+<script
+    type="module"
+    src="js/instructor-app.js"
+></script>
+
+<script
+    type="module"
+    src="js/course-builder.js"
+></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (
+            window.lucide &&
+            typeof window.lucide.createIcons === "function"
+        ) {
+
+            window.lucide.createIcons();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>
