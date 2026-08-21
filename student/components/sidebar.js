@@ -1,10 +1,10 @@
 // =====================================
 // SPARK STACK ACADEMY
-// STUDENT SIDEBAR V2 + PLATFORM GATE
+// STUDENT SIDEBAR V2 + SUPABASE PLATFORM GATE
 // =====================================
 
 import { db } from "../../js/firebase.js";
-import { doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { supabase } from "../../js/supabase.js";
 
 console.log("🚀 SSA Sidebar Loaded");
 let gateStarted = false;
@@ -12,25 +12,32 @@ let gateStarted = false;
 function startPlatformGate(){
     if(gateStarted) return;
     gateStarted = true;
-    onSnapshot(doc(db,"systemConfig","platform"), snap=>{
-        const data=snap.data()||{};
-        const portal=data.studentPortal||{};
-        const maintenance=data.maintenance;
-        const lockdown=data.emergencyLockdown===true;
-        let blocked=portal.enabled===false||lockdown;
-        let message=portal.message||"The Student Portal is temporarily unavailable.";
-        if(maintenance?.startAt && maintenance?.endAt){
-            const now=Date.now();
-            const start=maintenance.startAt.toDate().getTime();
-            const end=maintenance.endAt.toDate().getTime();
-            const target=maintenance.target;
-            if(now>=start&&now<end&&(target==="student"||target==="all")){ blocked=true; message=maintenance.message||message; }
+
+    const check = async () => {
+        const { data, error } = await supabase
+            .from("platform_commands")
+            .select("command,target,active,reason,expires_at,created_at")
+            .in("target", ["student", "all"])
+            .eq("active", true)
+            .order("created_at", { ascending: false })
+            .limit(1)
+            .maybeSingle();
+
+        if(error){
+            console.warn("Supabase platform gate unavailable:", error.message);
+            return;
         }
-        if(blocked&&!location.pathname.endsWith("portal-suspended.html")){
-            sessionStorage.setItem("ssaPortalMessage",message);
-            location.href="portal-suspended.html";
+        if(!data) return;
+        if(data.expires_at && new Date(data.expires_at) <= new Date()) return;
+
+        sessionStorage.setItem("ssaPortalMessage", data.reason || "The Student Portal is temporarily unavailable.");
+        if(!location.pathname.endsWith("portal-suspended.html")){
+            location.href = "portal-suspended.html";
         }
-    },err=>console.error("Platform gate error:",err));
+    };
+
+    check();
+    setInterval(check, 30000);
 }
 
 export async function loadSidebar(){
