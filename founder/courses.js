@@ -10,7 +10,11 @@ import {
     collection,
     onSnapshot,
     query,
-    orderBy
+    orderBy,
+    getDocs,
+    doc,
+    updateDoc,
+    serverTimestamp
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -87,6 +91,8 @@ document.getElementById("totalRevenue");
 let courses = [];
 
 let filteredCourses = [];
+
+let instructors = [];
 /* ==========================================
    AUTHENTICATION
 ========================================== */
@@ -119,6 +125,8 @@ onAuthStateChanged(
 function initializePage(){
 
     initializeRealtimeCourses();
+
+    loadInstructors();
 
     initializeEventListeners();
 
@@ -352,6 +360,16 @@ function createCourseCard(course){
                 <i class="fas fa-star"></i>
 
                 Feature Course
+
+            </button>
+
+            <button class="menu-item"
+
+                onclick="setCourseStatus('${course.id}','${course.status === "published" ? "draft" : "published"}')">
+
+                <i class="fas fa-power-off"></i>
+
+                ${course.status === "published" ? "Unpublish" : "Publish"}
 
             </button>
 
@@ -959,6 +977,40 @@ window.viewCourse = function(courseId){
 
         <div class="drawer-actions">
 
+            <label class="drawer-instructor-control">
+
+                <span>Assigned instructor</span>
+
+                <select id="courseInstructorSelect">
+
+                    <option value="">Unassigned</option>
+
+                    ${instructors.map(instructor=>`<option value="${instructor.id}" ${course.instructorId === instructor.id ? "selected" : ""}>${instructor.name || instructor.email || "Instructor"}</option>`).join("")}
+
+                </select>
+
+            </label>
+
+            <button class="secondary-btn"
+
+                onclick="assignCourseInstructor('${course.id}')">
+
+                <i class="fas fa-user-check"></i>
+
+                Save Instructor
+
+            </button>
+
+            <button class="secondary-btn"
+
+                onclick="setCourseStatus('${course.id}','${course.status === "published" ? "draft" : "published"}')">
+
+                <i class="fas fa-power-off"></i>
+
+                ${course.status === "published" ? "Unpublish" : "Publish"}
+
+            </button>
+
             <button class="primary-btn"
 
                 onclick="featureCourse('${course.id}')">
@@ -1064,6 +1116,58 @@ window.archiveCourse = async function(courseId){
             error
 
         );
+
+    }
+
+};
+
+/* ==========================================
+   COURSE LIFECYCLE & INSTRUCTOR ASSIGNMENT
+========================================== */
+
+window.setCourseStatus = async function(courseId,status){
+
+    try{
+
+        await updateDoc(
+            doc(db,"courses",courseId),
+            {status,updatedAt:serverTimestamp()}
+        );
+
+        courseDrawer.classList.remove("open");
+
+    }catch(error){
+
+        console.error("Course status update failed:",error);
+        alert("Unable to update this course status.");
+
+    }
+
+};
+
+window.assignCourseInstructor = async function(courseId){
+
+    const select = document.getElementById("courseInstructorSelect");
+
+    if(!select) return;
+
+    const instructor = instructors.find(item=>item.id === select.value);
+
+    try{
+
+        await updateDoc(
+            doc(db,"courses",courseId),
+            {
+                instructorId:instructor?.id || null,
+                tutorName:instructor?.name || "Unassigned",
+                updatedAt:serverTimestamp()
+            }
+        );
+
+    }catch(error){
+
+        console.error("Instructor assignment failed:",error);
+        alert("Unable to assign this instructor.");
 
     }
 
@@ -1300,5 +1404,23 @@ function refreshDashboard(){
     initializeCharts();
 
     hideLoading();
+
+}
+
+async function loadInstructors(){
+
+    try{
+
+        const snapshot = await getDocs(collection(db,"instructors"));
+
+        instructors = snapshot.docs
+        .map(entry=>({id:entry.id,...entry.data()}))
+        .filter(instructor=>instructor.status !== "suspended");
+
+    }catch(error){
+
+        console.error("Instructor Load Error:",error);
+
+    }
 
 }

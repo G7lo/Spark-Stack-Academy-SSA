@@ -2160,3 +2160,22 @@ tbody tr:hover{
 
 
 }
+/* Founder feedback for broadcast and notification actions. */
+.founder-toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 3000;
+    max-width: 360px;
+    padding: 14px 18px;
+    border: 1px solid rgba(34, 211, 238, .35);
+    border-radius: 12px;
+    background: #10223a;
+    color: #f8fafc;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, .3);
+    font-weight: 600;
+}
+
+.founder-toast.error {
+    border-color: rgba(248, 113, 113, .45);
+}

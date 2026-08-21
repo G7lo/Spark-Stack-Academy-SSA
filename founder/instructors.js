@@ -61,6 +61,8 @@ document.getElementById(
 "instructorForm"
 );
 
+let editingInstructorId = null;
+
 // ===================================
 // LOAD COURSES
 // ===================================
@@ -138,15 +140,37 @@ error
 // ===================================
 
 
-addInstructorBtn?.addEventListener(
-"click",
-()=>{
+async function openInstructorModal(instructor=null){
 
-instructorModal.classList.add(
-"active"
-);
+editingInstructorId = instructor?.id || null;
 
+await loadCourses();
+
+instructorForm.reset();
+
+document.querySelector("#instructorModal .modal-header h3").textContent =
+instructor ? "Edit Instructor" : "Add Instructor";
+
+if(instructor){
+
+document.getElementById("instructorName").value = instructor.name || "";
+document.getElementById("instructorEmail").value = instructor.email || "";
+document.getElementById("instructorPhone").value = instructor.phone || "";
+document.getElementById("instructorSpecialization").value = instructor.specialization || "";
+document.getElementById("instructorBio").value = instructor.bio || "";
+document.getElementById("instructorStatus").value = instructor.status || "active";
+
+Array.from(document.getElementById("instructorCourses").options).forEach(option=>{
+option.selected = (instructor.courses || []).includes(option.value);
 });
+
+}
+
+instructorModal.classList.add("active");
+
+}
+
+addInstructorBtn?.addEventListener("click",()=>openInstructorModal());
 
 
 
@@ -164,6 +188,8 @@ instructorModal.classList.remove(
 "active"
 );
 
+editingInstructorId = null;
+
 });
 
 
@@ -180,6 +206,8 @@ if(e.target === instructorModal){
 instructorModal.classList.remove(
 "active"
 );
+
+editingInstructorId = null;
 
 }
 
@@ -283,6 +311,18 @@ serverTimestamp()
 try{
 
 
+if(editingInstructorId){
+
+const { createdAt, ...updates } = instructor;
+
+await updateDoc(
+doc(db,"instructors",editingInstructorId),
+{...updates,updatedAt:serverTimestamp()}
+
+);
+
+}else{
+
 await addDoc(
 
 collection(
@@ -294,10 +334,12 @@ instructor
 
 );
 
+}
+
 
 
 alert(
-"Instructor added successfully 🚀"
+editingInstructorId ? "Instructor updated successfully 🚀" : "Instructor added successfully 🚀"
 );
 
 
@@ -309,6 +351,8 @@ instructorForm.reset();
 instructorModal.classList.remove(
 "active"
 );
+
+editingInstructorId = null;
 
 
 
@@ -650,9 +694,13 @@ document.addEventListener("click", async (e) => {
 
         const id = e.target.closest(".edit-instructor").dataset.id;
 
-        console.log("Edit:", id);
+        const snapshot = await getDoc(doc(db,"instructors",id));
 
-        // Next we'll open the edit modal
+        if(snapshot.exists()){
+
+            openInstructorModal({id:snapshot.id,...snapshot.data()});
+
+        }
     }
 
     // Delete
@@ -661,13 +709,19 @@ document.addEventListener("click", async (e) => {
         const id = e.target.closest(".delete-instructor").dataset.id;
 
         const confirmDelete =
-        confirm("Delete this instructor?");
+        confirm("Suspend this instructor? Their record will remain available for review.");
 
         if(!confirmDelete) return;
 
-        console.log("Delete:", id);
+        await updateDoc(doc(db,"instructors",id),{
 
-        // Next we'll connect Firestore delete
+            status:"suspended",
+
+            updatedAt:serverTimestamp()
+
+        });
+
+        await loadInstructors();
     }
 
 });

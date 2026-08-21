@@ -10,6 +10,7 @@ import {
 doc,
 getDoc,
 setDoc,
+updateDoc,
 serverTimestamp
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -906,6 +907,16 @@ serverTimestamp()
 await updateDoc(
 settingsRef,
 settings
+);
+
+/* Keep instructor earnings rules in sync with the Founder tax setting. */
+await setDoc(
+doc(db,"platformSettings","earnings"),
+{
+platformTaxPercent:settings.taxRate,
+updatedAt:serverTimestamp()
+},
+{merge:true}
 );
 
 alert(

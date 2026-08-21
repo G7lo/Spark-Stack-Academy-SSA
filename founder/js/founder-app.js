@@ -385,7 +385,7 @@ viewAllBtn.addEventListener(
 
 
 window.location.href =
-"notifications/notifications.html";
+"notifications.html";
 
 
 }

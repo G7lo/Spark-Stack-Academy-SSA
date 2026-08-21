@@ -74,6 +74,15 @@ document.getElementById("sortStudents");
 
 let students = [];
 
+let editingStudentId = null;
+
+const studentModal = document.getElementById("studentModal");
+const studentForm = document.getElementById("studentForm");
+
+function normalizedStatus(value="active"){
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+}
+
 
 
 /* ===================================
@@ -177,21 +186,21 @@ students.length;
 
 activeCount.textContent =
 students.filter(
-s=>s.status==="Active"
+s=>s.status?.toLowerCase()==="active"
 ).length;
 
 
 
 graduatedCount.textContent =
 students.filter(
-s=>s.status==="Graduated"
+s=>s.status?.toLowerCase()==="graduated"
 ).length;
 
 
 
 suspendedCount.textContent =
 students.filter(
-s=>s.status==="Suspended"
+s=>s.status?.toLowerCase()==="suspended"
 ).length;
 
 
@@ -457,9 +466,19 @@ student.createdAt
 
 <button 
 class="action-btn view"
-onclick="viewStudent('${student.id}')">
+data-student-action="edit"
+data-id="${student.id}">
 
 👁
+
+</button>
+
+<button
+class="action-btn"
+data-student-action="toggle-status"
+data-id="${student.id}">
+
+${student.status?.toLowerCase() === "suspended" ? "▶" : "⏸"}
 
 </button>
 
@@ -560,7 +579,7 @@ renderStudents(
 
 students.filter(
 s=>
-s.status===value
+s.status?.toLowerCase()===value.toLowerCase()
 )
 
 );
@@ -604,7 +623,8 @@ if(sortSelect.value==="newest"){
 
 sorted.sort(
 (a,b)=>
-b.createdAt-a.createdAt
+(b.createdAt?.toMillis?.() || 0) -
+(a.createdAt?.toMillis?.() || 0)
 );
 
 
@@ -624,5 +644,99 @@ renderStudents(sorted);
    START
 =================================== */
 
+
+function openStudentModal(student=null){
+
+    editingStudentId = student?.id || null;
+
+    document.querySelector("#studentModal .modal-header h3").textContent =
+    student ? "Edit Student" : "Add New Student";
+
+    studentForm.reset();
+
+    if(student){
+        document.getElementById("studentName").value = student.name || "";
+        document.getElementById("studentEmail").value = student.email || "";
+        document.getElementById("studentPhone").value = student.phone || "";
+        document.getElementById("studentCourse").value = student.courseName || student.course || "";
+        document.getElementById("studentStatus").value = (student.status || "Active").toLowerCase();
+    }
+
+    studentModal.classList.add("active");
+}
+
+function closeStudentModal(){
+    studentModal.classList.remove("active");
+    editingStudentId = null;
+}
+
+document.getElementById("addStudentBtn")?.addEventListener("click",()=>openStudentModal());
+document.getElementById("closeStudentModal")?.addEventListener("click",closeStudentModal);
+studentModal?.addEventListener("click",(event)=>{
+    if(event.target === studentModal) closeStudentModal();
+});
+
+studentForm?.addEventListener("submit",async(event)=>{
+    event.preventDefault();
+
+    const record = {
+        name:document.getElementById("studentName").value.trim(),
+        email:document.getElementById("studentEmail").value.trim(),
+        phone:document.getElementById("studentPhone").value.trim(),
+        courseName:document.getElementById("studentCourse").value.trim(),
+        course:document.getElementById("studentCourse").value.trim(),
+        status:normalizedStatus(document.getElementById("studentStatus").value),
+        updatedAt:serverTimestamp()
+    };
+
+    try{
+        if(editingStudentId){
+            await updateDoc(doc(db,"students",editingStudentId),record);
+        }else{
+            await addDoc(collection(db,"students"),{
+                ...record,
+                admissionNumber:generateAdmissionNumber(students.length),
+                role:"student",
+                progress:0,
+                createdAt:serverTimestamp()
+            });
+        }
+        closeStudentModal();
+        await loadStudents();
+    }catch(error){
+        console.error("Saving student failed",error);
+        alert("Unable to save this student.");
+    }
+});
+
+tableBody?.addEventListener("click",async(event)=>{
+    const button = event.target.closest("[data-student-action]");
+    if(!button) return;
+    const student = students.find(item=>item.id === button.dataset.id);
+    if(!student) return;
+    if(button.dataset.studentAction === "edit"){
+        openStudentModal(student);
+        return;
+    }
+    const nextStatus = student.status?.toLowerCase() === "suspended" ? "Active" : "Suspended";
+    try{
+        await updateDoc(doc(db,"students",student.id),{status:nextStatus,updatedAt:serverTimestamp()});
+        await loadStudents();
+    }catch(error){
+        console.error("Updating student status failed",error);
+        alert("Unable to update this student.");
+    }
+});
+
+document.getElementById("exportStudentsBtn")?.addEventListener("click",()=>{
+    const rows = [["Name","Email","Phone","Course","Status","Admission Number"]];
+    students.forEach(student=>rows.push([student.name || "",student.email || "",student.phone || "",student.courseName || student.course || "",student.status || "",student.admissionNumber || ""]));
+    const csv = rows.map(row=>row.map(value=>`"${String(value).replaceAll('"','""')}"`).join(",")).join("\n");
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+    link.download = "spark-stack-students.csv";
+    link.click();
+    URL.revokeObjectURL(link.href);
+});
 
 loadStudents();

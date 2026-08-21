@@ -10,7 +10,6 @@ import {
 doc,
 getDoc,
 setDoc,
-updateDoc,
 serverTimestamp
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -22,6 +21,21 @@ serverTimestamp
 
 const monetizationRef =
 doc(db,"settings","monetization");
+
+const minimumWithdrawal =
+document.getElementById("minimumWithdrawal");
+
+const withdrawalFee =
+document.getElementById("withdrawalFee");
+
+const withdrawalTime =
+document.getElementById("withdrawalTime");
+
+const enableWithdrawals =
+document.getElementById("enableWithdrawals");
+
+const withdrawalApproval =
+document.getElementById("withdrawalApproval");
 
 
 /* ===================================
@@ -63,6 +77,18 @@ enablePayments:true,
 allowRefunds:false,
 
 refundDays:7,
+
+/* Withdrawals */
+
+minimumWithdrawal:1000,
+
+withdrawalFeePercent:2,
+
+withdrawalTime:"24 Hours",
+
+enableWithdrawals:true,
+
+withdrawalApproval:true,
 
 /* Discounts */
 
@@ -207,6 +233,23 @@ data.allowRefunds ?? false;
 refundDays.value =
 data.refundDays ?? 7;
 
+/* ---------- WITHDRAWALS ---------- */
+
+minimumWithdrawal.value =
+data.minimumWithdrawal ?? 1000;
+
+withdrawalFee.value =
+data.withdrawalFeePercent ?? 2;
+
+withdrawalTime.value =
+data.withdrawalTime ?? "24 Hours";
+
+enableWithdrawals.checked =
+data.enableWithdrawals ?? true;
+
+withdrawalApproval.checked =
+data.withdrawalApproval ?? true;
+
 
 /* ---------- DISCOUNTS ---------- */
 
@@ -270,6 +313,23 @@ allowRefunds.checked,
 refundDays:
 Number(refundDays.value),
 
+/* ---------- WITHDRAWALS ---------- */
+
+minimumWithdrawal:
+Number(minimumWithdrawal.value),
+
+withdrawalFeePercent:
+Number(withdrawalFee.value),
+
+withdrawalTime:
+withdrawalTime.value,
+
+enableWithdrawals:
+enableWithdrawals.checked,
+
+withdrawalApproval:
+withdrawalApproval.checked,
+
 /* ---------- DISCOUNTS ---------- */
 
 allowCoupons:
@@ -286,12 +346,28 @@ serverTimestamp()
 };
 
 
-await updateDoc(
+await setDoc(
 
 monetizationRef,
 
-data
+data,
 
+{merge:true}
+
+);
+
+/* Instructor withdrawal requests read this shared platform record. */
+await setDoc(
+doc(db,"platformSettings","earnings"),
+{
+minimumWithdrawal:data.minimumWithdrawal,
+withdrawalFeePercent:data.withdrawalFeePercent,
+withdrawalsEnabled:data.enableWithdrawals,
+withdrawalApproval:data.withdrawalApproval,
+withdrawalProcessingTime:data.withdrawalTime,
+updatedAt:serverTimestamp()
+},
+{merge:true}
 );
 
 
