@@ -1,4 +1,5 @@
 import { auth } from "../js/firebase.js";
+import { showError, toast } from "../js/ui.js";
 
 const FN_URL = "https://nlnwllpisbqgbeluhdbr.supabase.co/functions/v1/platform-command";
 const $ = id => document.getElementById(id);
@@ -7,23 +8,17 @@ function fmt(value){
   if(!value) return "—";
   return new Date(value).toLocaleString();
 }
-
 function stateText(enabled){ return enabled ? "Online" : "Suspended"; }
 
 async function callCommand(action, payload = {}){
   const user = auth.currentUser;
   if(!user) throw new Error("Founder session expired. Please sign in again.");
-
   const token = await user.getIdToken(true);
   const response = await fetch(FN_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-    },
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     body: JSON.stringify({ action, ...payload })
   });
-
   const result = await response.json().catch(() => ({}));
   if(!response.ok) throw new Error(result.error || "Command failed.");
   return result;
@@ -33,30 +28,22 @@ function render(data = {}){
   const student = data.studentPortal !== false;
   const instructor = data.instructorPortal !== false;
   const lockdown = data.emergencyLockdown === true;
-
   $("studentState").textContent = stateText(student);
   $("instructorState").textContent = stateText(instructor);
   $("lockdownState").textContent = lockdown ? "Active" : "Inactive";
-
   $("studentState").style.color = student ? "#16a34a" : "#dc2626";
   $("instructorState").style.color = instructor ? "#16a34a" : "#dc2626";
   $("lockdownState").style.color = lockdown ? "#dc2626" : "#16a34a";
-
   $("studentToggle").textContent = student ? "Suspend Student Portal" : "Restore Student Portal";
   $("instructorToggle").textContent = instructor ? "Suspend Instructor Portal" : "Restore Instructor Portal";
   $("lockdownToggle").textContent = lockdown ? "Deactivate Lockdown" : "Activate Lockdown";
-
   $("studentToggle").classList.toggle("active", !student);
   $("instructorToggle").classList.toggle("active", !instructor);
-
   $("globalStatus").innerHTML = `<span></span>${lockdown ? "Emergency lockdown" : (!student || !instructor ? "Partial outage" : "All systems operational")}`;
-
   const maintenance = data.maintenance;
-  if(maintenance){
-    $("scheduleInfo").textContent = `${maintenance.target} maintenance: ${fmt(maintenance.starts_at)} → ${fmt(maintenance.ends_at)} — ${maintenance.message || "Scheduled maintenance"}`;
-  } else {
-    $("scheduleInfo").textContent = "No maintenance window scheduled.";
-  }
+  $("scheduleInfo").textContent = maintenance
+    ? `${maintenance.target} maintenance: ${fmt(maintenance.starts_at)} → ${fmt(maintenance.ends_at)} — ${maintenance.message || "Scheduled maintenance"}`
+    : "No maintenance window scheduled.";
 }
 
 function renderLog(items = []){
@@ -79,12 +66,15 @@ async function setPortal(portal){
     enabled: !enabled,
     reason: `${!enabled ? "Restored" : "Suspended"} from Founder Command Center`
   });
+  toast(`${portal === "student" ? "Student" : "Instructor"} portal ${!enabled ? "restored" : "suspended"}.`, "success");
   await refresh();
 }
 
 async function toggleLockdown(){
   const current = await callCommand("status");
-  await callCommand("lockdown", { enabled: !current.emergencyLockdown, reason: "Founder Command Center emergency control" });
+  const enabled = !current.emergencyLockdown;
+  await callCommand("lockdown", { enabled, reason: "Founder Command Center emergency control" });
+  toast(enabled ? "Emergency lockdown activated." : "Emergency lockdown deactivated.", enabled ? "warning" : "success");
   await refresh();
 }
 
@@ -92,42 +82,38 @@ async function scheduleMaintenance(){
   const start = $("maintenanceStart").value;
   const end = $("maintenanceEnd").value;
   if(!start || !end || new Date(end) <= new Date(start)){
-    alert("Choose a valid start and end time.");
+    toast("Choose a valid start and end time.", "warning");
     return;
   }
-
   await callCommand("schedule_maintenance", {
     target: $("maintenanceTarget").value,
     starts_at: new Date(start).toISOString(),
     ends_at: new Date(end).toISOString(),
     message: $("maintenanceMessage").value.trim() || "SSA is temporarily offline for scheduled maintenance."
   });
-
+  toast("Maintenance window scheduled.", "success");
   await refresh();
 }
 
 async function cancelMaintenance(){
   await callCommand("cancel_maintenance");
+  toast("Maintenance window cancelled.", "success");
   await refresh();
 }
 
 async function boot(){
-  if(!auth.currentUser){
-    location.href = "../login.html";
-    return;
-  }
-
-  $("studentToggle").onclick = () => setPortal("student").catch(e => alert(e.message));
-  $("instructorToggle").onclick = () => setPortal("instructor").catch(e => alert(e.message));
-  $("lockdownToggle").onclick = () => toggleLockdown().catch(e => alert(e.message));
-  $("scheduleBtn").onclick = () => scheduleMaintenance().catch(e => alert(e.message));
-  $("cancelScheduleBtn").onclick = () => cancelMaintenance().catch(e => alert(e.message));
-
+  if(!auth.currentUser){ location.href = "../login.html"; return; }
+  $("studentToggle").onclick = () => setPortal("student").catch(e => showError(e));
+  $("instructorToggle").onclick = () => setPortal("instructor").catch(e => showError(e));
+  $("lockdownToggle").onclick = () => toggleLockdown().catch(e => showError(e));
+  $("scheduleBtn").onclick = () => scheduleMaintenance().catch(e => showError(e));
+  $("cancelScheduleBtn").onclick = () => cancelMaintenance().catch(e => showError(e));
   try { await refresh(); }
   catch(e){
     console.error(e);
-    $("globalStatus").innerHTML = `<span></span>Command service unavailable`;
-    $("scheduleInfo").textContent = e.message;
+    $("globalStatus").innerHTML = "<span></span>Command service unavailable";
+    $("scheduleInfo").textContent = "We couldn't reach the platform command service. Please try again.";
+    showError(e, "The command service is temporarily unavailable.");
   }
 }
 
