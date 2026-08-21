@@ -29,6 +29,7 @@ let instructor = null;
 let courses = [];
 let currentFilter = "all";
 let editingCourseId = null;
+let courseStudentCounts = {};
 
 
 // ============================================================
@@ -465,66 +466,104 @@ function updateStats() {
 // ============================================================
 // STUDENTS
 // ============================================================
-
 async function loadStudentCount() {
 
     try {
 
-        const ref =
-            collection(
-                db,
-                "enrollments"
-            );
+        courseStudentCounts = {};
 
+        const ref = collection(
+            db,
+            "enrollments"
+        );
 
-        const q =
-            query(
-                ref,
-                where(
-                    "instructorId",
-                    "==",
-                    instructor.uid
-                )
-            );
+        const q = query(
+            ref,
+            where(
+                "instructorId",
+                "==",
+                instructor.uid
+            )
+        );
 
-
-        const snapshot =
-            await getDocs(q);
-
-
-        const students =
-            new Set();
-
+        const snapshot = await getDocs(q);
 
         snapshot.forEach(item => {
 
-            const data =
-                item.data();
+            const data = item.data();
 
+            const courseId = data.courseId;
 
-            if (data.studentId) {
+            const studentId =
+                data.studentId ||
+                data.userId;
 
-                students.add(
-                    data.studentId
-                );
+            if (!courseId || !studentId) {
+                return;
+            }
 
+            if (!courseStudentCounts[courseId]) {
+
+                courseStudentCounts[courseId] =
+                    new Set();
+
+            }
+
+            courseStudentCounts[courseId].add(
+                studentId
+            );
+
+        });
+
+        // Convert Sets to numbers
+        Object.keys(courseStudentCounts).forEach(
+            courseId => {
+
+                courseStudentCounts[courseId] =
+                    courseStudentCounts[courseId].size;
+
+            }
+        );
+
+        // Overall unique students
+        const allStudents = new Set();
+
+        snapshot.forEach(item => {
+
+            const data = item.data();
+
+            const studentId =
+                data.studentId ||
+                data.userId;
+
+            if (studentId) {
+                allStudents.add(studentId);
             }
 
         });
 
-
         setText(
             "totalStudents",
-            students.size
+            allStudents.size
         );
 
+        renderCourses();
 
-    } catch (error) {
+        console.log(
+            "👨‍🎓 COURSE STUDENT COUNTS:",
+            courseStudentCounts
+        );
+
+    }
+
+    catch (error) {
 
         console.warn(
             "⚠ Student count unavailable:",
             error
         );
+
+        courseStudentCounts = {};
 
         setText(
             "totalStudents",
@@ -534,7 +573,6 @@ async function loadStudentCount() {
     }
 
 }
-
 
 // ============================================================
 // RENDER COURSES
@@ -786,9 +824,8 @@ function renderCourseCard(course) {
                         <i data-lucide="users"></i>
 
                         ${formatNumber(
-                            course.studentCount || 0
-                        )}
-
+    courseStudentCounts[course.id] || 0
+)}
                     </span>
 
                 </div>
