@@ -1,756 +1,167 @@
-// =====================================
-// SPARK STACK ACADEMY
-// CHAT
-// chat.js
-// =====================================
-
+import { auth } from "../../../js/firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
+  getMessages,
+  sendMessage,
+  subscribeToMessages,
+  markConversationRead
+} from "../../../js/messaging-service.js";
 
-auth,
-db
+const params = new URLSearchParams(location.search);
+const chatId = params.get("conversation") || params.get("chatId");
 
-} from "../../../js/firebase.js";
+const messagesBox = document.getElementById("chatMessages");
+const input = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
 
-
-import {
-
-onAuthStateChanged
-
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-import {
-
-doc,
-getDoc,
-collection,
-query,
-orderBy,
-onSnapshot,
-addDoc,
-serverTimestamp,
-updateDoc
-
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import {
-uploadFile
-} from "./uploads.js";
-
-console.log("💬 Chat Loaded");
-
-
-// =====================================
-// STATE
-// =====================================
-
-let currentUser = null;
-
-let chatId = null;
-
+let user = null;
 let unsubscribe = null;
 
+const escapeHTML = value =>
+  String(value ?? "").replace(/[&<>"]/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;"
+  }[char]));
 
+function renderMessage(message) {
+  const mine = message.sender_id === user.uid;
 
-// =====================================
-// DOM
-// =====================================
+  const element = document.createElement("div");
 
-const chatName =
-document.getElementById("chatName");
+  element.className = mine
+    ? "message sent"
+    : "message received";
 
+  element.innerHTML = `
+    <div class="message-text">
+      ${escapeHTML(message.body)}
+    </div>
 
-const chatAvatar =
-document.getElementById("chatAvatar");
+    <div class="message-time">
+      ${new Date(message.created_at).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      })}
+    </div>
+  `;
 
+  messagesBox.appendChild(element);
+}
 
-const chatStatus =
-document.getElementById("chatStatus");
+async function loadChat() {
+  const messages = await getMessages(chatId);
 
+  messagesBox.innerHTML = "";
 
-const chatMessages =
-document.getElementById("chatMessages");
+  messages.forEach(renderMessage);
 
+  messagesBox.scrollTop = messagesBox.scrollHeight;
 
-const messageInput =
-document.getElementById("messageInput");
+  await markConversationRead({
+    conversationId: chatId,
+    userId: user.uid
+  });
 
+  unsubscribe?.();
 
-const sendButton =
-document.getElementById("sendBtn");
+  unsubscribe = subscribeToMessages(
+    chatId,
+    message => {
+      renderMessage(message);
+      messagesBox.scrollTop = messagesBox.scrollHeight;
+    }
+  );
+}
 
+async function send() {
+  const body = input.value.trim();
 
+  if (!body || !chatId || !user) return;
 
-// =====================================
-// GET CHAT ID
-// =====================================
+  sendBtn.disabled = true;
 
-const params =
-new URLSearchParams(
-window.location.search
+  try {
+    await sendMessage({
+      conversationId: chatId,
+      senderId: user.uid,
+      body
+    });
+
+    input.value = "";
+    input.focus();
+
+  } catch (error) {
+
+    console.error("Message send failed:", error);
+
+    alert("Couldn't send your message. Please try again.");
+
+  } finally {
+
+    sendBtn.disabled = false;
+
+  }
+}
+
+sendBtn?.addEventListener("click", send);
+
+input?.addEventListener("keydown", event => {
+
+  if (
+    event.key === "Enter" &&
+    !event.shiftKey
+  ) {
+
+    event.preventDefault();
+
+    send();
+
+  }
+
+});
+
+onAuthStateChanged(auth, async current => {
+
+  if (!current) {
+
+    location.href = "../../login.html";
+
+    return;
+
+  }
+
+  user = current;
+
+  if (!chatId) {
+
+    location.href = "messages.html";
+
+    return;
+
+  }
+
+  try {
+
+    await loadChat();
+
+  } catch (error) {
+
+    console.error("Chat loading failed:", error);
+
+    messagesBox.innerHTML = `
+      <div class="empty-state">
+        <h2>Messages are temporarily unavailable</h2>
+        <p>Please refresh and try again.</p>
+      </div>
+    `;
+
+  }
+
+});
+
+window.addEventListener(
+  "beforeunload",
+  () => unsubscribe?.()
 );
-
-
-chatId =
-params.get("chatId");
-
-
-if(!chatId){
-
-console.error(
-"No chat ID provided"
-);
-
-window.location.href =
-"messages.html";
-
-}
-
-
-
-// =====================================
-// AUTH
-// =====================================
-
-onAuthStateChanged(
-
-auth,
-
-async(user)=>{
-
-
-if(!user){
-
-window.location.href =
-"../login.html";
-
-return;
-
-}
-
-
-currentUser = user;
-
-
-await loadChat();
-
-
-loadMessages();
-
-
-}
-
-);
-
-
-
-// =====================================
-// LOAD CHAT INFO
-// =====================================
-
-async function loadChat(){
-
-
-try{
-
-
-const chatRef =
-doc(
-
-db,
-
-"chats",
-
-chatId
-
-);
-
-
-
-const snap =
-await getDoc(chatRef);
-
-
-
-if(!snap.exists()){
-
-alert(
-"This chat no longer exists"
-);
-
-window.location.href =
-"messages.html";
-
-return;
-
-}
-
-
-
-const chatData =
-snap.data();
-
-
-
-const otherUser =
-
-chatData.members?.find(
-
-member =>
-member.uid !== currentUser.uid
-
-) || {};
-
-
-
-if(chatName){
-
-chatName.textContent =
-
-otherUser.name ||
-
-"Spark Stack User";
-
-}
-
-
-
-if(chatAvatar){
-
-chatAvatar.src =
-
-otherUser.photo ||
-
-"../assets/images/default-avatar.png";
-
-}
-
-
-
-if(chatStatus){
-
-chatStatus.textContent =
-
-otherUser.online
-
-?
-
-"Online"
-
-:
-
-"Offline";
-
-}
-
-
-
-}
-
-
-catch(error){
-
-console.error(
-"Loading chat failed:",
-error
-);
-
-}
-
-
-}
-
-
-
-// =====================================
-// LOAD MESSAGES
-// =====================================
-
-function loadMessages(){
-
-
-if(unsubscribe){
-
-unsubscribe();
-
-}
-
-
-
-const messagesRef =
-
-collection(
-
-db,
-
-"chats",
-
-chatId,
-
-"messages"
-
-);
-
-
-
-const messagesQuery =
-
-query(
-
-messagesRef,
-
-orderBy(
-
-"timestamp",
-
-"asc"
-
-)
-
-);
-
-
-
-unsubscribe =
-
-onSnapshot(
-
-messagesQuery,
-
-(snapshot)=>{
-
-
-if(!chatMessages)
-return;
-
-
-
-chatMessages.innerHTML = "";
-
-
-
-snapshot.forEach(
-
-(doc)=>{
-
-
-const data = doc.data();
-
-
-renderMessage(
-{
-id:doc.id,
-...data
-}
-);
-
-
-if(
-data.senderId !== currentUser.uid &&
-!data.seen
-){
-
-updateDoc(
-
-doc.ref,
-
-{
-seen:true
-}
-
-);
-
-}
-
-
-}
-
-);
-
-
-
-chatMessages.scrollTop =
-
-chatMessages.scrollHeight;
-
-
-
-},
-
-
-(error)=>{
-
-
-console.error(
-
-"Message listener error:",
-
-error
-
-);
-
-
-}
-
-);
-
-
-}
-
-
-
-// =====================================
-// RENDER MESSAGE
-// =====================================
-
-function renderMessage(message){
-
-
-const div = document.createElement(
-"div"
-);
-
-
-const isMine =
-
-message.senderId === currentUser.uid;
-
-
-
-div.className =
-
-isMine
-
-?
-
-"message sent"
-
-:
-
-"message received";
-
-
-
-let content = "";
-
-
-
-// TEXT MESSAGE
-
-if(message.text){
-
-content += `
-
-<div class="message-text">
-
-${message.text}
-
-</div>
-
-`;
-
-}
-
-
-
-// IMAGE MESSAGE
-
-if(
-
-message.fileUrl &&
-
-message.fileType?.startsWith("image")
-
-){
-
-content += `
-
-<img
-
-src="${message.fileUrl}"
-
-class="chat-image"
-
-alt="image"
-
-/>
-
-`;
-
-}
-
-
-
-// FILE MESSAGE
-
-if(
-
-message.fileUrl &&
-
-!message.fileType?.startsWith("image")
-
-){
-
-content += `
-
-<a
-
-href="${message.fileUrl}"
-
-target="_blank"
-
-class="chat-file">
-
-📎 ${message.fileName}
-
-</a>
-
-`;
-
-}
-
-
-
-div.innerHTML = `
-
-${content}
-
-
-<div class="message-time">
-
-${formatTime(message.timestamp)}
-
-${
-
-isMine
-
-?
-
-`
-
-<span class="message-status">
-
-${message.seen ? "✓✓" : "✓"}
-
-</span>
-
-`
-
-:
-
-""
-
-}
-
-</div>
-
-`;
-
-
-
-chatMessages.appendChild(div);
-
-
-}
-
-
-// =====================================
-// FORMAT TIME
-// =====================================
-
-function formatTime(timestamp){
-
-
-if(!timestamp){
-
-return "";
-
-}
-
-
-
-const date =
-
-timestamp.toDate
-
-?
-
-timestamp.toDate()
-
-:
-
-new Date(timestamp);
-
-
-
-return date.toLocaleTimeString(
-
-[],
-
-{
-
-hour:"2-digit",
-
-minute:"2-digit"
-
-}
-
-);
-
-
-}
-
-
-
-// =====================================
-// SEND MESSAGE
-// =====================================
-
-sendButton?.addEventListener(
-
-"click",
-
-async()=>{
-
-
-await sendMessage();
-
-
-await uploadFile();
-
-
-}
-
-);
-
-
-
-messageInput?.addEventListener(
-
-"keydown",
-
-(event)=>{
-
-
-if(
-event.key === "Enter" &&
-!event.shiftKey
-){
-
-event.preventDefault();
-
-sendMessage();
-
-}
-
-
-}
-
-);
-
-
-
-
-async function sendMessage(){
-
-
-const text =
-
-messageInput.value.trim();
-
-
-
-
-if(!currentUser || !chatId){
-
-return;
-
-}
-
-
-
-
-try{
-
-
-await addDoc(
-
-collection(
-
-db,
-
-"chats",
-
-chatId,
-
-"messages"
-
-),
-
-{
-
-senderId:
-
-currentUser.uid,
-
-
-text,
-
-
-timestamp:
-
-serverTimestamp(),
-
-
-seen:false
-
-
-}
-
-);
-
-await updateDoc(
-
-doc(
-
-db,
-
-"chats",
-
-chatId
-
-),
-
-{
-
-lastMessage:text,
-
-updatedAt:serverTimestamp()
-
-}
-
-);
-
-messageInput.value = "";
-
-
-
-}
-
-
-catch(error){
-
-
-console.error(
-
-"Send message failed:",
-
-error
-
-);
-
-
-}
-
-
-}
