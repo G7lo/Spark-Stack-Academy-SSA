@@ -1,10 +1,281 @@
 const { onSchedule } = require("firebase-functions/v2/scheduler");
+const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore, Timestamp } = require("firebase-admin/firestore");
 
 initializeApp();
 const db = getFirestore();
 const platformRef = db.doc("systemConfig/platform");
+
+// ============================================================
+// SHARED NOTIFICATION ENGINE
+// ============================================================
+
+function safeText(value, fallback = "") {
+  return String(value ?? fallback).trim();
+}
+
+function eventKey(event, suffix) {
+  const raw = safeText(event.id || event.params?.docId || Date.now());
+  return `${raw}-${suffix}`.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 140);
+}
+
+async function writeNotification({
+  event,
+  recipientId = null,
+  role = null,
+  audience = "user",
+  title,
+  message,
+  type = "general",
+  priority = "normal",
+  metadata = {}
+}) {
+  const id = eventKey(event, recipientId || role || audience);
+
+  await db.collection("notifications").doc(id).set({
+    title,
+    message,
+    type,
+    priority,
+    audience,
+    role,
+    recipientId,
+    // Keep both fields while the existing portal notification engines migrate.
+    userId: recipientId,
+    senderId: "system",
+    metadata,
+    read: false,
+    createdAt: Timestamp.now(),
+    eventId: safeText(event.id || "system")
+  }, { merge: true });
+}
+
+async function notifyLeadership(event, title, message, type, metadata = {}) {
+  await Promise.all([
+    writeNotification({ event, role: "admin", audience: "role", title, message, type, priority: "high", metadata }),
+    writeNotification({ event, role: "founder", audience: "role", title, message, type, priority: "high", metadata })
+  ]);
+}
+
+async function notifyUser(event, userId, title, message, type, metadata = {}, priority = "normal") {
+  if (!userId) return;
+  await writeNotification({ event, recipientId: userId, audience: "user", title, message, type, priority, metadata });
+}
+
+async function notifyCourseStudents(event, courseId, title, message, type, metadata = {}) {
+  if (!courseId) return;
+
+  const snapshot = await db.collection("enrollments")
+    .where("courseId", "==", courseId)
+    .get();
+
+  const studentIds = [...new Set(snapshot.docs
+    .map(doc => {
+      const data = doc.data() || {};
+      return data.studentId || data.userId || data.uid || null;
+    })
+    .filter(Boolean))];
+
+  // Firestore batches support up to 500 writes. Chunking keeps this safe as SSA grows.
+  for (let i = 0; i < studentIds.length; i += 450) {
+    const chunk = studentIds.slice(i, i + 450);
+    const batch = db.batch();
+
+    chunk.forEach(studentId => {
+      const id = eventKey(event, studentId);
+      batch.set(db.collection("notifications").doc(id), {
+        title,
+        message,
+        type,
+        priority: "normal",
+        audience: "user",
+        recipientId: studentId,
+        userId: studentId,
+        senderId: "system",
+        courseId,
+        metadata: { ...metadata, courseId },
+        read: false,
+        createdAt: Timestamp.now(),
+        eventId: safeText(event.id || "system")
+      }, { merge: true });
+    });
+
+    if (chunk.length) await batch.commit();
+  }
+}
+
+async function getCourse(courseId) {
+  if (!courseId) return null;
+  const snapshot = await db.collection("courses").doc(courseId).get();
+  return snapshot.exists ? snapshot.data() : null;
+}
+
+// ============================================================
+// PAYMENT -> PLATFORM NOTIFICATIONS
+// ============================================================
+
+exports.notifyPaymentSuccess = onDocumentCreated("payments/{paymentId}", async event => {
+  const payment = event.data?.data();
+  if (!payment) return;
+
+  const status = safeText(payment.status || payment.paymentStatus).toLowerCase();
+  if (status && !["success", "successful", "completed", "paid"].includes(status)) return;
+
+  const studentId = payment.studentId || payment.userId || payment.uid;
+  const courseId = payment.courseId;
+  const amount = Number(payment.amount || payment.total || payment.price || 0);
+  const course = await getCourse(courseId);
+  const courseName = payment.courseName || payment.course || course?.title || "your course";
+
+  await notifyUser(
+    event,
+    studentId,
+    "💳 Payment confirmed",
+    `Your payment for ${courseName} was received successfully. Your enrollment is being processed.`,
+    "payment",
+    { paymentId: event.params.paymentId, courseId, courseName, amount },
+    "high"
+  );
+
+  await notifyLeadership(
+    event,
+    "💰 New course payment",
+    `${courseName} received a successful payment${amount ? ` of KSh ${amount.toLocaleString()}` : ""}.`,
+    "payment",
+    { paymentId: event.params.paymentId, studentId, courseId, amount }
+  );
+});
+
+// ============================================================
+// ENROLLMENT -> STUDENT + INSTRUCTOR
+// ============================================================
+
+exports.notifyEnrollmentCreated = onDocumentCreated("enrollments/{enrollmentId}", async event => {
+  const enrollment = event.data?.data();
+  if (!enrollment) return;
+
+  const studentId = enrollment.studentId || enrollment.userId || enrollment.uid;
+  const instructorId = enrollment.instructorId || enrollment.instructorUID || enrollment.instructorUid;
+  const courseId = enrollment.courseId;
+  const course = await getCourse(courseId);
+  const courseName = enrollment.courseName || enrollment.course || course?.title || "your course";
+  const studentName = enrollment.studentName || enrollment.name || "A student";
+  const amount = Number(enrollment.amountPaid || enrollment.amount || 0);
+
+  await notifyUser(
+    event,
+    studentId,
+    "🎓 Enrollment confirmed",
+    `You are now enrolled in ${courseName}. Start learning whenever you're ready.`,
+    "enrollment",
+    { enrollmentId: event.params.enrollmentId, courseId, courseName, amount },
+    "high"
+  );
+
+  await notifyUser(
+    event,
+    instructorId,
+    "🎓 New student enrolled",
+    `${studentName} has enrolled in ${courseName}.`,
+    "enrollment",
+    { enrollmentId: event.params.enrollmentId, studentId, studentName, courseId, courseName, amount },
+    "high"
+  );
+});
+
+// ============================================================
+// NEW COURSE -> STUDENTS + LEADERSHIP
+// ============================================================
+
+exports.notifyCourseCreated = onDocumentCreated("courses/{courseId}", async event => {
+  const course = event.data?.data();
+  if (!course) return;
+
+  const status = safeText(course.status || "published").toLowerCase();
+  if (["draft", "archived", "deleted"].includes(status)) return;
+
+  const title = course.title || course.name || "New course";
+  const courseId = event.params.courseId;
+
+  await notifyCourseStudents(
+    event,
+    courseId,
+    "📚 New course available",
+    `${title} is now available in Spark Stack Academy.`,
+    "course",
+    { courseName: title }
+  );
+
+  await notifyLeadership(
+    event,
+    "📚 New course added",
+    `${title} has been added to the academy catalog.`,
+    "course",
+    { courseId, courseName: title }
+  );
+});
+
+// ============================================================
+// NEW LESSON / ASSIGNMENT / QUIZ -> ENROLLED STUDENTS
+// ============================================================
+
+function registerCourseContentTrigger(collectionName, label, icon, type) {
+  return onDocumentCreated(`${collectionName}/{contentId}`, async event => {
+    const content = event.data?.data();
+    if (!content) return;
+
+    const courseId = content.courseId || content.courseID;
+    if (!courseId) return;
+
+    const name = content.title || content.name || label;
+    await notifyCourseStudents(
+      event,
+      courseId,
+      `${icon} New ${label}`,
+      `${name} has been added to your course.`,
+      type,
+      { contentId: event.params.contentId, contentName: name }
+    );
+
+    await notifyLeadership(
+      event,
+      `${icon} New ${label}`,
+      `${name} was added to a course.`,
+      type,
+      { contentId: event.params.contentId, courseId, contentName: name }
+    );
+  });
+}
+
+exports.notifyLessonCreated = registerCourseContentTrigger("lessons", "lesson", "📖", "lesson");
+exports.notifyAssignmentCreated = registerCourseContentTrigger("assignments", "assignment", "📝", "assignment");
+exports.notifyQuizCreated = registerCourseContentTrigger("quizzes", "quiz", "🧠", "quiz");
+
+// ============================================================
+// NEW REPORT -> ADMIN + FOUNDER
+// ============================================================
+
+exports.notifyReportCreated = onDocumentCreated("reports/{reportId}", async event => {
+  const report = event.data?.data();
+  if (!report) return;
+
+  const reportId = report.reportId || event.params.reportId;
+  const title = report.title || report.reason || "New report";
+  const priority = safeText(report.priority || "medium").toLowerCase();
+
+  await notifyLeadership(
+    event,
+    `🚩 New report ${reportId}`,
+    `${report.reporterName || "A user"} submitted a ${priority} priority report: ${title}.`,
+    "report",
+    { reportId, category: report.category, type: report.type, priority }
+  );
+});
+
+// ============================================================
+// SCHEDULED MAINTENANCE
+// ============================================================
 
 exports.applyScheduledMaintenance = onSchedule("every 5 minutes", async () => {
   const snap = await platformRef.get();
