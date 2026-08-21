@@ -4,7 +4,6 @@ const $ = (id) => document.getElementById(id);
 let courses = [];
 let filteredCourses = [];
 let unsubscribe = null;
-
 const state = { search: "", status: "all", sort: "latest" };
 
 function escapeHtml(value = "") {
@@ -51,7 +50,6 @@ function applyFilters() {
     const bDate = new Date(b.updated_at || b.created_at || 0).getTime();
     return state.sort === "oldest" ? aDate - bDate : bDate - aDate;
   });
-
   renderCourses();
 }
 
@@ -66,7 +64,6 @@ function renderCourses() {
         <span class="status ${escapeHtml(course.status || "unknown")}">${escapeHtml(statusLabel(course.status))}</span>
         <button class="icon-btn" type="button" data-view="${escapeHtml(course.id)}" aria-label="View course"><i data-lucide="arrow-up-right"></i></button>
       </div>
-      <div class="course-icon"><i data-lucide="book-open"></i></div>
       <h3>${escapeHtml(course.title || "Untitled course")}</h3>
       <p>${escapeHtml(course.description || "No description provided.")}</p>
       <div class="course-meta">
@@ -75,13 +72,11 @@ function renderCourses() {
       </div>
     </article>
   `).join("");
-
   window.lucide?.createIcons();
 }
 
 function openDrawer(course) {
   $("drawerContent").innerHTML = `
-    <div class="drawer-icon"><i data-lucide="book-open"></i></div>
     <h3>${escapeHtml(course.title || "Untitled course")}</h3>
     <p>${escapeHtml(course.description || "No description provided.")}</p>
     <dl>
