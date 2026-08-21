@@ -7,25 +7,7 @@ import { collection, query, orderBy, onSnapshot, doc, updateDoc } from "https://
 
 const $ = id => document.getElementById(id);
 const money = value => `KES ${Number(value || 0).toLocaleString()}`;
-const overlay = $("loadingOverlay");
 let chart;
-let pageOpened = false;
-
-// HARD 5-SECOND LIMIT: the Revenue page always opens after 5 seconds.
-function openRevenuePage() {
-    if (pageOpened) return;
-    pageOpened = true;
-    if (!overlay) return;
-    overlay.style.transition = "opacity .2s ease";
-    overlay.style.opacity = "0";
-    overlay.style.pointerEvents = "none";
-    setTimeout(() => {
-        if (overlay) overlay.style.display = "none";
-    }, 220);
-}
-
-// Start the timer immediately. Do not wait for Firebase.
-setTimeout(openRevenuePage, 5000);
 
 function dateOf(value) { try { return value?.toDate?.() || (value ? new Date(value) : null); } catch { return null; } }
 function text(id, value) { const el = $(id); if (el) el.textContent = value; }
