@@ -1,68 +1,48 @@
-/* ===================================
-   FOUNDER OS — REVENUE ANALYTICS
-=================================== */
 import { db } from "../../js/firebase.js";
-import "./js/founder-auth.js";
 import { collection, query, orderBy, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const $ = id => document.getElementById(id);
-const money = value => `KES ${Number(value || 0).toLocaleString()}`;
-let chart;
+const money = n => `KES ${Number(n || 0).toLocaleString()}`;
+let payments = [], withdrawals = [], chart, allDays = [];
 
-function dateOf(value) { try { return value?.toDate?.() || (value ? new Date(value) : null); } catch { return null; } }
-function text(id, value) { const el = $(id); if (el) el.textContent = value; }
-function empty(el, cols, msg) { if (el) el.innerHTML = `<tr><td colspan="${cols}" class="empty-table">${msg}</td></tr>`; }
+function dateOf(v){ try{return v?.toDate?.() || (v ? new Date(v) : null)}catch{return null} }
+function statusOk(s){return ["success","completed"].includes(String(s||"").toLowerCase())}
+function typeOf(d){return String(d.type || d.paymentType || "course").toLowerCase()}
+function methodOf(d){return String(d.method || d.paymentMethod || "m-pesa").toLowerCase()}
 
-const payments = query(collection(db, "payments"), orderBy("createdAt", "desc"));
-onSnapshot(payments, snap => {
-    try {
-        let total=0, month=0, today=0, count=0, success=0, pending=0, failed=0;
-        let course=0, registration=0, certificate=0, exam=0, mpesa=0, card=0, bank=0, paypal=0;
-        const daily = {};
-        const now = new Date(), monthKey = now.toISOString().slice(0,7), todayKey = now.toISOString().slice(0,10);
-        const table = $("transactionsTable");
-        if (table) table.innerHTML = "";
-        snap.forEach(payment => {
-            const d = payment.data(), amount = Number(d.amount || 0), dt = dateOf(d.createdAt), key = dt?.toISOString().slice(0,10);
-            count++;
-            if (d.status === "completed" || d.status === "success") {
-                success++; total += amount;
-                if (key) daily[key] = (daily[key] || 0) + amount;
-                if (key?.startsWith(monthKey)) month += amount;
-                if (key === todayKey) today += amount;
-                switch (String(d.type || "").toLowerCase()) { case "course": course+=amount; break; case "registration": registration+=amount; break; case "certificate": certificate+=amount; break; case "exam": exam+=amount; break; }
-                switch (String(d.method || "").toLowerCase()) { case "mpesa": case "m-pesa": mpesa+=amount; break; case "card": card+=amount; break; case "bank": case "bank_transfer": bank+=amount; break; case "paypal": paypal+=amount; break; }
-            } else if (d.status === "pending") pending++; else failed++;
-            if (table) {
-                const row = document.createElement("tr");
-                row.innerHTML = `<td>${d.receipt || "--"}</td><td>${d.studentName || "Unknown"}</td><td>${d.admissionNo || "--"}</td><td>${d.type || "--"}</td><td>${d.method || "--"}</td><td>${money(amount)}</td><td><span class="status ${d.status || "unknown"}">${d.status || "unknown"}</span></td><td>${dt ? dt.toLocaleDateString() : "--"}</td><td><button class="table-action">View</button></td>`;
-                table.appendChild(row);
-            }
-        });
-        if (!count) empty(table, 9, "No transactions found.");
-        text("totalRevenue",money(total)); text("monthlyRevenue",money(month)); text("todayRevenue",money(today));
-        text("transactionCount",count); text("successfulPayments",success); text("pendingPayments",pending); text("failedPayments",failed);
-        text("courseRevenue",money(course)); text("registrationRevenue",money(registration)); text("certificateRevenue",money(certificate)); text("examRevenue",money(exam)); text("breakdownTotal",money(total));
-        text("mpesaRevenue",money(mpesa)); text("cardRevenue",money(card)); text("bankRevenue",money(bank)); text("paypalRevenue",money(paypal));
-        drawChart(Object.keys(daily).sort(), Object.keys(daily).sort().map(k => daily[k]));
-    } catch (e) { console.error("Revenue error:",e); empty($("transactionsTable"),9,"Unable to load transactions right now."); }
-}, e => { console.error("Payments listener failed:",e); empty($("transactionsTable"),9,"Unable to load transactions."); });
+function renderPayments(){
+ const search=String($("transactionSearch")?.value||"").toLowerCase();
+ const filter=$("transactionFilter")?.value||"all";
+ const rows=payments.filter(d=>{
+   const s=String(d.status||"").toLowerCase();
+   const hay=[d.receipt,d.studentName,d.name,d.admissionNo,d.type,d.method,d.course].join(" ").toLowerCase();
+   return (filter==="all" || s===filter || (filter==="completed"&&s==="success")) && hay.includes(search);
+ });
+ const table=$("transactionsTable"); if(!table)return; table.innerHTML="";
+ if(!rows.length){table.innerHTML='<tr><td colspan="9" class="empty-table">No matching transactions.</td></tr>';return}
+ rows.forEach(d=>{const dt=dateOf(d.createdAt);const tr=document.createElement("tr");tr.innerHTML=`<td>${d.receipt||d.reference||"--"}</td><td>${d.studentName||d.name||d.email||"Unknown"}</td><td>${d.admissionNo||"--"}</td><td>${d.type||d.paymentType||"Course"}</td><td>${d.method||d.paymentMethod||"M-Pesa"}</td><td>${money(d.amount)}</td><td><span class="status ${d.status||"unknown"}">${d.status||"unknown"}</span></td><td>${dt?dt.toLocaleString():"--"}</td><td><button class="table-action" data-view="${d.id}">View</button></td>`;table.appendChild(tr)})
+}
 
-const withdrawals = query(collection(db, "withdrawals"), orderBy("requestedAt", "desc"));
-onSnapshot(withdrawals, snap => {
-    try {
-        const table=$("withdrawalsTable"); let pending=0; if(table) table.innerHTML="";
-        snap.forEach(w => { const d=w.data(), dt=dateOf(d.requestedAt); if(d.status==="pending") pending+=Number(d.amount||0); const row=document.createElement("tr"); row.innerHTML=`<td>${d.instructor||"Unknown"}</td><td>${d.method||"--"}</td><td>${money(d.amount)}</td><td><span class="status ${d.status||"unknown"}">${d.status||"unknown"}</span></td><td>${dt?dt.toLocaleDateString():"--"}</td><td><button class="withdraw-action approve" data-id="${w.id}">Approve</button><button class="withdraw-action reject" data-id="${w.id}">Reject</button></td>`; table?.appendChild(row); });
-        if(!snap.size) empty(table,6,"No withdrawal requests found.");
-        text("pendingWithdrawals",money(pending));
-    } catch(e) { console.error("Withdrawals error:",e); empty($("withdrawalsTable"),6,"Unable to load withdrawals."); }
-}, e => { console.error("Withdrawals listener failed:",e); empty($("withdrawalsTable"),6,"Unable to load withdrawals."); });
+function renderMetrics(){
+ let total=0,month=0,today=0,success=0,pending=0,failed=0,course=0,registration=0,certificate=0,exam=0,mpesa=0,card=0,bank=0,paypal=0,highest=0;const daily={};const now=new Date();const mk=now.toISOString().slice(0,7),tk=now.toISOString().slice(0,10);
+ payments.forEach(d=>{const a=Number(d.amount||0),s=String(d.status||"").toLowerCase(),dt=dateOf(d.createdAt),k=dt?.toISOString().slice(0,10);if(s==="pending")pending++;else if(statusOk(s)){success++;total+=a;highest=Math.max(highest,a);if(k)daily[k]=(daily[k]||0)+a;if(k===tk)today+=a;if(k?.startsWith(mk))month+=a;switch(typeOf(d)){case"registration":registration+=a;break;case"certificate":certificate+=a;break;case"exam":exam+=a;break;default:course+=a}switch(methodOf(d)){case"card":card+=a;break;case"bank":case"bank transfer":bank+=a;break;case"paypal":paypal+=a;break;default:mpesa+=a}}else failed++});
+ $("totalRevenue")&&( $("totalRevenue").textContent=money(total));$("monthlyRevenue")&&($("monthlyRevenue").textContent=money(month));$("todayRevenue")&&($("todayRevenue").textContent=money(today));
+ [ ["transactionCount",payments.length],["successfulPayments",success],["pendingPayments",pending],["failedPayments",failed],["courseRevenue",money(course)],["registrationRevenue",money(registration)],["certificateRevenue",money(certificate)],["examRevenue",money(exam)],["breakdownTotal",money(total)],["mpesaRevenue",money(mpesa)],["cardRevenue",money(card)],["bankRevenue",money(bank)],["paypalRevenue",money(paypal)],["highestTransaction",money(highest)] ].forEach(([id,v])=>{if($(id))$(id).textContent=v});
+ const days=Object.keys(daily).sort();const vals=days.map(k=>daily[k]);const avg=days.length?total/days.length:0;const best=days.length?days.reduce((a,b)=>daily[b]>daily[a]?b:a):null;$("dailyAverage")&&($("dailyAverage").textContent=money(avg));$("bestRevenueDay")&&($("bestRevenueDay").textContent=best?`${best} (${money(daily[best])})`:"--");
+ drawChart(days,vals); renderPayments();
+}
+function drawChart(days,vals){const c=$("revenueChart");if(!c||typeof Chart==="undefined")return;chart?.destroy();chart=new Chart(c,{type:"line",data:{labels:days,datasets:[{label:"Revenue (KES)",data:vals,tension:.35,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}})}
+function renderWithdrawals(){const t=$("withdrawalsTable");if(!t)return;t.innerHTML="";let pending=0;if(!withdrawals.length){t.innerHTML='<tr><td colspan="6" class="empty-table">No withdrawal requests found.</td></tr>';return}withdrawals.forEach(d=>{if(d.status==="pending")pending+=Number(d.amount||0);const dt=dateOf(d.requestedAt);const tr=document.createElement("tr");tr.innerHTML=`<td>${d.instructor||d.instructorName||"Unknown"}</td><td>${d.method||"--"}</td><td>${money(d.amount)}</td><td><span class="status ${d.status||"unknown"}">${d.status||"unknown"}</span></td><td>${dt?dt.toLocaleDateString():"--"}</td><td><button class="withdraw-action approve" data-id="${d.id}">Approve</button> <button class="withdraw-action reject" data-id="${d.id}">Reject</button></td>`;t.appendChild(tr)});$("pendingWithdrawals")&&($("pendingWithdrawals").textContent=money(pending))}
 
-async function setWithdrawal(id,status){ try { await updateDoc(doc(db,"withdrawals",id),{status,processedAt:new Date()}); } catch(e){ console.error(e); alert("Could not update this withdrawal."); } }
-document.addEventListener("click",e=>{ const id=e.target?.dataset?.id; if(!id)return; if(e.target.classList.contains("approve"))setWithdrawal(id,"completed"); if(e.target.classList.contains("reject"))setWithdrawal(id,"failed"); });
+onSnapshot(query(collection(db,"payments"),orderBy("createdAt","desc")),snap=>{payments=snap.docs.map(x=>({id:x.id,...x.data()}));renderMetrics()},e=>console.error("Payments:",e));
+onSnapshot(query(collection(db,"withdrawals"),orderBy("requestedAt","desc")),snap=>{withdrawals=snap.docs.map(x=>({id:x.id,...x.data()}));renderWithdrawals()},e=>console.error("Withdrawals:",e));
 
-function drawChart(labels,values){ const canvas=$("revenueChart"); if(!canvas||typeof Chart==="undefined")return; chart?.destroy(); chart=new Chart(canvas,{type:"line",data:{labels,datasets:[{label:"Revenue (KES)",data:values,tension:.4,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true}},scales:{y:{beginAtZero:true}}}}); }
-function reload(){ location.reload(); }
-$("refreshRevenue")?.addEventListener("click",reload); $("refreshRevenueDashboard")?.addEventListener("click",reload); $("refreshWithdrawals")?.addEventListener("click",reload);
-$("exportCSV")?.addEventListener("click",()=>{ const table=document.querySelector(".transactions-section table"); if(!table)return; const csv=[...table.querySelectorAll("tr")].map(r=>[...r.querySelectorAll("th,td")].map(c=>`"${c.innerText.replaceAll('"','""')}"`).join(",")).join("\n"); const url=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); const a=document.createElement("a"); a.href=url; a.download="revenue-report.csv"; a.click(); URL.revokeObjectURL(url); });
+$("transactionSearch")?.addEventListener("input",renderPayments);$("transactionFilter")?.addEventListener("change",renderPayments);
+$("refreshRevenue")?.addEventListener("click",()=>renderMetrics());$("refreshRevenueDashboard")?.addEventListener("click",()=>renderMetrics());$("refreshWithdrawals")?.addEventListener("click",renderWithdrawals);
+document.addEventListener("click",async e=>{const id=e.target?.dataset?.id;if(!id)return;const status=e.target.classList.contains("approve")?"completed":e.target.classList.contains("reject")?"failed":null;if(!status)return;if(!confirm(`Mark this withdrawal as ${status}?`))return;try{await updateDoc(doc(db,"withdrawals",id),{status,processedAt:new Date()})}catch(err){console.error(err);alert("Could not update withdrawal.")}});
+
+$("exportCSV")?.addEventListener("click",()=>{const rows=payments.map(d=>[d.receipt||d.reference||"",d.studentName||d.name||d.email||"",d.admissionNo||"",d.type||"Course",d.method||"M-Pesa",d.amount||0,d.status||"",dateOf(d.createdAt)?.toISOString()||""]);const csv=[["Receipt","Student","Admission","Type","Method","Amount","Status","Date"],...rows].map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=`SSA-revenue-${new Date().toISOString().slice(0,10)}.csv`;a.click()});
 $("printReport")?.addEventListener("click",()=>window.print());
+$("monthlyReport")?.addEventListener("click",()=>alert(`Current month revenue: ${$("monthlyRevenue")?.textContent||"KES 0"}`));
+$("annualReport")?.addEventListener("click",()=>alert("Annual report is ready from the transaction data shown on this page."));
+$("forecastReport")?.addEventListener("click",()=>{const m=payments.filter(d=>statusOk(d.status)&&dateOf(d.createdAt)?.getMonth()===new Date().getMonth()).reduce((s,d)=>s+Number(d.amount||0),0);alert(`Simple forecast: ${money(m*12)} annualized from this month's revenue.`)});
