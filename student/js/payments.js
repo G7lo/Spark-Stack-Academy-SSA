@@ -1,698 +1,435 @@
-// =====================================
+// ============================================================
 // SPARK STACK ACADEMY
-// PAYMENTS
-// payments.js
-// =====================================
+// STUDENT PAYMENTS — FAST PREMIUM CHECKOUT
+// ============================================================
 
+import { auth, db } from "../../../js/firebase.js";
 
-import {
-
-auth,
-db
-
-} from "../../../js/firebase.js";
-
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
+    collection,
+    query,
+    where,
+    orderBy,
+    limit,
+    onSnapshot,
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-onAuthStateChanged
+console.log("⚡ Fast Payments Engine Loaded");
 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+const SUPABASE_FUNCTION_URL =
+    "https://nlnwllpisbqgbeluhdbr.supabase.co/functions/v1/create-payment";
 
-
-import {
-
-collection,
-query,
-where,
-onSnapshot,
-orderBy,
-getDocs,
-doc,
-getDoc
-
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-console.log("💳 Payments Loaded");
-
-console.time("Payments Page");
-
-
-// =====================================
-// STATE
-// =====================================
-
+const params = new URLSearchParams(window.location.search);
+const selectedCourseId = params.get("courseId");
 
 let currentUser = null;
-
-const API_BASE_URL =
-    "http://localhost:3000";
-
-const urlParams =
-new URLSearchParams(
-window.location.search
-);
-
-
-const selectedCourseId =
-urlParams.get("courseId");
-
-// =====================================
-// DOM
-// =====================================
-
-
-const totalPaid =
-document.getElementById("totalPaid");
-
-
-const balance =
-document.getElementById("balance");
-
-
-const paymentStatus =
-document.getElementById("paymentStatus");
-
-
-const transactionList =
-document.getElementById("transactionList");
-
-
-const backBtn =
-document.getElementById("backBtn");
-
-
-const courseList =
-document.getElementById("courseList");
-
-
-
-
-// =====================================
-// BACK BUTTON
-// =====================================
-
-
-backBtn?.addEventListener(
-
-"click",
-
-()=>{
-
-window.location.href="dashboard.html";
-
-}
-
-);
-
-
-
-
-
-
-// =====================================
-// AUTH
-// =====================================
-
-
-onAuthStateChanged(
-
-auth,
-
-(user)=>{
-
-
-if(!user){
-
-window.location.href="../login.html";
-
-return;
-
-}
-
-
-currentUser = user;
-
-loadPayments();
-
-loadCourses();
-
-console.timeEnd("Payments Page");
-}
-
-);
-
-
-
-
-
-
-// =====================================
-// LOAD PAYMENTS
-// =====================================
-
-
-function loadPayments(){
-
-
-const paymentsRef =
-collection(db,"payments");
-
-
-
-const paymentsQuery = query(
-
-paymentsRef,
-
-where(
-"userId",
-"==",
-currentUser.uid
-),
-
-orderBy(
-"createdAt",
-"desc"
-)
-
-);
-
-
-
-
-onSnapshot(
-
-paymentsQuery,
-
-(snapshot)=>{
-
-
-let paid = 0;
-
-
-
-transactionList.innerHTML = "";
-
-
-
-if(snapshot.empty){
-
-
-transactionList.innerHTML = `
-
-<div class="empty-payment">
-
-No transactions yet
-
-</div>
-
-`;
-
-
-return;
-
-}
-
-
-
-
-
-snapshot.forEach(
-
-(doc)=>{
-
-
-const data = doc.data();
-
-
-
-if(data.status === "success"){
-
-paid += Number(data.amount || 0);
-
-}
-
-
-
-renderTransaction(data);
-
-
-}
-
-);
-
-
-
-
-totalPaid.textContent =
-
-`KSh ${paid.toLocaleString()}`;
-
-
-
-},
-
-
-(error)=>{
-
-
-console.error(
-
-"Payments loading failed",
-
-error
-
-);
-
-
-}
-
-);
-
-
-}
-
-async function loadCheckoutCourse(){
-
-console.time("Checkout Course");
-
-
-const courseRef =
-doc(
-db,
-"courses",
-selectedCourseId
-);
-
-
-
-const snap =
-await getDoc(courseRef);
-
-
-
-if(!snap.exists()){
-
-courseList.innerHTML = `
-
-<div class="empty-payment">
-
-Course not found
-
-</div>
-
-`;
-
-return;
-
-}
-
-
-
-const course =
-snap.data();
-
-
-
-courseList.innerHTML = `
-
-<div class="course-card">
-
-<h3>
-${course.title}
-</h3>
-
-<p>
-Fee: KSh ${course.price}
-</p>
-
-<p>
-Pay to unlock this course
-</p>
-
-<button
-class="pay-btn"
-data-course="${course.title}"
-data-amount="${course.price}"
->
-Pay Now
-</button>
-
-</div>
-
-`;
-
-
-const payButton =
-    courseList.querySelector(".pay-btn");
-
-if(payButton){
-
-    payButton.addEventListener(
-        "click",
-        ()=>{
-
-            initializePayment(
-                course.title,
-                course.price
-            );
-
+let selectedCourse = null;
+let historyStarted = false;
+
+const courseList = document.getElementById("courseList");
+const transactionList = document.getElementById("transactionList");
+const totalPaid = document.getElementById("totalPaid");
+const balanceElement = document.getElementById("balance");
+const paymentStatus = document.getElementById("paymentStatus");
+const backBtn = document.getElementById("backBtn");
+
+backBtn?.addEventListener("click", () => {
+    window.location.href = "dashboard.html";
+});
+
+// ============================================================
+// BOOT
+// Checkout is the ONLY blocking operation.
+// Payment history never blocks the page.
+// ============================================================
+
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        window.location.href = "../login.html";
+        return;
+    }
+
+    currentUser = user;
+
+    if (!selectedCourseId) {
+        renderMessage("Select a course to continue with payment.");
+        startHistoryInBackground();
+        return;
+    }
+
+    await loadPremiumCourse();
+
+    // Start history only after checkout is rendered.
+    startHistoryInBackground();
+});
+
+// ============================================================
+// PREMIUM COURSE
+// ============================================================
+
+async function loadPremiumCourse() {
+    const cached = readCourseCache(selectedCourseId);
+
+    if (cached) {
+        selectedCourse = cached;
+        renderCheckout(cached);
+        refreshCourseSilently();
+        return;
+    }
+
+    renderLoading();
+
+    try {
+        const snapshot = await getDoc(
+            doc(db, "courses", selectedCourseId)
+        );
+
+        if (!snapshot.exists()) {
+            renderMessage("This course could not be found.");
+            return;
         }
-    );
 
+        selectedCourse = {
+            id: snapshot.id,
+            ...snapshot.data()
+        };
+
+        writeCourseCache(selectedCourse);
+        renderCheckout(selectedCourse);
+    } catch (error) {
+        console.error("Course loading failed:", error);
+        renderMessage("Unable to load this course. Please retry.");
+    }
 }
 
-console.timeEnd("Load Courses");
+async function refreshCourseSilently() {
+    try {
+        const snapshot = await getDoc(
+            doc(db, "courses", selectedCourseId)
+        );
 
+        if (!snapshot.exists()) return;
 
+        selectedCourse = {
+            id: snapshot.id,
+            ...snapshot.data()
+        };
 
+        writeCourseCache(selectedCourse);
+        updateCheckout(selectedCourse);
+    } catch (error) {
+        console.warn("Silent course refresh failed:", error);
+    }
 }
 
-async function loadCourses(){
+// ============================================================
+// CHECKOUT UI
+// ============================================================
 
-console.time("Load Courses");
+function renderCheckout(course) {
+    if (!courseList) return;
 
-try{
+    const title = escapeHTML(course.title || "Premium Course");
+    const price = Number(course.price || 0);
 
+    courseList.innerHTML = `
+        <div class="course-card payment-checkout-card">
+            <div class="checkout-course-info">
+                <span class="checkout-badge">PREMIUM COURSE</span>
+                <h3>${title}</h3>
+                <p>Unlock full access to this course.</p>
+            </div>
 
-if(selectedCourseId){
+            <div class="checkout-price">
+                <span>Course fee</span>
+                <strong>KSh ${price.toLocaleString()}</strong>
+            </div>
 
-await loadCheckoutCourse();
+            <button
+                type="button"
+                class="pay-btn"
+                id="payCourseBtn"
+                ${price <= 0 ? "disabled" : ""}
+            >
+                Pay KSh ${price.toLocaleString()}
+            </button>
 
-return;
+            <div id="checkoutMessage" class="checkout-message"></div>
+        </div>
+    `;
 
+    document
+        .getElementById("payCourseBtn")
+        ?.addEventListener("click", startPayment);
+
+    if (balanceElement) {
+        balanceElement.textContent = `KSh ${price.toLocaleString()}`;
+    }
+
+    if (paymentStatus) {
+        paymentStatus.textContent = "Ready for payment";
+    }
 }
 
+function updateCheckout(course) {
+    const title = document.querySelector(".payment-checkout-card h3");
+    const price = document.querySelector(".payment-checkout-card .checkout-price strong");
+    const button = document.getElementById("payCourseBtn");
+    const amount = Number(course.price || 0);
 
-const enrollmentsRef =
-collection(db,"enrollments");
-
-
-const q = query(
-
-enrollmentsRef,
-
-where(
-"userId",
-"==",
-currentUser.uid
-)
-
-);
-
-
-
-const snapshot =
-await getDocs(q);
-
-
-
-courseList.innerHTML="";
-
-
-
-if(snapshot.empty){
-
-
-courseList.innerHTML = `
-
-<div class="empty-payment">
-
-No enrolled courses yet
-
-</div>
-
-`;
-
-
-return;
-
+    if (title) title.textContent = course.title || "Premium Course";
+    if (price) price.textContent = `KSh ${amount.toLocaleString()}`;
+    if (button) button.textContent = `Pay KSh ${amount.toLocaleString()}`;
 }
 
+// ============================================================
+// PAYMENT
+// ============================================================
 
+async function startPayment() {
+    if (!currentUser || !selectedCourse) return;
 
-for (const docSnap of snapshot.docs){
+    const amount = Number(selectedCourse.price || 0);
+    const button = document.getElementById("payCourseBtn");
 
+    if (amount <= 0) {
+        showCheckoutMessage("This course has an invalid price.", true);
+        return;
+    }
 
-const data = docSnap.data();
+    if (button) {
+        button.disabled = true;
+        button.textContent = "Opening secure checkout...";
+    }
 
+    try {
+        const response = await fetch(SUPABASE_FUNCTION_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                userId: currentUser.uid,
+                email: currentUser.email,
+                courseId: selectedCourse.id,
+                course: selectedCourse.title || "Premium Course",
+                amount,
+                currency: "KES"
+            })
+        });
 
-const card =
-document.createElement("div");
+        const data = await response.json();
 
+        if (!response.ok) {
+            throw new Error(
+                data.message || "Payment initialization failed."
+            );
+        }
 
-card.className =
-"course-card";
+        const checkoutUrl =
+            data.redirect_url ||
+            data.authorization_url ||
+            data.checkout_url;
 
+        if (!checkoutUrl) {
+            throw new Error("No checkout URL was returned.");
+        }
 
-const courseDoc =
-await getDoc(
-    doc(
-        db,
-        "courses",
-        data.courseId
-    )
-);
+        window.location.replace(checkoutUrl);
+    } catch (error) {
+        console.error("Payment initialization failed:", error);
+        showCheckoutMessage(
+            error.message || "Unable to start payment. Please try again.",
+            true
+        );
 
-
-const courseData =
-courseDoc.data();
-
-
-const totalFee =
-courseData?.price || 0;
-
-
-const balance =
-totalFee -
-(data.amountPaid || 0);
-
-
-
-card.innerHTML = `
-
-
-<div>
-
-<h3>
-
-${data.courseName || "Course"}
-
-</h3>
-
-
-<p>
-
-Fee: KSh ${totalFee}
-
-</p>
-
-
-<p>
-
-Paid: KSh ${data.amountPaid || 0}
-
-</p>
-
-
-<p>
-
-Balance: KSh ${balance}
-
-</p>
-
-
-</div>
-
-
-
-<button
-
-class="pay-btn"
-
-data-course="${data.courseName}"
-
-data-amount="${balance}"
-
->
-
-Pay Now
-
-</button>
-
-
-`;
-
-
-
-courseList.appendChild(card);
-
-
-
+        if (button) {
+            button.disabled = false;
+            button.textContent = `Pay KSh ${amount.toLocaleString()}`;
+        }
+    }
 }
 
+// ============================================================
+// PAYMENT HISTORY — BACKGROUND ONLY
+// ============================================================
 
+function startHistoryInBackground() {
+    if (historyStarted || !currentUser) return;
+    historyStarted = true;
 
+    const run = () => loadPaymentHistory();
+
+    if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(run, { timeout: 2500 });
+    } else {
+        setTimeout(run, 800);
+    }
 }
 
-
-catch(error){
-
-
-console.error(
-
-"Courses loading failed",
-
-error
-
-);
-
-
-}
-
-
-}
-
-
-
-// =====================================
-// RENDER TRANSACTION
-// =====================================
-
-
-function renderTransaction(payment){
-
-
-const card = document.createElement(
-"div"
-);
-
-
-
-card.className =
-"transaction-card";
-
-
-
-card.innerHTML = `
-
-
-<div>
-
-
-<h3>
-
-${payment.course || "Academy Payment"}
-
-</h3>
-
-
-<p>
-
-${payment.method || "M-PESA"}
-
-</p>
-
-
-</div>
-
-
-
-
-<div>
-
-
-<h3>
-
-KSh ${payment.amount}
-
-</h3>
-
-
-<span class="${payment.status}">
-
-${payment.status}
-
-</span>
-
-
-</div>
-
-
-`;
-
-
-
-transactionList.appendChild(card);
-
-
-}
-
-
-async function initializePayment(course, amount){
-
-    try{
-
-        const response = await fetch(
-            `${API_BASE_URL}/api/payments/initialize`,
-            {
-                method: "POST",
-
-                headers:{
-                    "Content-Type":"application/json"
-                },
-
-                body: JSON.stringify({
-
-                    email: currentUser.email,
-
-                    amount: Number(amount),
-
-                    courseId: selectedCourseId,
-
-                    course: course,
-
-                    userId: currentUser.uid
-
-                })
-
+function loadPaymentHistory() {
+    if (!transactionList || !currentUser) return;
+
+    try {
+        const paymentsQuery = query(
+            collection(db, "payments"),
+            where("userId", "==", currentUser.uid),
+            orderBy("createdAt", "desc"),
+            limit(20)
+        );
+
+        onSnapshot(
+            paymentsQuery,
+            (snapshot) => {
+                let paid = 0;
+                transactionList.innerHTML = "";
+
+                if (snapshot.empty) {
+                    transactionList.innerHTML =
+                        `<div class="empty-payment">No transactions yet.</div>`;
+                    updateSummary(0);
+                    return;
+                }
+
+                snapshot.forEach((paymentDoc) => {
+                    const payment = paymentDoc.data();
+                    const status = normalizeStatus(payment.status);
+
+                    if (status === "success" || status === "completed") {
+                        paid += Number(payment.amount || 0);
+                    }
+
+                    renderTransaction(payment);
+                });
+
+                updateSummary(paid);
+            },
+            (error) => {
+                console.warn("Payment history unavailable:", error);
             }
         );
-
-
-        const data =
-            await response.json();
-
-
-        if(!data.success){
-
-            throw new Error(
-                data.message ||
-                "Payment initialization failed"
-            );
-
-        }
-
-
-        window.location.href =
-            data.authorization_url;
-
-
+    } catch (error) {
+        console.warn("Payment history setup failed:", error);
     }
-
-    catch(error){
-
-        console.error(
-            "Payment error:",
-            error
-        );
-
-        alert(
-            "Unable to start payment. Please try again."
-        );
-
-    }
-
 }
+
+function updateSummary(paid) {
+    if (totalPaid) {
+        totalPaid.textContent = `KSh ${paid.toLocaleString()}`;
+    }
+
+    if (paymentStatus) {
+        paymentStatus.textContent =
+            paid > 0 ? "Payments recorded" : "No payments yet";
+    }
+}
+
+function renderTransaction(payment) {
+    const card = document.createElement("div");
+    card.className = "transaction-card";
+
+    const course = escapeHTML(
+        payment.course || payment.courseName || "Academy Payment"
+    );
+
+    const method = escapeHTML(payment.method || "PesaPal");
+    const status = normalizeStatus(payment.status);
+    const amount = Number(payment.amount || 0);
+
+    card.innerHTML = `
+        <div>
+            <h3>${course}</h3>
+            <p>${method}</p>
+        </div>
+        <div>
+            <h3>KSh ${amount.toLocaleString()}</h3>
+            <span class="${status}">${capitalize(status)}</span>
+        </div>
+    `;
+
+    transactionList.appendChild(card);
+}
+
+// ============================================================
+// UI STATES
+// ============================================================
+
+function renderLoading() {
+    if (!courseList) return;
+
+    courseList.innerHTML = `
+        <div class="payment-loading">
+            <p>Loading checkout...</p>
+        </div>
+    `;
+}
+
+function renderMessage(message) {
+    if (!courseList) return;
+    courseList.innerHTML = `
+        <div class="empty-payment">
+            ${escapeHTML(message)}
+        </div>
+    `;
+}
+
+function showCheckoutMessage(message, error = false) {
+    const element = document.getElementById("checkoutMessage");
+    if (!element) return;
+
+    element.textContent = message;
+    element.classList.toggle("error", error);
+}
+
+// ============================================================
+// CACHE
+// ============================================================
+
+function writeCourseCache(course) {
+    try {
+        sessionStorage.setItem(
+            `ssa_course_${course.id}`,
+            JSON.stringify(course)
+        );
+    } catch {}
+}
+
+function readCourseCache(courseId) {
+    try {
+        const value = sessionStorage.getItem(`ssa_course_${courseId}`);
+        return value ? JSON.parse(value) : null;
+    } catch {
+        return null;
+    }
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+
+function normalizeStatus(status) {
+    return String(status || "pending")
+        .toLowerCase()
+        .replace(/\s+/g, "");
+}
+
+function capitalize(value) {
+    return value
+        ? value.charAt(0).toUpperCase() + value.slice(1)
+        : "";
+}
+
+function escapeHTML(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+console.log("⚡ Fast Premium Checkout Ready");

@@ -1,131 +1,88 @@
-/* ==========================================
-   SPARK STACK FOUNDER OS
-   COMPONENT LOADER
-========================================== */
+/* ==========================================================
+   SPARK STACK FOUNDER OS — COMPONENT LOADER
+   Supports the current Founder shell and older page containers.
+========================================================== */
 
+const componentCache = new Map();
 
-async function loadComponent(
-    elementId,
-    file,
-    cssFile
-){
+async function loadComponent(elementId, file, cssFile){
+  const container = document.getElementById(elementId);
+  if(!container) return false;
 
-    const container =
-    document.getElementById(elementId);
-
-
-    if(!container){
-
-        console.error(
-            "Component container missing:",
-            elementId
-        );
-
-        return;
-
+  try{
+    let html = componentCache.get(file);
+    if(!html){
+      const response = await fetch(file, {cache:"no-store"});
+      if(!response.ok) throw new Error(`Failed to load ${file}: ${response.status}`);
+      html = await response.text();
+      componentCache.set(file, html);
     }
 
+    container.innerHTML = html;
 
-
-    try{
-
-
-        // Load HTML
-
-        const response =
-        await fetch(file);
-
-
-        const html =
-        await response.text();
-
-
-        container.innerHTML = html;
-
-
-
-        // Load CSS
-
-        if(cssFile){
-
-            const style =
-            document.createElement("link");
-
-
-            style.rel="stylesheet";
-
-            style.href=cssFile;
-
-
-            document.head.appendChild(style);
-
-        }
-
-
-
-        console.log(
-            "Loaded:",
-            file
-        );
-
-
+    if(cssFile && !document.querySelector(`link[data-founder-component="${cssFile}"]`)){
+      const style = document.createElement("link");
+      style.rel = "stylesheet";
+      style.href = cssFile;
+      style.dataset.founderComponent = cssFile;
+      document.head.appendChild(style);
     }
 
-
-    catch(error){
-
-        console.error(
-            "Component error:",
-            error
-        );
-
-    }
-
-
+    return true;
+  }catch(error){
+    console.error("Founder component error:", error);
+    return false;
+  }
 }
 
+function initMobileSidebar(){
+  const menuBtn = document.getElementById("menuBtn");
+  const sidebar = document.querySelector(".sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+  if(!menuBtn || !sidebar || !overlay) return;
 
+  const close = () => {
+    sidebar.classList.remove("active","open");
+    overlay.classList.remove("active");
+    document.body.classList.remove("menu-open");
+  };
 
-/* ==========================================
-   INITIALIZE COMPONENTS
-========================================== */
+  menuBtn.onclick = () => {
+    const open = !sidebar.classList.contains("active") && !sidebar.classList.contains("open");
+    sidebar.classList.toggle("active", open);
+    overlay.classList.toggle("active", open);
+    document.body.classList.toggle("menu-open", open);
+  };
 
+  overlay.onclick = close;
+  document.querySelectorAll(".sidebar-menu a").forEach(link => link.addEventListener("click", close));
+}
 
-document.addEventListener(
-"DOMContentLoaded",
-async ()=>{
+function normalizePath(path){
+  return (path || "").split("?")[0].split("#")[0].replace(/^\.\//,"");
+}
 
+function highlightActivePage(){
+  const current = normalizePath(window.location.pathname.split("/").pop() || "dashboard.html");
+  document.querySelectorAll(".sidebar-menu a").forEach(link => {
+    const href = normalizePath(link.getAttribute("href"));
+    const target = href.split("/").pop();
+    link.classList.toggle("active", target === current);
+  });
+}
 
-    await loadComponent(
+async function bootFounderComponents(){
+  const sidebarId = document.getElementById("sidebarContainer") ? "sidebarContainer" : (document.getElementById("sidebar") ? "sidebar" : null);
+  const topbarId = document.getElementById("topbarContainer") ? "topbarContainer" : (document.getElementById("topbar") ? "topbar" : null);
 
-        "sidebar",
+  const sidebarLoaded = sidebarId && await loadComponent(sidebarId, "components/sidebar.html", "components/sidebar.css");
+  const topbarLoaded = topbarId && await loadComponent(topbarId, "components/topbar.html", "components/topbar.css");
 
-        "./components/sidebar.html",
+  if(sidebarLoaded) highlightActivePage();
+  if(window.lucide?.createIcons) window.lucide.createIcons();
+  if(sidebarLoaded || topbarLoaded) initMobileSidebar();
 
-        "./components/sidebar.css"
+  document.dispatchEvent(new Event("componentsLoaded"));
+}
 
-    );
-
-
-    await loadComponent(
-
-        "topbar",
-
-        "./components/topbar.html",
-
-        "./components/topbar.css"
-
-    );
-
-
-    document.dispatchEvent(
-        new Event("componentsLoaded")
-    );
-
-
-    console.log(
-        "✅ Components loaded"
-    );
-
-
-});
+document.addEventListener("DOMContentLoaded", bootFounderComponents);
