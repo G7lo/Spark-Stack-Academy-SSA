@@ -1,389 +1,56 @@
 // =====================================
 // SPARK STACK ACADEMY
-// MESSAGES
-// messages.js
+// MESSAGES — SUPABASE RUNTIME
 // =====================================
 
+import { auth } from "../../../js/firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getMyConversations } from "../../../js/messaging-service.js";
 
-import {
-
-auth,
-db
-
-} from "../../../js/firebase.js";
-
-
-import {
-
-onAuthStateChanged
-
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-import {
-
-collection,
-query,
-where,
-onSnapshot,
-orderBy
-
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-console.log("💬 Messages Loaded");
-
-
-
-// =====================================
-// STATE
-// =====================================
-
+const conversationList = document.getElementById("conversationList");
+const emptyState = document.getElementById("emptyState");
 let currentUser = null;
 
+const escapeHtml = value => String(value ?? "").replace(/[&<>\"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-
-// =====================================
-// DOM
-// =====================================
-
-const conversationList =
-
-document.getElementById(
-"conversationList"
-);
-
-
-const emptyState =
-
-document.getElementById(
-"emptyState"
-);
-
-
-
-// =====================================
-// AUTH
-// =====================================
-
-onAuthStateChanged(
-
-auth,
-
-(user)=>{
-
-
-if(!user){
-
-window.location.href =
-"../login.html";
-
-return;
-
+function showError() {
+  conversationList.innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div><h2>Messages are taking a quick break</h2><p>Please refresh and try again.</p></div>`;
+  emptyState.style.display = "none";
 }
 
-
-currentUser = user;
-
-
-loadChats();
-
-
+function renderConversation(row) {
+  const conversation = row.conversations || {};
+  const button = document.createElement("button");
+  button.className = "conversation-item";
+  button.dataset.id = row.conversation_id;
+  button.innerHTML = `<div class="conversation-info"><strong>${escapeHtml(conversation.title || "Conversation")}</strong><small>${conversation.last_message_at ? new Date(conversation.last_message_at).toLocaleString() : "New conversation"}</small></div>`;
+  button.addEventListener("click", () => {
+    window.location.href = `chat.html?conversation=${encodeURIComponent(row.conversation_id)}`;
+  });
+  conversationList.appendChild(button);
 }
 
-);
-
-
-
-// =====================================
-// LOAD USER CHATS
-// =====================================
-
-function loadChats(){
-
-
-const chatsRef =
-
-collection(
-
-db,
-
-"chats"
-
-);
-
-
-
-const chatsQuery =
-
-query(
-
-chatsRef,
-
-where(
-"memberIds",
-"array-contains",
-currentUser.uid
-),
-
-orderBy(
-
-"updatedAt",
-
-"desc"
-
-)
-
-);
-
-
-
-onSnapshot(
-
-chatsQuery,
-
-(snapshot)=>{
-
-
-conversationList.innerHTML = "";
-
-
-
-if(snapshot.empty){
-
-
-emptyState.style.display =
-"flex";
-
-
-return;
-
+async function loadChats() {
+  try {
+    const rows = await getMyConversations(currentUser.uid);
+    conversationList.innerHTML = "";
+    if (!rows.length) {
+      emptyState.style.display = "flex";
+      return;
+    }
+    emptyState.style.display = "none";
+    rows.forEach(renderConversation);
+  } catch (error) {
+    console.error("Supabase messages load error:", error);
+    showError();
+  }
 }
 
-
-emptyState.style.display =
-"none";
-
-
-
-snapshot.forEach(
-
-(doc)=>{
-
-
-renderConversation(
-
-doc.id,
-
-doc.data()
-
-);
-
-
-}
-
-);
-
-
-
-},
-
-(error)=>{
-
-
-console.error(
-
-"Chats loading failed:",
-
-error
-
-);
-
-
-}
-
-);
-
-
-}
-
-
-
-
-// =====================================
-// RENDER CHAT CARD
-// =====================================
-
-function renderConversation(
-
-chatId,
-
-chatData
-
-){
-
-
-const otherUser =
-
-chatData.members?.find(
-
-member =>
-
-member.uid !== currentUser.uid
-
-) || {};
-
-
-
-const card =
-
-document.createElement(
-"div"
-);
-
-
-
-card.className =
-
-"conversation-card";
-
-
-
-card.innerHTML = `
-
-<div class="conversation-avatar">
-
-<img
-
-src="${
-
-otherUser.photo ||
-
-'../assets/images/default-avatar.png'
-
-}"
-
->
-
-
-<span class="online-dot"></span>
-
-
-</div>
-
-
-
-<div class="conversation-info">
-
-<h3>
-
-${
-
-otherUser.name ||
-
-"Spark Stack User"
-
-}
-
-</h3>
-
-
-<p>
-
-${
-
-chatData.lastMessage ||
-
-"Start a conversation"
-
-}
-
-</p>
-
-
-</div>
-
-
-
-<div class="conversation-meta">
-
-
-<span class="message-time">
-
-${
-
-formatTime(
-
-chatData.updatedAt
-
-)
-
-}
-
-</span>
-
-
-</div>
-
-
-`;
-
-
-
-card.onclick = ()=>{
-
-
-window.location.href =
-
-`chat.html?chatId=${chatId}`;
-
-
-};
-
-
-
-conversationList.appendChild(card);
-
-
-}
-
-
-
-
-
-// =====================================
-// FORMAT TIME
-// =====================================
-
-function formatTime(timestamp){
-
-
-if(!timestamp){
-
-return "";
-
-}
-
-
-const date =
-
-timestamp.toDate();
-
-
-
-return date.toLocaleDateString(
-
-[],
-
-{
-
-month:"short",
-
-day:"numeric"
-
-}
-
-);
-
-
-}
+onAuthStateChanged(auth, async user => {
+  if (!user) {
+    window.location.href = "../login.html";
+    return;
+  }
+  currentUser = user;
+  await loadChats();
+});
