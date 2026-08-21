@@ -1,1197 +1,251 @@
-// ===================================
-// SPARK STACK ACADEMY
-// FOUNDER APP CORE V2
-// ===================================
+// ============================================================
+// SPARK STACK ACADEMY — FOUNDER APP CORE V3
+// Shared shell: sidebar + topbar + founder session
+// ============================================================
 
 import { auth, db } from "../../js/firebase.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { doc, getDoc, collection, query, where, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-    onAuthStateChanged,
-    signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+const APP_BASE = new URL("../", import.meta.url);
+const cache = new Map();
+const $ = (id) => document.getElementById(id);
 
-import {
-    doc,
-    getDoc,
-    collection,
-    query,
-    where,
-    orderBy,
-    limit,
-    onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-// import "../../js/theme.js";
-
-console.log("🚀 Founder Core Initialized");
-
-/* ===================================
-   COMPONENT CACHE
-=================================== */
-
-const componentCache = new Map();
-
-/* ===================================
-   LOAD HTML COMPONENT
-=================================== */
-
-async function fetchComponent(path){
-
-    if(componentCache.has(path)){
-
-        return componentCache.get(path);
-
-    }
-
-    const response = await fetch(path);
-
-    if(!response.ok){
-
-        throw new Error(`Failed to load ${path}`);
-
-    }
-
-    const html = await response.text();
-
-    componentCache.set(path, html);
-
-    return html;
-
+function asset(path) {
+  return new URL(path, APP_BASE).href;
 }
 
-/* ===================================
-   LOAD CSS ONCE
-=================================== */
-
-function loadCSS(path){
-
-    if(document.querySelector(`link[href="${path}"]`)){
-
-        return;
-
-    }
-
-    const link = document.createElement("link");
-
-    link.rel = "stylesheet";
-
-    link.href = path;
-
-    document.head.appendChild(link);
-
+async function fetchComponent(path) {
+  const url = asset(path);
+  if (cache.has(url)) return cache.get(url);
+  const response = await fetch(url, { cache: "force-cache" });
+  if (!response.ok) throw new Error(`Failed to load ${path} (${response.status})`);
+  const html = await response.text();
+  cache.set(url, html);
+  return html;
 }
 
-/* ===================================
-   INITIALIZE
-=================================== */
-
-window.addEventListener(
-
-    "DOMContentLoaded",
-
-    async()=>{
-
-        try{
-
-            await Promise.all([
-
-    loadSidebar(),
-
-    loadTopbar()
-
-]);
-
-setupSidebar();
-
-highlightActivePage();
-
-loadFounder();
-
-        }
-
-        catch(error){
-
-            console.error(error);
-
-        }
-
-    }
-
-);
-/* ===================================
-   LOAD COMPONENT
-=================================== */
-
-async function loadComponent({
-
-    containerId,
-
-    html,
-
-    css,
-
-    callback
-
-}){
-
-    loadCSS(css);
-
-    const container = document.getElementById(containerId);
-
-    if(!container){
-
-        return;
-
-    }
-
-    try{
-
-        container.innerHTML = await fetchComponent(html);
-
-        if(typeof lucide !== "undefined"){
-
-            lucide.createIcons();
-
-        }
-
-        if(typeof callback === "function"){
-
-            callback();
-
-        }
-
-    }
-
-    catch(error){
-
-        console.error(`Failed to load ${html}`, error);
-
-    }
-
+function loadCSS(path) {
+  const url = asset(path);
+  if (document.querySelector(`link[data-founder-css="${url}"]`)) return;
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.dataset.founderCss = url;
+  link.href = url;
+  document.head.appendChild(link);
 }
 
-async function loadSidebar(){
-
-console.log("Loading sidebar...");
-
-await loadComponent({
-
-containerId:"sidebarContainer",
-
-html:"components/sidebar.html",
-
-css:"components/sidebar.css",
-
-callback:highlightActivePage
-
-});
-
+async function mountComponent(containerId, htmlPath, cssPath) {
+  const container = $(containerId);
+  if (!container) return false;
+  try {
+    loadCSS(cssPath);
+    container.innerHTML = await fetchComponent(htmlPath);
+    window.lucide?.createIcons();
+    return true;
+  } catch (error) {
+    console.error(`[Founder Core] ${htmlPath}`, error);
+    return false;
+  }
 }
 
-async function loadTopbar(){
+async function mountShell() {
+  const [sidebarReady, topbarReady] = await Promise.all([
+    mountComponent("sidebarContainer", "components/sidebar.html", "components/sidebar.css"),
+    mountComponent("topbarContainer", "components/topbar.html", "components/topbar.css")
+  ]);
 
-    await loadComponent({
-
-        containerId: "topbarContainer",
-
-        html: "components/topbar.html",
-
-        css: "components/topbar.css",
-
-        callback: () => {
-
+  if (sidebarReady) highlightActivePage();
+  if (sidebarReady || topbarReady) {
+    setupSidebar();
     setupTopbar();
-
-    lucide.createIcons();
-
+    window.lucide?.createIcons();
+  }
 }
 
+function setupSidebar() {
+  const menuBtn = $("menuBtn");
+  const sidebar = document.querySelector(".sidebar");
+  const overlay = $("sidebarOverlay");
+  if (!menuBtn || !sidebar || !overlay) return;
+
+  const close = () => {
+    sidebar.classList.remove("active", "open");
+    overlay.classList.remove("active");
+    document.body.classList.remove("menu-open");
+  };
+
+  menuBtn.onclick = () => {
+    sidebar.classList.toggle("active");
+    overlay.classList.toggle("active");
+    document.body.classList.toggle("menu-open");
+  };
+
+  overlay.onclick = close;
+  sidebar.querySelectorAll("a").forEach((link) => link.addEventListener("click", close));
+}
+
+function setupTopbar() {
+  $("themeBtn")?.addEventListener("click", () => document.body.classList.toggle("dark-mode"));
+
+  $("notificationsBtn")?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    $("notificationDropdown")?.classList.toggle("active");
+  });
+
+  document.addEventListener("click", (event) => {
+    const dropdown = $("notificationDropdown");
+    if (dropdown && !event.target.closest(".notification-wrapper")) dropdown.classList.remove("active");
+  });
+
+  $("viewAllNotifications")?.addEventListener("click", () => {
+    window.location.href = asset("notifications.html");
+  });
+
+  initGlobalSearch();
+}
+
+function initGlobalSearch() {
+  const input = $("globalSearch");
+  const results = $("searchResults");
+  if (!input || !results) return;
+
+  const pages = [
+    ["Dashboard", "dashboard.html"],
+    ["Command Center", "command-center.html"],
+    ["Students", "students.html"],
+    ["Courses", "courses.html"],
+    ["Instructors", "instructors.html"],
+    ["Analytics", "analytics.html"],
+    ["Revenue", "revenue.html"],
+    ["Payments", "payments.html"],
+    ["Announcements", "announcements.html"],
+    ["Notifications", "notifications.html"],
+    ["Monetization", "monetization.html"],
+    ["Platform Control", "platform-settings.html"],
+    ["Academy Setup", "academy-profile.html"],
+    ["Security & Maintenance", "security.html"],
+    ["Settings", "settings.html"]
+  ];
+
+  input.addEventListener("input", () => {
+    const value = input.value.trim().toLowerCase();
+    results.innerHTML = "";
+    if (!value) {
+      results.style.display = "none";
+      return;
+    }
+    const matches = pages.filter(([title]) => title.toLowerCase().includes(value));
+    matches.forEach(([title, path]) => {
+      const item = document.createElement("button");
+      item.type = "button";
+      item.className = "search-result";
+      item.textContent = title;
+      item.onclick = () => { window.location.href = asset(path); };
+      results.appendChild(item);
     });
-
+    results.style.display = matches.length ? "block" : "none";
+  });
 }
 
-/* ===================================
-   MOBILE SIDEBAR
-=================================== */
+function highlightActivePage() {
+  const current = window.location.pathname.split("/").pop() || "dashboard.html";
+  document.querySelectorAll(".sidebar-menu a").forEach((link) => {
+    const href = (link.getAttribute("href") || "").split("/").pop();
+    link.classList.toggle("active", href === current);
+  });
+}
 
-function setupSidebar(){
-  console.log("Sidebar initialized");
+function loadFounderProfile(uid) {
+  const cached = sessionStorage.getItem("founderProfile");
+  if (cached) {
+    try { updateFounderUI(JSON.parse(cached)); } catch { sessionStorage.removeItem("founderProfile"); }
+  }
 
-    const menuBtn =
-        document.getElementById("menuBtn");
+  getDoc(doc(db, "founder", uid)).then((snapshot) => {
+    if (!snapshot.exists()) return;
+    const founder = snapshot.data();
+    sessionStorage.setItem("founderProfile", JSON.stringify(founder));
+    updateFounderUI(founder);
+  }).catch((error) => console.warn("Founder profile unavailable:", error));
+}
 
-    const sidebar =
-        document.querySelector(".sidebar");
+function updateFounderUI(founder = {}) {
+  const name = founder.name || "Founder";
+  if ($("profileName")) $("profileName").textContent = name;
+  if ($("profileAvatar")) $("profileAvatar").textContent = name.charAt(0).toUpperCase();
+  if ($("profileRole")) $("profileRole").textContent = founder.role || "Founder";
+  if ($("aiStatusText")) $("aiStatusText").textContent = `Online • ${name}'s Assistant`;
+  window.founderData = founder;
+}
 
-    const overlay =
-        document.getElementById("sidebarOverlay");
-
-
-    if(!menuBtn || !sidebar || !overlay){
-
-        return;
-
+function loadNotifications(uid) {
+  const base = query(collection(db, "notifications"), where("userId", "==", uid));
+  onSnapshot(base, (snapshot) => {
+    const unread = snapshot.docs.filter((item) => item.data().read === false).length;
+    const badge = $("notificationCount");
+    if (badge) {
+      badge.textContent = unread;
+      badge.style.display = unread ? "flex" : "none";
     }
+  }, (error) => console.warn("Notification badge unavailable:", error));
 
+  const list = $("topNotificationsList");
+  if (!list) return;
 
-    menuBtn.onclick = ()=>{
-
-        sidebar.classList.toggle("active");
-
-        overlay.classList.toggle("active");
-
-        document.body.classList.toggle(
-            "menu-open"
-        );
-
-    };
-
-
-    overlay.onclick = ()=>{
-
-        sidebar.classList.remove("active");
-
-        overlay.classList.remove("active");
-
-        document.body.classList.remove(
-            "menu-open"
-        );
-
-    };
-
-
-    document
-    .querySelectorAll(".sidebar-menu a")
-    .forEach(link=>{
-
-        link.onclick = ()=>{
-
-            overlay.click();
-
-        };
-
+  const feed = query(base, orderBy("createdAt", "desc"), limit(5));
+  onSnapshot(feed, (snapshot) => {
+    list.innerHTML = "";
+    let unread = 0;
+    if (snapshot.empty) {
+      list.innerHTML = `<p class="empty-notifications">No new notifications</p>`;
+      if ($("dropdownUnread")) $("dropdownUnread").textContent = "0";
+      return;
+    }
+    snapshot.forEach((item) => {
+      const data = item.data();
+      if (data.read === false) unread++;
+      const row = document.createElement("div");
+      row.className = "top-notification-item";
+      row.innerHTML = `<div class="top-notification-icon">🔔</div><div class="top-notification-content"><h4>${escapeText(data.title || "Notification")}</h4><p>${escapeText(data.message || "")}</p></div>`;
+      list.appendChild(row);
     });
-
-}
-/* ===================================
-   TOPBAR CONTROLS
-=================================== */
-
-function setupTopbar(){
-
-    // Theme button
-
-    const themeBtn =
-        document.getElementById("themeBtn");
-
-
-    if(themeBtn){
-
-        themeBtn.addEventListener(
-            "click",
-            ()=>{
-
-                document.body.classList.toggle(
-                    "dark-mode"
-                );
-
-            }
-        );
-
-    }
-
-
-    // Search
-
-    const search = document.getElementById(
-    "globalSearch"
-);
-
-
-    if(search){
-
-        search.addEventListener(
-            "input",
-            (e)=>{
-
-                const query =
-                    e.target.value.trim();
-
-                if(query){
-
-                    console.log(
-                        "Searching:",
-                        query
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-// Notifications
-
-const notificationBtn =
-document.getElementById(
-"notificationsBtn"
-);
-
-
-if(notificationBtn){
-
-notificationBtn.addEventListener(
-"click",
-()=>{
-
-
-const dropdown =
-document.getElementById(
-"notificationDropdown"
-);
-
-
-if(dropdown){
-
-dropdown.classList.toggle(
-"active"
-);
-
+    if ($("dropdownUnread")) $("dropdownUnread").textContent = unread;
+  }, (error) => console.warn("Notification feed unavailable:", error));
 }
 
-
+function escapeText(value) {
+  const div = document.createElement("div");
+  div.textContent = String(value);
+  return div.innerHTML;
 }
 
-);
-
-}
-
-
-
-// View All Notifications
-
-const viewAllBtn =
-document.getElementById(
-"viewAllNotifications"
-);
-
-
-if(viewAllBtn){
-
-viewAllBtn.addEventListener(
-"click",
-()=>{
-
-
-window.location.href =
-"notifications.html";
-
-
-}
-
-);
-
-}
-}
-/* ===================================
-   LOAD FOUNDER PROFILE
-=================================== */
-
-function loadFounder(){
-
-    setFounderLoading();
-
-    onAuthStateChanged(
-        auth,
-        async(user)=>{
-
-
-            if(!user){
-
-                window.location.href =
-                    "../login.html";
-
-                return;
-
-            }
-            listenToNotifications(
-user.uid
-);
-loadTopNotifications(
-user.uid
-);
-
-            try{
-
-
-                const cache =
-                    sessionStorage.getItem(
-                        "founderProfile"
-                    );
-
-
-                if(cache){
-
-                    const founder =
-                        JSON.parse(cache);
-
-                    updateFounderUI(
-                        founder
-                    );
-
-                    return;
-
-                }
-
-
-
-                const founderRef =
-                    doc(
-                        db,
-                        "founder",
-                        user.uid
-                    );
-
-
-                const snapshot =
-                    await getDoc(founderRef);
-
-
-
-                if(!snapshot.exists()){
-
-                    console.log(
-                        "Founder profile not found"
-                    );
-
-                    return;
-
-                }
-
-
-
-                const founder =
-                    snapshot.data();
-
-
-
-                sessionStorage.setItem(
-
-                    "founderProfile",
-
-                    JSON.stringify(founder)
-
-                );
-
-
-
-                updateFounderUI(
-                    founder
-                );
-
-
-
-            }
-
-            catch(error){
-
-                console.error(
-                    "Founder loading error:",
-                    error
-                );
-
-            }
-
-
-        }
-
-    );
-
-}
-
-/* ===================================
-   FOUNDER LOADING STATE
-=================================== */
-
-function setFounderLoading(){
-
-    const profileName =
-        document.getElementById("profileName");
-
-    const profileAvatar =
-        document.getElementById("profileAvatar");
-
-    const profileRole =
-        document.getElementById("profileRole");
-
-
-    if(profileName){
-
-        profileName.textContent =
-            "Loading...";
-
-    }
-
-
-    if(profileAvatar){
-
-        profileAvatar.textContent =
-            "...";
-
-    }
-
-
-    if(profileRole){
-
-        profileRole.textContent =
-            "Founder";
-
-    }
-
-}
-
-/* ===================================
-   UPDATE FOUNDER UI
-=================================== */
-
-function updateFounderUI(founder){
-
-    const name =
-        founder.name || "Founder";
-
-
-    const role =
-        founder.role || "Founder";
-
-
-    const initial =
-        name.charAt(0).toUpperCase();
-
-
-    const profileName =
-        document.getElementById("profileName");
-
-
-    const profileAvatar =
-        document.getElementById("profileAvatar");
-
-
-    const profileRole =
-        document.getElementById("profileRole");
-
-
-    const aiStatus =
-        document.getElementById("aiStatusText");
-
-
-    if(profileName){
-
-        profileName.textContent = name;
-
-    }
-
-
-    if(profileAvatar){
-
-        profileAvatar.textContent = initial;
-
-    }
-
-
-    if(profileRole){
-
-        profileRole.textContent = role;
-
-    }
-
-
-    if(aiStatus){
-
-        aiStatus.textContent =
-            `Online • ${name}'s Assistant`;
-
-    }
-
-
-    window.founderData = founder;
-
-}
-
-/* ===================================
-   REALTIME NOTIFICATION BADGE
-=================================== */
-
-
-function listenToNotifications(uid){
-
-
-const badge =
-document.getElementById(
-"notificationCount"
-);
-
-
-
-const notificationQuery =
-query(
-
-collection(
-db,
-"notifications"
-),
-
-where(
-"userId",
-"==",
-uid
-)
-
-);
-
-
-
-onSnapshot(
-
-notificationQuery,
-
-(snapshot)=>{
-
-
-let isNewNotification = false;
-
-
-snapshot.docChanges().forEach(change=>{
-
-
-if(change.type === "added"){
-
-
-const data =
-change.doc.data();
-
-
-
-if(
-data.createdAt &&
-Date.now() -
-data.createdAt.toDate().getTime()
-< 10000
-){
-
-isNewNotification = true;
-
-}
-
-
-}
-
-
+document.addEventListener("click", async (event) => {
+  const logout = event.target.closest("#logoutBtn");
+  if (!logout) return;
+  try {
+    await signOut(auth);
+    sessionStorage.removeItem("founderProfile");
+    window.location.href = asset("../login.html");
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
 });
 
-
-
-if(isNewNotification){
-
-playNotificationSound();
-
-}
-
-
-let unread = 0;
-
-
-
-snapshot.forEach(doc=>{
-
-
-const data =
-doc.data();
-
-
-
-if(data.read === false){
-
-unread++;
-
-}
-
-
-});
-
-
-
-
-if(badge){
-
-
-badge.textContent =
-unread;
-
-
-
-badge.style.display =
-unread > 0
-? "flex"
-: "none";
-
-
-}
-
-
-
-}
-
-);
-
-
-
-}
-/* ===================================
-   TOPBAR NOTIFICATION DROPDOWN
-=================================== */
-
-
-function loadTopNotifications(uid){
-
-
-const list =
-document.getElementById(
-"topNotificationsList"
-);
-
-
-const unread =
-document.getElementById(
-"dropdownUnread"
-);
-
-
-
-if(!list) return;
-
-
-
-const notificationQuery = query(
-
-collection(
-db,
-"notifications"
-),
-
-where(
-"userId",
-"==",
-uid
-),
-
-orderBy(
-"createdAt",
-"desc"
-),
-
-limit(5)
-
-);
-
-
-
-
-onSnapshot(
-
-notificationQuery,
-
-(snapshot)=>{
-
-
-list.innerHTML="";
-
-
-let unreadCount = 0;
-
-
-
-if(snapshot.empty){
-
-
-list.innerHTML = `
-
-<p class="empty-notifications">
-
-No new notifications
-
-</p>
-
-`;
-
-return;
-
-
-}
-
-
-
-
-snapshot.forEach((doc)=>{
-
-
-const data =
-doc.data();
-
-
-
-if(data.read === false){
-
-unreadCount++;
-
-}
-
-
-
-const item =
-document.createElement("div");
-
-
-
-item.className =
-"top-notification-item";
-
-
-
-item.innerHTML = `
-
-<div class="top-notification-icon">
-
-🔔
-
-</div>
-
-
-<div class="top-notification-content">
-
-<h4>
-
-${data.title || "Notification"}
-
-</h4>
-
-
-<p>
-
-${data.message || ""}
-
-</p>
-
-</div>
-
-`;
-
-
-
-list.appendChild(item);
-
-
-
-});
-
-
-
-if(unread){
-
-unread.textContent =
-unreadCount;
-
-}
-
-
-}
-
-
-);
-
-
-
-}
-/* ===================================
-   NOTIFICATION SOUND ENGINE
-=================================== */
-
-
-function playNotificationSound(){
-
-
-const audio =
-new Audio(
-"notifications/assets/sounds/notification.mp3"
-);
-
-
-
-audio.volume = 0.5;
-
-
-
-audio.play()
-
-.catch(error=>{
-
-console.log(
-"Sound waiting for user interaction",
-error
-);
-
-});
-
-
-}
-/* ===================================
-   ACTIVE PAGE HIGHLIGHT
-=================================== */
-
-function highlightActivePage(){
-
-    const currentPage =
-        window.location.pathname
-        .split("/")
-        .pop();
-
-
-    document
-    .querySelectorAll(".sidebar-menu a")
-    .forEach(link=>{
-
-
-        const linkPage =
-            link
-            .getAttribute("href");
-
-
-        if(linkPage === currentPage){
-
-            link.classList.add(
-                "active"
-            );
-
-        }
-
-        else{
-
-            link.classList.remove(
-                "active"
-            );
-
-        }
-
-
-    });
-
-}
-
-
-
-/* ===================================
-   LOGOUT
-=================================== */
-
-document.addEventListener(
-    "click",
-    async(e)=>{
-
-
-        const logoutBtn =
-            e.target.closest(
-                "#logoutBtn"
-            );
-
-
-        if(!logoutBtn){
-
-            return;
-
-        }
-
-
-        try{
-
-
-            await signOut(auth);
-
-
-            sessionStorage.removeItem(
-                "founderProfile"
-            );
-
-
-            window.location.href =
-                "../login.html";
-
-
-        }
-
-        catch(error){
-
-            console.error(
-                "Logout failed:",
-                error
-            );
-
-        }
-
-
+async function boot() {
+  await mountShell();
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = asset("../login.html");
+      return;
     }
-);
-// ===================================
-// GLOBAL SEARCH
-// ===================================
-
-
-function initSearch(){
-
-
-const searchInput =
-document.getElementById(
-    "globalSearch"
-);
-
-
-const searchResults =
-document.getElementById(
-    "searchResults"
-);
-
-
-
-if(!searchInput) return;
-
-
-
-const pages = [
-
-{
-title:"Revenue Analytics",
-url:"revenue.html"
-},
-
-{
-title:"Monetization",
-url:"monetization.html"
-},
-
-{
-title:"Academy Profile",
-url:"academy-profile.html"
-},
-
-{
-title:"Spark AI Settings",
-url:"spark-ai-settings.html"
-},
-
-{
-title:"Security",
-url:"security.html"
-},
-
-{
-title:"Certificates",
-url:"certificates.html"
-},
-
-{
-title:"Platform Settings",
-url:"platform-settings.html"
+    loadFounderProfile(user.uid);
+    loadNotifications(user.uid);
+  });
 }
 
-];
-
-
-
-searchInput.addEventListener(
-"input",
-()=>{
-
-
-const value =
-searchInput.value
-.toLowerCase()
-.trim();
-
-
-
-searchResults.innerHTML="";
-
-
-
-if(!value){
-
-searchResults.style.display="none";
-
-return;
-
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", boot, { once: true });
+} else {
+  boot();
 }
-
-
-
-const matches =
-pages.filter(page=>
-
-page.title
-.toLowerCase()
-.includes(value)
-
-);
-
-
-
-matches.forEach(page=>{
-
-
-const item =
-document.createElement("div");
-
-
-item.className =
-"search-result";
-
-
-item.textContent =
-page.title;
-
-
-
-item.onclick=()=>{
-
-window.location.href =
-page.url;
-
-};
-
-
-
-searchResults.appendChild(item);
-
-
-});
-
-
-
-searchResults.style.display =
-matches.length
-? "block"
-:"none";
-
-
-});
-
-
-}
-
-
-
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
-
-initSearch();
-
-});
