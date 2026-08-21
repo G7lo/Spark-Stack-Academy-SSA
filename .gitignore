@@ -6,3 +6,5 @@
 founder/js/groq.js
 
 functions/node_modules/
+
+supabase/.temp/
