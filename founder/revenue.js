@@ -9,13 +9,24 @@ const $ = id => document.getElementById(id);
 const money = value => `KES ${Number(value || 0).toLocaleString()}`;
 const overlay = $("loadingOverlay");
 let chart;
+let pageOpened = false;
 
-function finishLoading() {
+// HARD 5-SECOND LIMIT: the Revenue page always opens after 5 seconds.
+function openRevenuePage() {
+    if (pageOpened) return;
+    pageOpened = true;
     if (!overlay) return;
+    overlay.style.transition = "opacity .2s ease";
     overlay.style.opacity = "0";
     overlay.style.pointerEvents = "none";
-    setTimeout(() => { overlay.style.display = "none"; }, 250);
+    setTimeout(() => {
+        if (overlay) overlay.style.display = "none";
+    }, 220);
 }
+
+// Start the timer immediately. Do not wait for Firebase.
+setTimeout(openRevenuePage, 5000);
+
 function dateOf(value) { try { return value?.toDate?.() || (value ? new Date(value) : null); } catch { return null; } }
 function text(id, value) { const el = $(id); if (el) el.textContent = value; }
 function empty(el, cols, msg) { if (el) el.innerHTML = `<tr><td colspan="${cols}" class="empty-table">${msg}</td></tr>`; }
@@ -53,8 +64,7 @@ onSnapshot(payments, snap => {
         text("mpesaRevenue",money(mpesa)); text("cardRevenue",money(card)); text("bankRevenue",money(bank)); text("paypalRevenue",money(paypal));
         drawChart(Object.keys(daily).sort(), Object.keys(daily).sort().map(k => daily[k]));
     } catch (e) { console.error("Revenue error:",e); empty($("transactionsTable"),9,"Unable to load transactions right now."); }
-    finally { finishLoading(); }
-}, e => { console.error("Payments listener failed:",e); empty($("transactionsTable"),9,"Unable to load transactions."); finishLoading(); });
+}, e => { console.error("Payments listener failed:",e); empty($("transactionsTable"),9,"Unable to load transactions."); });
 
 const withdrawals = query(collection(db, "withdrawals"), orderBy("requestedAt", "desc"));
 onSnapshot(withdrawals, snap => {
@@ -64,11 +74,7 @@ onSnapshot(withdrawals, snap => {
         if(!snap.size) empty(table,6,"No withdrawal requests found.");
         text("pendingWithdrawals",money(pending));
     } catch(e) { console.error("Withdrawals error:",e); empty($("withdrawalsTable"),6,"Unable to load withdrawals."); }
-    finally { finishLoading(); }
-}, e => { console.error("Withdrawals listener failed:",e); empty($("withdrawalsTable"),6,"Unable to load withdrawals."); finishLoading(); });
-
-// Absolute safety: never trap the Founder behind an infinite spinner.
-setTimeout(finishLoading, 5000);
+}, e => { console.error("Withdrawals listener failed:",e); empty($("withdrawalsTable"),6,"Unable to load withdrawals."); });
 
 async function setWithdrawal(id,status){ try { await updateDoc(doc(db,"withdrawals",id),{status,processedAt:new Date()}); } catch(e){ console.error(e); alert("Could not update this withdrawal."); } }
 document.addEventListener("click",e=>{ const id=e.target?.dataset?.id; if(!id)return; if(e.target.classList.contains("approve"))setWithdrawal(id,"completed"); if(e.target.classList.contains("reject"))setWithdrawal(id,"failed"); });
