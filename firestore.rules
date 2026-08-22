@@ -2,98 +2,48 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    function signedIn() {
-      return request.auth != null;
-    }
-
-    function userExists() {
-      return signedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid));
-    }
-
-    function role() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', 'unknown');
-    }
-
-    function isStudent() {
-      return userExists() && role() == 'student';
-    }
-
-    function isInstructor() {
-      return userExists() && role() == 'instructor';
-    }
-
-    function isAdmin() {
-      return userExists() && role() == 'admin';
-    }
-
+    function signedIn() { return request.auth != null; }
+    function userExists() { return signedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid)); }
+    function role() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', 'unknown'); }
+    function isStudent() { return userExists() && role() == 'student'; }
+    function isInstructor() { return userExists() && role() == 'instructor'; }
+    function isAdmin() { return userExists() && role() == 'admin'; }
     function isFounder() {
       return signedIn()
         && exists(/databases/$(database)/documents/founder/$(request.auth.uid))
         && get(/databases/$(database)/documents/founder/$(request.auth.uid)).data.get('role', 'founder') == 'founder'
         && get(/databases/$(database)/documents/founder/$(request.auth.uid)).data.get('status', 'active') == 'active';
     }
+    function staff() { return isAdmin() || isFounder(); }
 
-    function staff() {
-      return isAdmin() || isFounder();
-    }
-
-    function platformManager() {
-      return isFounder();
-    }
-
-    // ------------------------------------------------------------------
-    // USER PROFILES
-    // ------------------------------------------------------------------
     match /users/{userId} {
       allow get: if signedIn() && (request.auth.uid == userId || staff());
       allow list: if staff();
       allow create: if signedIn() && request.auth.uid == userId;
       allow update: if signedIn() && request.auth.uid == userId
-                    && request.resource.data.get('role', resource.data.get('role', 'student'))
-                       == resource.data.get('role', 'student');
+        && request.resource.data.get('role', resource.data.get('role', 'student')) == resource.data.get('role', 'student');
       allow delete: if staff();
     }
 
-    // Founder records are never client-writable except by the founder themselves
-    // for non-privilege profile changes. Role/status remain founder-controlled.
     match /founder/{founderId} {
       allow get: if signedIn() && (request.auth.uid == founderId || isFounder());
       allow list: if isFounder();
       allow create: if signedIn() && request.auth.uid == founderId;
       allow update: if signedIn() && request.auth.uid == founderId
-                    && request.resource.data.get('role', 'founder') == resource.data.get('role', 'founder')
-                    && request.resource.data.get('status', 'active') == resource.data.get('status', 'active');
+        && request.resource.data.get('role', 'founder') == resource.data.get('role', 'founder')
+        && request.resource.data.get('status', 'active') == resource.data.get('status', 'active');
       allow delete: if false;
     }
 
-    // ------------------------------------------------------------------
-    // PLATFORM CONTROL / AUDIT
-    // ------------------------------------------------------------------
-    match /platform_controls/{controlId} {
-      allow read, write: if platformManager();
-    }
+    match /platform_controls/{controlId} { allow read, write: if isFounder(); }
+    match /audit_logs/{logId} { allow read, create: if isFounder(); allow update, delete: if false; }
 
-    match /audit_logs/{logId} {
-      allow read: if isFounder();
-      allow create: if isFounder();
-      allow update, delete: if false;
-    }
-
-    // ------------------------------------------------------------------
-    // PREMIUM — subscription records are founder-managed.
-    // Students may read only their own subscription status.
-    // Payment/backend services can write with Admin SDK, which bypasses rules.
-    // ------------------------------------------------------------------
     match /premiumSubscriptions/{userId} {
       allow get: if signedIn() && (request.auth.uid == userId || isFounder());
       allow list: if isFounder();
       allow create, update, delete: if isFounder();
     }
 
-    // ------------------------------------------------------------------
-    // REPORTS / TICKETS
-    // ------------------------------------------------------------------
     match /reports/{reportId} {
       allow create: if signedIn()
         && request.resource.data.reporterId == request.auth.uid
@@ -103,50 +53,30 @@ service cloud.firestore {
           || request.resource.data.type == 'system'
           || request.resource.data.category == 'security'
         );
-
       allow get: if signedIn() && (
         resource.data.reporterId == request.auth.uid
         || isAdmin()
         || (isFounder() && resource.data.founderVisible == true)
       );
-
       allow list: if signedIn() && (
         isAdmin()
         || (isFounder() && resource.data.founderVisible == true)
         || resource.data.reporterId == request.auth.uid
       );
-
-      allow update: if signedIn() && (
-        isAdmin()
-        || isFounder()
-      );
-
+      allow update: if signedIn() && (isAdmin() || isFounder());
       allow delete: if isFounder();
     }
 
-    // ------------------------------------------------------------------
-    // MESSAGING
-    // Allowed communication graph:
-    // student <-> instructor
-    // instructor <-> admin
-    // admin <-> founder
-    // founder <-> anyone
-    // ------------------------------------------------------------------
     function roleFor(uid) {
       return get(/databases/$(database)/documents/users/$(uid)).data.get('role', 'unknown');
     }
-
     function allowedPair(a, b) {
-      return (a == 'founder')
-        || (b == 'founder')
+      return (a == 'founder') || (b == 'founder')
         || (a == 'student' && b == 'instructor')
         || (a == 'instructor' && b == 'student')
         || (a == 'instructor' && b == 'admin')
-        || (a == 'admin' && b == 'instructor')
-        || (a == 'admin' && b == 'founder')
-        || (a == 'founder' && b == 'admin');
+        || (a == 'admin' && b == 'instructor');
     }
-
     function isChatMember() {
       return signedIn() && resource.data.participants.hasAny([request.auth.uid]);
     }
@@ -154,7 +84,6 @@ service cloud.firestore {
     match /chats/{chatId} {
       allow get: if isChatMember();
       allow list: if signedIn();
-
       allow create: if signedIn()
         && request.resource.data.participants is list
         && request.resource.data.participants.size() == 2
@@ -165,57 +94,29 @@ service cloud.firestore {
             ? request.resource.data.participants[1]
             : request.resource.data.participants[0])
         );
-
-      allow update: if isChatMember()
-        && request.resource.data.participants == resource.data.participants;
+      allow update: if isChatMember() && request.resource.data.participants == resource.data.participants;
       allow delete: if isFounder();
 
       match /messages/{messageId} {
-        allow read: if signedIn()
-          && get(/databases/$(database)/documents/chats/$(chatId)).data.participants.hasAny([request.auth.uid]);
-
+        allow read: if signedIn() && get(/databases/$(database)/documents/chats/$(chatId)).data.participants.hasAny([request.auth.uid]);
         allow create: if signedIn()
           && request.resource.data.senderId == request.auth.uid
           && get(/databases/$(database)/documents/chats/$(chatId)).data.participants.hasAny([request.auth.uid]);
-
-        allow update: if signedIn()
-          && get(/databases/$(database)/documents/chats/$(chatId)).data.participants.hasAny([request.auth.uid]);
+        allow update: if signedIn() && get(/databases/$(database)/documents/chats/$(chatId)).data.participants.hasAny([request.auth.uid]);
         allow delete: if isFounder();
       }
     }
 
-    // ------------------------------------------------------------------
-    // NOTIFICATIONS
-    // Users read/update their own notifications; founder/admin may manage.
-    // ------------------------------------------------------------------
     match /notifications/{notificationId} {
       allow get: if signedIn() && (resource.data.userId == request.auth.uid || staff());
-      allow list: if signedIn() && (staff() || request.query.limit <= 100);
+      allow list: if staff() || (signedIn() && request.query.limit <= 100);
       allow create: if staff();
-      allow update: if signedIn() && (
-        resource.data.userId == request.auth.uid
-        || staff()
-      );
+      allow update: if signedIn() && (resource.data.userId == request.auth.uid || staff());
       allow delete: if staff();
     }
+    match /broadcasts/{broadcastId} { allow read, write: if isFounder(); }
+    match /announcements/{announcementId} { allow read: if signedIn(); allow create, update, delete: if staff(); }
 
-    match /broadcasts/{broadcastId} {
-      allow read, write: if isFounder();
-    }
-
-    // ------------------------------------------------------------------
-    // ANNOUNCEMENTS
-    // Published announcements are readable by authenticated users.
-    // Creation/editing remains staff-controlled.
-    // ------------------------------------------------------------------
-    match /announcements/{announcementId} {
-      allow read: if signedIn();
-      allow create, update, delete: if staff();
-    }
-
-    // ------------------------------------------------------------------
-    // LEARNING CONTENT
-    // ------------------------------------------------------------------
     match /courses/{courseId} {
       allow read: if signedIn();
       allow create, update: if isInstructor() || staff();
@@ -223,25 +124,9 @@ service cloud.firestore {
     }
 
     match /enrollments/{enrollmentId} {
-      allow get: if signedIn() && (
-        staff()
-        || resource.data.studentId == request.auth.uid
-        || resource.data.instructorId == request.auth.uid
-      );
-      allow list: if signedIn() && (
-        staff()
-        || resource.data.studentId == request.auth.uid
-        || resource.data.instructorId == request.auth.uid
-      );
-      allow create: if signedIn() && (
-        staff()
-        || resource.data.studentId == request.auth.uid
-      );
-      allow update: if signedIn() && (
-        staff()
-        || resource.data.studentId == request.auth.uid
-        || resource.data.instructorId == request.auth.uid
-      );
+      allow get, list: if signedIn() && (staff() || resource.data.studentId == request.auth.uid || resource.data.instructorId == request.auth.uid);
+      allow create: if signedIn() && (staff() || request.resource.data.studentId == request.auth.uid);
+      allow update: if signedIn() && (staff() || resource.data.studentId == request.auth.uid || resource.data.instructorId == request.auth.uid);
       allow delete: if staff();
     }
 
@@ -251,49 +136,20 @@ service cloud.firestore {
     }
 
     match /submissions/{submissionId} {
-      allow get: if signedIn() && (
-        staff()
-        || resource.data.studentId == request.auth.uid
-        || resource.data.instructorId == request.auth.uid
-      );
-      allow list: if signedIn() && (
-        staff()
-        || resource.data.studentId == request.auth.uid
-        || resource.data.instructorId == request.auth.uid
-      );
-      allow create: if signedIn() && resource.data.studentId == request.auth.uid;
-      allow update: if signedIn() && (
-        staff()
-        || resource.data.studentId == request.auth.uid
-        || resource.data.instructorId == request.auth.uid
-      );
+      allow get, list: if signedIn() && (staff() || resource.data.studentId == request.auth.uid || resource.data.instructorId == request.auth.uid);
+      allow create: if signedIn() && request.resource.data.studentId == request.auth.uid;
+      allow update: if signedIn() && (staff() || resource.data.studentId == request.auth.uid || resource.data.instructorId == request.auth.uid);
       allow delete: if staff();
     }
 
     match /certificates/{certificateId} {
-      allow get, list: if signedIn() && (
-        staff() || resource.data.studentId == request.auth.uid
-      );
+      allow get, list: if signedIn() && (staff() || resource.data.studentId == request.auth.uid);
       allow create, update, delete: if staff();
     }
 
-    // ------------------------------------------------------------------
-    // PLATFORM SETTINGS — founder only.
-    // ------------------------------------------------------------------
-    match /settings/{settingsId} {
-      allow read, write: if isFounder();
-    }
+    match /settings/{settingsId} { allow read, write: if isFounder(); }
+    match /platformSettings/{settingsId} { allow read, write: if isFounder(); }
 
-    match /platformSettings/{settingsId} {
-      allow read, write: if isFounder();
-    }
-
-    // ------------------------------------------------------------------
-    // Explicit deny-by-default for every collection not listed above.
-    // Add a dedicated rule before using a new collection in production.
-    // ------------------------------------------------------------------
-    match /{document=**} {
-      allow read, write: if false;
-    }
+    match /{document=**} { allow read, write: if false; }
   }
 }
