@@ -1,7 +1,9 @@
+import "../js/ui-runtime.js";
 import { auth } from "../js/firebase.js";
 
 const FN_URL = "https://nlnwllpisbqgbeluhdbr.supabase.co/functions/v1/platform-command";
 const $ = id => document.getElementById(id);
+const toast = (message, type = "info") => window.showToast?.(message, type);
 
 function fmt(value){
   if(!value) return "—";
@@ -52,11 +54,9 @@ function render(data = {}){
   $("globalStatus").innerHTML = `<span></span>${lockdown ? "Emergency lockdown" : (!student || !instructor ? "Partial outage" : "All systems operational")}`;
 
   const maintenance = data.maintenance;
-  if(maintenance){
-    $("scheduleInfo").textContent = `${maintenance.target} maintenance: ${fmt(maintenance.starts_at)} → ${fmt(maintenance.ends_at)} — ${maintenance.message || "Scheduled maintenance"}`;
-  } else {
-    $("scheduleInfo").textContent = "No maintenance window scheduled.";
-  }
+  $("scheduleInfo").textContent = maintenance
+    ? `${maintenance.target} maintenance: ${fmt(maintenance.starts_at)} → ${fmt(maintenance.ends_at)} — ${maintenance.message || "Scheduled maintenance"}`
+    : "No maintenance window scheduled.";
 }
 
 function renderLog(items = []){
@@ -79,12 +79,15 @@ async function setPortal(portal){
     enabled: !enabled,
     reason: `${!enabled ? "Restored" : "Suspended"} from Founder Command Center`
   });
+  toast(`${portal === "student" ? "Student" : "Instructor"} portal ${!enabled ? "restored" : "suspended"}.`, "success");
   await refresh();
 }
 
 async function toggleLockdown(){
   const current = await callCommand("status");
-  await callCommand("lockdown", { enabled: !current.emergencyLockdown, reason: "Founder Command Center emergency control" });
+  const enabled = !current.emergencyLockdown;
+  await callCommand("lockdown", { enabled, reason: "Founder Command Center emergency control" });
+  toast(enabled ? "Emergency lockdown activated." : "Emergency lockdown deactivated.", enabled ? "warning" : "success");
   await refresh();
 }
 
@@ -92,7 +95,7 @@ async function scheduleMaintenance(){
   const start = $("maintenanceStart").value;
   const end = $("maintenanceEnd").value;
   if(!start || !end || new Date(end) <= new Date(start)){
-    alert("Choose a valid start and end time.");
+    toast("Choose a valid start and end time.", "warning");
     return;
   }
 
@@ -103,11 +106,13 @@ async function scheduleMaintenance(){
     message: $("maintenanceMessage").value.trim() || "SSA is temporarily offline for scheduled maintenance."
   });
 
+  toast("Maintenance window scheduled.", "success");
   await refresh();
 }
 
 async function cancelMaintenance(){
   await callCommand("cancel_maintenance");
+  toast("Maintenance window cancelled.", "success");
   await refresh();
 }
 
@@ -117,17 +122,18 @@ async function boot(){
     return;
   }
 
-  $("studentToggle").onclick = () => setPortal("student").catch(e => alert(e.message));
-  $("instructorToggle").onclick = () => setPortal("instructor").catch(e => alert(e.message));
-  $("lockdownToggle").onclick = () => toggleLockdown().catch(e => alert(e.message));
-  $("scheduleBtn").onclick = () => scheduleMaintenance().catch(e => alert(e.message));
-  $("cancelScheduleBtn").onclick = () => cancelMaintenance().catch(e => alert(e.message));
+  $("studentToggle").onclick = () => setPortal("student").catch(e => toast(e.message, "error"));
+  $("instructorToggle").onclick = () => setPortal("instructor").catch(e => toast(e.message, "error"));
+  $("lockdownToggle").onclick = () => toggleLockdown().catch(e => toast(e.message, "error"));
+  $("scheduleBtn").onclick = () => scheduleMaintenance().catch(e => toast(e.message, "error"));
+  $("cancelScheduleBtn").onclick = () => cancelMaintenance().catch(e => toast(e.message, "error"));
 
   try { await refresh(); }
   catch(e){
     console.error(e);
     $("globalStatus").innerHTML = `<span></span>Command service unavailable`;
-    $("scheduleInfo").textContent = e.message;
+    $("scheduleInfo").textContent = "We couldn't reach the platform command service. Please try again.";
+    toast("The command service is temporarily unavailable.", "error");
   }
 }
 
