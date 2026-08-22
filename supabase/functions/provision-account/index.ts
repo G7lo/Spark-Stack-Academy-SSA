@@ -3,10 +3,12 @@ import { createRemoteJWKSet, jwtVerify } from "https://esm.sh/jose@6";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const FIREBASE_PROJECT_ID = "spark-stack-academy";
-const FIREBASE_ISSUER = `https://securetoken.google.com/${FIREBASE_PROJECT_ID}`;
-const FIREBASE_KEYS = createRemoteJWKSet(
-    new URL("https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com")
+const CLERK_ISSUER = (Deno.env.get("CLERK_ISSUER") || "").replace(/\/$/, "");
+
+if (!CLERK_ISSUER) throw new Error("CLERK_ISSUER is not configured.");
+
+const CLERK_KEYS = createRemoteJWKSet(
+    new URL(`${CLERK_ISSUER}/.well-known/jwks.json`)
 );
 
 const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
@@ -24,31 +26,30 @@ function json(data: unknown, status = 200) {
     });
 }
 
-function makeUsername(fullName: string, firebaseUid: string) {
+function makeUsername(fullName: string, clerkUserId: string) {
     const base = (fullName || "user")
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "")
         .slice(0, 18) || "user";
 
-    const suffix = firebaseUid
+    const suffix = clerkUserId
         .replace(/[^a-z0-9]/gi, "")
-        .slice(0, 6)
+        .slice(-6)
         .toLowerCase();
 
     return `${base}_${suffix}`;
 }
 
-async function verifyFirebaseToken(req: Request) {
+async function verifyClerkToken(req: Request) {
     const header = req.headers.get("Authorization") || "";
     if (!header.startsWith("Bearer ")) throw new Error("Authentication required.");
 
-    const { payload } = await jwtVerify(header.slice(7), FIREBASE_KEYS, {
-        issuer: FIREBASE_ISSUER,
-        audience: FIREBASE_PROJECT_ID
+    const { payload } = await jwtVerify(header.slice(7), CLERK_KEYS, {
+        issuer: CLERK_ISSUER
     });
 
-    if (!payload.sub) throw new Error("Invalid Firebase authentication token.");
-    return payload.sub;
+    if (!payload.sub) throw new Error("Invalid Clerk authentication token.");
+    return String(payload.sub);
 }
 
 Deno.serve(async (req) => {
@@ -56,28 +57,34 @@ Deno.serve(async (req) => {
     if (req.method !== "POST") return json({ error: "Method not allowed." }, 405);
 
     try {
-        const firebaseUid = await verifyFirebaseToken(req);
+        const clerkUserId = await verifyClerkToken(req);
         const body = await req.json();
 
-        if (!body.firebaseUid || body.firebaseUid !== firebaseUid) {
-            return json({ error: "Firebase identity mismatch." }, 403);
+        if (!body.clerkUserId || body.clerkUserId !== clerkUserId) {
+            return json({ error: "Clerk identity mismatch." }, 403);
         }
 
-        const role = body.role === "instructor" ? "instructor" : "student";
+        const requestedRole = body.role === "instructor" ? "instructor" : "student";
+        const role = requestedRole;
+        const status = role === "instructor" ? "pending" : "active";
         const email = String(body.email || "").trim() || null;
-        const fullName = String(body.fullName || "").trim() || null;
+        const fullName = String(body.fullName || "").trim() || "Student";
         const avatarUrl = String(body.avatarUrl || "").trim() || null;
-        const username = makeUsername(fullName || "user", firebaseUid);
+        const bio = String(body.bio || "").trim() || null;
+        const expertise = String(body.expertise || "").trim() || null;
+        const username = makeUsername(fullName, clerkUserId);
 
         const { data: existing, error: findError } = await admin
             .from("profiles")
-            .select("id,status,username")
-            .eq("firebase_uid", firebaseUid)
+            .select("id,status,username,role")
+            .eq("clerk_user_id", clerkUserId)
             .maybeSingle();
 
         if (findError) throw findError;
 
         let profileId = existing?.id;
+        let finalRole = existing?.role || role;
+        let finalStatus = existing?.status || status;
 
         if (profileId) {
             const { error } = await admin
@@ -87,8 +94,6 @@ Deno.serve(async (req) => {
                     full_name: fullName,
                     avatar_url: avatarUrl,
                     username: existing.username || username,
-                    role,
-                    status: existing.status || "active",
                     updated_at: new Date().toISOString()
                 })
                 .eq("id", profileId);
@@ -98,13 +103,13 @@ Deno.serve(async (req) => {
             const { data, error } = await admin
                 .from("profiles")
                 .insert({
-                    firebase_uid: firebaseUid,
+                    clerk_user_id: clerkUserId,
                     email,
                     full_name: fullName,
                     avatar_url: avatarUrl,
                     username,
-                    role,
-                    status: "active"
+                    role: finalRole,
+                    status: finalStatus
                 })
                 .select("id")
                 .single();
@@ -113,7 +118,7 @@ Deno.serve(async (req) => {
             profileId = data.id;
         }
 
-        if (role === "student") {
+        if (finalRole === "student") {
             const { error } = await admin
                 .from("students")
                 .upsert({
@@ -132,9 +137,27 @@ Deno.serve(async (req) => {
                     verified: false
                 }, { onConflict: "id" });
             if (error) throw error;
+
+            // Keep instructor profile details server-side without trusting client authorization.
+            const { error: metadataError } = await admin
+                .from("profiles")
+                .update({
+                    status: finalStatus,
+                    updated_at: new Date().toISOString()
+                })
+                .eq("id", profileId);
+            if (metadataError) throw metadataError;
         }
 
-        return json({ success: true, profileId, role, username: existing?.username || username });
+        return json({
+            success: true,
+            profileId,
+            role: finalRole,
+            status: finalStatus,
+            username: existing?.username || username,
+            bio,
+            expertise
+        });
     } catch (error) {
         console.error("Provision account error:", error);
         return json({
