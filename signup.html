@@ -6,14 +6,11 @@
 <title>Create Account | Spark Stack Academy</title>
 <meta name="description" content="Create your Spark Stack Academy account and begin your journey into technology, innovation and digital excellence.">
 <link rel="stylesheet" href="css/auth.css">
+<link rel="stylesheet" href="css/clerk-auth.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-<style>
-.terms .legal-link{position:relative;z-index:20;pointer-events:auto;cursor:pointer;text-decoration:underline;}
-.terms .legal-link:active{transform:translateY(1px);}
-</style>
 </head>
 <body>
 <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i><span>Back Home</span></a>
@@ -23,27 +20,13 @@
 <div class="brand-logo"><img src="assets/images/ssa-logo.png" alt="Spark Stack Academy Logo"></div>
 <div class="welcome-badge"><i class="fa-solid fa-sparkles"></i> Future Innovators Welcome</div>
 <h1>Join Spark Stack Academy</h1>
-<p>Start your learning journey with SSA. Create your account below and unlock world-class technology education.</p>
-<form id="signupForm" autocomplete="on">
-<div class="input-group"><i class="fa-solid fa-user"></i><input type="text" id="name" placeholder="Full Name" autocomplete="name" required></div>
-<div class="input-group"><i class="fa-solid fa-envelope"></i><input type="email" id="email" placeholder="Email Address" autocomplete="email" required></div>
-<div class="input-group password-group"><i class="fa-solid fa-lock"></i><input type="password" id="password" placeholder="Password" autocomplete="new-password" required><i class="fa-solid fa-eye toggle-password" data-target="password"></i></div>
-<div class="password-strength"><div id="strengthBar"></div></div>
-<small id="strengthText">Use at least 8 characters with uppercase, lowercase and a number.</small>
-<ul class="password-rules"><li id="ruleLength"><i class="fa-solid fa-circle"></i> 8+ Characters</li><li id="ruleUpper"><i class="fa-solid fa-circle"></i> Uppercase Letter</li><li id="ruleLower"><i class="fa-solid fa-circle"></i> Lowercase Letter</li><li id="ruleNumber"><i class="fa-solid fa-circle"></i> Number</li></ul>
-<div class="input-group password-group"><i class="fa-solid fa-lock"></i><input type="password" id="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" required><i class="fa-solid fa-eye toggle-password" data-target="confirmPassword"></i></div>
-<div class="input-group"><i class="fa-solid fa-user-graduate"></i><select id="role" required><option value="">Select Account Type</option><option value="student">Student</option><option value="instructor">Instructor</option></select></div>
-<div id="instructorFields" class="hidden-fields"><div class="section-title">Instructor Information</div><div class="input-group"><i class="fa-solid fa-address-card"></i><textarea id="bio" rows="5" placeholder="Professional Bio"></textarea></div><div class="input-group"><i class="fa-solid fa-laptop-code"></i><input type="text" id="expertise" placeholder="Area of Expertise"></div></div>
-<div class="terms"><label><input type="checkbox" id="terms" required><span>I agree to the <a class="legal-link" href="terms.html" onclick="event.stopPropagation()">Terms &amp; Conditions</a> and <a class="legal-link" href="privacy.html" onclick="event.stopPropagation()">Privacy Policy</a>.</span></label></div>
-<button type="submit" id="signupBtn" class="primary-btn"><i class="fa-solid fa-user-plus"></i><span>Create Account</span></button>
-<div class="divider"><span>OR</span></div>
-<button class="google-btn" type="button" id="googleSignup"><i class="fa-brands fa-google"></i> Continue with Google</button>
-<div class="links">Already have an account? <a href="login.html">Login</a></div>
-<div class="auth-footer"><p>© 2026 Spark Stack Academy</p><p>Powered by <strong>SparkStack International</strong></p></div>
+<p>Create your secure account and unlock world-class technology education.</p>
+<form id="signupForm" autocomplete="on" aria-hidden="true">
+<input type="text" id="name"><input type="email" id="email"><input type="password" id="password"><input type="password" id="confirmPassword"><select id="role"><option value="student">Student</option></select><button type="submit" id="signupBtn">Create Account</button>
 </form>
 </div>
 </main>
-<div id="authLoader" class="auth-loader"><div class="loader-box"><img src="assets/images/ssa-logo.png" alt="Spark Stack Academy Logo"><h2 id="loaderText">Creating your account...</h2><p>Please wait while we securely set up your Spark Stack Academy account.</p><div class="progress-track"><div class="progress-energy"><span></span></div></div></div></div>
+<div id="authLoader" class="auth-loader"><div class="loader-box"><img src="assets/images/ssa-logo.png" alt="Spark Stack Academy Logo"><h2 id="loaderText">Creating your secure account...</h2><p>Please wait while we securely set up your Spark Stack Academy account.</p><div class="progress-track"><div class="progress-energy"><span></span></div></div></div></div>
 <div id="toastContainer" class="toast-container"></div>
 <button id="scrollTopBtn" class="scroll-top" type="button" aria-label="Back to Top"><i class="fa-solid fa-arrow-up"></i></button>
 <script type="module" src="js/signup.js"></script>
