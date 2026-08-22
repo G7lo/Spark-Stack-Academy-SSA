@@ -10,6 +10,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<style>
+.terms .legal-link{position:relative;z-index:20;pointer-events:auto;cursor:pointer;text-decoration:underline;}
+.terms .legal-link:active{transform:translateY(1px);}
+</style>
 </head>
 <body>
 <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i><span>Back Home</span></a>
@@ -30,12 +34,7 @@
 <div class="input-group password-group"><i class="fa-solid fa-lock"></i><input type="password" id="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" required><i class="fa-solid fa-eye toggle-password" data-target="confirmPassword"></i></div>
 <div class="input-group"><i class="fa-solid fa-user-graduate"></i><select id="role" required><option value="">Select Account Type</option><option value="student">Student</option><option value="instructor">Instructor</option></select></div>
 <div id="instructorFields" class="hidden-fields"><div class="section-title">Instructor Information</div><div class="input-group"><i class="fa-solid fa-address-card"></i><textarea id="bio" rows="5" placeholder="Professional Bio"></textarea></div><div class="input-group"><i class="fa-solid fa-laptop-code"></i><input type="text" id="expertise" placeholder="Area of Expertise"></div></div>
-<div class="terms">
-<label>
-<input type="checkbox" id="terms" required>
-<span>I agree to the <a class="legal-link" href="terms.html">Terms &amp; Conditions</a> and <a class="legal-link" href="privacy.html">Privacy Policy</a>.</span>
-</label>
-</div>
+<div class="terms"><label><input type="checkbox" id="terms" required><span>I agree to the <a class="legal-link" href="terms.html" onclick="event.stopPropagation()">Terms &amp; Conditions</a> and <a class="legal-link" href="privacy.html" onclick="event.stopPropagation()">Privacy Policy</a>.</span></label></div>
 <button type="submit" id="signupBtn" class="primary-btn"><i class="fa-solid fa-user-plus"></i><span>Create Account</span></button>
 <div class="divider"><span>OR</span></div>
 <button class="google-btn" type="button" id="googleSignup"><i class="fa-brands fa-google"></i> Continue with Google</button>
