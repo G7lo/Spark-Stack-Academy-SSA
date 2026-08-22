@@ -1,4 +1,40 @@
+import { auth } from "./firebase.js";
 import { supabase } from "./supabase.js";
+
+async function getAuthorizedUser() {
+    const user = auth.currentUser;
+
+    if (!user) {
+        throw new Error("You must be signed in.");
+    }
+
+    const { data: profile, error } = await supabase
+        .from("profiles")
+        .select("id, firebase_uid, role, status")
+        .eq("firebase_uid", user.uid)
+        .maybeSingle();
+
+    if (error) {
+        throw error;
+    }
+
+    if (!profile) {
+        throw new Error("Your account profile could not be found.");
+    }
+
+    if (profile.status && profile.status !== "active") {
+        throw new Error("Your account is not active.");
+    }
+
+    if (!["admin", "founder"].includes(profile.role)) {
+        throw new Error("Administrator access required.");
+    }
+
+    return {
+        firebaseUser: user,
+        profile
+    };
+}
 
 export async function issueCommand({
     command,
@@ -6,31 +42,7 @@ export async function issueCommand({
     reason = "",
     expiresAt = null
 }) {
-    const {
-        data: {
-            user
-        },
-        error: authError
-    } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-        throw new Error("You must be signed in.");
-    }
-
-    const { data: profile, error: profileError } =
-        await supabase
-            .from("profiles")
-            .select("id, role, status")
-            .eq("id", user.id)
-            .maybeSingle();
-
-    if (profileError) {
-        throw profileError;
-    }
-
-    if (!profile || !["admin", "founder"].includes(profile.role)) {
-        throw new Error("Administrator access required.");
-    }
+    const { profile } = await getAuthorizedUser();
 
     const { data, error } = await supabase
         .from("platform_commands")
@@ -39,7 +51,7 @@ export async function issueCommand({
             target,
             active: true,
             reason,
-            created_by: user.id,
+            created_by: profile.id,
             activated_at: new Date().toISOString(),
             expires_at: expiresAt
         })
@@ -53,7 +65,7 @@ export async function issueCommand({
     await supabase
         .from("audit_logs")
         .insert({
-            actor_id: user.id,
+            actor_id: profile.id,
             action: `platform_command:${command}`,
             target_type: target,
             target_id: target,
@@ -67,25 +79,7 @@ export async function issueCommand({
 }
 
 export async function deactivateCommands(target) {
-    const {
-        data: {
-            user
-        }
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-        throw new Error("You must be signed in.");
-    }
-
-    const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .maybeSingle();
-
-    if (!profile || !["admin", "founder"].includes(profile.role)) {
-        throw new Error("Administrator access required.");
-    }
+    const { profile } = await getAuthorizedUser();
 
     const { error } = await supabase
         .from("platform_commands")
@@ -102,7 +96,7 @@ export async function deactivateCommands(target) {
     await supabase
         .from("audit_logs")
         .insert({
-            actor_id: user.id,
+            actor_id: profile.id,
             action: "platform_command:deactivate",
             target_type: target,
             target_id: target,
