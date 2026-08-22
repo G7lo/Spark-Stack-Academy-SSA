@@ -45,13 +45,17 @@ export async function getConversation(conversationId) {
 
 export async function getConversationPeople(conversationId) {
     const conversation = await getConversation(conversationId);
-    const ids = (conversation.conversation_members || []).map(member => member.user_id);
+    const members = conversation.conversation_members || [];
+    const ids = members.map(member => member.user_id);
     if (!ids.length) return [];
     const { data, error } = await supabase.from("profiles")
         .select("id,username,full_name,role,status,avatar_url,last_seen_at")
         .in("id", ids);
     if (error) throw error;
-    return data || [];
+    return (data || []).map(person => ({
+        ...person,
+        last_read_at: members.find(member => member.user_id === person.id)?.last_read_at || null
+    }));
 }
 
 export async function getMyConversations(firebaseUid) {
@@ -81,6 +85,19 @@ export function subscribeToMessages(conversationId, callback) {
     return () => supabase.removeChannel(channel);
 }
 
+export function subscribeToReadReceipts(conversationId, callback) {
+    if (!conversationId) return () => {};
+    const channel = supabase.channel(`reads:${conversationId}:${crypto.randomUUID()}`)
+        .on("postgres_changes", {
+            event: "UPDATE",
+            schema: "public",
+            table: "conversation_members",
+            filter: `conversation_id=eq.${conversationId}`
+        }, payload => callback?.(payload.new))
+        .subscribe();
+    return () => supabase.removeChannel(channel);
+}
+
 export function createChatPresence(conversationId, profile, { onSync, onTyping } = {}) {
     if (!conversationId || !profile?.id) return { setTyping: () => {}, stop: async () => {} };
     const channel = supabase.channel(`chat-presence:${conversationId}`, { config: { presence: { key: profile.id } } });
@@ -92,12 +109,24 @@ export function createChatPresence(conversationId, profile, { onSync, onTyping }
         if (payload?.user_id !== profile.id) onTyping?.(payload);
     });
     channel.subscribe(async status => {
-        if (status === "SUBSCRIBED") await channel.track({ user_id: profile.id, username: profile.username, online: true, typing: false, online_at: new Date().toISOString() });
+        if (status === "SUBSCRIBED") {
+            await channel.track({
+                user_id: profile.id,
+                username: profile.username,
+                online: true,
+                typing: false,
+                online_at: new Date().toISOString()
+            });
+        }
     });
     let typingTimer;
     const setTyping = typing => {
         clearTimeout(typingTimer);
-        channel.send({ type: "broadcast", event: "typing", payload: { user_id: profile.id, typing: Boolean(typing), at: Date.now() } });
+        channel.send({
+            type: "broadcast",
+            event: "typing",
+            payload: { user_id: profile.id, typing: Boolean(typing), at: Date.now() }
+        });
         if (typing) typingTimer = setTimeout(() => setTyping(false), 2200);
     };
     const stop = async () => {
@@ -110,7 +139,9 @@ export function createChatPresence(conversationId, profile, { onSync, onTyping }
 
 export async function touchLastSeen(profileId) {
     if (!profileId) return;
-    const { error } = await supabase.from("profiles").update({ last_seen_at: new Date().toISOString() }).eq("id", profileId);
+    const { error } = await supabase.from("profiles")
+        .update({ last_seen_at: new Date().toISOString() })
+        .eq("id", profileId);
     if (error) console.warn("Last-seen update skipped:", error.message);
 }
 
@@ -120,14 +151,18 @@ export async function sendMessage({ conversationId, senderId, body }) {
     if (!senderId) throw new Error("Your account identity is missing.");
     if (!text) throw new Error("Message cannot be empty.");
     if (text.length > 4000) throw new Error("Message is too long.");
-    const { data, error } = await supabase.from("messages").insert({ conversation_id: conversationId, sender_id: senderId, body: text, message_type: "text" }).select().single();
+    const { data, error } = await supabase.from("messages")
+        .insert({ conversation_id: conversationId, sender_id: senderId, body: text, message_type: "text" })
+        .select().single();
     if (error) throw error;
     return data;
 }
 
 export async function markConversationRead({ conversationId, userId }) {
     if (!conversationId || !userId) return;
-    const { error } = await supabase.from("conversation_members").update({ last_read_at: new Date().toISOString() }).eq("conversation_id", conversationId).eq("user_id", userId);
+    const { error } = await supabase.from("conversation_members")
+        .update({ last_read_at: new Date().toISOString() })
+        .eq("conversation_id", conversationId).eq("user_id", userId);
     if (error) throw error;
 }
 
