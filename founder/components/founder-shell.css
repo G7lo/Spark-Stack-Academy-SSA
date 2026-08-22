@@ -1,0 +1,100 @@
+/* =========================================================
+   SPARK STACK FOUNDER OS — SHARED SHELL
+   Reference devices: 360x800 / 390x844 / 1440x900
+   ========================================================= */
+
+:root {
+  --founder-sidebar-width: 280px;
+  --founder-topbar-height: 78px;
+  --founder-page-max: 1440px;
+  --founder-gutter: clamp(16px, 2vw, 32px);
+  --founder-bg: #070d1b;
+  --founder-panel: rgba(15, 23, 42, .82);
+  --founder-border: rgba(148, 163, 184, .10);
+  --founder-text: #f8fafc;
+  --founder-muted: #94a3b8;
+}
+
+html { min-width: 320px; }
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--founder-bg);
+  color: var(--founder-text);
+  overflow-x: hidden;
+}
+
+.founder-app {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.founder-sidebar {
+  width: var(--founder-sidebar-width);
+  flex: 0 0 var(--founder-sidebar-width);
+}
+
+.founder-main {
+  min-width: 0;
+  width: calc(100% - var(--founder-sidebar-width));
+  margin-left: var(--founder-sidebar-width);
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.founder-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  padding: var(--founder-gutter) var(--founder-gutter) 0;
+  box-sizing: border-box;
+}
+
+.founder-page {
+  width: min(100%, var(--founder-page-max));
+  margin: 0 auto;
+  padding: var(--founder-gutter);
+  box-sizing: border-box;
+}
+
+/* Never allow wide tables/cards to break the mobile viewport. */
+.founder-page img,
+.founder-page video,
+.founder-page iframe,
+.founder-page table { max-width: 100%; }
+
+@media (max-width: 768px) {
+  .founder-main {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .founder-topbar {
+    padding: 10px 12px 0;
+  }
+
+  .founder-page {
+    padding: 14px 12px 28px;
+  }
+}
+
+@media (max-width: 390px) {
+  .founder-page { padding-inline: 10px; }
+  .founder-topbar { padding-inline: 8px; }
+}
+
+@media (min-width: 769px) {
+  .founder-page { padding-top: 24px; }
+}
+
+@media (min-width: 1400px) {
+  .founder-page { padding-inline: 32px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
