@@ -34,6 +34,10 @@ async function finishSignup(clerk, role, bio, expertise) {
     loading("Finishing your Spark Stack Academy setup...");
 
     try {
+        await clerk.user.update({
+            unsafeMetadata: { role, bio, expertise }
+        });
+
         await provisionAccount({ role, bio, expertise });
         const profile = await getCurrentProfile();
         if (!profile) throw new Error("Your profile could not be created.");
@@ -77,8 +81,8 @@ async function init() {
             </div>
             <div class="ssa-legal-note">
                 By creating an account, you agree to our
-                <a href="terms.html">Terms &amp; Conditions</a> and
-                <a href="privacy.html">Privacy Policy</a>.
+                <a href="/terms.html">Terms &amp; Conditions</a> and
+                <a href="/privacy.html">Privacy Policy</a>.
             </div>
             <div id="ssaClerkSignup"></div>
         `;
@@ -94,16 +98,15 @@ async function init() {
             mount.innerHTML = "";
             instructorFields.hidden = role.value !== "instructor";
             clerk.mountSignUp(mount, {
-                unsafeMetadata: {
-                    role: role.value,
-                    bio: role.value === "instructor" ? bio.value.trim() : "",
-                    expertise: role.value === "instructor" ? expertise.value.trim() : ""
-                },
                 signInUrl: "/login.html",
-                fallbackRedirectUrl: "/login.html",
+                fallbackRedirectUrl: "/signup.html",
                 appearance: {
+                    variables: {
+                        colorPrimary: "#2979FF"
+                    },
                     options: {
-                        termsPageUrl: "/terms.html"
+                        termsPageUrl: "/terms.html",
+                        privacyPageUrl: "/privacy.html"
                     }
                 }
             });
@@ -116,9 +119,9 @@ async function init() {
             if (user) {
                 finishSignup(
                     clerk,
-                    user.unsafeMetadata?.role === "instructor" ? "instructor" : "student",
-                    user.unsafeMetadata?.bio || "",
-                    user.unsafeMetadata?.expertise || ""
+                    role.value === "instructor" ? "instructor" : "student",
+                    role.value === "instructor" ? bio.value.trim() : "",
+                    role.value === "instructor" ? expertise.value.trim() : ""
                 );
             }
         });
