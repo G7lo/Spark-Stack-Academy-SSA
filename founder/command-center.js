@@ -88,7 +88,40 @@ async function cancelMaintenance(){
 function bindEvents(){
  $("studentToggle").onclick=async()=>{try{const s=await getDoc(controlRef());await setPortalState("student",!s.data()?.student?.suspended)}catch(e){toast(e.message,"error")}};
  $("instructorToggle").onclick=async()=>{try{const s=await getDoc(controlRef());await setPortalState("instructor",!s.data()?.instructor?.suspended)}catch(e){toast(e.message,"error")}};
- $("lockdownToggle").onclick=async()=>{try{const s=await getDoc(controlRef());await setLockdown(!s.data()?.lockdown)}catch(e){toast(e.message,"error")}};
+ $("lockdownToggle").onclick = async () => {
+    try {
+        const s = await getDoc(controlRef());
+        const active = !!s.data()?.lockdown;
+
+        if (!active) {
+            const confirmed = confirm(
+                "⚠️ EMERGENCY LOCKDOWN\\n\\n" +
+                "This will immediately restrict BOTH the Student and Instructor portals.\\n\\n" +
+                "Continue?"
+            );
+
+            if (!confirmed) return;
+        }
+
+        $("lockdownToggle").disabled = true;
+
+        await setLockdown(!active);
+
+    } catch (e) {
+
+        console.error("Lockdown error:", e);
+
+        toast(
+            e.message || "Unable to change lockdown status.",
+            "error"
+        );
+
+    } finally {
+
+        $("lockdownToggle").disabled = false;
+
+    }
+};
  $("scheduleBtn").onclick=async()=>{try{$("scheduleBtn").disabled=true;await scheduleMaintenance()}catch(e){toast(e.message,"error")}finally{$("scheduleBtn").disabled=false}};
  $("cancelScheduleBtn").onclick=async()=>{try{$("cancelScheduleBtn").disabled=true;await cancelMaintenance()}catch(e){toast(e.message,"error")}finally{$("cancelScheduleBtn").disabled=false}};
 }
