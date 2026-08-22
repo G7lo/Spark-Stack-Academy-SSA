@@ -30,7 +30,12 @@
 <div class="input-group password-group"><i class="fa-solid fa-lock"></i><input type="password" id="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" required><i class="fa-solid fa-eye toggle-password" data-target="confirmPassword"></i></div>
 <div class="input-group"><i class="fa-solid fa-user-graduate"></i><select id="role" required><option value="">Select Account Type</option><option value="student">Student</option><option value="instructor">Instructor</option></select></div>
 <div id="instructorFields" class="hidden-fields"><div class="section-title">Instructor Information</div><div class="input-group"><i class="fa-solid fa-address-card"></i><textarea id="bio" rows="5" placeholder="Professional Bio"></textarea></div><div class="input-group"><i class="fa-solid fa-laptop-code"></i><input type="text" id="expertise" placeholder="Area of Expertise"></div></div>
-<div class="terms"><label><input type="checkbox" id="terms" required><span>I agree to the <a href="terms.html" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a> and <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span></label></div>
+<div class="terms">
+<label>
+<input type="checkbox" id="terms" required>
+<span>I agree to the <a class="legal-link" href="terms.html">Terms &amp; Conditions</a> and <a class="legal-link" href="privacy.html">Privacy Policy</a>.</span>
+</label>
+</div>
 <button type="submit" id="signupBtn" class="primary-btn"><i class="fa-solid fa-user-plus"></i><span>Create Account</span></button>
 <div class="divider"><span>OR</span></div>
 <button class="google-btn" type="button" id="googleSignup"><i class="fa-brands fa-google"></i> Continue with Google</button>
