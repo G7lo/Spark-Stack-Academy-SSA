@@ -1,4 +1,3 @@
 // Spark Stack Academy — Clerk frontend configuration
-// Replace this with the Publishable Key from your Clerk Dashboard.
-// NEVER put a Clerk Secret Key in this file.
-export const CLERK_PUBLISHABLE_KEY = "pk_test_REPLACE_WITH_SSA_CLERK_PUBLISHABLE_KEY";
+// This is a publishable browser key. Never put the Clerk Secret Key here.
+export const CLERK_PUBLISHABLE_KEY = "pk_test_bmV3LXNwb25nZS0zMTQ2LmNsZXJrLmFjY291bnRzLmRldiQ";
