@@ -90,60 +90,24 @@ function enableButtons() {
     if (googleSignupBtn) googleSignupBtn.disabled = false;
 }
 
-// ============================================================
-// SECURE SUPABASE ACCOUNT PROVISIONING
-// Firebase Auth remains the authentication source.
-// The Edge Function uses the Supabase service role server-side.
-// ============================================================
-
-async function provisionSupabaseAccount({
-    firebaseUid,
-    email = "",
-    fullName = "",
-    role = "student",
-    avatarUrl = ""
-}) {
+async function provisionSupabaseAccount({ firebaseUid, email = "", fullName = "", role = "student", avatarUrl = "" }) {
     if (!firebaseUid) throw new Error("Missing Firebase UID.");
-
     const user = auth.currentUser;
-    if (!user || user.uid !== firebaseUid) {
-        throw new Error("Firebase session is unavailable. Please try again.");
-    }
-
+    if (!user || user.uid !== firebaseUid) throw new Error("Firebase session is unavailable. Please try again.");
     const token = await user.getIdToken(true);
-
     const response = await fetch(PROVISION_URL, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({
-            firebaseUid,
-            email,
-            fullName,
-            role,
-            avatarUrl
-        })
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body: JSON.stringify({ firebaseUid, email, fullName, role, avatarUrl })
     });
-
     const result = await response.json().catch(() => ({}));
-
-    if (!response.ok || !result.success) {
-        throw new Error(result.error || "Supabase account provisioning failed.");
-    }
-
+    if (!response.ok || !result.success) throw new Error(result.error || "Supabase account provisioning failed.");
     return result;
 }
-
-// ============================================
-// EMAIL SIGNUP
-// ============================================
 
 if (signupForm) {
     signupForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-
         const fullName = nameInput?.value.trim() || "";
         const email = emailInput?.value.trim() || "";
         const password = passwordInput?.value || "";
@@ -154,9 +118,7 @@ if (signupForm) {
 
         if (!fullName) return showToast("Enter your full name", "error");
         if (!isValidEmail(email)) return showToast("Enter a valid email", "error");
-        if (!hasMinimumLength(password) || !hasUpperCase(password) || !hasLowerCase(password) || !hasNumber(password)) {
-            return showToast("Password must contain uppercase, lowercase, number and 8 characters", "error");
-        }
+        if (!hasMinimumLength(password) || !hasUpperCase(password) || !hasLowerCase(password) || !hasNumber(password)) return showToast("Password must contain uppercase, lowercase, number and 8 characters", "error");
         if (password !== confirmPassword) return showToast("Passwords do not match", "error");
         if (!role) return showToast("Select account type", "error");
         if (termsCheckbox && !termsCheckbox.checked) return showToast("Accept Terms & Conditions", "warning");
@@ -164,138 +126,74 @@ if (signupForm) {
         try {
             disableButtons();
             showLoader("Creating account...");
-
             const credential = await createUserWithEmailAndPassword(auth, email, password);
             const user = credential.user;
-
             await updateProfile(user, { displayName: fullName });
 
             await setDoc(doc(db, "users", user.uid), {
-                uid: user.uid,
-                fullName,
-                email,
-                role,
+                uid: user.uid, fullName, email, role,
                 bio: role === "instructor" ? bio : "",
                 expertise: role === "instructor" ? expertise : "",
-                profilePhoto: "",
-                active: true,
-                verified: false,
-                createdAt: serverTimestamp(),
-                lastLogin: serverTimestamp()
+                profilePhoto: "", active: true, verified: false,
+                createdAt: serverTimestamp(), lastLogin: serverTimestamp()
             });
 
             if (role === "student") {
                 await setDoc(doc(db, "students", user.uid), {
-                    uid: user.uid,
-                    name: fullName,
-                    email,
-                    level: 1,
-                    xp: 0,
-                    streak: 0,
-                    badges: [],
-                    stats: {
-                        coursesEnrolled: 0,
-                        lessonsCompleted: 0,
-                        progress: 0,
-                        certificates: 0
-                    },
-                    admissionNumber: "Pending",
-                    createdAt: serverTimestamp()
+                    uid: user.uid, name: fullName, email, level: 1, xp: 0, streak: 0, badges: [],
+                    stats: { coursesEnrolled: 0, lessonsCompleted: 0, progress: 0, certificates: 0 },
+                    admissionNumber: "Pending", createdAt: serverTimestamp()
                 });
             }
 
-            await provisionSupabaseAccount({
-                firebaseUid: user.uid,
-                email,
-                fullName,
-                role,
-                avatarUrl: user.photoURL || ""
-            });
-
+            await provisionSupabaseAccount({ firebaseUid: user.uid, email, fullName, role, avatarUrl: user.photoURL || "" });
             showToast("Account created successfully! Please sign in.", "success");
-
-            setTimeout(() => {
-                hideLoader();
-                window.location.href = "login.html";
-            }, 1500);
+            setTimeout(() => { hideLoader(); window.location.href = "login.html"; }, 1500);
         } catch (error) {
             console.error("Signup Error:", error);
-            hideLoader();
-            enableButtons();
+            hideLoader(); enableButtons();
             showToast(error.message || "Signup failed.", "error");
         }
     });
 }
 
-// ============================================
-// GOOGLE SIGNUP
-// ============================================
-
 if (googleSignupBtn) {
     googleSignupBtn.addEventListener("click", async () => {
+        // Google signup must follow the same legal-consent requirement as email signup.
+        if (termsCheckbox && !termsCheckbox.checked) {
+            showToast("Please accept the Terms & Conditions and Privacy Policy before continuing.", "warning");
+            termsCheckbox.focus();
+            return;
+        }
+
         try {
             disableButtons();
             showLoader("Signing in with Google...");
-
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-
             const role = "student";
             const fullName = user.displayName || "Student";
             const email = user.email || "";
             const avatarUrl = user.photoURL || "";
 
             await setDoc(doc(db, "users", user.uid), {
-                uid: user.uid,
-                fullName,
-                email,
-                role,
-                bio: "",
-                expertise: "",
-                profilePhoto: avatarUrl,
-                active: true,
-                verified: user.emailVerified,
-                provider: "google",
-                createdAt: serverTimestamp(),
-                lastLogin: serverTimestamp()
+                uid: user.uid, fullName, email, role, bio: "", expertise: "",
+                profilePhoto: avatarUrl, active: true, verified: user.emailVerified,
+                provider: "google", createdAt: serverTimestamp(), lastLogin: serverTimestamp()
             }, { merge: true });
 
             await setDoc(doc(db, "students", user.uid), {
-                uid: user.uid,
-                name: fullName,
-                email,
-                level: 1,
-                xp: 0,
-                streak: 0,
-                badges: [],
-                stats: {
-                    coursesEnrolled: 0,
-                    lessonsCompleted: 0,
-                    progress: 0,
-                    certificates: 0
-                },
-                admissionNumber: "Pending",
-                createdAt: serverTimestamp()
+                uid: user.uid, name: fullName, email, level: 1, xp: 0, streak: 0, badges: [],
+                stats: { coursesEnrolled: 0, lessonsCompleted: 0, progress: 0, certificates: 0 },
+                admissionNumber: "Pending", createdAt: serverTimestamp()
             }, { merge: true });
 
-            await provisionSupabaseAccount({
-                firebaseUid: user.uid,
-                email,
-                fullName,
-                role,
-                avatarUrl
-            });
-
+            await provisionSupabaseAccount({ firebaseUid: user.uid, email, fullName, role, avatarUrl });
             showToast("Account created successfully! Please sign in.", "success");
-
-            setTimeout(() => {
-                hideLoader();
-                window.location.href = "login.html";
-            }, 1500);
+            setTimeout(() => { hideLoader(); window.location.href = "login.html"; }, 1500);
         } catch (error) {
             console.error("Google Signup Error:", error);
-            hideLoader();
-            enableButtons();
+            hideLoader(); enableButtons();
             showToast(error.message || "Google signup failed.", "error");
         }
     });
@@ -304,46 +202,30 @@ if (googleSignupBtn) {
 console.log("🚀 SSA Signup Controller Loaded");
 console.log("✅ Google Signup Ready");
 
-// ============================================
-// PASSWORD TOGGLE
-// ============================================
-
 document.querySelectorAll(".toggle-password").forEach(toggle => {
     toggle.addEventListener("click", () => {
         const target = document.getElementById(toggle.dataset.target);
         if (!target) return;
-
         if (target.type === "password") {
             target.type = "text";
-            toggle.classList.remove("fa-eye");
-            toggle.classList.add("fa-eye-slash");
+            toggle.classList.remove("fa-eye"); toggle.classList.add("fa-eye-slash");
         } else {
             target.type = "password";
-            toggle.classList.remove("fa-eye-slash");
-            toggle.classList.add("fa-eye");
+            toggle.classList.remove("fa-eye-slash"); toggle.classList.add("fa-eye");
         }
     });
 });
-
-// ============================================
-// ROLE CHANGE
-// ============================================
 
 if (roleSelect) {
     roleSelect.addEventListener("change", () => {
         const instructor = roleSelect.value === "instructor";
         if (instructorFields) instructorFields.style.display = instructor ? "block" : "none";
-
         if (!instructor) {
             if (bioInput) bioInput.value = "";
             if (expertiseInput) expertiseInput.value = "";
         }
     });
 }
-
-// ============================================
-// PASSWORD STRENGTH LIVE
-// ============================================
 
 if (passwordInput) {
     passwordInput.addEventListener("input", () => {
@@ -352,19 +234,7 @@ if (passwordInput) {
         if (hasUpperCase(passwordInput.value)) score++;
         if (hasLowerCase(passwordInput.value)) score++;
         if (hasNumber(passwordInput.value)) score++;
-
         if (strengthBar) strengthBar.style.width = `${score * 25}%`;
         if (strengthText) strengthText.textContent = ["Enter password", "Weak", "Fair", "Good", "Strong"][score];
     });
 }
-
-window.addEventListener("load", () => {
-    hideLoader();
-    if (nameInput) nameInput.focus();
-});
-
-auth.onAuthStateChanged(user => {
-    if (user) console.log("Logged in:", user.email);
-});
-
-console.log("%cSpark Stack Academy Signup Ready 🚀", "color:#2979FF;font-size:16px;font-weight:bold;");
