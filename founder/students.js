@@ -3,740 +3,307 @@
    STUDENTS MANAGEMENT
 =================================== */
 
-
 import { db } from "../js/firebase.js";
-
 import {
+    collection,
+    getDocs,
+    addDoc,
+    doc,
+    updateDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-collection,
-getDocs,
-addDoc,
-doc,
-updateDoc,
-query,
-orderBy,
-serverTimestamp
+const $ = id => document.getElementById(id);
 
-} from 
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-
-/* ===================================
-   ELEMENTS
-=================================== */
-
-
-const tableBody =
-document.getElementById("studentsTableBody");
-
-
-const studentCount =
-document.getElementById("studentCount");
-
-
-const activeCount =
-document.getElementById("activeStudentCount");
-
-
-const newCount =
-document.getElementById("newStudentCount");
-
-
-const graduatedCount =
-document.getElementById("graduatedCount");
-
-
-const suspendedCount =
-document.getElementById("suspendedCount");
-
-
-const completionRate =
-document.getElementById("completionRate");
-
-
-const totalText =
-document.getElementById("studentTotal");
-
-
-const searchInput =
-document.getElementById("studentSearch");
-
-
-const statusFilter =
-document.getElementById("statusFilter");
-
-
-const sortSelect =
-document.getElementById("sortStudents");
-
-
+const tableBody = $("studentsTableBody");
+const studentCount = $("studentCount");
+const activeCount = $("activeStudentCount");
+const newCount = $("newStudentCount");
+const graduatedCount = $("graduatedCount");
+const suspendedCount = $("suspendedCount");
+const completionRate = $("completionRate");
+const totalText = $("studentTotal");
+const searchInput = $("studentSearch");
+const courseFilter = $("courseFilter");
+const statusFilter = $("statusFilter");
+const sortSelect = $("sortStudents");
+const refreshButton = $("refreshStudents");
+const prevPage = $("prevPage");
+const nextPage = $("nextPage");
+const pageInfo = $("pageInfo");
+const studentModal = $("studentModal");
+const studentForm = $("studentForm");
+const saveStudentBtn = $("saveStudentBtn");
 
 let students = [];
-
 let editingStudentId = null;
+let currentPage = 1;
+const PAGE_SIZE = 10;
 
-const studentModal = document.getElementById("studentModal");
-const studentForm = document.getElementById("studentForm");
-
-function normalizedStatus(value="active"){
-    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+function normalizedStatus(value = "active") {
+    return String(value).charAt(0).toUpperCase() + String(value).slice(1).toLowerCase();
 }
 
-
-
-/* ===================================
-   GENERATE ADMISSION NUMBER
-=================================== */
-
-
-function generateAdmissionNumber(index){
-
-
-const year =
-new Date().getFullYear();
-
-
-const number =
-String(index + 1)
-.padStart(4,"0");
-
-
-return `SSA-${year}-${number}`;
-
-
+function timestampMillis(value) {
+    if (!value) return 0;
+    if (typeof value.toMillis === "function") return value.toMillis();
+    if (typeof value.toDate === "function") return value.toDate().getTime();
+    const time = new Date(value).getTime();
+    return Number.isFinite(time) ? time : 0;
 }
 
-
-
-/* ===================================
-   LOAD STUDENTS
-=================================== */
-
-
-async function loadStudents(){
-
-
-try{
-
-
-const snap =
-await getDocs(
-collection(db,"students")
-);
-
-
-
-students=[];
-
-
-
-snap.forEach(doc=>{
-
-
-students.push({
-
-id:doc.id,
-
-...doc.data()
-
-});
-
-
-});
-
-
-
-updateStats();
-
-
-renderStudents(students);
-
-
-
-}
-catch(error){
-
-console.error(
-"Loading students failed",
-error
-);
-
+function formatDate(value) {
+    const time = timestampMillis(value);
+    return time ? new Date(time).toLocaleDateString() : "--";
 }
 
-
-
+function escapeHtml(value = "") {
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
-
-
-
-/* ===================================
-   STATS
-=================================== */
-
-
-function updateStats(){
-
-
-studentCount.textContent =
-students.length;
-
-
-
-activeCount.textContent =
-students.filter(
-s=>s.status?.toLowerCase()==="active"
-).length;
-
-
-
-graduatedCount.textContent =
-students.filter(
-s=>s.status?.toLowerCase()==="graduated"
-).length;
-
-
-
-suspendedCount.textContent =
-students.filter(
-s=>s.status?.toLowerCase()==="suspended"
-).length;
-
-
-
-const currentMonth =
-new Date()
-.getMonth();
-
-
-
-newCount.textContent =
-students.filter(s=>{
-
-
-if(!s.createdAt)
-return false;
-
-
-return (
-s.createdAt.toDate()
-.getMonth()
-===
-currentMonth
-);
-
-
-}).length;
-
-
-
-let progress = 0;
-
-
-students.forEach(s=>{
-
-progress +=
-s.progress || 0;
-
-});
-
-
-completionRate.textContent =
-students.length
-?
-Math.round(
-progress / students.length
-)
-+"%"
-:
-"0%";
-
-
-
-totalText.textContent =
-`${students.length} Students`;
-
-
-
+function generateAdmissionNumber(index) {
+    return `SSA-${new Date().getFullYear()}-${String(index + 1).padStart(4, "0")}`;
 }
 
-
-
-
-
-/* ===================================
-   RENDER TABLE
-=================================== */
-
-
-function renderStudents(data){
-
-
-
-tableBody.innerHTML="";
-
-
-
-if(!data.length){
-
-
-tableBody.innerHTML=`
-
-<tr>
-
-<td colspan="8"
-class="empty-state">
-
-<div class="empty-content">
-
-<div class="empty-icon">
-🎓
-</div>
-
-<h3>
-No Students Found
-</h3>
-
-<p>
-Approved students will appear here.
-</p>
-
-</div>
-
-</td>
-
-</tr>
-
-`;
-
-return;
-
+async function loadStudents() {
+    setLoading(true);
+    try {
+        const snap = await getDocs(collection(db, "students"));
+        students = snap.docs.map(item => ({ id: item.id, ...item.data() }));
+        updateStats();
+        populateCourseFilter();
+        currentPage = 1;
+        renderStudents();
+    } catch (error) {
+        console.error("Loading students failed:", error);
+        tableBody.innerHTML = `<tr><td colspan="8" class="empty-state"><div class="empty-content"><div class="empty-icon">⚠️</div><h3>Unable to Load Students</h3><p>Check your Firestore connection and try again.</p></div></td></tr>`;
+    } finally {
+        setLoading(false);
+    }
 }
 
-
-
-
-data.forEach(student=>{
-
-
-
-const admission =
-student.admissionNumber ||
-"Pending";
-
-
-
-tableBody.innerHTML += `
-
-
-<tr>
-
-
-<td>
-
-
-<div class="student-info">
-
-
-<div class="student-avatar">
-
-${student.name
-?.charAt(0)
-.toUpperCase()}
-
-
-</div>
-
-
-<div class="student-details">
-
-
-<strong>
-${student.name}
-</strong>
-
-
-<small>
-${admission}
-</small>
-
-
-</div>
-
-
-</div>
-
-
-</td>
-
-
-
-<td>
-
-${student.courseName || "Not Assigned"}
-
-</td>
-
-
-
-<td>
-
-${student.email || "--"}
-
-</td>
-
-
-
-<td>
-
-${student.phone || "--"}
-
-</td>
-
-
-
-<td>
-
-<span class="status ${student.status?.toLowerCase()}">
-
-${student.status || "Pending"}
-
-</span>
-
-
-</td>
-
-
-
-<td>
-
-
-<div class="progress">
-
-
-<div class="progress-bar">
-
-<div class="progress-fill"
-
-style="width:${student.progress || 0}%">
-
-</div>
-
-
-</div>
-
-
-<span>
-
-${student.progress || 0}%
-
-</span>
-
-
-</div>
-
-
-</td>
-
-
-
-<td>
-
-${
-student.createdAt
-?
-student.createdAt
-.toDate()
-.toLocaleDateString()
-:
-"--"
+function setLoading(loading) {
+    if (!tableBody) return;
+    if (loading) {
+        tableBody.innerHTML = `<tr><td colspan="8" class="empty-state"><div class="empty-content"><div class="empty-icon">⏳</div><h3>Loading Students</h3><p>Fetching the latest student records...</p></div></td></tr>`;
+    }
+    if (refreshButton) refreshButton.disabled = loading;
 }
 
+function updateStats() {
+    const active = students.filter(s => String(s.status || "").toLowerCase() === "active").length;
+    const graduated = students.filter(s => String(s.status || "").toLowerCase() === "graduated").length;
+    const suspended = students.filter(s => String(s.status || "").toLowerCase() === "suspended").length;
+    const month = new Date().getMonth();
+    const year = new Date().getFullYear();
+    const newThisMonth = students.filter(s => {
+        const time = timestampMillis(s.createdAt);
+        if (!time) return false;
+        const date = new Date(time);
+        return date.getMonth() === month && date.getFullYear() === year;
+    }).length;
+    const progress = students.reduce((sum, s) => sum + Math.max(0, Math.min(100, Number(s.progress) || 0)), 0);
 
-</td>
-
-
-
-<td>
-
-
-<div class="action-buttons">
-
-
-<button 
-class="action-btn view"
-data-student-action="edit"
-data-id="${student.id}">
-
-👁
-
-</button>
-
-<button
-class="action-btn"
-data-student-action="toggle-status"
-data-id="${student.id}">
-
-${student.status?.toLowerCase() === "suspended" ? "▶" : "⏸"}
-
-</button>
-
-
-</div>
-
-
-</td>
-
-
-
-</tr>
-
-
-`;
-
-});
-
-
+    if (studentCount) studentCount.textContent = students.length;
+    if (activeCount) activeCount.textContent = active;
+    if (graduatedCount) graduatedCount.textContent = graduated;
+    if (suspendedCount) suspendedCount.textContent = suspended;
+    if (newCount) newCount.textContent = newThisMonth;
+    if (completionRate) completionRate.textContent = students.length ? `${Math.round(progress / students.length)}%` : "0%";
+    if (totalText) totalText.textContent = `${students.length} ${students.length === 1 ? "Student" : "Students"}`;
 }
 
-
-
-
-/* ===================================
-   SEARCH
-=================================== */
-
-
-searchInput?.addEventListener(
-"input",
-()=>{
-
-
-const value =
-searchInput.value
-.toLowerCase();
-
-
-
-const filtered =
-students.filter(s=>
-
-s.name
-?.toLowerCase()
-.includes(value)
-
-||
-
-s.email
-?.toLowerCase()
-.includes(value)
-
-||
-
-s.admissionNumber
-?.toLowerCase()
-.includes(value)
-
-);
-
-
-
-renderStudents(filtered);
-
-
-});
-
-
-
-
-/* ===================================
-   STATUS FILTER
-=================================== */
-
-
-statusFilter?.addEventListener(
-"change",
-()=>{
-
-
-const value =
-statusFilter.value;
-
-
-
-if(!value){
-
-renderStudents(students);
-
-return;
-
+function populateCourseFilter() {
+    if (!courseFilter) return;
+    const current = courseFilter.value;
+    const courses = [...new Set(students.map(s => s.courseName || s.course).filter(Boolean))].sort((a, b) => String(a).localeCompare(String(b)));
+    courseFilter.innerHTML = `<option value="">All Courses</option>` + courses.map(course => `<option value="${escapeHtml(course)}">${escapeHtml(course)}</option>`).join("");
+    if (courses.includes(current)) courseFilter.value = current;
 }
 
+function getFilteredStudents() {
+    const search = String(searchInput?.value || "").trim().toLowerCase();
+    const course = String(courseFilter?.value || "").toLowerCase();
+    const status = String(statusFilter?.value || "").toLowerCase();
+    let result = students.filter(student => {
+        const name = String(student.name || "").toLowerCase();
+        const email = String(student.email || "").toLowerCase();
+        const admission = String(student.admissionNumber || "").toLowerCase();
+        const studentCourse = String(student.courseName || student.course || "").toLowerCase();
+        const studentStatus = String(student.status || "").toLowerCase();
+        return (!search || name.includes(search) || email.includes(search) || admission.includes(search))
+            && (!course || studentCourse === course)
+            && (!status || studentStatus === status);
+    });
 
-
-renderStudents(
-
-students.filter(
-s=>
-s.status?.toLowerCase()===value.toLowerCase()
-)
-
-);
-
-
-});
-
-
-
-
-/* ===================================
-   SORT
-=================================== */
-
-
-sortSelect?.addEventListener(
-"change",
-()=>{
-
-
-let sorted =
-[...students];
-
-
-
-if(sortSelect.value==="name"){
-
-
-sorted.sort(
-(a,b)=>
-a.name.localeCompare(b.name)
-);
-
-
+    const sort = sortSelect?.value || "newest";
+    if (sort === "name") result.sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
+    else if (sort === "oldest") result.sort((a, b) => timestampMillis(a.createdAt) - timestampMillis(b.createdAt));
+    else result.sort((a, b) => timestampMillis(b.createdAt) - timestampMillis(a.createdAt));
+    return result;
 }
 
+function renderStudents() {
+    if (!tableBody) return;
+    const filtered = getFilteredStudents();
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+    currentPage = Math.min(currentPage, totalPages);
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const pageRows = filtered.slice(start, start + PAGE_SIZE);
 
-
-if(sortSelect.value==="newest"){
-
-
-sorted.sort(
-(a,b)=>
-(b.createdAt?.toMillis?.() || 0) -
-(a.createdAt?.toMillis?.() || 0)
-);
-
-
-}
-
-
-
-renderStudents(sorted);
-
-
-});
-
-
-
-
-/* ===================================
-   START
-=================================== */
-
-
-function openStudentModal(student=null){
-
-    editingStudentId = student?.id || null;
-
-    document.querySelector("#studentModal .modal-header h3").textContent =
-    student ? "Edit Student" : "Add New Student";
-
-    studentForm.reset();
-
-    if(student){
-        document.getElementById("studentName").value = student.name || "";
-        document.getElementById("studentEmail").value = student.email || "";
-        document.getElementById("studentPhone").value = student.phone || "";
-        document.getElementById("studentCourse").value = student.courseName || student.course || "";
-        document.getElementById("studentStatus").value = (student.status || "Active").toLowerCase();
+    if (!pageRows.length) {
+        tableBody.innerHTML = `<tr><td colspan="8" class="empty-state"><div class="empty-content"><div class="empty-icon">🎓</div><h3>No Students Found</h3><p>Try changing your search or filters.</p></div></td></tr>`;
+    } else {
+        tableBody.innerHTML = pageRows.map(student => {
+            const name = escapeHtml(student.name || "Unnamed Student");
+            const status = normalizedStatus(student.status || "Pending");
+            const statusClass = status.toLowerCase();
+            const progress = Math.max(0, Math.min(100, Number(student.progress) || 0));
+            const course = escapeHtml(student.courseName || student.course || "Not Assigned");
+            const email = escapeHtml(student.email || "--");
+            const phone = escapeHtml(student.phone || "--");
+            const admission = escapeHtml(student.admissionNumber || "Pending");
+            const initial = escapeHtml((student.name || "S").charAt(0).toUpperCase());
+            const actionLabel = statusClass === "suspended" ? "Restore student" : "Suspend student";
+            const actionIcon = statusClass === "suspended" ? "play" : "pause";
+            return `<tr>
+                <td><div class="student-info"><div class="student-avatar">${initial}</div><div class="student-details"><strong>${name}</strong><small>${admission}</small></div></div></td>
+                <td>${course}</td>
+                <td>${email}</td>
+                <td>${phone}</td>
+                <td><span class="status status-badge ${statusClass}">${escapeHtml(status)}</span></td>
+                <td><div class="progress"><div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div><span>${progress}%</span></div></td>
+                <td>${formatDate(student.createdAt)}</td>
+                <td><div class="action-buttons"><button type="button" class="action-btn view" title="View / edit student" aria-label="View / edit ${name}" data-student-action="edit" data-id="${student.id}"><i data-lucide="eye"></i></button><button type="button" class="action-btn" title="${actionLabel}" aria-label="${actionLabel}" data-student-action="toggle-status" data-id="${student.id}"><i data-lucide="${actionIcon}"></i></button></div></td>
+            </tr>`;
+        }).join("");
     }
 
-    studentModal.classList.add("active");
+    if (pageInfo) pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+    if (prevPage) prevPage.disabled = currentPage <= 1;
+    if (nextPage) nextPage.disabled = currentPage >= totalPages;
+    if (window.lucide) window.lucide.createIcons();
 }
 
-function closeStudentModal(){
+function openStudentModal(student = null) {
+    if (!studentModal || !studentForm) return;
+    editingStudentId = student?.id || null;
+    const title = studentModal.querySelector(".modal-header h3");
+    if (title) title.textContent = student ? "Edit Student" : "Add New Student";
+    if (saveStudentBtn) saveStudentBtn.textContent = student ? "Save Changes" : "Save Student";
+    studentForm.reset();
+    $("studentStatus").value = String(student?.status || "active").toLowerCase();
+    if (student) {
+        $("studentName").value = student.name || "";
+        $("studentEmail").value = student.email || "";
+        $("studentPhone").value = student.phone || "";
+        $("studentCourse").value = student.courseName || student.course || "";
+    }
+    studentModal.classList.add("active");
+    document.body.classList.add("modal-open");
+    setTimeout(() => $("studentName")?.focus(), 50);
+}
+
+function closeStudentModal() {
+    if (!studentModal) return;
     studentModal.classList.remove("active");
+    document.body.classList.remove("modal-open");
     editingStudentId = null;
 }
 
-document.getElementById("addStudentBtn")?.addEventListener("click",()=>openStudentModal());
-document.getElementById("closeStudentModal")?.addEventListener("click",closeStudentModal);
-studentModal?.addEventListener("click",(event)=>{
-    if(event.target === studentModal) closeStudentModal();
+$("addStudentBtn")?.addEventListener("click", () => openStudentModal());
+$("closeStudentModal")?.addEventListener("click", closeStudentModal);
+studentModal?.addEventListener("click", event => {
+    if (event.target === studentModal) closeStudentModal();
+});
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && studentModal?.classList.contains("active")) closeStudentModal();
 });
 
-studentForm?.addEventListener("submit",async(event)=>{
+studentForm?.addEventListener("submit", async event => {
     event.preventDefault();
+    if (saveStudentBtn) saveStudentBtn.disabled = true;
+    const name = $("studentName")?.value.trim();
+    const email = $("studentEmail")?.value.trim();
+    const phone = $("studentPhone")?.value.trim();
+    const course = $("studentCourse")?.value.trim();
+    const status = normalizedStatus($("studentStatus")?.value || "active");
+    const record = { name, email, phone, courseName: course, course, status, updatedAt: serverTimestamp() };
 
-    const record = {
-        name:document.getElementById("studentName").value.trim(),
-        email:document.getElementById("studentEmail").value.trim(),
-        phone:document.getElementById("studentPhone").value.trim(),
-        courseName:document.getElementById("studentCourse").value.trim(),
-        course:document.getElementById("studentCourse").value.trim(),
-        status:normalizedStatus(document.getElementById("studentStatus").value),
-        updatedAt:serverTimestamp()
-    };
-
-    try{
-        if(editingStudentId){
-            await updateDoc(doc(db,"students",editingStudentId),record);
-        }else{
-            await addDoc(collection(db,"students"),{
+    try {
+        if (editingStudentId) {
+            await updateDoc(doc(db, "students", editingStudentId), record);
+        } else {
+            await addDoc(collection(db, "students"), {
                 ...record,
-                admissionNumber:generateAdmissionNumber(students.length),
-                role:"student",
-                progress:0,
-                createdAt:serverTimestamp()
+                admissionNumber: generateAdmissionNumber(students.length),
+                role: "student",
+                progress: 0,
+                createdAt: serverTimestamp()
             });
         }
         closeStudentModal();
         await loadStudents();
-    }catch(error){
-        console.error("Saving student failed",error);
-        alert("Unable to save this student.");
+    } catch (error) {
+        console.error("Saving student failed:", error);
+        alert("Unable to save this student. Please check your Firestore permissions.");
+    } finally {
+        if (saveStudentBtn) saveStudentBtn.disabled = false;
     }
 });
 
-tableBody?.addEventListener("click",async(event)=>{
+tableBody?.addEventListener("click", async event => {
     const button = event.target.closest("[data-student-action]");
-    if(!button) return;
-    const student = students.find(item=>item.id === button.dataset.id);
-    if(!student) return;
-    if(button.dataset.studentAction === "edit"){
+    if (!button) return;
+    const student = students.find(item => item.id === button.dataset.id);
+    if (!student) return;
+
+    if (button.dataset.studentAction === "edit") {
         openStudentModal(student);
         return;
     }
-    const nextStatus = student.status?.toLowerCase() === "suspended" ? "Active" : "Suspended";
-    try{
-        await updateDoc(doc(db,"students",student.id),{status:nextStatus,updatedAt:serverTimestamp()});
+
+    const nextStatus = String(student.status || "").toLowerCase() === "suspended" ? "Active" : "Suspended";
+    button.disabled = true;
+    try {
+        await updateDoc(doc(db, "students", student.id), { status: nextStatus, updatedAt: serverTimestamp() });
         await loadStudents();
-    }catch(error){
-        console.error("Updating student status failed",error);
+    } catch (error) {
+        console.error("Updating student status failed:", error);
         alert("Unable to update this student.");
+    } finally {
+        button.disabled = false;
     }
 });
 
-document.getElementById("exportStudentsBtn")?.addEventListener("click",()=>{
-    const rows = [["Name","Email","Phone","Course","Status","Admission Number"]];
-    students.forEach(student=>rows.push([student.name || "",student.email || "",student.phone || "",student.courseName || student.course || "",student.status || "",student.admissionNumber || ""]));
-    const csv = rows.map(row=>row.map(value=>`"${String(value).replaceAll('"','""')}"`).join(",")).join("\n");
+[searchInput, courseFilter, statusFilter, sortSelect].forEach(control => {
+    control?.addEventListener("input", () => { currentPage = 1; renderStudents(); });
+    control?.addEventListener("change", () => { currentPage = 1; renderStudents(); });
+});
+
+refreshButton?.addEventListener("click", loadStudents);
+prevPage?.addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderStudents(); } });
+nextPage?.addEventListener("click", () => { const totalPages = Math.max(1, Math.ceil(getFilteredStudents().length / PAGE_SIZE)); if (currentPage < totalPages) { currentPage++; renderStudents(); } });
+
+$("exportStudentsBtn")?.addEventListener("click", () => {
+    const rows = [["Name", "Email", "Phone", "Course", "Status", "Admission Number"]];
+    getFilteredStudents().forEach(student => rows.push([
+        student.name || "", student.email || "", student.phone || "", student.courseName || student.course || "", student.status || "", student.admissionNumber || ""
+    ]));
+    const csv = rows.map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(",")).join("\n");
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+    link.href = url;
     link.download = "spark-stack-students.csv";
+    document.body.appendChild(link);
     link.click();
-    URL.revokeObjectURL(link.href);
+    link.remove();
+    URL.revokeObjectURL(url);
 });
 
 loadStudents();
