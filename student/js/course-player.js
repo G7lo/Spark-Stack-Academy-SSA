@@ -1,2100 +1,485 @@
 // ============================================================
 // SPARK STACK ACADEMY
-// MASTERCLASS COURSE PLAYER V2
+// COURSE PLAYER V3 — RELIABLE LESSON LOADER
 // ============================================================
 
+import { auth, db } from "../../js/firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
-    auth,
-    db
-} from "../../js/firebase.js";
-
-import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-    doc,
-    getDoc,
-    setDoc,
-    collection,
-    query,
-    where,
-    getDocs,
-    serverTimestamp
+    doc, getDoc, setDoc, collection, query, where, getDocs, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import {
-    awardXP,
-    XP_REWARDS
-} from "./xp-engine.js";
-
-import {
-    issueCertificate
-} from "./certificate-engine.js";
-
-import {
-    updateLearningStreak
-} from "./achievement.js";
-
-// ============================================================
-// STATE
-// ============================================================
+import { awardXP, XP_REWARDS } from "./xp-engine.js";
+import { issueCertificate } from "./certificate-engine.js";
+import { updateLearningStreak } from "./achievement.js";
 
 let currentUser = null;
 let course = null;
 let lessons = [];
-
 let currentLessonIndex = 0;
 let completedLessons = [];
+let courseId = null;
 
+const $ = id => document.getElementById(id);
+const courseLocked = $("courseLocked");
+const courseContent = $("courseContent");
+const unlockCourseBtn = $("unlockCourseBtn");
+const courseTitle = $("courseTitle");
+const courseDescription = $("courseDescription");
+const instructorName = $("instructorName");
+const instructorAvatar = $("instructorAvatar");
+const lessonList = $("lessonList");
+const lessonTitle = $("lessonTitle");
+const lessonDescription = $("lessonDescription");
+const lessonDuration = $("lessonDuration");
+const lessonCount = $("lessonCount");
+const completedCount = $("completedCount");
+const courseProgressText = $("courseProgressText");
+const courseProgressBar = $("courseProgressBar");
+const lessonProgressLabel = $("lessonProgressLabel");
+const previousLessonBtn = $("previousLessonBtn");
+const nextLessonBtn = $("nextLessonBtn");
+const completeLessonBtn = $("completeLessonBtn");
+const lessonNotes = $("lessonNotes");
+const saveNotesBtn = $("saveNotesBtn");
+const courseResources = $("courseResources");
+const classAnnouncement = $("classAnnouncement");
+const videoBox = $("videoBox") || document.querySelector(".video-box");
 
-// ============================================================
-// COURSE ID
-// ============================================================
-
-const params = new URLSearchParams(
-    window.location.search
-);
-
-const courseId = params.get("id");
-
-
-// ============================================================
-// DOM
-// ============================================================
-
-const courseLocked =
-    document.getElementById("courseLocked");
-
-const courseContent =
-    document.getElementById("courseContent");
-
-const unlockCourseBtn =
-    document.getElementById("unlockCourseBtn");
-
-const courseTitle =
-    document.getElementById("courseTitle");
-
-const courseDescription =
-    document.getElementById("courseDescription");
-
-const instructorName =
-    document.getElementById("instructorName");
-
-const instructorAvatar =
-    document.getElementById("instructorAvatar");
-
-const lessonList =
-    document.getElementById("lessonList");
-
-const lessonTitle =
-    document.getElementById("lessonTitle");
-
-const lessonDescription =
-    document.getElementById("lessonDescription");
-
-const courseProgressText =
-    document.getElementById("courseProgressText");
-
-const courseProgressBar =
-    document.getElementById("courseProgressBar");
-
-const previousLessonBtn =
-    document.getElementById("previousLessonBtn");
-
-const nextLessonBtn =
-    document.getElementById("nextLessonBtn");
-
-const completeLessonBtn =
-    document.getElementById("completeLessonBtn");
-
-const lessonNotes =
-    document.getElementById("lessonNotes");
-
-const saveNotesBtn =
-    document.getElementById("saveNotesBtn");
-
-const courseResources =
-    document.getElementById("courseResources");
-
-const classAnnouncement =
-    document.getElementById("classAnnouncement");
-
-const videoBox =
-    document.querySelector(".video-box");
-
-
-// ============================================================
-// START
-// ============================================================
-
-console.log(
-    "🎓 SSA MASTERCLASS COURSE PLAYER V2 LOADED"
-);
-
-
-// ============================================================
-// AUTH
-// ============================================================
-
-onAuthStateChanged(auth, async user => {
-
-    if (!user) {
-
-        window.location.href =
-            "../login.html";
-
-        return;
+function toast(message) {
+    let el = $("ssaCourseToast");
+    if (!el) {
+        el = document.createElement("div");
+        el.id = "ssaCourseToast";
+        el.className = "ssa-course-toast";
+        document.body.appendChild(el);
     }
-
-    currentUser = user;
-
-    console.log(
-        "👨‍🎓 Student:",
-        user.uid
-    );
-
-    await initializeClassroom();
-
-});
-
-
-// ============================================================
-// INITIALIZE
-// ============================================================
-
-async function initializeClassroom() {
-
-    try {
-
-        if (!courseId) {
-
-            showError(
-                "No course was selected."
-            );
-
-            return;
-        }
-
-
-        await loadCourse();
-
-
-        const access =
-            await checkCourseAccess();
-
-
-        if (!access) {
-
-            showLockedState();
-
-            return;
-        }
-
-
-        showClassroom();
-
-
-        await loadLessons();
-
-
-        await loadStudentProgress();
-
-
-        renderLessons();
-
-
-        if (lessons.length) {
-
-            showLesson(
-                currentLessonIndex
-            );
-
-        } else {
-
-            showNoLessons();
-
-        }
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "❌ CLASSROOM ERROR:",
-            error
-        );
-
-        showError(
-            "We couldn't load this classroom."
-        );
-
-    }
-
+    el.textContent = message;
+    el.classList.add("show");
+    clearTimeout(el._timer);
+    el._timer = setTimeout(() => el.classList.remove("show"), 2600);
 }
 
-
-// ============================================================
-// LOAD COURSE
-// ============================================================
-
-async function loadCourse() {
-
-    const ref =
-        doc(
-            db,
-            "courses",
-            courseId
-        );
-
-    const snap =
-        await getDoc(ref);
-
-    if (!snap.exists()) {
-
-        throw new Error(
-            "Course not found."
-        );
-
-    }
-
-    course = {
-        id: snap.id,
-        ...snap.data()
-    };
-
-
-    console.log(
-        "📚 COURSE:",
-        course
-    );
-
-
-    if (courseTitle) {
-
-        courseTitle.textContent =
-            course.title ||
-            "Course";
-
-    }
-
-
-    if (courseDescription) {
-
-        courseDescription.textContent =
-            course.description ||
-            "Welcome to your classroom.";
-
-    }
-
-
-    if (instructorName) {
-
-        instructorName.textContent =
-            course.instructorName ||
-            "SSA Instructor";
-
-    }
-
-
-    if (instructorAvatar) {
-
-        const name =
-            course.instructorName ||
-            "S";
-
-        instructorAvatar.textContent =
-            name.charAt(0).toUpperCase();
-
-    }
-
-
-    if (classAnnouncement) {
-
-        classAnnouncement.textContent =
-            course.announcement ||
-            "No announcements yet.";
-
-    }
-
+function refreshIcons() {
+    if (window.lucide?.createIcons) window.lucide.createIcons();
 }
-
-
-// ============================================================
-// CHECK ACCESS
-// ============================================================
-
-async function checkCourseAccess() {
-
-    const price =
-        Number(course.price || 0);
-
-    const isFree =
-        course.isFree === true ||
-        price <= 0;
-
-    if (isFree) {
-
-        console.log(
-            "🆓 FREE COURSE"
-        );
-
-        return true;
-
-    }
-
-
-    // --------------------------------------------------------
-    // MAIN ENROLLMENTS
-    // --------------------------------------------------------
-
-    try {
-
-        const q =
-            query(
-                collection(
-                    db,
-                    "enrollments"
-                ),
-                where(
-                    "userId",
-                    "==",
-                    currentUser.uid
-                ),
-                where(
-                    "courseId",
-                    "==",
-                    courseId
-                )
-            );
-
-
-        const snap =
-            await getDocs(q);
-
-
-        if (!snap.empty) {
-
-            const enrollment =
-                snap.docs[0].data();
-
-            if (
-                enrollment.paymentStatus === "paid" ||
-                enrollment.status === "active" ||
-                enrollment.status === "approved" ||
-                enrollment.status === "paid"
-            ) {
-
-                return true;
-
-            }
-
-        }
-
-    }
-
-    catch (error) {
-
-        console.warn(
-            "Enrollment collection check failed:",
-            error
-        );
-
-    }
-
-
-    // --------------------------------------------------------
-    // LEGACY / FREE ENROLLMENT PATH
-    // --------------------------------------------------------
-
-    const legacyRef =
-        doc(
-            db,
-            "students",
-            currentUser.uid,
-            "enrollments",
-            courseId
-        );
-
-
-    const legacySnap =
-        await getDoc(
-            legacyRef
-        );
-
-
-    if (legacySnap.exists()) {
-
-        const enrollment =
-            legacySnap.data();
-
-        if (
-            enrollment.paymentStatus === "paid" ||
-            enrollment.paymentStatus === "free" ||
-            enrollment.status === "active" ||
-            enrollment.status === "approved" ||
-            enrollment.status === "paid"
-        ) {
-
-            return true;
-
-        }
-
-    }
-
-
-    return false;
-
-}
-
-
-// ============================================================
-// LOCKED STATE
-// ============================================================
-
-function showLockedState() {
-
-    if (courseLocked)
-        courseLocked.style.display = "block";
-
-    if (courseContent)
-        courseContent.style.display = "none";
-
-
-    if (unlockCourseBtn) {
-
-        unlockCourseBtn.onclick = () => {
-
-            window.location.href =
-                `payments.html?courseId=${courseId}`;
-
-        };
-
-    }
-
-}
-
-
-// ============================================================
-// CLASSROOM
-// ============================================================
-
-function showClassroom() {
-
-    if (courseLocked)
-        courseLocked.style.display = "none";
-
-    if (courseContent)
-        courseContent.style.display = "block";
-
-}
-
-
-// ============================================================
-// LOAD LESSONS
-// IMPORTANT: courseLessons collection
-// ============================================================
-
-async function loadLessons() {
-
-    console.log(
-        "🔎 Loading courseLessons..."
-    );
-
-    lessons = [];
-
-
-    const q =
-        query(
-            collection(
-                db,
-                "courseLessons"
-            ),
-            where(
-                "courseId",
-                "==",
-                courseId
-            )
-        );
-
-
-    const snap =
-        await getDocs(q);
-
-
-    console.log(
-        `📦 Found ${snap.size} course lessons`
-    );
-
-
-    snap.forEach(docSnap => {
-
-        const data =
-            docSnap.data();
-
-
-        lessons.push({
-
-            id:
-                docSnap.id,
-
-            ...data
-
-        });
-
-    });
-
-
-    // --------------------------------------------------------
-    // SORT BY ORDER
-    // --------------------------------------------------------
-
-    lessons.sort(
-        (a, b) =>
-            Number(a.order ?? 0) -
-            Number(b.order ?? 0)
-    );
-
-
-    console.log(
-        "🎯 LESSONS:",
-        lessons
-    );
-
-}
-
-
-// ============================================================
-// RENDER LESSON LIST
-// ============================================================
-
-function renderLessons() {
-
-    if (!lessonList)
-        return;
-
-
-    lessonList.innerHTML = "";
-
-
-    if (!lessons.length) {
-
-        showNoLessons();
-
-        return;
-
-    }
-
-
-    lessons.forEach(
-        (lesson, index) => {
-
-            const completed =
-                completedLessons.includes(
-                    lesson.id
-                );
-
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-
-            button.type = "button";
-
-            button.className =
-                "lesson-item";
-
-
-            if (
-                index === currentLessonIndex
-            ) {
-
-                button.classList.add(
-                    "active"
-                );
-
-            }
-
-
-            if (completed) {
-
-                button.classList.add(
-                    "completed"
-                );
-
-            }
-
-
-            button.innerHTML = `
-
-                <span class="lesson-number">
-                    ${
-                        completed
-                            ? "✓"
-                            : index + 1
-                    }
-                </span>
-
-                <span class="lesson-info">
-
-                    <strong>
-                        ${
-                            lesson.title ||
-                            `Lesson ${index + 1}`
-                        }
-                    </strong>
-
-                    <small>
-                        ${
-                            lesson.duration
-                                ? lesson.duration + " min"
-                                : lesson.type || "Lesson"
-                        }
-                    </small>
-
-                </span>
-
-                <i data-lucide="${
-                    completed
-                        ? "check-circle"
-                        : "play-circle"
-                }"></i>
-
-            `;
-
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    showLesson(index);
-
-                }
-            );
-
-
-            lessonList.appendChild(
-                button
-            );
-
-        }
-    );
-
-
-    refreshIcons();
-
-}
-
-
-// ============================================================
-// SHOW LESSON
-// ============================================================
-
-async function showLesson(index) {
-
-    if (
-        index < 0 ||
-        index >= lessons.length
-    ) {
-
-        return;
-
-    }
-
-
-    currentLessonIndex =
-        index;
-
-
-    const lesson =
-        lessons[index];
-
-
-    console.log(
-        "🎬 CURRENT LESSON:",
-        lesson
-    );
-
-
-    if (lessonTitle) {
-
-        lessonTitle.textContent =
-            lesson.title ||
-            `Lesson ${index + 1}`;
-
-    }
-
-
-    if (lessonDescription) {
-
-        lessonDescription.textContent =
-            lesson.description ||
-            "";
-
-    }
-
-
-    renderVideo(
-        lesson
-    );
-
-
-    renderResources(
-        lesson
-    );
-
-
-    await loadNotes(
-        lesson
-    );
-
-
-    updateNavigation();
-
-    updateProgress();
-
-    renderLessons();
-
-    refreshIcons();
-
-
-    // Save current lesson
-    saveProgress(false);
-
-}
-
-
-// ============================================================
-// VIDEO ENGINE
-// ============================================================
-
-function renderVideo(lesson) {
-
-    if (!videoBox)
-        return;
-
-
-    const youtubeId =
-        lesson.youtubeId ||
-        extractYouTubeId(
-            lesson.videoUrl ||
-            lesson.youtubeUrl ||
-            ""
-        );
-
-
-    const directVideo =
-        lesson.videoUrl &&
-        !youtubeId;
-
-
-    // --------------------------------------------------------
-    // YOUTUBE
-    // --------------------------------------------------------
-
-    if (youtubeId) {
-
-        videoBox.innerHTML = `
-
-            <div class="video-frame-wrapper">
-
-                <iframe
-                    id="lessonVideo"
-                    src="https://www.youtube.com/embed/${youtubeId}?rel=0&modestbranding=1&playsinline=1"
-                    title="${escapeHTML(
-                        lesson.title ||
-                        "SSA Lesson"
-                    )}"
-                    allow="
-                        accelerometer;
-                        autoplay;
-                        clipboard-write;
-                        encrypted-media;
-                        gyroscope;
-                        picture-in-picture;
-                        web-share
-                    "
-                    allowfullscreen>
-                </iframe>
-
-                <button
-                    class="video-fullscreen-btn"
-                    id="fullscreenVideoBtn"
-                    type="button"
-                    title="Fullscreen">
-
-                    <i data-lucide="maximize"></i>
-
-                    Fullscreen
-
-                </button>
-
-            </div>
-
-        `;
-
-
-        setupFullscreenButton();
-
-        refreshIcons();
-
-        return;
-
-    }
-
-
-    // --------------------------------------------------------
-    // DIRECT VIDEO
-    // --------------------------------------------------------
-
-    if (directVideo) {
-
-        videoBox.innerHTML = `
-
-            <div class="video-frame-wrapper">
-
-                <video
-                    id="lessonVideo"
-                    class="lesson-video"
-                    controls
-                    playsinline
-                    preload="metadata">
-
-                    <source
-                        src="${escapeAttribute(
-                            lesson.videoUrl
-                        )}">
-
-                    Your browser does not support
-                    video playback.
-
-                </video>
-
-                <button
-                    class="video-fullscreen-btn"
-                    id="fullscreenVideoBtn"
-                    type="button">
-
-                    <i data-lucide="maximize"></i>
-
-                    Fullscreen
-
-                </button>
-
-            </div>
-
-        `;
-
-
-        setupFullscreenButton();
-
-        refreshIcons();
-
-        return;
-
-    }
-
-
-    // --------------------------------------------------------
-    // NO VIDEO
-    // --------------------------------------------------------
-
-    videoBox.innerHTML = `
-
-        <div class="video-placeholder">
-
-            <div class="video-placeholder-icon">
-                <i data-lucide="play-circle"></i>
-            </div>
-
-            <h3>
-                Lesson content ready
-            </h3>
-
-            <p>
-                This lesson does not have a video yet.
-                Start with the lesson content below.
-            </p>
-
-        </div>
-
-    `;
-
-
-    refreshIcons();
-
-}
-
-
-// ============================================================
-// FULLSCREEN
-// ============================================================
-
-function setupFullscreenButton() {
-
-    const button =
-        document.getElementById(
-            "fullscreenVideoBtn"
-        );
-
-
-    const frame =
-        document.querySelector(
-            ".video-frame-wrapper"
-        );
-
-
-    if (!button || !frame)
-        return;
-
-
-    button.onclick = async () => {
-
-        try {
-
-            if (
-                document.fullscreenElement
-            ) {
-
-                await document.exitFullscreen();
-
-                return;
-
-            }
-
-
-            if (
-                frame.requestFullscreen
-            ) {
-
-                await frame.requestFullscreen();
-
-            }
-
-        }
-
-        catch (error) {
-
-            console.warn(
-                "Fullscreen unavailable:",
-                error
-            );
-
-        }
-
-    };
-
-}
-
-
-// ============================================================
-// YOUTUBE ID
-// ============================================================
-
-function extractYouTubeId(url) {
-
-    if (!url)
-        return null;
-
-
-    try {
-
-        const parsed =
-            new URL(url);
-
-
-        if (
-            parsed.hostname.includes(
-                "youtu.be"
-            )
-        ) {
-
-            return parsed.pathname
-                .replace(
-                    "/",
-                    ""
-                );
-
-        }
-
-
-        if (
-            parsed.hostname.includes(
-                "youtube.com"
-            )
-        ) {
-
-            return (
-                parsed.searchParams.get(
-                    "v"
-                ) ||
-                parsed.pathname
-                    .split("/")
-                    .pop()
-            );
-
-        }
-
-    }
-
-    catch {
-
-        return null;
-
-    }
-
-
-    return null;
-
-}
-
-
-// ============================================================
-// RESOURCES
-// ============================================================
-
-function renderResources(lesson) {
-
-    if (!courseResources)
-        return;
-
-
-    const resources =
-        Array.isArray(
-            lesson.resources
-        )
-            ? lesson.resources
-            : [];
-
-
-    if (!resources.length) {
-
-        courseResources.innerHTML = `
-
-            <div class="resource-empty">
-
-                <i data-lucide="folder-open"></i>
-
-                <p>
-                    No learning resources for this lesson yet.
-                </p>
-
-            </div>
-
-        `;
-
-        refreshIcons();
-
-        return;
-
-    }
-
-
-    courseResources.innerHTML = "";
-
-
-    resources.forEach(resource => {
-
-        const link =
-            document.createElement(
-                "a"
-            );
-
-
-        link.className =
-            "resource-item";
-
-
-        link.href =
-            resource.url || "#";
-
-
-        link.target =
-            "_blank";
-
-
-        link.rel =
-            "noopener noreferrer";
-
-
-        link.innerHTML = `
-
-            <span>
-
-                <i data-lucide="file-text"></i>
-
-                <strong>
-                    ${
-                        resource.title ||
-                        "Learning Resource"
-                    }
-                </strong>
-
-            </span>
-
-            <i data-lucide="external-link"></i>
-
-        `;
-
-
-        courseResources.appendChild(
-            link
-        );
-
-    });
-
-
-    refreshIcons();
-
-}
-
-
-// ============================================================
-// NAVIGATION
-// ============================================================
-
-function updateNavigation() {
-
-    if (previousLessonBtn) {
-
-        previousLessonBtn.disabled =
-            currentLessonIndex === 0;
-
-    }
-
-
-    if (nextLessonBtn) {
-
-        nextLessonBtn.disabled =
-            currentLessonIndex ===
-            lessons.length - 1;
-
-    }
-
-
-    if (completeLessonBtn) {
-
-        const completed =
-            completedLessons.includes(
-                lessons[currentLessonIndex]?.id
-            );
-
-
-        completeLessonBtn.disabled =
-            completed;
-
-
-        completeLessonBtn.innerHTML =
-            completed
-                ? "Completed ✓"
-                : `
-                    Mark Complete
-                    <i data-lucide="check"></i>
-                  `;
-
-    }
-
-}
-
-
-// ============================================================
-// NEXT
-// ============================================================
-
-nextLessonBtn?.addEventListener(
-    "click",
-    () => {
-
-        if (
-            currentLessonIndex <
-            lessons.length - 1
-        ) {
-
-            showLesson(
-                currentLessonIndex + 1
-            );
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// PREVIOUS
-// ============================================================
-
-previousLessonBtn?.addEventListener(
-    "click",
-    () => {
-
-        if (
-            currentLessonIndex > 0
-        ) {
-
-            showLesson(
-                currentLessonIndex - 1
-            );
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// COMPLETE LESSON
-// ============================================================
-
-completeLessonBtn?.addEventListener(
-    "click",
-    async () => {
-
-        if (!lessons.length || !currentUser)
-            return;
-
-        const lesson =
-            lessons[currentLessonIndex];
-
-        if (!lesson)
-            return;
-
-        // Already completed
-        if (
-            completedLessons.includes(
-                lesson.id
-            )
-        ) {
-            return;
-        }
-
-        try {
-
-            // --------------------------------------------
-            // MARK LESSON COMPLETE LOCALLY
-            // --------------------------------------------
-
-            completedLessons.push(
-                lesson.id
-            );
-
-            updateProgress();
-            renderLessons();
-            updateNavigation();
-
-            // --------------------------------------------
-            // SAVE COURSE PROGRESS
-            // --------------------------------------------
-
-            await saveProgress(true);
-            const courseCompleted =
-    lessons.length > 0 &&
-    completedLessons.length === lessons.length;
-    
-    if (courseCompleted) {
-
-    console.log("🎓 COURSE COMPLETED!");
-
-    // Award course completion XP
-    await awardXP(
-        currentUser.uid,
-        XP_REWARDS.course || 50,
-        `Completed course: ${course.title || "Course"}`,
-        `course_${courseId}`
-    );
-
-    // Update learning streak
-    await updateLearningStreak(
-        currentUser.uid
-    );
-
-    // Issue certificate
-    const certificateResult =
-        await issueCertificate(
-            currentUser.uid,
-            course
-        );
-
-    showToast(
-        certificateResult.alreadyExists
-            ? "Course completed! 🎓"
-            : "Course completed! 🎓 Certificate earned!"
-    );
-
-    setTimeout(() => {
-
-        window.location.href =
-            "certificates.html";
-
-    }, 1200);
-
-    return;
-}
-    
-
-            // --------------------------------------------
-            // UPDATE STUDENT ACTIVITY
-            // --------------------------------------------
-
-            const studentRef =
-                doc(
-                    db,
-                    "students",
-                    currentUser.uid
-                );
-
-            const studentSnap =
-                await getDoc(studentRef);
-
-            if (studentSnap.exists()) {
-
-                const student =
-                    studentSnap.data();
-
-                const currentCompleted =
-                    Number(
-                        student.lessonsCompleted ||
-                        student.completedLessonsCount ||
-                        0
-                    );
-
-                await setDoc(
-                    studentRef,
-                    {
-                        lessonsCompleted:
-                            currentCompleted + 1,
-
-                        completedLessonsCount:
-                            currentCompleted + 1,
-
-                        lastLessonCompleted:
-                            lesson.id,
-
-                        lastLessonCompletedAt:
-                            serverTimestamp()
-                    },
-                    {
-                        merge: true
-                    }
-                );
-
-            }
-
-            // --------------------------------------------
-            // AWARD XP
-            // --------------------------------------------
-
-            await awardXP(
-    currentUser.uid,
-    XP_REWARDS.lesson,
-    `Completed lesson: ${
-        lesson.title || "Lesson"
-    }`,
-    `lesson_${courseId}_${lesson.id}`
-);
-
-            // --------------------------------------------
-            // UPDATE STREAK
-            // --------------------------------------------
-
-            await updateLearningStreak(
-                currentUser.uid
-            );
-
-            // --------------------------------------------
-            // SUCCESS
-            // --------------------------------------------
-
-            showToast(
-                "Lesson completed! ⚡ +20 XP"
-            );
-
-            // --------------------------------------------
-            // MOVE TO NEXT LESSON
-            // --------------------------------------------
-
-            if (
-                currentLessonIndex <
-                lessons.length - 1
-            ) {
-
-                setTimeout(
-                    () => {
-
-                        showLesson(
-                            currentLessonIndex + 1
-                        );
-
-                    },
-                    700
-                );
-
-            }
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "❌ LESSON COMPLETION ERROR:",
-                error
-            );
-
-            showToast(
-                "Couldn't complete the lesson."
-            );
-
-        }
-
-    }
-);
-// ============================================================
-// PROGRESS
-// ============================================================
-
-function updateProgress() {
-
-    if (
-        !courseProgressText ||
-        !courseProgressBar
-    ) {
-
-        return;
-
-    }
-
-
-    if (!lessons.length) {
-
-        courseProgressText.textContent =
-            "0%";
-
-        courseProgressBar.style.width =
-            "0%";
-
-        return;
-
-    }
-
-
-    const percentage =
-        Math.round(
-            (
-                completedLessons.length /
-                lessons.length
-            ) * 100
-        );
-
-
-    courseProgressText.textContent =
-        `${percentage}%`;
-
-
-    courseProgressBar.style.width =
-        `${percentage}%`;
-
-}
-
-
-// ============================================================
-// SAVE PROGRESS
-// ============================================================
-
-async function saveProgress(showMessage = false) {
-
-    if (!currentUser || !courseId)
-        return;
-
-
-    try {
-
-        const percentage =
-            lessons.length
-                ? Math.round(
-                    (
-                        completedLessons.length /
-                        lessons.length
-                    ) * 100
-                )
-                : 0;
-
-
-        const progressRef =
-            doc(
-                db,
-                "courseProgress",
-                `${currentUser.uid}_${courseId}`
-            );
-
-
-        await setDoc(
-            progressRef,
-            {
-
-                userId:
-                    currentUser.uid,
-
-                courseId,
-
-                completedLessons,
-
-                currentLessonId:
-                    lessons[currentLessonIndex]?.id || null,
-
-                currentLesson:
-                    currentLessonIndex,
-
-                progress:
-                    percentage,
-
-                updatedAt:
-                    serverTimestamp()
-
-            },
-            {
-                merge: true
-            }
-        );
-
-
-        // ----------------------------------------------------
-        // MAIN ENROLLMENT
-        // ----------------------------------------------------
-
-        try {
-
-            const q =
-                query(
-                    collection(
-                        db,
-                        "enrollments"
-                    ),
-                    where(
-                        "userId",
-                        "==",
-                        currentUser.uid
-                    ),
-                    where(
-                        "courseId",
-                        "==",
-                        courseId
-                    )
-                );
-
-
-            const snap =
-                await getDocs(q);
-
-
-            if (!snap.empty) {
-
-                await setDoc(
-                    snap.docs[0].ref,
-                    {
-
-                        progress:
-                            percentage,
-
-                        lastLesson:
-                            lessons[currentLessonIndex]?.id || null,
-
-                        status:
-                            percentage >= 100
-                                ? "completed"
-                                : "active",
-
-                        updatedAt:
-                            serverTimestamp()
-
-                    },
-                    {
-                        merge: true
-                    }
-                );
-
-            }
-
-        }
-
-        catch (error) {
-
-            console.warn(
-                "Enrollment progress update failed:",
-                error
-            );
-
-        }
-
-
-        // ----------------------------------------------------
-        // LEGACY ENROLLMENT
-        // ----------------------------------------------------
-
-        await setDoc(
-            doc(
-                db,
-                "students",
-                currentUser.uid,
-                "enrollments",
-                courseId
-            ),
-            {
-
-                progress:
-                    percentage,
-
-                lastLesson:
-                    lessons[currentLessonIndex]?.id || null,
-
-                status:
-                    percentage >= 100
-                        ? "completed"
-                        : "active",
-
-                updatedAt:
-                    serverTimestamp()
-
-            },
-            {
-                merge: true
-            }
-        );
-
-
-        if (showMessage) {
-
-            showToast(
-                percentage >= 100
-                    ? "Course completed 🎉"
-                    : "Lesson completed ✓"
-            );
-
-        }
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "❌ PROGRESS SAVE FAILED:",
-            error
-        );
-
-    }
-
-}
-
-
-// ============================================================
-// LOAD PROGRESS
-// ============================================================
-
-async function loadStudentProgress() {
-
-    const ref =
-        doc(
-            db,
-            "courseProgress",
-            `${currentUser.uid}_${courseId}`
-        );
-
-
-    const snap =
-        await getDoc(ref);
-
-
-    if (!snap.exists()) {
-
-        completedLessons = [];
-        currentLessonIndex = 0;
-
-        return;
-
-    }
-
-
-    const data =
-        snap.data();
-
-
-    completedLessons =
-        Array.isArray(
-            data.completedLessons
-        )
-            ? data.completedLessons
-            : [];
-
-
-    // --------------------------------------------------------
-    // Prefer lesson ID
-    // --------------------------------------------------------
-
-    if (data.currentLessonId) {
-
-        const found =
-            lessons.findIndex(
-                lesson =>
-                    lesson.id ===
-                    data.currentLessonId
-            );
-
-
-        if (found >= 0) {
-
-            currentLessonIndex =
-                found;
-
-            return;
-
-        }
-
-    }
-
-
-    currentLessonIndex =
-        Number(
-            data.currentLesson || 0
-        );
-
-
-    if (
-        currentLessonIndex < 0 ||
-        currentLessonIndex >= lessons.length
-    ) {
-
-        currentLessonIndex = 0;
-
-    }
-
-}
-
-
-// ============================================================
-// NOTES
-// ============================================================
-
-async function loadNotes(lesson) {
-
-    if (!lessonNotes)
-        return;
-
-
-    lessonNotes.value = "";
-
-
-    if (!currentUser)
-        return;
-
-
-    const noteId =
-        `${currentUser.uid}_${courseId}_${lesson.id}`;
-
-
-    const ref =
-        doc(
-            db,
-            "courseNotes",
-            noteId
-        );
-
-
-    const snap =
-        await getDoc(ref);
-
-
-    if (snap.exists()) {
-
-        lessonNotes.value =
-            snap.data().notes || "";
-
-    }
-
-}
-
-
-// ============================================================
-// SAVE NOTES
-// ============================================================
-
-saveNotesBtn?.addEventListener(
-    "click",
-    async () => {
-
-        if (!lessonNotes)
-            return;
-
-
-        const lesson =
-            lessons[currentLessonIndex];
-
-
-        if (!lesson)
-            return;
-
-
-        try {
-
-            const noteId =
-                `${currentUser.uid}_${courseId}_${lesson.id}`;
-
-
-            await setDoc(
-                doc(
-                    db,
-                    "courseNotes",
-                    noteId
-                ),
-                {
-
-                    userId:
-                        currentUser.uid,
-
-                    courseId,
-
-                    lessonId:
-                        lesson.id,
-
-                    notes:
-                        lessonNotes.value,
-
-                    updatedAt:
-                        serverTimestamp()
-
-                },
-                {
-                    merge: true
-                }
-            );
-
-
-            saveNotesBtn.innerHTML =
-                "Saved ✓";
-
-
-            setTimeout(
-                () => {
-
-                    saveNotesBtn.innerHTML = `
-                        <i data-lucide="save"></i>
-                        Save Notes
-                    `;
-
-                    refreshIcons();
-
-                },
-                1500
-            );
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "❌ NOTES ERROR:",
-                error
-            );
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// NO LESSONS
-// ============================================================
-
-function showNoLessons() {
-
-    if (lessonList) {
-
-        lessonList.innerHTML = `
-
-            <div class="empty-state">
-
-                <i data-lucide="book-open"></i>
-
-                <h3>
-                    Lessons Coming Soon
-                </h3>
-
-                <p>
-                    Your instructor hasn't published
-                    lessons for this course yet.
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
-
-    if (lessonTitle) {
-
-        lessonTitle.textContent =
-            "No lesson selected";
-
-    }
-
-
-    if (lessonDescription) {
-
-        lessonDescription.textContent =
-            "Lessons will appear here once published.";
-
-    }
-
-
-    renderVideo({});
-
-    updateProgress();
-
-    refreshIcons();
-
-}
-
-
-// ============================================================
-// ERROR
-// ============================================================
-
-function showError(message) {
-
-    if (!courseContent)
-        return;
-
-
-    courseContent.innerHTML = `
-
-        <div class="course-error-state">
-
-            <div class="error-icon">
-
-                <i data-lucide="circle-alert"></i>
-
-            </div>
-
-            <h2>
-                Something went wrong
-            </h2>
-
-            <p>
-                ${escapeHTML(message)}
-            </p>
-
-            <button
-                class="primary-btn"
-                onclick="history.back()">
-
-                Go Back
-
-            </button>
-
-        </div>
-
-    `;
-
-
-    refreshIcons();
-
-}
-
-
-// ============================================================
-// TOAST
-// ============================================================
-
-function showToast(message) {
-
-    let toast =
-        document.getElementById(
-            "ssaCourseToast"
-        );
-
-
-    if (!toast) {
-
-        toast =
-            document.createElement(
-                "div"
-            );
-
-        toast.id =
-            "ssaCourseToast";
-
-        toast.className =
-            "ssa-course-toast";
-
-        document.body.appendChild(
-            toast
-        );
-
-    }
-
-
-    toast.textContent =
-        message;
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    setTimeout(
-        () => {
-
-            toast.classList.remove(
-                "show"
-            );
-
-        },
-        2500
-    );
-
-}
-
-
-// ============================================================
-// SECURITY HELPERS
-// ============================================================
 
 function escapeHTML(value) {
-
     return String(value ?? "")
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
-
 }
 
-
-function escapeAttribute(value) {
-
+function escapeAttr(value) {
     return escapeHTML(value);
-
 }
 
+function getCourseId() {
+    const p = new URLSearchParams(window.location.search);
+    return p.get("courseId") || p.get("id") || p.get("course") || null;
+}
 
-// ============================================================
-// ICONS
-// ============================================================
+onAuthStateChanged(auth, async user => {
+    if (!user) {
+        window.location.href = "../login.html";
+        return;
+    }
+    currentUser = user;
+    await initializeClassroom();
+});
 
-function refreshIcons() {
+async function initializeClassroom() {
+    try {
+        courseId = getCourseId();
+        if (!courseId) throw new Error("No course was selected.");
 
-    if (
-        window.lucide &&
-        typeof window.lucide.createIcons ===
-            "function"
-    ) {
+        await loadCourse();
+        if (!(await checkCourseAccess())) {
+            showLockedState();
+            return;
+        }
 
-        window.lucide.createIcons();
+        showClassroom();
+        await loadLessons();
+        await loadStudentProgress();
+        renderLessons();
+        updateProgress();
 
+        if (lessons.length) await showLesson(currentLessonIndex);
+        else showNoLessons();
+    } catch (error) {
+        console.error("COURSE PLAYER ERROR:", error);
+        showError("We couldn't load this course. Please refresh and try again.");
+    }
+}
+
+async function loadCourse() {
+    const snap = await getDoc(doc(db, "courses", courseId));
+    if (!snap.exists()) throw new Error("Course not found.");
+
+    course = { id: snap.id, ...snap.data() };
+
+    if (courseTitle) courseTitle.textContent = course.title || "Course";
+    if (courseDescription) courseDescription.textContent = course.description || "Welcome to your classroom.";
+    if (instructorName) instructorName.textContent = course.instructorName || "SSA Instructor";
+    if (instructorAvatar) instructorAvatar.textContent = (course.instructorName || "S").charAt(0).toUpperCase();
+    if (classAnnouncement) classAnnouncement.textContent = course.announcement || "No announcements yet.";
+}
+
+async function checkCourseAccess() {
+    if (course.isFree === true || Number(course.price || 0) <= 0) return true;
+
+    try {
+        const q = query(
+            collection(db, "enrollments"),
+            where("userId", "==", currentUser.uid),
+            where("courseId", "==", courseId)
+        );
+        const snap = await getDocs(q);
+        const enrollment = snap.docs[0]?.data();
+        if (enrollment && ["paid", "active", "approved"].includes(enrollment.status || enrollment.paymentStatus)) return true;
+    } catch (error) {
+        console.warn("Enrollment access check failed:", error);
     }
 
+    try {
+        const legacy = await getDoc(doc(db, "students", currentUser.uid, "enrollments", courseId));
+        if (legacy.exists()) {
+            const data = legacy.data();
+            if (["paid", "free", "active", "approved"].includes(data.status || data.paymentStatus)) return true;
+        }
+    } catch (error) {
+        console.warn("Legacy enrollment check failed:", error);
+    }
+
+    return false;
 }
+
+async function loadLessons() {
+    lessons = [];
+
+    // courseLessons is the canonical lesson collection.
+    const q = query(
+        collection(db, "courseLessons"),
+        where("courseId", "==", courseId)
+    );
+
+    const snap = await getDocs(q);
+
+    snap.forEach(item => {
+        const data = item.data() || {};
+        lessons.push({ id: item.id, ...data });
+    });
+
+    lessons.sort((a, b) => {
+        const orderDiff = Number(a.order ?? a.position ?? 0) - Number(b.order ?? b.position ?? 0);
+        return orderDiff || String(a.title || "").localeCompare(String(b.title || ""));
+    });
+
+    console.log(`COURSE PLAYER: loaded ${lessons.length} courseLessons for ${courseId}`);
+}
+
+async function loadStudentProgress() {
+    try {
+        const snap = await getDoc(doc(db, "courseProgress", `${currentUser.uid}_${courseId}`));
+        if (!snap.exists()) return;
+
+        const data = snap.data() || {};
+        completedLessons = Array.isArray(data.completedLessons) ? data.completedLessons : [];
+
+        if (data.currentLessonId) {
+            const index = lessons.findIndex(l => l.id === data.currentLessonId);
+            if (index >= 0) currentLessonIndex = index;
+        } else {
+            currentLessonIndex = Number(data.currentLesson || 0);
+        }
+
+        if (currentLessonIndex < 0 || currentLessonIndex >= lessons.length) currentLessonIndex = 0;
+    } catch (error) {
+        console.warn("Progress load failed:", error);
+    }
+}
+
+function renderLessons() {
+    if (!lessonList) return;
+
+    lessonList.innerHTML = "";
+
+    if (!lessons.length) {
+        showNoLessons();
+        return;
+    }
+
+    lessons.forEach((lesson, index) => {
+        const completed = completedLessons.includes(lesson.id);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `lesson-item${index === currentLessonIndex ? " active" : ""}${completed ? " completed" : ""}`;
+        button.innerHTML = `
+            <span class="lesson-number">${completed ? "✓" : index + 1}</span>
+            <span class="lesson-info">
+                <strong>${escapeHTML(lesson.title || `Lesson ${index + 1}`)}</strong>
+                <small>${escapeHTML(lesson.duration ? `${lesson.duration} min` : lesson.type || "Lesson")}</small>
+            </span>
+            <i data-lucide="${completed ? "check-circle" : "play-circle"}"></i>`;
+        button.addEventListener("click", () => showLesson(index));
+        lessonList.appendChild(button);
+    });
+
+    if (lessonCount) lessonCount.textContent = `${lessons.length} Lesson${lessons.length === 1 ? "" : "s"}`;
+    if (completedCount) completedCount.textContent = `${completedLessons.length} completed`;
+    refreshIcons();
+}
+
+async function showLesson(index) {
+    if (!lessons[index]) return;
+
+    currentLessonIndex = index;
+    const lesson = lessons[index];
+
+    if (lessonTitle) lessonTitle.textContent = lesson.title || `Lesson ${index + 1}`;
+    if (lessonDuration) lessonDuration.textContent = lesson.duration ? `${lesson.duration} min` : "Lesson";
+    if (lessonProgressLabel) lessonProgressLabel.textContent = `Lesson ${index + 1} of ${lessons.length}`;
+    if ($("lessonTypeBadge")) $("lessonTypeBadge").textContent = lesson.type || "Lesson";
+
+    renderLessonContent(lesson);
+    renderVideo(lesson);
+    renderResources(lesson);
+    await loadNotes(lesson);
+    updateNavigation();
+    updateProgress();
+    renderLessons();
+}
+
+function renderLessonContent(lesson) {
+    if (!lessonDescription) return;
+
+    const content = lesson.content ?? lesson.body ?? lesson.text ?? lesson.description ?? "";
+    lessonDescription.textContent = String(content || "");
+}
+
+function renderVideo(lesson) {
+    if (!videoBox) return;
+
+    const source = lesson.videoUrl || lesson.youtubeUrl || lesson.video || "";
+    const youtubeId = lesson.youtubeId || extractYouTubeId(source);
+
+    if (youtubeId) {
+        videoBox.innerHTML = `
+            <div class="video-frame-wrapper">
+                <iframe id="lessonVideo"
+                    src="https://www.youtube.com/embed/${encodeURIComponent(youtubeId)}?rel=0&modestbranding=1&playsinline=1"
+                    title="${escapeAttr(lesson.title || "SSA Lesson")}"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+            </div>`;
+        return;
+    }
+
+    if (source) {
+        videoBox.innerHTML = `
+            <div class="video-frame-wrapper">
+                <video id="lessonVideo" class="lesson-video" controls playsinline preload="metadata">
+                    <source src="${escapeAttr(source)}">
+                    Your browser does not support video playback.
+                </video>
+            </div>`;
+        return;
+    }
+
+    videoBox.innerHTML = `
+        <div class="video-placeholder">
+            <div class="video-placeholder-icon"><i data-lucide="book-open"></i></div>
+            <h3>Lesson content ready</h3>
+            <p>There is no video attached to this lesson yet.</p>
+        </div>`;
+    refreshIcons();
+}
+
+function extractYouTubeId(url) {
+    if (!url) return null;
+    try {
+        const parsed = new URL(url);
+        if (parsed.hostname.includes("youtu.be")) return parsed.pathname.replace(/^\//, "").split("/")[0];
+        if (parsed.hostname.includes("youtube.com")) return parsed.searchParams.get("v") || parsed.pathname.split("/").pop();
+    } catch {}
+    return null;
+}
+
+function renderResources(lesson) {
+    if (!courseResources) return;
+    const resources = Array.isArray(lesson.resources) ? lesson.resources : [];
+
+    if (!resources.length) {
+        courseResources.innerHTML = `<div class="resource-empty"><i data-lucide="folder-open"></i><p>No learning resources for this lesson yet.</p></div>`;
+        refreshIcons();
+        return;
+    }
+
+    courseResources.innerHTML = resources.map(resource => `
+        <a class="resource-item" href="${escapeAttr(resource.url || "#")}" target="_blank" rel="noopener noreferrer">
+            <span><i data-lucide="file-text"></i><strong>${escapeHTML(resource.title || "Learning Resource")}</strong></span>
+            <i data-lucide="external-link"></i>
+        </a>`).join("");
+    refreshIcons();
+}
+
+function updateNavigation() {
+    if (previousLessonBtn) previousLessonBtn.disabled = currentLessonIndex <= 0;
+    if (nextLessonBtn) nextLessonBtn.disabled = currentLessonIndex >= lessons.length - 1;
+
+    const completed = completedLessons.includes(lessons[currentLessonIndex]?.id);
+    if (completeLessonBtn) {
+        completeLessonBtn.disabled = completed;
+        completeLessonBtn.innerHTML = completed ? "Completed ✓" : `<i data-lucide="check"></i><span>Mark Complete</span>`;
+    }
+    refreshIcons();
+}
+
+previousLessonBtn?.addEventListener("click", () => showLesson(currentLessonIndex - 1));
+nextLessonBtn?.addEventListener("click", () => showLesson(currentLessonIndex + 1));
+
+completeLessonBtn?.addEventListener("click", completeCurrentLesson);
+
+async function completeCurrentLesson() {
+    const lesson = lessons[currentLessonIndex];
+    if (!lesson || !currentUser || completedLessons.includes(lesson.id)) return;
+
+    completedLessons.push(lesson.id);
+    renderLessons();
+    updateProgress();
+    updateNavigation();
+
+    try {
+        await saveProgress();
+        await awardXP(currentUser.uid, XP_REWARDS.lesson, `Completed lesson: ${lesson.title || "Lesson"}`, `lesson_${courseId}_${lesson.id}`);
+        await updateLearningStreak(currentUser.uid);
+        toast(`Lesson completed! ⚡ +${XP_REWARDS.lesson || 20} XP`);
+
+        if (completedLessons.length === lessons.length) {
+            await awardXP(currentUser.uid, XP_REWARDS.course || 50, `Completed course: ${course.title || "Course"}`, `course_${courseId}`);
+            const certificate = await issueCertificate(currentUser.uid, course);
+            toast(certificate?.alreadyExists ? "Course completed! 🎓" : "Course completed! 🎓 Certificate earned!");
+        } else if (currentLessonIndex < lessons.length - 1) {
+            setTimeout(() => showLesson(currentLessonIndex + 1), 650);
+        }
+    } catch (error) {
+        console.error("Lesson completion failed:", error);
+        completedLessons = completedLessons.filter(id => id !== lesson.id);
+        renderLessons();
+        updateProgress();
+        updateNavigation();
+        toast("We couldn't save your progress. Please try again.");
+    }
+}
+
+function updateProgress() {
+    const percent = lessons.length ? Math.round((completedLessons.length / lessons.length) * 100) : 0;
+    if (courseProgressText) courseProgressText.textContent = `${percent}%`;
+    if (courseProgressBar) courseProgressBar.style.width = `${percent}%`;
+    if (completedCount) completedCount.textContent = `${completedLessons.length} completed`;
+}
+
+async function saveProgress() {
+    if (!currentUser || !courseId) return;
+
+    const percentage = lessons.length ? Math.round((completedLessons.length / lessons.length) * 100) : 0;
+    const progress = {
+        userId: currentUser.uid,
+        courseId,
+        completedLessons,
+        currentLessonId: lessons[currentLessonIndex]?.id || null,
+        currentLesson: currentLessonIndex,
+        progress: percentage,
+        updatedAt: serverTimestamp()
+    };
+
+    await setDoc(doc(db, "courseProgress", `${currentUser.uid}_${courseId}`), progress, { merge: true });
+
+    try {
+        const q = query(collection(db, "enrollments"), where("userId", "==", currentUser.uid), where("courseId", "==", courseId));
+        const snap = await getDocs(q);
+        if (!snap.empty) {
+            await setDoc(snap.docs[0].ref, {
+                progress: percentage,
+                lastLesson: lessons[currentLessonIndex]?.id || null,
+                status: percentage >= 100 ? "completed" : "active",
+                updatedAt: serverTimestamp()
+            }, { merge: true });
+        }
+    } catch (error) {
+        console.warn("Enrollment progress update skipped:", error);
+    }
+}
+
+async function loadNotes(lesson) {
+    if (!lessonNotes || !currentUser || !lesson) return;
+    lessonNotes.value = "";
+    try {
+        const snap = await getDoc(doc(db, "courseNotes", `${currentUser.uid}_${courseId}_${lesson.id}`));
+        if (snap.exists()) lessonNotes.value = snap.data().notes || "";
+    } catch (error) {
+        console.warn("Notes load failed:", error);
+    }
+}
+
+saveNotesBtn?.addEventListener("click", async () => {
+    const lesson = lessons[currentLessonIndex];
+    if (!lesson || !currentUser || !lessonNotes) return;
+    try {
+        await setDoc(doc(db, "courseNotes", `${currentUser.uid}_${courseId}_${lesson.id}`), {
+            userId: currentUser.uid,
+            courseId,
+            lessonId: lesson.id,
+            notes: lessonNotes.value,
+            updatedAt: serverTimestamp()
+        }, { merge: true });
+        toast("Notes saved ✓");
+    } catch (error) {
+        console.error(error);
+        toast("Couldn't save your notes. Please try again.");
+    }
+});
+
+function showLockedState() {
+    if (courseLocked) courseLocked.style.display = "block";
+    if (courseContent) courseContent.style.display = "none";
+    unlockCourseBtn && (unlockCourseBtn.onclick = () => {
+        window.location.href = `payments.html?courseId=${encodeURIComponent(courseId)}`;
+    });
+}
+
+function showClassroom() {
+    if (courseLocked) courseLocked.style.display = "none";
+    if (courseContent) courseContent.style.display = "block";
+}
+
+function showNoLessons() {
+    if (lessonList) lessonList.innerHTML = `<div class="empty-state"><i data-lucide="book-open"></i><h3>Lessons Coming Soon</h3><p>Your instructor hasn't published lessons for this course yet.</p></div>`;
+    if (lessonTitle) lessonTitle.textContent = "No lesson selected";
+    if (lessonDescription) lessonDescription.textContent = "Lessons will appear here once your instructor publishes them.";
+    if (lessonDuration) lessonDuration.textContent = "--";
+    if (videoBox) videoBox.innerHTML = `<div class="video-placeholder"><i data-lucide="book-open"></i><h3>Waiting for lessons</h3><p>Your classroom is ready.</p></div>`;
+    refreshIcons();
+}
+
+function showError(message) {
+    if (!courseContent) return;
+    courseContent.innerHTML = `<div class="course-error-state"><div class="error-icon"><i data-lucide="circle-alert"></i></div><h2>Something went wrong</h2><p>${escapeHTML(message)}</p><button class="primary-btn" type="button" id="courseBackBtn">Go Back</button></div>`;
+    $("courseBackBtn")?.addEventListener("click", () => history.back());
+    refreshIcons();
+}
+
+// Normalize old/new course-player links without touching login routing.
+if (!new URLSearchParams(window.location.search).get("id")) {
+    const legacyCourseId = getCourseId();
+    if (legacyCourseId) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("id", legacyCourseId);
+        window.history.replaceState({}, "", url);
+    }
+}
+
+refreshIcons();
