@@ -17,6 +17,10 @@ import {
 } from "../../js/firebase.js";
 
 import {
+    watchPortalControl
+} from "../../js/portal-control.js";
+
+import {
     loadSidebar,
     updateSidebar
 } from "../components/sidebar.js";
@@ -96,6 +100,9 @@ document.addEventListener(
 // =========================
 
 async function initializeStudentPortal() {
+    
+    watchPortalControl("student");
+
 
     console.log("1. Starting...");
 
