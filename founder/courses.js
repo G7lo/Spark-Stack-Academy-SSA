@@ -1,1426 +1,219 @@
-/* ==========================================
-   SPARK STACK ACADEMY
-   COURSES PAGE
-========================================== */
+import { auth, db } from "../js/firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { collection, doc, getDocs, onSnapshot, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import { auth, db } from "../../js/firebase.js";
-
-import {
-
-    collection,
-    onSnapshot,
-    query,
-    orderBy,
-    getDocs,
-    doc,
-    updateDoc,
-    serverTimestamp
-
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import {
-
-    onAuthStateChanged
-
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-/* ==========================================
-   COLLECTION
-========================================== */
-
-const coursesRef =
-collection(db,"courses");
-
-/* ==========================================
-   DOM ELEMENTS
-========================================== */
-
-const coursesGrid =
-document.getElementById("coursesGrid");
-
-const loadingGrid =
-document.getElementById("loadingGrid");
-
-const emptyState =
-document.getElementById("emptyState");
-
-const searchInput =
-document.getElementById("courseSearch");
-
-const categoryFilter =
-document.getElementById("categoryFilter");
-
-const statusFilter =
-document.getElementById("statusFilter");
-
-const courseDrawer =
-document.getElementById("courseDrawer");
-
-const drawerContent =
-document.getElementById("drawerContent");
-
-const closeDrawer =
-document.getElementById("closeDrawer");
-
-/* ==========================================
-   DASHBOARD STATS
-========================================== */
-
-const totalCourses =
-document.getElementById("totalCourses");
-
-const publishedCourses =
-document.getElementById("publishedCourses");
-
-const draftCourses =
-document.getElementById("draftCourses");
-
-const archivedCourses =
-document.getElementById("archivedCourses");
-
-const totalStudents =
-document.getElementById("totalStudents");
-
-const totalRevenue =
-document.getElementById("totalRevenue");
-
-/* ==========================================
-   GLOBAL STATE
-========================================== */
-
+const $ = id => document.getElementById(id);
+const coursesRef = collection(db, "courses");
 let courses = [];
-
 let filteredCourses = [];
-
 let instructors = [];
-/* ==========================================
-   AUTHENTICATION
-========================================== */
+let categoryChart = null;
+let revenueChart = null;
 
-onAuthStateChanged(
+const esc = value => String(value ?? "").replace(/[&<>'"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
+const number = value => Number(value) || 0;
+const money = value => `$${number(value).toLocaleString()}`;
+const titleCase = value => String(value || "").replace(/(^|[-_\s])([a-z])/g, (_, p, c) => `${p}${c.toUpperCase()}`);
+const initials = name => String(name || "?").trim().split(/\s+/).filter(Boolean).slice(0,2).map(x => x[0].toUpperCase()).join("") || "?";
+const dateValue = value => value?.toDate ? value.toDate().getTime() : new Date(value || 0).getTime();
+const notify = (message, type = "success") => window.showFounderToast ? window.showFounderToast(message, type) : alert(message);
 
-    auth,
-
-    (user)=>{
-
-        if(!user){
-
-            location.href =
-            "../../login.html";
-
-            return;
-
-        }
-
-        initializePage();
-
-    }
-
-);
-
-/* ==========================================
-   INITIALIZE PAGE
-========================================== */
-
-function initializePage(){
-
-    initializeRealtimeCourses();
-
-    loadInstructors();
-
-    initializeEventListeners();
-
-    console.log(
-
-        "✅ Courses page initialized"
-
-    );
-
+function safeImage(url){
+    return url && /^https?:\/\//i.test(url) ? url : "https://placehold.co/900x500/eef4ff/2563eb?text=SSA+Course";
 }
 
-/* ==========================================
-   REALTIME COURSES
-========================================== */
-
-function initializeRealtimeCourses(){
-
-    const q = query(
-
-        coursesRef,
-
-        orderBy(
-
-            "createdAt",
-
-            "desc"
-
-        )
-
-    );
-
-    onSnapshot(
-
-        q,
-
-        (snapshot)=>{
-
-            courses = [];
-
-            snapshot.forEach(
-
-                (doc)=>{
-
-                    courses.push({
-
-                        id:doc.id,
-
-                        ...doc.data()
-
-                    });
-
-                }
-
-            );
-
-            filteredCourses = [
-
-                ...courses
-
-            ];
-
-            populateCategoryFilter();
-
-            renderCourses();
-
-            updateStatistics();
-
-            hideLoading();
-
-        },
-
-        (error)=>{
-
-            console.error(
-
-                "Course Load Error:",
-
-                error
-
-            );
-
-            hideLoading();
-
-        }
-
-    );
-
+function currentTutor(course){
+    return course.tutorName || instructors.find(i => i.id === course.instructorId)?.name || "Unassigned";
 }
 
-/* ==========================================
-   LOADING
-========================================== */
+function applyFilters(){
+    const search = ($("courseSearch")?.value || "").trim().toLowerCase();
+    const status = $("statusFilter")?.value || "all";
+    const category = $("categoryFilter")?.value || "all";
+    const tutor = $("tutorFilter")?.value || "all";
+    const level = $("levelFilter")?.value || "all";
+    const sort = $("sortCourses")?.value || "latest";
 
-function hideLoading(){
+    filteredCourses = courses.filter(course => {
+        const tutorName = currentTutor(course);
+        const haystack = [course.title, course.description, course.category, tutorName].map(v => String(v || "").toLowerCase()).join(" ");
+        return (!search || haystack.includes(search)) &&
+            (status === "all" || String(course.status || "draft").toLowerCase() === status) &&
+            (category === "all" || course.category === category) &&
+            (tutor === "all" || String(course.instructorId || "") === tutor) &&
+            (level === "all" || String(course.level || "") === level);
+    });
 
-    loadingGrid.style.display = "none";
+    filteredCourses.sort((a,b) => {
+        if(sort === "popular") return number(b.totalStudents) - number(a.totalStudents);
+        if(sort === "rating") return number(b.rating) - number(a.rating);
+        if(sort === "alphabetical") return String(a.title || "").localeCompare(String(b.title || ""));
+        return dateValue(b.createdAt || b.created_at) - dateValue(a.createdAt || a.created_at);
+    });
 
+    renderCourses();
 }
-
-/* ==========================================
-   EMPTY STATE
-========================================== */
-
-function toggleEmptyState(){
-
-    if(filteredCourses.length === 0){
-
-        emptyState.style.display = "flex";
-
-        coursesGrid.style.display = "none";
-
-    }
-
-    else{
-
-        emptyState.style.display = "none";
-
-        coursesGrid.style.display = "grid";
-
-    }
-
-}
-/* ==========================================
-   RENDER COURSES
-========================================== */
 
 function renderCourses(){
-
-    toggleEmptyState();
-
-    coursesGrid.innerHTML = "";
-
-    filteredCourses.forEach(
-
-        (course)=>{
-
-            coursesGrid.innerHTML +=
-
-            createCourseCard(course);
-
-        }
-
-    );
-
+    const grid = $("coursesGrid");
+    const empty = $("emptyState");
+    if(!grid || !empty) return;
+    grid.innerHTML = filteredCourses.map(createCourseCard).join("");
+    empty.hidden = filteredCourses.length !== 0;
+    grid.style.display = filteredCourses.length ? "grid" : "none";
+    refreshIcons();
 }
-
-/* ==========================================
-   CREATE COURSE CARD
-========================================== */
 
 function createCourseCard(course){
-
-    const thumbnail =
-
-        course.thumbnail ||
-
-        "../../assets/images/course-placeholder.jpg";
-
-    const tutor =
-
-        course.tutorName ||
-
-        "Unassigned";
-
-    const students =
-
-        course.totalStudents || 0;
-
-    const lessons =
-
-        course.lessonCount || 0;
-
-    const revenue =
-
-        course.revenue || 0;
-
-    const rating =
-
-        course.rating || 0;
-
-    const category =
-
-        course.category || "General";
-
-    const price =
-
-        course.price || "Free";
-
-    return `
-
-<article class="course-card">
-
-    <div class="course-thumbnail">
-
-        <img src="${thumbnail}"
-
-             alt="${course.title}">
-
-        <span class="course-status ${course.status}">
-
-            ${capitalize(course.status)}
-
-        </span>
-
-        <button class="course-menu-btn"
-
-                onclick="toggleCourseMenu('${course.id}')">
-
-            <i class="fas fa-ellipsis-vertical"></i>
-
-        </button>
-
-        <div class="course-menu"
-
-             id="menu-${course.id}">
-
-            <button class="menu-item"
-
-                onclick="viewCourse('${course.id}')">
-
-                <i class="fas fa-eye"></i>
-
-                View Details
-
-            </button>
-
-            <button class="menu-item"
-
-                onclick="featureCourse('${course.id}')">
-
-                <i class="fas fa-star"></i>
-
-                Feature Course
-
-            </button>
-
-            <button class="menu-item"
-
-                onclick="setCourseStatus('${course.id}','${course.status === "published" ? "draft" : "published"}')">
-
-                <i class="fas fa-power-off"></i>
-
-                ${course.status === "published" ? "Unpublish" : "Publish"}
-
-            </button>
-
-            <button class="menu-item warning"
-
-                onclick="archiveCourse('${course.id}')">
-
-                <i class="fas fa-box-archive"></i>
-
-                Archive
-
-            </button>
-
+    const status = String(course.status || "draft").toLowerCase();
+    const tutor = currentTutor(course);
+    const nextStatus = status === "published" ? "draft" : "published";
+    return `<article class="course-card">
+        <div class="course-thumbnail">
+            <img src="${esc(safeImage(course.thumbnail))}" alt="${esc(course.title || "Course")}" loading="lazy" onerror="this.src='https://placehold.co/900x500/eef4ff/2563eb?text=SSA+Course'">
+            <span class="course-status ${esc(status)}">${esc(titleCase(status))}</span>
+            <button class="course-menu-btn" data-menu-id="${esc(course.id)}" aria-label="Course actions"><i class="fas fa-ellipsis-vertical"></i></button>
+            <div class="course-menu" id="menu-${esc(course.id)}">
+                <button class="menu-item" data-action="view" data-id="${esc(course.id)}"><i class="fas fa-eye"></i> View Details</button>
+                <button class="menu-item" data-action="feature" data-id="${esc(course.id)}"><i class="fas fa-star"></i> ${course.featured ? "Unfeature" : "Feature"}</button>
+                <button class="menu-item" data-action="status" data-id="${esc(course.id)}" data-status="${nextStatus}"><i class="fas fa-power-off"></i> ${status === "published" ? "Unpublish" : "Publish"}</button>
+                ${status !== "archived" ? `<button class="menu-item warning" data-action="archive" data-id="${esc(course.id)}"><i class="fas fa-box-archive"></i> Archive</button>` : ""}
+            </div>
         </div>
-
-    </div>
-
-    <div class="course-content">
-
-        <div class="course-category">
-
-            <span>
-
-                ${category}
-
-            </span>
-
-            <strong>
-
-                ⭐ ${rating}
-
-            </strong>
-
+        <div class="course-content">
+            <div class="course-category"><span>${esc(course.category || "General")}</span><strong>⭐ ${number(course.rating).toFixed(1)}</strong></div>
+            <h3>${esc(course.title || "Untitled Course")}</h3>
+            <p class="course-description">${esc(course.description || "No description available.")}</p>
+            <div class="course-tutor"><div class="tutor-avatar">${esc(initials(tutor))}</div><div><strong>${esc(tutor)}</strong><small>${esc(course.level || "Course Tutor")}</small></div></div>
+            <div class="course-stats"><div><i class="fas fa-users"></i><span>${number(course.totalStudents)} Students</span></div><div><i class="fas fa-book-open"></i><span>${number(course.lessonCount)} Lessons</span></div><div><i class="fas fa-dollar-sign"></i><span>${money(course.revenue)}</span></div></div>
+            <div class="course-footer"><strong class="course-price">${esc(course.price ?? "Free")}</strong><button class="view-course-btn" data-action="view" data-id="${esc(course.id)}">View Course</button></div>
         </div>
-
-        <h3>
-
-            ${course.title}
-
-        </h3>
-
-        <p class="course-description">
-
-            ${course.description || "No description available."}
-
-        </p>
-
-        <div class="course-tutor">
-
-            <div class="tutor-avatar">
-
-                ${getInitials(tutor)}
-
-            </div>
-
-            <div>
-
-                <strong>
-
-                    ${tutor}
-
-                </strong>
-
-                <small>
-
-                    Course Tutor
-
-                </small>
-
-            </div>
-
-        </div>
-
-        <div class="course-stats">
-
-            <div>
-
-                <i class="fas fa-users"></i>
-
-                <span>
-
-                    ${students} Students
-
-                </span>
-
-            </div>
-
-            <div>
-
-                <i class="fas fa-book-open"></i>
-
-                <span>
-
-                    ${lessons} Lessons
-
-                </span>
-
-            </div>
-
-            <div>
-
-                <i class="fas fa-dollar-sign"></i>
-
-                <span>
-
-                    $${revenue}
-
-                </span>
-
-            </div>
-
-        </div>
-
-        <div class="course-footer">
-
-            <div class="course-price">
-
-                ${price}
-
-            </div>
-
-            <button class="view-course-btn"
-
-                onclick="viewCourse('${course.id}')">
-
-                View Course
-
-            </button>
-
-        </div>
-
-    </div>
-
-</article>
-
-`;
-
-}
-/* ==========================================
-   GET INITIALS
-========================================== */
-
-function getInitials(name){
-
-    if(!name) return "?";
-
-    return name
-
-        .trim()
-
-        .split(" ")
-
-        .map(word=>word.charAt(0).toUpperCase())
-
-        .slice(0,2)
-
-        .join("");
-
+    </article>`;
 }
 
-/* ==========================================
-   CAPITALIZE
-========================================== */
-
-function capitalize(text){
-
-    if(!text) return "";
-
-    return text.charAt(0).toUpperCase() +
-
-           text.slice(1);
-
+function updateStats(){
+    $("totalCourses").textContent = courses.length;
+    $("publishedCourses").textContent = courses.filter(c => String(c.status || "draft").toLowerCase() === "published").length;
+    $("draftCourses").textContent = courses.filter(c => String(c.status || "draft").toLowerCase() === "draft").length;
+    $("archivedCourses").textContent = courses.filter(c => String(c.status || "draft").toLowerCase() === "archived").length;
+    $("totalStudents").textContent = courses.reduce((sum,c) => sum + number(c.totalStudents), 0).toLocaleString();
+    $("totalRevenue").textContent = money(courses.reduce((sum,c) => sum + number(c.revenue), 0));
+    const rated = courses.filter(c => number(c.rating) > 0);
+    $("averageRating").textContent = rated.length ? (rated.reduce((sum,c) => sum + number(c.rating), 0) / rated.length).toFixed(1) : "0.0";
+    $("totalTutors").textContent = new Set(courses.map(c => c.instructorId || currentTutor(c)).filter(Boolean)).size;
 }
 
-/* ==========================================
-   UPDATE DASHBOARD STATISTICS
-========================================== */
-
-function updateStatistics(){
-
-    totalCourses.textContent =
-
-        courses.length;
-
-    publishedCourses.textContent =
-
-        courses.filter(
-
-            course=>course.status==="published"
-
-        ).length;
-
-    draftCourses.textContent =
-
-        courses.filter(
-
-            course=>course.status==="draft"
-
-        ).length;
-
-    archivedCourses.textContent =
-
-        courses.filter(
-
-            course=>course.status==="archived"
-
-        ).length;
-
-    totalStudents.textContent =
-
-        courses.reduce(
-
-            (total,course)=>
-
-                total+(course.totalStudents||0),
-
-            0
-
-        );
-
-    const revenue =
-
-        courses.reduce(
-
-            (total,course)=>
-
-                total+(course.revenue||0),
-
-            0
-
-        );
-
-    totalRevenue.textContent =
-
-        "$" + revenue.toLocaleString();
-
+function populateFilters(){
+    const category = $("categoryFilter");
+    const tutor = $("tutorFilter");
+    const oldCategory = category.value;
+    const oldTutor = tutor.value;
+    category.innerHTML = `<option value="all">All Categories</option>` + [...new Set(courses.map(c => c.category).filter(Boolean))].sort().map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join("");
+    tutor.innerHTML = `<option value="all">All Tutors</option>` + instructors.map(i => `<option value="${esc(i.id)}">${esc(i.name || i.email || "Instructor")}</option>`).join("");
+    category.value = [...category.options].some(o => o.value === oldCategory) ? oldCategory : "all";
+    tutor.value = [...tutor.options].some(o => o.value === oldTutor) ? oldTutor : "all";
 }
 
-/* ==========================================
-   POPULATE CATEGORY FILTER
-========================================== */
-
-function populateCategoryFilter(){
-
-    const categories =
-
-        [
-
-            ...new Set(
-
-                courses.map(
-
-                    course=>course.category
-
-                )
-
-            )
-
-        ].filter(Boolean);
-
-    categoryFilter.innerHTML =
-
-    `
-
-        <option value="all">
-
-            All Categories
-
-        </option>
-
-    `;
-
-    categories.forEach(category=>{
-
-        categoryFilter.innerHTML +=
-
-        `
-
-            <option value="${category}">
-
-                ${category}
-
-            </option>
-
-        `;
-
-    });
-
-}
-/* ==========================================
-   EVENT LISTENERS
-========================================== */
-
-function initializeEventListeners(){
-
-    searchInput.addEventListener(
-
-        "input",
-
-        filterCourses
-
-    );
-
-    categoryFilter.addEventListener(
-
-        "change",
-
-        filterCourses
-
-    );
-
-    statusFilter.addEventListener(
-
-        "change",
-
-        filterCourses
-
-    );
-
-    closeDrawer.addEventListener(
-
-        "click",
-
-        ()=>{
-
-            courseDrawer.classList.remove("open");
-
-        }
-
-    );
-
-    document.addEventListener(
-
-        "click",
-
-        closeMenus
-
-    );
-
+function renderAnalytics(){
+    const popular = [...courses].sort((a,b) => number(b.totalStudents) - number(a.totalStudents)).slice(0,5);
+    const rated = [...courses].filter(c => number(c.rating) > 0).sort((a,b) => number(b.rating) - number(a.rating)).slice(0,5);
+    const list = (items, metric) => items.length ? items.map(c => `<div class="analytics-row"><div><strong>${esc(c.title || "Untitled")}</strong><small>${esc(currentTutor(c))}</small></div><b>${metric(c)}</b></div>`).join("") : `<div class="analytics-empty">No data available yet.</div>`;
+    $("popularCourses").innerHTML = list(popular, c => `${number(c.totalStudents).toLocaleString()} students`);
+    $("ratedCourses").innerHTML = list(rated, c => `⭐ ${number(c.rating).toFixed(1)}`);
 }
 
-/* ==========================================
-   FILTER COURSES
-========================================== */
-
-function filterCourses(){
-
-    const search =
-
-        searchInput.value
-
-        .trim()
-
-        .toLowerCase();
-
-    const category =
-
-        categoryFilter.value;
-
-    const status =
-
-        statusFilter.value;
-
-    filteredCourses = courses.filter(
-
-        (course)=>{
-
-            const matchesSearch =
-
-                course.title
-                ?.toLowerCase()
-                .includes(search)
-
-                ||
-
-                course.description
-                ?.toLowerCase()
-                .includes(search)
-
-                ||
-
-                course.tutorName
-                ?.toLowerCase()
-                .includes(search);
-
-            const matchesCategory =
-
-                category==="all"
-
-                ||
-
-                course.category===category;
-
-            const matchesStatus =
-
-                status==="all"
-
-                ||
-
-                course.status===status;
-
-            return(
-
-                matchesSearch &&
-
-                matchesCategory &&
-
-                matchesStatus
-
-            );
-
-        }
-
-    );
-
-    renderCourses();
-
-    updateStatistics();
-
+function renderCharts(){
+    if(typeof Chart === "undefined") return;
+    const categoryCanvas = $("categoryChart");
+    const revenueCanvas = $("courseRevenueChart");
+    if(!categoryCanvas || !revenueCanvas) return;
+    categoryChart?.destroy(); revenueChart?.destroy();
+    const categories = {};
+    courses.forEach(c => { const key = c.category || "General"; categories[key] = (categories[key] || 0) + 1; });
+    categoryChart = new Chart(categoryCanvas, {type:"doughnut",data:{labels:Object.keys(categories),datasets:[{data:Object.values(categories),backgroundColor:["#2563eb","#7c3aed","#0891b2","#16a34a","#d97706","#dc2626"]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"}}}});
+    const top = [...courses].sort((a,b) => number(b.revenue) - number(a.revenue)).slice(0,10);
+    revenueChart = new Chart(revenueCanvas, {type:"bar",data:{labels:top.map(c => String(c.title || "Untitled").slice(0,18)),datasets:[{label:"Revenue",data:top.map(c => number(c.revenue)),backgroundColor:"#2563eb",borderRadius:7}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
 }
 
-/* ==========================================
-   COURSE MENU
-========================================== */
-
-window.toggleCourseMenu = function(courseId){
-
-    event.stopPropagation();
-
-    document.querySelectorAll(".course-menu")
-
-    .forEach(menu=>{
-
-        if(menu.id !== `menu-${courseId}`){
-
-            menu.style.display = "none";
-
-        }
-
-    });
-
-    const menu =
-
-    document.getElementById(`menu-${courseId}`);
-
-    if(!menu) return;
-
-    menu.style.display =
-
-        menu.style.display==="flex"
-
-        ? "none"
-
-        : "flex";
-
-};
-
-function closeMenus(){
-
-    document.querySelectorAll(".course-menu")
-
-    .forEach(menu=>{
-
-        menu.style.display="none";
-
-    });
-
-}
-/* ==========================================
-   COURSE DRAWER
-========================================== */
-
-window.viewCourse = function(courseId){
-
-    const course = courses.find(
-
-        c => c.id === courseId
-
-    );
-
+function openDrawer(courseId){
+    const course = courses.find(c => c.id === courseId);
     if(!course) return;
-
-    drawerContent.innerHTML = `
-
-    <div class="drawer-profile">
-
-        <img
-            class="drawer-cover"
-            src="${course.thumbnail || '../../assets/images/course-placeholder.jpg'}"
-            alt="${course.title}">
-
-        <h2 class="drawer-title">
-
-            ${course.title}
-
-        </h2>
-
-        <p class="drawer-description">
-
-            ${course.description || "No description available."}
-
-        </p>
-
+    const drawer = $("courseDrawer");
+    $("drawerContent").innerHTML = `<div class="drawer-profile">
+        <img class="drawer-cover" src="${esc(safeImage(course.thumbnail))}" alt="${esc(course.title || "Course")}">
+        <span class="course-status ${esc(String(course.status || "draft"))}">${esc(titleCase(course.status || "draft"))}</span>
+        <h2 class="drawer-title">${esc(course.title || "Untitled Course")}</h2>
+        <p class="drawer-description">${esc(course.description || "No description available.")}</p>
         <div class="drawer-meta">
-
-            <div class="meta-card">
-
-                <span>Category</span>
-
-                <strong>
-
-                    ${course.category || "General"}
-
-                </strong>
-
-            </div>
-
-            <div class="meta-card">
-
-                <span>Status</span>
-
-                <strong>
-
-                    ${capitalize(course.status)}
-
-                </strong>
-
-            </div>
-
-            <div class="meta-card">
-
-                <span>Students</span>
-
-                <strong>
-
-                    ${course.totalStudents || 0}
-
-                </strong>
-
-            </div>
-
-            <div class="meta-card">
-
-                <span>Lessons</span>
-
-                <strong>
-
-                    ${course.lessonCount || 0}
-
-                </strong>
-
-            </div>
-
-            <div class="meta-card">
-
-                <span>Rating</span>
-
-                <strong>
-
-                    ⭐ ${course.rating || 0}
-
-                </strong>
-
-            </div>
-
-            <div class="meta-card">
-
-                <span>Revenue</span>
-
-                <strong>
-
-                    $${(course.revenue || 0).toLocaleString()}
-
-                </strong>
-
-            </div>
-
+            <div class="meta-card"><span>Category</span><strong>${esc(course.category || "General")}</strong></div>
+            <div class="meta-card"><span>Level</span><strong>${esc(course.level || "Not set")}</strong></div>
+            <div class="meta-card"><span>Students</span><strong>${number(course.totalStudents).toLocaleString()}</strong></div>
+            <div class="meta-card"><span>Lessons</span><strong>${number(course.lessonCount)}</strong></div>
+            <div class="meta-card"><span>Rating</span><strong>⭐ ${number(course.rating).toFixed(1)}</strong></div>
+            <div class="meta-card"><span>Revenue</span><strong>${money(course.revenue)}</strong></div>
         </div>
-
-        <div class="drawer-tutor">
-
-            <div class="tutor-avatar">
-
-                ${getInitials(course.tutorName || "Tutor")}
-
-            </div>
-
-            <div>
-
-                <h4>
-
-                    ${course.tutorName || "Unassigned"}
-
-                </h4>
-
-                <p>
-
-                    Course Tutor
-
-                </p>
-
-            </div>
-
-        </div>
-
-        <div class="drawer-actions">
-
-            <label class="drawer-instructor-control">
-
-                <span>Assigned instructor</span>
-
-                <select id="courseInstructorSelect">
-
-                    <option value="">Unassigned</option>
-
-                    ${instructors.map(instructor=>`<option value="${instructor.id}" ${course.instructorId === instructor.id ? "selected" : ""}>${instructor.name || instructor.email || "Instructor"}</option>`).join("")}
-
-                </select>
-
-            </label>
-
-            <button class="secondary-btn"
-
-                onclick="assignCourseInstructor('${course.id}')">
-
-                <i class="fas fa-user-check"></i>
-
-                Save Instructor
-
-            </button>
-
-            <button class="secondary-btn"
-
-                onclick="setCourseStatus('${course.id}','${course.status === "published" ? "draft" : "published"}')">
-
-                <i class="fas fa-power-off"></i>
-
-                ${course.status === "published" ? "Unpublish" : "Publish"}
-
-            </button>
-
-            <button class="primary-btn"
-
-                onclick="featureCourse('${course.id}')">
-
-                <i class="fas fa-star"></i>
-
-                Feature Course
-
-            </button>
-
-            <button class="warning-btn"
-
-                onclick="archiveCourse('${course.id}')">
-
-                <i class="fas fa-box-archive"></i>
-
-                Archive
-
-            </button>
-
-        </div>
-
-    </div>
-
-    `;
-
-    courseDrawer.classList.add("open");
-
-};
-
-/* ==========================================
-   FEATURE COURSE
-========================================== */
-
-window.featureCourse = async function(courseId){
-
-    try{
-
-        await updateDoc(
-
-            doc(db,"courses",courseId),
-
-            {
-
-                featured:true
-
-            }
-
-        );
-
-    }
-
-    catch(error){
-
-        console.error(
-
-            "Feature Error:",
-
-            error
-
-        );
-
-    }
-
-};
-
-/* ==========================================
-   ARCHIVE COURSE
-========================================== */
-
-window.archiveCourse = async function(courseId){
-
-    const confirmed = confirm(
-
-        "Archive this course?"
-
-    );
-
-    if(!confirmed) return;
-
-    try{
-
-        await updateDoc(
-
-            doc(db,"courses",courseId),
-
-            {
-
-                status:"archived"
-
-            }
-
-        );
-
-    }
-
-    catch(error){
-
-        console.error(
-
-            "Archive Error:",
-
-            error
-
-        );
-
-    }
-
-};
-
-/* ==========================================
-   COURSE LIFECYCLE & INSTRUCTOR ASSIGNMENT
-========================================== */
-
-window.setCourseStatus = async function(courseId,status){
-
-    try{
-
-        await updateDoc(
-            doc(db,"courses",courseId),
-            {status,updatedAt:serverTimestamp()}
-        );
-
-        courseDrawer.classList.remove("open");
-
-    }catch(error){
-
-        console.error("Course status update failed:",error);
-        alert("Unable to update this course status.");
-
-    }
-
-};
-
-window.assignCourseInstructor = async function(courseId){
-
-    const select = document.getElementById("courseInstructorSelect");
-
-    if(!select) return;
-
-    const instructor = instructors.find(item=>item.id === select.value);
-
-    try{
-
-        await updateDoc(
-            doc(db,"courses",courseId),
-            {
-                instructorId:instructor?.id || null,
-                tutorName:instructor?.name || "Unassigned",
-                updatedAt:serverTimestamp()
-            }
-        );
-
-    }catch(error){
-
-        console.error("Instructor assignment failed:",error);
-        alert("Unable to assign this instructor.");
-
-    }
-
-};
-/* ==========================================
-   EXPORT REPORT
-========================================== */
-
-document
-
-.getElementById("exportReport")
-
-.addEventListener(
-
-    "click",
-
-    exportCoursesCSV
-
-);
-
-function exportCoursesCSV(){
-
-    if(!courses.length){
-
-        alert("No courses to export.");
-
-        return;
-
-    }
-
-    let csv =
-
-`Title,Category,Tutor,Students,Lessons,Revenue,Rating,Status
-`;
-
-    courses.forEach(course=>{
-
-        csv +=
-
-`${course.title},
-${course.category || ""},
-${course.tutorName || ""},
-${course.totalStudents || 0},
-${course.lessonCount || 0},
-${course.revenue || 0},
-${course.rating || 0},
-${course.status}
-`;
-
-    });
-
-    const blob =
-
-    new Blob(
-
-        [csv],
-
-        {
-
-            type:"text/csv"
-
-        }
-
-    );
-
-    const url =
-
-    URL.createObjectURL(blob);
-
-    const a =
-
-    document.createElement("a");
-
-    a.href = url;
-
-    a.download =
-
-    "courses-report.csv";
-
-    a.click();
-
-    URL.revokeObjectURL(url);
-
+        <div class="drawer-tutor"><div class="tutor-avatar">${esc(initials(currentTutor(course)))}</div><div><h4>${esc(currentTutor(course))}</h4><p>Assigned instructor</p></div></div>
+        <label class="drawer-instructor-control"><span>Assigned instructor</span><select id="courseInstructorSelect"><option value="">Unassigned</option>${instructors.map(i => `<option value="${esc(i.id)}" ${course.instructorId === i.id ? "selected" : ""}>${esc(i.name || i.email || "Instructor")}</option>`).join("")}</select></label>
+        <div class="drawer-actions"><button class="secondary-btn" data-drawer-action="assign" data-id="${esc(course.id)}"><i class="fas fa-user-check"></i> Save Instructor</button><button class="secondary-btn" data-drawer-action="status" data-id="${esc(course.id)}" data-status="${String(course.status || "draft") === "published" ? "draft" : "published"}"><i class="fas fa-power-off"></i> ${String(course.status || "draft") === "published" ? "Unpublish" : "Publish"}</button><button class="primary-btn" data-drawer-action="feature" data-id="${esc(course.id)}"><i class="fas fa-star"></i> ${course.featured ? "Unfeature" : "Feature"}</button><button class="warning-btn" data-drawer-action="archive" data-id="${esc(course.id)}"><i class="fas fa-box-archive"></i> Archive</button></div>
+    </div>`;
+    drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false"); $("drawerBackdrop").classList.add("open"); refreshIcons();
 }
 
-/* ==========================================
-   CHARTS
-========================================== */
-
-let categoryChart;
-
-let revenueChart;
-
-function initializeCharts(){
-
-    const categoryCanvas =
-
-    document.getElementById("categoryChart");
-
-    const revenueCanvas =
-
-    document.getElementById("courseRevenueChart");
-
-    if(
-
-        !categoryCanvas ||
-
-        !revenueCanvas ||
-
-        typeof Chart==="undefined"
-
-    ) return;
-
-    if(categoryChart)
-
-        categoryChart.destroy();
-
-    if(revenueChart)
-
-        revenueChart.destroy();
-
-    const categories={};
-
-    courses.forEach(course=>{
-
-        const category=
-
-        course.category ||
-
-        "General";
-
-        categories[category]=
-
-        (categories[category]||0)+1;
-
-    });
-
-    categoryChart =
-
-    new Chart(
-
-        categoryCanvas,
-
-        {
-
-            type:"doughnut",
-
-            data:{
-
-                labels:Object.keys(categories),
-
-                datasets:[{
-
-                    data:Object.values(categories)
-
-                }]
-
-            },
-
-            options:{
-
-                responsive:true,
-
-                maintainAspectRatio:false
-
-            }
-
-        }
-
-    );
-
-    revenueChart =
-
-    new Chart(
-
-        revenueCanvas,
-
-        {
-
-            type:"bar",
-
-            data:{
-
-                labels:
-
-                courses.map(
-
-                    course=>course.title
-
-                ),
-
-                datasets:[{
-
-                    label:"Revenue",
-
-                    data:
-
-                    courses.map(
-
-                        course=>
-
-                        course.revenue||0
-
-                    )
-
-                }]
-
-            },
-
-            options:{
-
-                responsive:true,
-
-                maintainAspectRatio:false
-
-            }
-
-        }
-
-    );
-
+function closeDrawer(){ $("courseDrawer")?.classList.remove("open"); $("courseDrawer")?.setAttribute("aria-hidden","true"); $("drawerBackdrop")?.classList.remove("open"); }
+
+async function updateCourse(courseId, data, message){
+    try { await updateDoc(doc(db,"courses",courseId), {...data, updatedAt:serverTimestamp()}); notify(message); }
+    catch(error){ console.error(error); notify(error.message || "Unable to update course.", "error"); }
 }
 
-/* ==========================================
-   UPDATE CHARTS
-========================================== */
+async function toggleFeature(id){ const course = courses.find(c => c.id === id); if(course) await updateCourse(id,{featured:!course.featured},course.featured ? "Course unfeatured." : "Course featured."); }
+async function setStatus(id,status){ await updateCourse(id,{status},`Course ${status === "published" ? "published" : "unpublished"}.`); closeDrawer(); }
+async function archive(id){ if(!confirm("Archive this course?")) return; await updateCourse(id,{status:"archived"},"Course archived."); closeDrawer(); }
+async function assignInstructor(id){ const select=$("courseInstructorSelect"); if(!select) return; const instructor=instructors.find(i=>i.id===select.value); await updateCourse(id,{instructorId:instructor?.id || null,tutorName:instructor?.name || instructor?.email || "Unassigned"},"Instructor assignment saved."); closeDrawer(); }
 
-function refreshDashboard(){
+function exportCSV(){
+    if(!courses.length){ notify("No courses to export.","error"); return; }
+    const headers=["Title","Category","Tutor","Level","Students","Lessons","Revenue","Rating","Status","Featured"];
+    const quote=value => `"${String(value ?? "").replace(/"/g,'""')}"`;
+    const rows=courses.map(c=>[c.title,c.category,currentTutor(c),c.level,number(c.totalStudents),number(c.lessonCount),number(c.revenue),number(c.rating).toFixed(1),c.status,c.featured?"Yes":"No"].map(quote).join(","));
+    const blob=new Blob([[headers.map(quote).join(","),...rows].join("\n")],{type:"text/csv;charset=utf-8;"});
+    const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download="ssa-courses-report.csv"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+}
 
-    renderCourses();
+function refreshIcons(){ if(window.lucide?.createIcons) window.lucide.createIcons(); }
 
-    updateStatistics();
-
-    initializeCharts();
-
-    hideLoading();
-
+function bindEvents(){
+    ["courseSearch","statusFilter","categoryFilter","tutorFilter","levelFilter","sortCourses"].forEach(id => $(id)?.addEventListener(id === "courseSearch" ? "input" : "change", applyFilters));
+    $("exportCourses")?.addEventListener("click", exportCSV);
+    $("closeDrawer")?.addEventListener("click", closeDrawer);
+    $("drawerBackdrop")?.addEventListener("click", closeDrawer);
+    document.addEventListener("keydown", e => { if(e.key === "Escape") { document.querySelectorAll(".course-menu").forEach(m=>m.classList.remove("open")); closeDrawer(); } });
+    document.addEventListener("click", async e => {
+        const menuButton=e.target.closest(".course-menu-btn");
+        if(menuButton){ e.stopPropagation(); document.querySelectorAll(".course-menu").forEach(m=>m.classList.remove("open")); $("menu-"+menuButton.dataset.menuId)?.classList.toggle("open"); return; }
+        const action=e.target.closest("[data-action]");
+        if(action){ e.stopPropagation(); document.querySelectorAll(".course-menu").forEach(m=>m.classList.remove("open")); const id=action.dataset.id; if(action.dataset.action==="view") openDrawer(id); if(action.dataset.action==="feature") await toggleFeature(id); if(action.dataset.action==="status") await setStatus(id,action.dataset.status); if(action.dataset.action==="archive") await archive(id); return; }
+        const drawerAction=e.target.closest("[data-drawer-action]");
+        if(drawerAction){ const id=drawerAction.dataset.id; if(drawerAction.dataset.drawerAction==="assign") await assignInstructor(id); if(drawerAction.dataset.drawerAction==="feature") await toggleFeature(id); if(drawerAction.dataset.drawerAction==="status") await setStatus(id,drawerAction.dataset.status); if(drawerAction.dataset.drawerAction==="archive") await archive(id); return; }
+        if(!e.target.closest(".course-menu")) document.querySelectorAll(".course-menu").forEach(m=>m.classList.remove("open"));
+    });
 }
 
 async function loadInstructors(){
-
-    try{
-
-        const snapshot = await getDocs(collection(db,"instructors"));
-
-        instructors = snapshot.docs
-        .map(entry=>({id:entry.id,...entry.data()}))
-        .filter(instructor=>instructor.status !== "suspended");
-
-    }catch(error){
-
-        console.error("Instructor Load Error:",error);
-
-    }
-
+    try { const snap=await getDocs(collection(db,"instructors")); instructors=snap.docs.map(d=>({id:d.id,...d.data()})).filter(i=>String(i.status||"").toLowerCase()!=="suspended"); }
+    catch(error){ console.error("Instructor load failed:",error); instructors=[]; }
 }
+
+function subscribeCourses(){
+    onSnapshot(coursesRef, snap => {
+        courses=snap.docs.map(d=>({id:d.id,...d.data()}));
+        populateFilters(); updateStats(); renderAnalytics(); renderCharts(); applyFilters(); $("loadingGrid").style.display="none";
+    }, error => { console.error("Course Load Error:",error); $("loadingGrid").style.display="none"; notify("Unable to load courses from Firestore.","error"); });
+}
+
+onAuthStateChanged(auth, async user => {
+    if(!user){ location.href="../login.html"; return; }
+    bindEvents();
+    await loadInstructors();
+    subscribeCourses();
+});
