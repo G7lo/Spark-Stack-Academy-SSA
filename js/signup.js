@@ -1,135 +1,91 @@
-// Spark Stack Academy — Clerk Signup UI
-import { getClerk } from "./clerk-client.js";
-import { getCurrentProfile, provisionAccount } from "./supabase-auth.js";
+// Spark Stack Academy — Supabase Auth Signup
+import { supabase } from "./supabase.js";
+import { provisionAccount, getCurrentProfile } from "./supabase-auth.js";
 
 const form = document.getElementById("signupForm");
-const card = document.querySelector(".login-card");
 const loader = document.getElementById("authLoader");
 const loaderText = document.getElementById("loaderText");
 const toastContainer = document.getElementById("toastContainer");
+const signupBtn = document.getElementById("signupBtn");
 
 function toast(message, type = "success") {
     if (!toastContainer) return;
     const el = document.createElement("div");
     el.className = `toast ${type}`;
-    const text = document.createElement("strong");
-    text.textContent = message;
-    el.appendChild(text);
+    el.textContent = message;
     toastContainer.appendChild(el);
-    setTimeout(() => el.remove(), 3500);
+    setTimeout(() => el.remove(), 4000);
 }
 
-function loading(message = "Creating your secure account...") {
-    loader?.classList.add("active");
+function setLoading(active, message = "Creating your secure account...") {
+    loader?.classList.toggle("active", active);
     if (loaderText) loaderText.textContent = message;
+    if (signupBtn) signupBtn.disabled = active;
 }
 
-function hideLoading() {
-    loader?.classList.remove("active");
-}
+form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-async function finishSignup(clerk, role, bio, expertise) {
-    if (!clerk?.isSignedIn || !clerk.user) return;
+    const name = document.getElementById("name")?.value.trim() || "";
+    const email = document.getElementById("email")?.value.trim() || "";
+    const password = document.getElementById("password")?.value || "";
+    const confirmPassword = document.getElementById("confirmPassword")?.value || "";
+    const role = document.getElementById("role")?.value || "student";
 
-    loading("Finishing your Spark Stack Academy setup...");
+    if (!name || !email || !password) {
+        toast("Please complete all required fields.", "error");
+        return;
+    }
+
+    if (password.length < 8) {
+        toast("Password must be at least 8 characters.", "error");
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        toast("Passwords do not match.", "error");
+        return;
+    }
+
+    setLoading(true);
 
     try {
-        await clerk.user.update({
-            unsafeMetadata: { role, bio, expertise }
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    full_name: name,
+                    role: role === "instructor" ? "instructor" : "student"
+                }
+            }
         });
 
-        await provisionAccount({ role, bio, expertise });
-        const profile = await getCurrentProfile();
-        if (!profile) throw new Error("Your profile could not be created.");
+        if (error) throw error;
 
-        toast("Account created successfully! 🎉", "success");
-        setTimeout(() => window.location.replace("login.html"), 900);
-    } catch (error) {
-        console.error("Clerk provisioning error:", error);
-        hideLoading();
-        toast(error.message || "Account setup failed. Please try again.", "error");
-        await clerk.signOut().catch(() => {});
-    }
-}
-
-async function init() {
-    try {
-        const clerk = await getClerk();
-
-        if (clerk.isSignedIn) {
-            window.location.replace("student/dashboard.html");
+        // If email confirmation is enabled, Supabase returns a user but no session.
+        if (!data.session) {
+            setLoading(false);
+            toast("Account created! Check your email to verify your account.", "success");
+            form.reset();
             return;
         }
 
-        if (form) form.style.display = "none";
+        setLoading(true, "Setting up your Spark Stack Academy profile...");
+        await provisionAccount({ role });
+        const profile = await getCurrentProfile();
 
-        const panel = document.createElement("section");
-        panel.className = "ssa-clerk-signup-panel";
-        panel.innerHTML = `
-            <div class="ssa-role-picker">
-                <label for="ssaRole">Account type</label>
-                <select id="ssaRole">
-                    <option value="student">Student</option>
-                    <option value="instructor">Instructor</option>
-                </select>
-            </div>
-            <div id="ssaInstructorFields" class="ssa-instructor-fields" hidden>
-                <label for="ssaBio">Professional bio</label>
-                <textarea id="ssaBio" rows="3" placeholder="Tell us briefly about yourself"></textarea>
-                <label for="ssaExpertise">Area of expertise</label>
-                <input id="ssaExpertise" type="text" placeholder="e.g. Web Development">
-            </div>
-            <div class="ssa-legal-note">
-                By creating an account, you agree to our
-                <a href="/terms.html">Terms &amp; Conditions</a> and
-                <a href="/privacy.html">Privacy Policy</a>.
-            </div>
-            <div id="ssaClerkSignup"></div>
-        `;
-        card?.appendChild(panel);
+        if (!profile) {
+            throw new Error("Account created, but your profile could not be initialized.");
+        }
 
-        const role = panel.querySelector("#ssaRole");
-        const instructorFields = panel.querySelector("#ssaInstructorFields");
-        const bio = panel.querySelector("#ssaBio");
-        const expertise = panel.querySelector("#ssaExpertise");
-        const mount = panel.querySelector("#ssaClerkSignup");
-
-        const mountSignup = () => {
-            mount.innerHTML = "";
-            instructorFields.hidden = role.value !== "instructor";
-            clerk.mountSignUp(mount, {
-                signInUrl: "/login.html",
-                fallbackRedirectUrl: "/signup.html",
-                appearance: {
-                    variables: {
-                        colorPrimary: "#2979FF"
-                    },
-                    options: {
-                        termsPageUrl: "/terms.html",
-                        privacyPageUrl: "/privacy.html"
-                    }
-                }
-            });
-        };
-
-        role.addEventListener("change", mountSignup);
-        mountSignup();
-
-        clerk.addListener(({ user }) => {
-            if (user) {
-                finishSignup(
-                    clerk,
-                    role.value === "instructor" ? "instructor" : "student",
-                    role.value === "instructor" ? bio.value.trim() : "",
-                    role.value === "instructor" ? expertise.value.trim() : ""
-                );
-            }
-        });
+        toast("Account created successfully! 🎉", "success");
+        setTimeout(() => window.location.replace("student/dashboard.html"), 900);
     } catch (error) {
-        console.error("Clerk initialization error:", error);
-        hideLoading();
-        toast(error.message || "Authentication is temporarily unavailable.", "error");
+        console.error("Supabase signup error:", error);
+        setLoading(false);
+        toast(error?.message || "Signup failed. Please try again.", "error");
     }
-}
+});
 
-init();
+console.log("🚀 SSA Supabase Signup Loaded");
