@@ -1,16 +1,6 @@
 import { auth } from "../../../js/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {
-  getMessages,
-  sendMessage,
-  subscribeToMessages,
-  subscribeToReadReceipts,
-  markConversationRead,
-  getProfileByFirebaseUid,
-  getConversationPeople,
-  createChatPresence,
-  touchLastSeen
-} from "../../../js/messaging-service.js";
+import { getMessages, sendMessage, subscribeToMessages, subscribeToReadReceipts, markConversationRead, getProfileByFirebaseUid, getConversationPeople, createChatPresence, touchLastSeen } from "../../../js/messaging-service.js";
 
 const params = new URLSearchParams(location.search);
 const chatId = params.get("conversation") || params.get("chatId");
@@ -65,27 +55,24 @@ function isRead(message) {
 
 function renderMessage(message, { scroll = true } = {}) {
   const mine = message.sender_id === profile.id;
+  const read = mine && isRead(message);
   const element = document.createElement("div");
   element.className = mine ? "message sent" : "message received";
   element.dataset.messageId = message.id;
-  const status = mine ? (isRead(message) ? "✓✓" : "✓") : "";
-  const statusClass = mine && isRead(message) ? "message-read is-read" : "message-read";
-  element.innerHTML = `<div class="message-text">${escapeHTML(message.body)}</div><div class="message-meta"><time class="message-time">${new Date(message.created_at).toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"})}</time>${mine ? `<span class="${statusClass}" aria-label="${isRead(message) ? "Read" : "Sent"}">${status}</span>` : ""}</div>`;
+  element.dataset.createdAt = message.created_at || "";
+  element.innerHTML = `<div class="message-text">${escapeHTML(message.body)}</div><div class="message-meta"><time class="message-time">${new Date(message.created_at).toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"})}</time>${mine ? `<span class="message-read${read ? " is-read" : ""}" aria-label="${read ? "Read" : "Sent"}">${read ? "✓✓" : "✓"}</span>` : ""}</div>`;
   messagesBox.appendChild(element);
   if (scroll) messagesBox.scrollTop = messagesBox.scrollHeight;
 }
 
 function refreshReadStates() {
   messagesBox?.querySelectorAll(".message.sent").forEach(element => {
-    const message = { id: element.dataset.messageId, created_at: element.dataset.createdAt };
-    if (!message.created_at) return;
-    const read = isRead(message);
+    const read = isRead({ created_at: element.dataset.createdAt });
     const indicator = element.querySelector(".message-read");
-    if (indicator) {
-      indicator.textContent = read ? "✓✓" : "✓";
-      indicator.classList.toggle("is-read", read);
-      indicator.setAttribute("aria-label", read ? "Read" : "Sent");
-    }
+    if (!indicator) return;
+    indicator.textContent = read ? "✓✓" : "✓";
+    indicator.classList.toggle("is-read", read);
+    indicator.setAttribute("aria-label", read ? "Read" : "Sent");
   });
 }
 
@@ -102,11 +89,7 @@ async function loadChat() {
 
   const messages = await getMessages(chatId);
   messagesBox.innerHTML = "";
-  messages.forEach(message => {
-    renderMessage(message, { scroll: false });
-    const element = messagesBox.lastElementChild;
-    if (element) element.dataset.createdAt = message.created_at;
-  });
+  messages.forEach(message => renderMessage(message, { scroll: false }));
   messagesBox.scrollTop = messagesBox.scrollHeight;
 
   await markConversationRead({ conversationId: chatId, userId: profile.id });
