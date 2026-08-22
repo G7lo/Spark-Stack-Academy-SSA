@@ -8,11 +8,11 @@ const toast = (m,t="success") => window.showFounderToast ? window.showFounderToa
 const controlRef = () => doc(db,"platform_controls","global");
 
 async function requireFounder(user){
- const s=await getDoc(doc(db,"profiles",user.uid));
+ const s=await getDoc(doc(db,"founder",user.uid));
  if(!s.exists()) throw Error("Founder profile not found.");
  const p=s.data();
- if(p.role!=="founder") throw Error("Founder access required.");
- if(p.status&&p.status!=="active") throw Error("Founder account is not active.");
+ if(p.role && p.role!=="founder") throw Error("Founder access required.");
+ if(p.status && p.status!=="active") throw Error("Founder account is not active.");
  state.user=user; state.profile=p;
 }
 
