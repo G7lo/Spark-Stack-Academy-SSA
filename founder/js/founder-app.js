@@ -3,6 +3,7 @@
 // Shared shell: sidebar + topbar + founder session
 // ============================================================
 
+import "../../js/ui-runtime.js";
 import { auth, db } from "../../js/firebase.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { doc, getDoc, collection, query, where, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -29,7 +30,7 @@ function loadCSS(path){
 async function mountComponent(containerId,htmlPath,cssPath){
   const container=$(containerId); if(!container) return false;
   try{ loadCSS(cssPath); container.innerHTML=await fetchComponent(htmlPath); window.lucide?.createIcons(); return true; }
-  catch(error){ console.error(`[Founder Core] ${htmlPath}`,error); return false; }
+  catch(error){ console.error(`[Founder Core] ${htmlPath}`,error); window.showToast?.(`Couldn't load ${htmlPath}.`,"error"); return false; }
 }
 
 async function mountShell(){
@@ -85,7 +86,7 @@ function loadNotifications(uid){
 }
 function escapeText(value){const div=document.createElement("div");div.textContent=String(value);return div.innerHTML;}
 
-document.addEventListener("click",async event=>{const logout=event.target.closest("#logoutBtn");if(!logout)return;try{await signOut(auth);sessionStorage.removeItem("founderProfile");window.location.href=asset("../login.html");}catch(error){console.error("Logout failed:",error);}});
+document.addEventListener("click",async event=>{const logout=event.target.closest("#logoutBtn");if(!logout)return;try{await signOut(auth);sessionStorage.removeItem("founderProfile");window.location.href=asset("../login.html");}catch(error){console.error("Logout failed:",error);window.showToast?.("Logout failed. Please try again.","error");}});
 
 async function boot(){await mountShell();onAuthStateChanged(auth,user=>{if(!user){window.location.href=asset("../login.html");return;}loadFounderProfile(user.uid);loadNotifications(user.uid);});}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
