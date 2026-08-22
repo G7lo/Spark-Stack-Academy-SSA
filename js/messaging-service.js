@@ -11,10 +11,12 @@ function canMessage(fromRole, toRole) {
     return false;
 }
 
+const PROFILE_FIELDS = "id,firebase_uid,email,full_name,role,status,avatar_url,last_seen_at";
+
 export async function getProfileByFirebaseUid(firebaseUid) {
     if (!firebaseUid) throw new Error("Your account identity is missing.");
     const { data, error } = await supabase.from("profiles")
-        .select("id,firebase_uid,username,full_name,role,status,avatar_url,last_seen_at")
+        .select(PROFILE_FIELDS)
         .eq("firebase_uid", firebaseUid).maybeSingle();
     if (error) throw error;
     if (!data) throw new Error("Your account is still being set up. Please sign in again.");
@@ -23,12 +25,12 @@ export async function getProfileByFirebaseUid(firebaseUid) {
 
 export async function findUsers({ query = "", role = null, limit = 20 } = {}) {
     let request = supabase.from("profiles")
-        .select("id,username,full_name,role,status,avatar_url,last_seen_at")
+        .select(PROFILE_FIELDS)
         .eq("status", "active").limit(limit);
     if (role) request = request.eq("role", role);
     if (query.trim()) {
-        const q = query.trim();
-        request = request.or(`username.ilike.%${q}%,full_name.ilike.%${q}%`);
+        const q = query.trim().replace(/[%_,]/g, " ");
+        request = request.ilike("full_name", `%${q}%`);
     }
     const { data, error } = await request.order("full_name");
     if (error) throw error;
@@ -49,7 +51,7 @@ export async function getConversationPeople(conversationId) {
     const ids = members.map(member => member.user_id);
     if (!ids.length) return [];
     const { data, error } = await supabase.from("profiles")
-        .select("id,username,full_name,role,status,avatar_url,last_seen_at")
+        .select(PROFILE_FIELDS)
         .in("id", ids);
     if (error) throw error;
     return (data || []).map(person => ({
@@ -112,7 +114,7 @@ export function createChatPresence(conversationId, profile, { onSync, onTyping }
         if (status === "SUBSCRIBED") {
             await channel.track({
                 user_id: profile.id,
-                username: profile.username,
+                name: profile.full_name,
                 online: true,
                 typing: false,
                 online_at: new Date().toISOString()
