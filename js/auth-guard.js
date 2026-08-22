@@ -1,142 +1,70 @@
-// ============================================
-// SPARK STACK ACADEMY
-// AUTH GUARD SYSTEM
-// ============================================
-
-import {
-    auth,
-    db
-} from "./firebase.js";
-
-
-import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-import {
-    doc,
-    getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-// ============================================
-// DASHBOARD ROUTES
-// ============================================
+// Spark Stack Academy — Supabase Auth Guard
+import { supabase } from "./supabase.js";
+import { getCurrentProfile } from "./supabase-auth.js";
 
 const DASHBOARDS = {
-
     founder: "/founder/dashboard.html",
-
     admin: "/admin/dashboard.html",
-
-    instructor: "/instructors/dashboard.html",
-
+    instructor: "/instructor/dashboard.html",
     student: "/student/dashboard.html"
-
 };
 
+export function protectPage(requiredRole) {
+    let checking = true;
 
-// ============================================
-// CHECK ACCESS
-// ============================================
-
-export function protectPage(requiredRole){
-
-
-onAuthStateChanged(auth, async(user)=>{
-
-
-    // Not logged in
-
-    if(!user){
-
-        window.location.href =
-        "/login.html";
-
-        return;
-
-    }
-
-
-
-    try{
-
-
-        const userRef =
-        doc(db,"users",user.uid);
-
-
-
-        const userSnap =
-        await getDoc(userRef);
-
-
-
-        if(!userSnap.exists()){
-
-
-            window.location.href =
-            "/login.html";
-
+    const check = async (session) => {
+        if (!checking) return;
+        if (!session?.user) {
+            window.location.replace("/login.html");
             return;
-
         }
 
+        try {
+            const profile = await getCurrentProfile();
+            if (!profile || profile.status !== "active") {
+                await supabase.auth.signOut();
+                window.location.replace("/login.html");
+                return;
+            }
 
+            if (requiredRole && profile.role !== requiredRole) {
+                showAccessToast("You don't have permission to open this page.");
+                window.location.replace(DASHBOARDS[profile.role] || "/login.html");
+                return;
+            }
 
-        const userData =
-        userSnap.data();
-
-
-
-        // Role check
-
-        if(userData.role !== requiredRole){
-
-
-            alert(
-            "Access denied."
-            );
-
-
-            window.location.href =
-            DASHBOARDS[userData.role] ||
-            "/login.html";
-
-
-            return;
-
+            checking = false;
+            document.documentElement.classList.add("auth-ready");
+            console.log("Authorized:", profile.username || profile.full_name, profile.role);
+        } catch (error) {
+            console.error("Supabase auth guard error:", error);
+            await supabase.auth.signOut();
+            window.location.replace("/login.html");
         }
+    };
 
+    supabase.auth.getSession().then(({ data }) => check(data.session));
+    supabase.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_OUT") {
+            window.location.replace("/login.html");
+            return;
+        }
+        check(session);
+    });
+}
 
-
-        console.log(
-        "Authorized:",
-        userData.role
-        );
-
-
+function showAccessToast(message) {
+    let container = document.getElementById("toastContainer");
+    if (!container) {
+        container = document.createElement("div");
+        container.id = "toastContainer";
+        document.body.appendChild(container);
     }
-
-    catch(error){
-
-
-        console.error(
-        "Guard error:",
-        error
-        );
-
-
-        window.location.href =
-        "/login.html";
-
-
-    }
-
-
-
-});
-
-
+    const toast = document.createElement("div");
+    toast.className = "toast error";
+    const text = document.createElement("strong");
+    text.textContent = message;
+    toast.appendChild(text);
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 2500);
 }
