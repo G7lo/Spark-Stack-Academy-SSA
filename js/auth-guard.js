@@ -1,6 +1,6 @@
-// Spark Stack Academy — Supabase Auth Guard
-import { supabase } from "./supabase.js";
-import { getCurrentProfile } from "./supabase-auth.js";
+// Spark Stack Academy — Clerk + Supabase Auth Guard
+import { getClerk } from "./clerk-client.js";
+import { getCurrentProfile, provisionAccount, signOut } from "./supabase-auth.js";
 
 const DASHBOARDS = {
     founder: "/founder/dashboard.html",
@@ -12,17 +12,30 @@ const DASHBOARDS = {
 export function protectPage(requiredRole) {
     let checking = true;
 
-    const check = async (session) => {
-        if (!checking) return;
-        if (!session?.user) {
-            window.location.replace("/login.html");
-            return;
-        }
-
+    (async () => {
         try {
-            const profile = await getCurrentProfile();
+            const clerk = await getClerk();
+
+            if (!clerk.isSignedIn || !clerk.user) {
+                window.location.replace("/login.html");
+                return;
+            }
+
+            let profile = await getCurrentProfile();
+
+            // Existing Clerk users can be provisioned lazily after migration.
+            if (!profile) {
+                const role = clerk.user.unsafeMetadata?.role === "instructor" ? "instructor" : "student";
+                await provisionAccount({
+                    role,
+                    bio: clerk.user.unsafeMetadata?.bio || "",
+                    expertise: clerk.user.unsafeMetadata?.expertise || ""
+                });
+                profile = await getCurrentProfile();
+            }
+
             if (!profile || profile.status !== "active") {
-                await supabase.auth.signOut();
+                await signOut();
                 window.location.replace("/login.html");
                 return;
             }
@@ -37,20 +50,12 @@ export function protectPage(requiredRole) {
             document.documentElement.classList.add("auth-ready");
             console.log("Authorized:", profile.username || profile.full_name, profile.role);
         } catch (error) {
-            console.error("Supabase auth guard error:", error);
-            await supabase.auth.signOut();
-            window.location.replace("/login.html");
+            console.error("Clerk auth guard error:", error);
+            if (checking) window.location.replace("/login.html");
         }
-    };
+    })();
 
-    supabase.auth.getSession().then(({ data }) => check(data.session));
-    supabase.auth.onAuthStateChange((event, session) => {
-        if (event === "SIGNED_OUT") {
-            window.location.replace("/login.html");
-            return;
-        }
-        check(session);
-    });
+    return () => { checking = false; };
 }
 
 function showAccessToast(message) {
@@ -60,6 +65,7 @@ function showAccessToast(message) {
         container.id = "toastContainer";
         document.body.appendChild(container);
     }
+
     const toast = document.createElement("div");
     toast.className = "toast error";
     const text = document.createElement("strong");
