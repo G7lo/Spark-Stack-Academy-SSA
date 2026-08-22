@@ -1,141 +1,132 @@
-// Spark Stack Academy — Supabase Auth Signup
-import { supabase } from "./supabase.js";
+// Spark Stack Academy — Clerk Signup UI
+import { getClerk } from "./clerk-client.js";
+import { getCurrentProfile, provisionAccount } from "./supabase-auth.js";
 
-const signupForm = document.getElementById("signupForm");
-const nameInput = document.getElementById("name");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const confirmPasswordInput = document.getElementById("confirmPassword");
-const roleSelect = document.getElementById("role");
-const bioInput = document.getElementById("bio");
-const expertiseInput = document.getElementById("expertise");
-const termsCheckbox = document.getElementById("terms");
-const signupBtn = document.getElementById("signupBtn");
-const googleSignupBtn = document.getElementById("googleSignup");
-const toastContainer = document.getElementById("toastContainer");
+const form = document.getElementById("signupForm");
+const card = document.querySelector(".login-card");
 const loader = document.getElementById("authLoader");
 const loaderText = document.getElementById("loaderText");
+const toastContainer = document.getElementById("toastContainer");
 
-function showLoader(message = "Creating your account...") {
+function toast(message, type = "success") {
+    if (!toastContainer) return;
+    const el = document.createElement("div");
+    el.className = `toast ${type}`;
+    const text = document.createElement("strong");
+    text.textContent = message;
+    el.appendChild(text);
+    toastContainer.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+}
+
+function loading(message = "Creating your secure account...") {
     loader?.classList.add("active");
     if (loaderText) loaderText.textContent = message;
 }
 
-function hideLoader() { loader?.classList.remove("active"); }
-
-function showToast(message, type = "success") {
-    if (!toastContainer) return;
-    const toast = document.createElement("div");
-    toast.className = `toast ${type}`;
-    const strong = document.createElement("strong");
-    strong.textContent = message;
-    toast.appendChild(strong);
-    toastContainer.appendChild(toast);
-    setTimeout(() => {
-        toast.style.opacity = "0";
-        toast.style.transform = "translateX(40px)";
-        setTimeout(() => toast.remove(), 300);
-    }, 3500);
+function hideLoading() {
+    loader?.classList.remove("active");
 }
 
-function busy(value) {
-    if (signupBtn) signupBtn.disabled = value;
-    if (googleSignupBtn) googleSignupBtn.disabled = value;
-}
+async function finishSignup(clerk, role, bio, expertise) {
+    if (!clerk?.isSignedIn || !clerk.user) return;
 
-function validEmail(value) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); }
-function strongPassword(value) { return value.length >= 8 && /[A-Z]/.test(value) && /[a-z]/.test(value) && /\d/.test(value); }
-
-signupForm?.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const fullName = nameInput?.value.trim() || "";
-    const email = emailInput?.value.trim() || "";
-    const password = passwordInput?.value || "";
-    const confirmPassword = confirmPasswordInput?.value || "";
-    const role = roleSelect?.value || "student";
-    const bio = bioInput?.value.trim() || "";
-    const expertise = expertiseInput?.value.trim() || "";
-
-    if (!fullName) return showToast("Enter your full name.", "warning");
-    if (!validEmail(email)) return showToast("Enter a valid email address.", "warning");
-    if (!strongPassword(password)) return showToast("Use 8+ characters with uppercase, lowercase and a number.", "warning");
-    if (password !== confirmPassword) return showToast("Passwords do not match.", "warning");
-    if (!role) return showToast("Select your account type.", "warning");
-    if (termsCheckbox && !termsCheckbox.checked) return showToast("Please accept the Terms & Conditions and Privacy Policy.", "warning");
+    loading("Finishing your Spark Stack Academy setup...");
 
     try {
-        busy(true);
-        showLoader("Creating your secure account...");
+        await provisionAccount({ role, bio, expertise });
+        const profile = await getCurrentProfile();
+        if (!profile) throw new Error("Your profile could not be created.");
 
-        const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                data: {
-                    full_name: fullName,
-                    name: fullName,
-                    role,
-                    bio: role === "instructor" ? bio : "",
-                    expertise: role === "instructor" ? expertise : ""
-                },
-                emailRedirectTo: `${window.location.origin}/login.html`
-            }
-        });
+        toast("Account created successfully! 🎉", "success");
+        setTimeout(() => window.location.replace("login.html"), 900);
+    } catch (error) {
+        console.error("Clerk provisioning error:", error);
+        hideLoading();
+        toast(error.message || "Account setup failed. Please try again.", "error");
+        await clerk.signOut().catch(() => {});
+    }
+}
 
-        if (error) throw error;
+async function init() {
+    try {
+        const clerk = await getClerk();
 
-        if (!data.session) {
-            hideLoader();
-            showToast("Account created. Check your email to confirm your account.", "success");
-            setTimeout(() => { window.location.href = "login.html"; }, 1800);
+        if (clerk.isSignedIn) {
+            window.location.replace("student/dashboard.html");
             return;
         }
 
-        showToast("Account created successfully! 🎉", "success");
-        setTimeout(() => { window.location.href = "login.html"; }, 1000);
-    } catch (error) {
-        console.error("Supabase signup error:", error);
-        hideLoader();
-        busy(false);
-        showToast(error.message || "Signup failed. Please try again.", "error");
-    }
-});
+        if (form) form.style.display = "none";
 
-googleSignupBtn?.addEventListener("click", async () => {
-    if (termsCheckbox && !termsCheckbox.checked) {
-        showToast("Please accept the Terms & Conditions and Privacy Policy first.", "warning");
-        termsCheckbox.focus();
-        return;
-    }
+        const panel = document.createElement("section");
+        panel.className = "ssa-clerk-signup-panel";
+        panel.innerHTML = `
+            <div class="ssa-role-picker">
+                <label for="ssaRole">Account type</label>
+                <select id="ssaRole">
+                    <option value="student">Student</option>
+                    <option value="instructor">Instructor</option>
+                </select>
+            </div>
+            <div id="ssaInstructorFields" class="ssa-instructor-fields" hidden>
+                <label for="ssaBio">Professional bio</label>
+                <textarea id="ssaBio" rows="3" placeholder="Tell us briefly about yourself"></textarea>
+                <label for="ssaExpertise">Area of expertise</label>
+                <input id="ssaExpertise" type="text" placeholder="e.g. Web Development">
+            </div>
+            <div class="ssa-legal-note">
+                By creating an account, you agree to our
+                <a href="terms.html">Terms &amp; Conditions</a> and
+                <a href="privacy.html">Privacy Policy</a>.
+            </div>
+            <div id="ssaClerkSignup"></div>
+        `;
+        card?.appendChild(panel);
 
-    try {
-        busy(true);
-        showLoader("Opening Google sign-up...");
-        const { error } = await supabase.auth.signInWithOAuth({
-            provider: "google",
-            options: {
-                redirectTo: `${window.location.origin}/login.html`
+        const role = panel.querySelector("#ssaRole");
+        const instructorFields = panel.querySelector("#ssaInstructorFields");
+        const bio = panel.querySelector("#ssaBio");
+        const expertise = panel.querySelector("#ssaExpertise");
+        const mount = panel.querySelector("#ssaClerkSignup");
+
+        const mountSignup = () => {
+            mount.innerHTML = "";
+            instructorFields.hidden = role.value !== "instructor";
+            clerk.mountSignUp(mount, {
+                unsafeMetadata: {
+                    role: role.value,
+                    bio: role.value === "instructor" ? bio.value.trim() : "",
+                    expertise: role.value === "instructor" ? expertise.value.trim() : ""
+                },
+                signInUrl: "/login.html",
+                fallbackRedirectUrl: "/login.html",
+                appearance: {
+                    options: {
+                        termsPageUrl: "/terms.html"
+                    }
+                }
+            });
+        };
+
+        role.addEventListener("change", mountSignup);
+        mountSignup();
+
+        clerk.addListener(({ user }) => {
+            if (user) {
+                finishSignup(
+                    clerk,
+                    user.unsafeMetadata?.role === "instructor" ? "instructor" : "student",
+                    user.unsafeMetadata?.bio || "",
+                    user.unsafeMetadata?.expertise || ""
+                );
             }
         });
-        if (error) throw error;
     } catch (error) {
-        console.error("Google signup error:", error);
-        hideLoader();
-        busy(false);
-        showToast("Google sign-up isn't configured yet. Use email and password for now.", "warning");
+        console.error("Clerk initialization error:", error);
+        hideLoading();
+        toast(error.message || "Authentication is temporarily unavailable.", "error");
     }
-});
+}
 
-document.querySelectorAll(".toggle-password").forEach(toggle => {
-    toggle.addEventListener("click", () => {
-        const target = document.getElementById(toggle.dataset.target);
-        if (!target) return;
-        const visible = target.type === "text";
-        target.type = visible ? "password" : "text";
-        toggle.classList.toggle("fa-eye", visible);
-        toggle.classList.toggle("fa-eye-slash", !visible);
-    });
-});
-
-console.log("🚀 SSA Supabase Auth Signup Loaded");
+init();
