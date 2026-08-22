@@ -1,205 +1,139 @@
 /* ===================================
-   FOUNDER DASHBOARD
+   FOUNDER DASHBOARD — SUPABASE
 =================================== */
 
 import "./js/founder-app.js";
+import { supabase } from "../js/supabase.js";
 
-import { db } from "../js/firebase.js";
+const studentCount = document.getElementById("studentCount");
+const instructorCount = document.getElementById("instructorCount");
+const enrollmentCount = document.getElementById("enrollmentCount");
+const revenueCount = document.getElementById("revenueCount");
+const activityFeed = document.getElementById("activityFeed");
+const founderInsight = document.getElementById("founderInsight");
 
-import {
-collection,
-onSnapshot,
-query,
-orderBy,
-limit
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-/* ===================================
-   KPI ELEMENTS
-=================================== */
-
-const studentCount =
-document.getElementById("studentCount");
-
-const instructorCount =
-document.getElementById("instructorCount");
-
-const enrollmentCount =
-document.getElementById("enrollmentCount");
-
-const revenueCount =
-document.getElementById("revenueCount");
-
-const activityFeed =
-document.getElementById("activityFeed");
-
-const founderInsight =
-document.getElementById("founderInsight");
-
-/* ===================================
-   STUDENTS
-=================================== */
-
-onSnapshot(
-collection(db,"students"),
-(snapshot)=>{
-
-studentCount.textContent =
-snapshot.size.toLocaleString();
-
-});
-
-/* ===================================
-   INSTRUCTORS
-=================================== */
-
-onSnapshot(
-collection(db,"instructors"),
-(snapshot)=>{
-
-instructorCount.textContent =
-snapshot.size.toLocaleString();
-
-});
-
-/* ===================================
-   ENROLLMENTS
-=================================== */
-
-onSnapshot(
-collection(db,"enrollments"),
-(snapshot)=>{
-
-enrollmentCount.textContent =
-snapshot.size.toLocaleString();
-
-});
-
-/* ===================================
-   REVENUE
-=================================== */
-
-onSnapshot(
-collection(db,"payments"),
-(snapshot)=>{
-
-let total=0;
-
-snapshot.forEach(doc=>{
-
-const payment=doc.data();
-
-total+=payment.amount||0;
-
-});
-
-revenueCount.textContent=
-"$"+total.toLocaleString();
-
-});
-
-/* ===================================
-   RECENT ACTIVITY
-=================================== */
-
-const activityQuery=query(
-
-collection(db,"activity"),
-
-orderBy("createdAt","desc"),
-
-limit(8)
-
-);
-
-onSnapshot(activityQuery,(snapshot)=>{
-
-activityFeed.innerHTML="";
-
-if(snapshot.empty){
-
-activityFeed.innerHTML=`
-
-<div class="empty-state">
-
-<div class="empty-icon">📡</div>
-
-<h4>No Recent Activity</h4>
-
-<p>Activity will appear here.</p>
-
-</div>
-
-`;
-
-return;
-
+async function count(table) {
+    const { count, error } = await supabase
+        .from(table)
+        .select("id", { count: "exact", head: true });
+    if (error) throw error;
+    return count || 0;
 }
 
-snapshot.forEach(doc=>{
+async function loadDashboard() {
+    try {
+        const [students, instructors, enrollments, payments] = await Promise.all([
+            count("students"),
+            count("instructors"),
+            count("enrollments"),
+            supabase
+                .from("payments")
+                .select("amount")
+                .eq("status", "paid")
+        ]);
 
-const item=doc.data();
+        studentCount.textContent = students.toLocaleString();
+        instructorCount.textContent = instructors.toLocaleString();
+        enrollmentCount.textContent = enrollments.toLocaleString();
 
-activityFeed.innerHTML+=`
+        const paymentRows = payments.data || [];
+        const revenue = paymentRows.reduce(
+            (total, payment) => total + Number(payment.amount || 0),
+            0
+        );
+        revenueCount.textContent = "$" + revenue.toLocaleString();
 
-<div class="activity-item">
+        await loadRecentActivity();
+    } catch (error) {
+        console.error("Founder dashboard load failed:", error);
+        [studentCount, instructorCount, enrollmentCount, revenueCount].forEach(el => {
+            if (el) el.textContent = "—";
+        });
+        if (activityFeed) {
+            activityFeed.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">⚠️</div>
+                    <h4>Dashboard data unavailable</h4>
+                    <p>We couldn't load the latest data. Please refresh and try again.</p>
+                </div>`;
+        }
+    }
+}
 
-<div class="activity-icon">
+async function loadRecentActivity() {
+    if (!activityFeed) return;
 
-${item.icon||"✨"}
+    const { data, error } = await supabase
+        .from("audit_logs")
+        .select("id,action,created_at")
+        .order("created_at", { ascending: false })
+        .limit(8);
 
-</div>
+    if (error) {
+        console.warn("Activity feed unavailable:", error.message);
+        activityFeed.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">📡</div>
+                <h4>Activity feed unavailable</h4>
+                <p>Recent activity will appear here when available.</p>
+            </div>`;
+        return;
+    }
 
-<div>
+    if (!data?.length) {
+        activityFeed.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">📡</div>
+                <h4>No Recent Activity</h4>
+                <p>Activity will appear here.</p>
+            </div>`;
+        return;
+    }
 
-<h4>${item.title}</h4>
+    activityFeed.innerHTML = data.map(item => `
+        <div class="activity-item">
+            <div class="activity-icon">✨</div>
+            <div>
+                <h4>${escapeHtml(item.action || "Platform activity")}</h4>
+                <small>${formatDate(item.created_at)}</small>
+            </div>
+        </div>
+    `).join("");
+}
 
-<small>${item.message}</small>
+function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>\"]/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;"
+    }[char]));
+}
 
-</div>
+function formatDate(value) {
+    if (!value) return "";
+    return new Date(value).toLocaleString([], {
+        dateStyle: "medium",
+        timeStyle: "short"
+    });
+}
 
-</div>
-
-`;
-
-});
-
-});
-
-/* ===================================
-   SPARK AI
-=================================== */
-
-const insights=[
-
-"Everything is running smoothly.",
-
-"Admissions are growing steadily.",
-
-"Student engagement remains healthy.",
-
-"Revenue trends look positive.",
-
-"No critical issues detected."
-
+const insights = [
+    "Everything is running smoothly.",
+    "Admissions are growing steadily.",
+    "Student engagement remains healthy.",
+    "Revenue trends look positive.",
+    "No critical issues detected."
 ];
 
-let index=0;
+let index = 0;
 
-setInterval(()=>{
+setInterval(() => {
+    if (!founderInsight) return;
+    founderInsight.textContent = insights[index++];
+    if (index >= insights.length) index = 0;
+}, 10000);
 
-founderInsight.textContent=
+loadDashboard();
 
-insights[index];
-
-index++;
-
-if(index>=insights.length){
-
-index=0;
-
-}
-
-},10000);
-
-console.log("🚀 Founder Dashboard Ready");
+console.log("🚀 Founder Dashboard Ready — Supabase runtime");
