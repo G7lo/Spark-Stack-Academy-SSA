@@ -137,11 +137,8 @@
     window.showToast = toast;
     window.ssaToast = toast;
 
-    // Browser alerts are blocking and visually inconsistent. Route them into SSA toasts.
     window.alert = message => toast(message, "info");
 
-    // Safe async alternatives for new code. Existing synchronous confirm() calls are
-    // intentionally not monkey-patched because changing their return type can break flows.
     window.ssaConfirm = (message, { confirmText = "Continue", cancelText = "Cancel" } = {}) => {
         return new Promise(resolve => {
             installStyles();
@@ -194,9 +191,19 @@
         ).forEach(el => el.classList.add("ssa-injected-component"));
     }
 
+    function loadLearningEnhancements() {
+        if (document.querySelector('script[data-ssa-learning-loader]')) return;
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = "/js/learning-enhancements.js";
+        script.dataset.ssaLearningLoader = "true";
+        document.body.appendChild(script);
+    }
+
     function boot() {
         installStyles();
         markInjected();
+        loadLearningEnhancements();
 
         const observer = new MutationObserver(() => markInjected());
         observer.observe(document.documentElement, { childList: true, subtree: true });
