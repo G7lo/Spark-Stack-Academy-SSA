@@ -1,0 +1,13 @@
+/* SSA FOUNDER OS — SHARED PAGE THEME */
+:root{--fo-bg:#f5f7fb;--fo-surface:#fff;--fo-surface-2:#f8fafc;--fo-border:#e2e8f0;--fo-text:#0f172a;--fo-muted:#64748b;--fo-blue:#2563eb;--fo-blue-soft:#eff6ff;--fo-green:#16a34a;--fo-red:#dc2626;--fo-radius:14px;--fo-shadow:0 8px 28px rgba(15,23,42,.06)}
+html,body{background:var(--fo-bg)!important;color:var(--fo-text)!important;font-family:Inter,Poppins,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
+body{min-height:100vh!important;-webkit-font-smoothing:antialiased}
+.founder-main{background:var(--fo-bg)!important;color:var(--fo-text)!important;min-width:0}
+.founder-page{background:transparent!important;color:var(--fo-text)!important}
+.founder-page h1,.founder-page h2,.founder-page h3,.founder-page h4,.founder-page h5,.founder-page strong{color:var(--fo-text)}
+.founder-page p,.founder-page small,.founder-page .muted,.founder-page .subtitle{color:var(--fo-muted)}
+.founder-page section,.founder-page article,.founder-page .card,.founder-page .panel,.founder-page .stat-card,.founder-page .table-card,.founder-page .content-card{border-color:var(--fo-border)}
+input,select,textarea{background:#fff!important;color:var(--fo-text)!important;border:1px solid var(--fo-border)!important;border-radius:10px}
+input::placeholder,textarea::placeholder{color:#94a3b8!important}
+button{font-family:inherit}
+@media(max-width:768px){.founder-main{width:100%;min-width:0}.founder-page{padding-left:14px!important;padding-right:14px!important}}
