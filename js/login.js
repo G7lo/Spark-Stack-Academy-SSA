@@ -1,991 +1,149 @@
-// ============================================
-// SPARK STACK ACADEMY
-// login.js
-// PART 1 - IMPORTS & INITIALIZATION
-// ============================================
+// Spark Stack Academy — Supabase Auth Login
+import { supabase } from "./supabase.js";
+import { getCurrentProfile } from "./supabase-auth.js";
 
-import {
-    auth,
-    db
-} from "./firebase.js";
-
-import {
-    GoogleAuthProvider,
-    signInWithEmailAndPassword,
-    signInWithPopup,
-    browserLocalPersistence,
-    browserSessionPersistence,
-    setPersistence,
-    sendPasswordResetEmail
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-    doc,
-    getDoc,
-    setDoc,
-    updateDoc,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// ============================================
-// DOM ELEMENTS
-// ============================================
-
-const loginForm =
-document.getElementById("loginForm");
-
-const emailInput =
-document.getElementById("email");
-
-const passwordInput =
-document.getElementById("password");
-
-const rememberMe =
-document.getElementById("rememberMe");
-
-const loginBtn =
-document.getElementById("loginBtn");
-
-const googleLoginBtn =
-document.getElementById("googleLogin");
-
-const loader =
-document.getElementById("authLoader");
-
-const loaderText =
-document.getElementById("loaderText");
-
-const toastContainer =
-document.getElementById("toastContainer");
-
-const forgotPasswordBtn =
-document.getElementById("forgotPassword");
-
-const resetModal =
-document.getElementById("resetModal");
-
-const resetEmail =
-document.getElementById("resetEmail");
-
-const sendResetBtn =
-document.getElementById("sendReset");
-
-const cancelResetBtn =
-document.getElementById("cancelReset");
-
-// ============================================
-// GOOGLE PROVIDER
-// ============================================
-
-const provider = new GoogleAuthProvider();
-
-provider.setCustomParameters({
-
-    prompt: "select_account"
-
-});
-
-// ============================================
-// DASHBOARD ROUTES
-// ============================================
+const loginForm = document.getElementById("loginForm");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const rememberMe = document.getElementById("rememberMe");
+const loginBtn = document.getElementById("loginBtn");
+const googleLoginBtn = document.getElementById("googleLogin");
+const loader = document.getElementById("authLoader");
+const loaderText = document.getElementById("loaderText");
+const toastContainer = document.getElementById("toastContainer");
+const forgotPasswordBtn = document.getElementById("forgotPassword");
+const resetModal = document.getElementById("resetModal");
+const resetEmail = document.getElementById("resetEmail");
+const sendResetBtn = document.getElementById("sendReset");
+const cancelResetBtn = document.getElementById("cancelReset");
 
 const DASHBOARDS = {
-
     founder: "founder/dashboard.html",
-
     admin: "admin/dashboard.html",
-
     instructor: "instructor/dashboard.html",
-
     student: "student/dashboard.html"
-
 };
 
-// ============================================
-// LOADER
-// ============================================
-
-function showLoader(
-
-    message = "Signing you in..."
-
-) {
-
-    loader.classList.add("active");
-
-    loaderText.textContent = message;
-
+function showLoader(message = "Signing you in...") {
+    loader?.classList.add("active");
+    if (loaderText) loaderText.textContent = message;
 }
 
 function hideLoader() {
-
-    loader.classList.remove("active");
-
+    loader?.classList.remove("active");
 }
 
-// ============================================
-// TOASTS
-// ============================================
-
-function showToast(
-
-    message,
-
-    type = "success"
-
-) {
-
-    const toast =
-    document.createElement("div");
-
-    toast.className =
-    `toast ${type}`;
-
-    toast.innerHTML = `
-
-        <strong>${message}</strong>
-
-    `;
-
+function showToast(message, type = "success") {
+    if (!toastContainer) return;
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    const strong = document.createElement("strong");
+    strong.textContent = message;
+    toast.appendChild(strong);
     toastContainer.appendChild(toast);
-
     setTimeout(() => {
-
         toast.style.opacity = "0";
-
-        toast.style.transform =
-        "translateX(40px)";
-
-        setTimeout(() => {
-
-            toast.remove();
-
-        }, 300);
-
+        toast.style.transform = "translateX(40px)";
+        setTimeout(() => toast.remove(), 300);
     }, 3500);
-
 }
 
-// ============================================
-// HELPERS
-// ============================================
-
-function isValidEmail(email) {
-
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-    .test(email);
-
+function setBusy(busy) {
+    if (loginBtn) loginBtn.disabled = busy;
+    if (googleLoginBtn) googleLoginBtn.disabled = busy;
 }
 
-function redirectByRole(role) {
-
-    switch (role) {
-
-        case "founder":
-
-            window.location.href =
-            DASHBOARDS.founder;
-
-            break;
-
-        case "admin":
-
-            window.location.href =
-            DASHBOARDS.admin;
-
-            break;
-
-        case "instructor":
-
-            window.location.href =
-            DASHBOARDS.instructor;
-
-            break;
-
-        case "student":
-
-            window.location.href =
-            DASHBOARDS.student;
-
-            break;
-
-        default:
-
-            showToast(
-
-                "Unknown account role.",
-
-                "error"
-
-            );
-
-            hideLoader();
-
-    }
-
-}
-// ============================================
-// PART 2 - UI INTERACTIONS
-// ============================================
-
-// Show / Hide Password
-
-document.querySelectorAll(".toggle-password")
-.forEach(toggle => {
-
-    toggle.addEventListener("click", () => {
-
-        const input =
-        document.getElementById(
-            toggle.dataset.target
-        );
-
-        if (input.type === "password") {
-
-            input.type = "text";
-
-            toggle.classList.remove("fa-eye");
-            toggle.classList.add("fa-eye-slash");
-
-        } else {
-
-            input.type = "password";
-
-            toggle.classList.remove("fa-eye-slash");
-            toggle.classList.add("fa-eye");
-
-        }
-
-    });
-
-});
-
-// ============================================
-// REMEMBER ME
-// ============================================
-
-rememberMe.checked =
-localStorage.getItem("rememberMe") === "true";
-
-if (localStorage.getItem("savedEmail")) {
-
-    emailInput.value =
-    localStorage.getItem("savedEmail");
-
+async function routeAfterLogin() {
+    const profile = await getCurrentProfile();
+    if (!profile) throw new Error("Your account profile is still being prepared. Please try again in a moment.");
+    if (profile.status && profile.status !== "active") throw new Error("Your account is currently unavailable.");
+    window.location.replace(DASHBOARDS[profile.role] || DASHBOARDS.student);
 }
 
-rememberMe.addEventListener("change", () => {
+loginForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const email = emailInput?.value.trim() || "";
+    const password = passwordInput?.value || "";
 
-    localStorage.setItem(
-        "rememberMe",
-        rememberMe.checked
-    );
-
-    if (!rememberMe.checked) {
-
-        localStorage.removeItem("savedEmail");
-
-    }
-
-});
-
-// ============================================
-// BUTTON STATES
-// ============================================
-
-function disableButtons() {
-
-    loginBtn.disabled = true;
-
-    googleLoginBtn.disabled = true;
-
-}
-
-function enableButtons() {
-
-    loginBtn.disabled = false;
-
-    googleLoginBtn.disabled = false;
-
-}
-
-// ============================================
-// RESET PASSWORD MODAL
-// ============================================
-
-forgotPasswordBtn.addEventListener("click", (e) => {
-
-    e.preventDefault();
-
-    resetEmail.value = emailInput.value;
-
-    resetModal.classList.add("active");
-
-    resetEmail.focus();
-
-});
-
-cancelResetBtn.addEventListener("click", () => {
-
-    resetModal.classList.remove("active");
-
-});
-
-resetModal.addEventListener("click", (e) => {
-
-    if (e.target === resetModal) {
-
-        resetModal.classList.remove("active");
-
-    }
-
-});
-
-// ============================================
-// SEND PASSWORD RESET EMAIL
-// ============================================
-
-sendResetBtn.addEventListener("click", async () => {
-
-    const email =
-    resetEmail.value.trim();
-
-    if (!email) {
-
-        showToast(
-            "Enter your email address.",
-            "warning"
-        );
-
-        return;
-
-    }
-
-    if (!isValidEmail(email)) {
-
-        showToast(
-            "Enter a valid email address.",
-            "error"
-        );
-
-        return;
-
-    }
+    if (!email || !password) return showToast("Enter your email and password.", "warning");
 
     try {
-
-        showLoader(
-            "Sending password reset link..."
-        );
-
-        await sendPasswordResetEmail(
-            auth,
-            email
-        );
-
-        hideLoader();
-
-        resetModal.classList.remove("active");
-
-        showToast(
-            "Password reset link sent successfully.",
-            "success"
-        );
-
-    } catch (error) {
-
-        hideLoader();
-
-        switch (error.code) {
-
-            case "auth/user-not-found":
-
-                showToast(
-                    "No account found with that email.",
-                    "error"
-                );
-
-                break;
-
-            case "auth/invalid-email":
-
-                showToast(
-                    "Invalid email address.",
-                    "error"
-                );
-
-                break;
-
-            default:
-
-                showToast(
-                    error.message,
-                    "error"
-                );
-
-        }
-
-    }
-
-});
-
-// ============================================
-// SCROLL TO TOP
-// ============================================
-
-const scrollBtn =
-document.getElementById("scrollTopBtn");
-
-if (scrollBtn) {
-
-    window.addEventListener("scroll", () => {
-
-        if (window.scrollY > 250) {
-
-            scrollBtn.classList.add("show");
-
-        } else {
-
-            scrollBtn.classList.remove("show");
-
-        }
-
-    });
-
-    scrollBtn.addEventListener("click", () => {
-
-        window.scrollTo({
-
-            top: 0,
-
-            behavior: "smooth"
-
-        });
-
-    });
-
-}
-// ============================================
-// PART 3 - EMAIL/PASSWORD LOGIN
-// ============================================
-
-loginForm.addEventListener("submit", async (e) => {
-
-    e.preventDefault();
-
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-
-    if (!email || !password) {
-        showToast(
-            "Please enter your email and password.",
-            "warning"
-        );
-        return;
-    }
-
-    if (!isValidEmail(email)) {
-        showToast(
-            "Please enter a valid email address.",
-            "error"
-        );
-        return;
-    }
-
-    try {
-
-        disableButtons();
+        setBusy(true);
         showLoader("Signing you in...");
 
-        // =====================================
-        // REMEMBER ME
-        // =====================================
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
 
-        const persistence =
-            rememberMe.checked
-                ? browserLocalPersistence
-                : browserSessionPersistence;
-
-        await setPersistence(
-            auth,
-            persistence
-        );
-
-        if (rememberMe.checked) {
-
-            localStorage.setItem(
-                "savedEmail",
-                email
-            );
-
-        } else {
-
-            localStorage.removeItem(
-                "savedEmail"
-            );
-
-        }
-
-        // =====================================
-        // FIREBASE AUTHENTICATION
-        // =====================================
-
-        const credential =
-            await signInWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
-
-        const user =
-            credential.user;
-
-        // =====================================
-        // FIRST: CHECK USERS COLLECTION
-        // =====================================
-
-        const userRef =
-            doc(db, "users", user.uid);
-
-        const userSnap =
-            await getDoc(userRef);
-
-        if (userSnap.exists()) {
-
-            const userData =
-                userSnap.data();
-
-            // Account disabled
-
-            if (userData.active === false) {
-
-                hideLoader();
-                enableButtons();
-
-                showToast(
-                    "This account has been disabled.",
-                    "error"
-                );
-
-                return;
-            }
-
-            // Update login time
-
-            await updateDoc(userRef, {
-
-                lastLogin:
-                    serverTimestamp()
-
-            });
-
-            showToast(
-                `Welcome back, ${userData.fullName || "User"}!`,
-                "success"
-            );
-
-            setTimeout(() => {
-
-                redirectByRole(
-                    userData.role
-                );
-
-            }, 1200);
-
-            return;
-
-        }
-
-        // =====================================
-        // SECOND: CHECK INSTRUCTORS COLLECTION
-        // =====================================
-
-        const instructorRef =
-            doc(
-                db,
-                "instructors",
-                user.uid
-            );
-
-        const instructorSnap =
-            await getDoc(instructorRef);
-
-        if (instructorSnap.exists()) {
-
-            const instructorData =
-                instructorSnap.data();
-
-            // Instructor disabled
-
-            if (instructorData.active === false) {
-
-                hideLoader();
-                enableButtons();
-
-                showToast(
-                    "This instructor account has been disabled.",
-                    "error"
-                );
-
-                return;
-            }
-
-            // =================================
-            // ENSURE USERS PROFILE EXISTS
-            // =================================
-
-            await setDoc(
-                userRef,
-                {
-                    uid: user.uid,
-
-                    fullName:
-                        instructorData.name ||
-                        user.displayName ||
-                        "",
-
-                    email:
-                        instructorData.email ||
-                        user.email ||
-                        "",
-
-                    role: "instructor",
-
-                    active: true,
-
-                    verified:
-                        instructorData.verified === true,
-
-                    lastLogin:
-                        serverTimestamp(),
-
-                    createdAt:
-                        instructorData.createdAt ||
-                        serverTimestamp()
-
-                },
-                {
-                    merge: true
-                }
-            );
-
-            showToast(
-                `Welcome back, ${instructorData.name || "Instructor"}!`,
-                "success"
-            );
-
-            // =================================
-            // INSTRUCTOR DASHBOARD
-            // =================================
-
-            setTimeout(() => {
-
-                redirectByRole(
-                    "instructor"
-                );
-
-            }, 1200);
-
-            return;
-
-        }
-
-        // =====================================
-        // NO PROFILE FOUND
-        // =====================================
-
+        showToast("Welcome back 👋", "success");
+        await new Promise(resolve => setTimeout(resolve, 500));
+        await routeAfterLogin();
+    } catch (error) {
+        console.error("Supabase login error:", error);
         hideLoader();
-        enableButtons();
-
-        showToast(
-            "User profile not found.",
-            "error"
-        );
-
+        setBusy(false);
+        showToast("We couldn't sign you in. Check your email and password and try again.", "error");
     }
-
-    catch (error) {
-
-        hideLoader();
-        enableButtons();
-
-        console.error(
-            "Login error:",
-            error
-        );
-
-        switch (error.code) {
-
-            case "auth/invalid-credential":
-
-            case "auth/wrong-password":
-
-                showToast(
-                    "Incorrect email or password.",
-                    "error"
-                );
-
-                break;
-
-            case "auth/user-not-found":
-
-                showToast(
-                    "Account not found.",
-                    "error"
-                );
-
-                break;
-
-            case "auth/invalid-email":
-
-                showToast(
-                    "Invalid email address.",
-                    "error"
-                );
-
-                break;
-
-            case "auth/too-many-requests":
-
-                showToast(
-                    "Too many attempts. Please try again later.",
-                    "warning"
-                );
-
-                break;
-
-            case "auth/network-request-failed":
-
-                showToast(
-                    "Network error. Check your internet connection.",
-                    "error"
-                );
-
-                break;
-
-            default:
-
-                showToast(
-                    error.message,
-                    "error"
-                );
-
-        }
-
-    }
-
 });
-// ============================================
-// PART 4 - GOOGLE LOGIN & INITIALIZATION
-// ============================================
 
-googleLoginBtn.addEventListener("click", async () => {
+forgotPasswordBtn?.addEventListener("click", () => {
+    if (resetModal) resetModal.classList.add("active");
+    if (resetEmail && emailInput?.value) resetEmail.value = emailInput.value.trim();
+    resetEmail?.focus();
+});
+
+cancelResetBtn?.addEventListener("click", () => resetModal?.classList.remove("active"));
+
+sendResetBtn?.addEventListener("click", async () => {
+    const email = resetEmail?.value.trim() || "";
+    if (!email) return showToast("Enter your email address.", "warning");
 
     try {
-
-        disableButtons();
-
-        showLoader("Signing in with Google...");
-
-        await setPersistence(
-            auth,
-            rememberMe.checked
-                ? browserLocalPersistence
-                : browserSessionPersistence
-        );
-
-        const result =
-        await signInWithPopup(
-            auth,
-            provider
-        );
-
-        const user =
-        result.user;
-
-        const userRef =
-        doc(db, "users", user.uid);
-
-        const userSnap =
-        await getDoc(userRef);
-
-        // =====================================
-        // FIRST GOOGLE LOGIN
-        // =====================================
-
-        if (!userSnap.exists()) {
-
-            await setDoc(userRef, {
-
-                uid: user.uid,
-
-                fullName:
-                user.displayName || "",
-
-                email:
-                user.email || "",
-
-                role: "student",
-
-                profilePhoto:
-                user.photoURL || "",
-
-                bio: "",
-
-                expertise: "",
-
-                provider: "google",
-
-                verified:
-                user.emailVerified,
-
-                active: true,
-
-                createdAt:
-                serverTimestamp(),
-
-                lastLogin:
-                serverTimestamp()
-
-            });
-
-            showToast(
-                "Welcome to Spark Stack Academy!",
-                "success"
-            );
-
-            setTimeout(() => {
-
-                redirectByRole("student");
-
-            }, 1200);
-
-            return;
-
-        }
-
-        // =====================================
-        // EXISTING USER
-        // =====================================
-
-        const userData =
-        userSnap.data();
-
-        if (userData.active === false) {
-
-            hideLoader();
-
-            enableButtons();
-
-            showToast(
-                "This account has been disabled.",
-                "error"
-            );
-
-            return;
-
-        }
-
-        await updateDoc(userRef, {
-
-            lastLogin:
-            serverTimestamp()
-
-        });
-
-        showToast(
-            `Welcome back, ${userData.fullName}!`,
-            "success"
-        );
-
-        setTimeout(() => {
-
-            redirectByRole(
-                userData.role
-            );
-
-        }, 1200);
-
+        sendResetBtn.disabled = true;
+        const redirectTo = `${window.location.origin}/reset-password.html`;
+        const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+        if (error) throw error;
+        resetModal?.classList.remove("active");
+        showToast("If that account exists, a password reset email is on its way.", "success");
     } catch (error) {
+        console.error("Password reset error:", error);
+        showToast(error.message || "Password reset failed.", "error");
+    } finally {
+        sendResetBtn.disabled = false;
+    }
+});
 
+googleLoginBtn?.addEventListener("click", async () => {
+    try {
+        setBusy(true);
+        showLoader("Opening Google sign-in...");
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: "google",
+            options: { redirectTo: `${window.location.origin}/login.html` }
+        });
+        if (error) throw error;
+    } catch (error) {
+        console.error("Google login error:", error);
         hideLoader();
-
-        enableButtons();
-
-        switch (error.code) {
-
-            case "auth/popup-closed-by-user":
-
-                showToast(
-                    "Google sign in cancelled.",
-                    "warning"
-                );
-
-                break;
-
-            case "auth/cancelled-popup-request":
-
-                showToast(
-                    "Another sign in request is already running.",
-                    "warning"
-                );
-
-                break;
-
-            case "auth/network-request-failed":
-
-                showToast(
-                    "Check your internet connection.",
-                    "error"
-                );
-
-                break;
-
-            default:
-
-                showToast(
-                    error.message,
-                    "error"
-                );
-
-        }
-
+        setBusy(false);
+        showToast("Google sign-in isn't configured yet. Use email and password for now.", "warning");
     }
-
 });
 
-// ============================================
-// PAGE INITIALIZATION
-// ============================================
-
-window.addEventListener("load", () => {
-
-    hideLoader();
-
-    emailInput.focus();
-
+document.querySelectorAll(".toggle-password").forEach(toggle => {
+    toggle.addEventListener("click", () => {
+        const target = document.getElementById(toggle.dataset.target);
+        if (!target) return;
+        const visible = target.type === "text";
+        target.type = visible ? "password" : "text";
+        toggle.classList.toggle("fa-eye", visible);
+        toggle.classList.toggle("fa-eye-slash", !visible);
+    });
 });
 
-// ============================================
-// ENTER KEY SUPPORT
-// ============================================
-
-document.addEventListener("keydown", (e) => {
-
-    if (e.key === "Escape") {
-
-        resetModal.classList.remove("active");
-
+supabase.auth.getSession().then(async ({ data }) => {
+    if (data?.session) {
+        try { await routeAfterLogin(); } catch { await supabase.auth.signOut(); }
     }
-
 });
 
-// ============================================
-// READY
-// ============================================
-
-console.log(
-    "%cSpark Stack Academy Login Ready 🚀",
-    "color:#0B2D5C;font-size:16px;font-weight:bold;"
-);
+console.log("🔥 SSA Supabase Auth Login Loaded");
